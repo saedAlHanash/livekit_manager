@@ -148,14 +148,13 @@ class NoteMessage {
     return (result ?? false);
   }
 
-  static Future<bool> showErrorDialog(
-    BuildContext context, {
+  static Future<bool> showErrorDialog({
     required String text,
     bool tryAgne = true,
   }) async {
     // show the dialog
     final result = await showDialog(
-      context: context,
+      context: ctx!,
       barrierColor: Colors.black.withValues(alpha: 0.3),
       builder: (BuildContext context) {
         return Dialog(
@@ -268,14 +267,13 @@ class NoteMessage {
   }
 
   static Future<void> showAwesomeError({
-    required BuildContext context,
     required String message,
   }) async {
     await AwesomeDialog(
-      context: context,
+      context: ctx!,
       dialogType: DialogType.error,
       animType: AnimType.scale,
-      title: S.of(context).oops,
+      title: S().oops,
       desc: message,
     ).show();
   }

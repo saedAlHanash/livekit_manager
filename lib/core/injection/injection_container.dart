@@ -1,4 +1,14 @@
       
+import 'package:livekit_manager/features/setting/bloc/setting_cubit/setting_cubit.dart';
+import 'package:livekit_manager/features/setting/bloc/settings_cubit/settings_cubit.dart';
+
+
+      
+import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
+import 'package:livekit_manager/features/room/bloc/rooms_cubit/rooms_cubit.dart';
+
+
+      
 import 'package:livekit_manager/features/user/bloc/user_cubit/user_cubit.dart';
 import 'package:livekit_manager/features/user/bloc/users_cubit/users_cubit.dart';
 
@@ -14,6 +24,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //region setting
+  sl.registerFactory(() => SettingCubit());
+  sl.registerFactory(() => SettingsCubit());
+  //endregion
+
+  //region room
+  sl.registerFactory(() => RoomCubit());
+  sl.registerFactory(() => RoomsCubit());
+  //endregion
+
   //region user
   sl.registerFactory(() => UserCubit());
   sl.registerFactory(() => UsersCubit());

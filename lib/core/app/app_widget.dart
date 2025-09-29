@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
+import 'package:livekit_manager/features/home/bloc/home_cubit/home_cubit.dart';
 
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
@@ -98,7 +99,11 @@ class MyAppState extends State<MyApp> {
             supportedLocales: S.delegate.supportedLocales,
             builder: (ctx, child) {
               return MultiBlocProvider(
-                providers: [],
+                providers: [
+                  BlocProvider(
+                    create: (context) => sl<HomeCubit>(),
+                  )
+                ],
                 child: MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                   child: SafeArea(bottom: true, left: false, right: false, top: false, child: child!),

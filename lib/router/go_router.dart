@@ -1,3 +1,13 @@
+import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
+import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
+import '../features/setting/ui/pages/setting_page.dart';
+import '../features/setting/ui/pages/settings_page.dart';
+
+import '../features/room/bloc/room_cubit/room_cubit.dart';
+import '../features/room/bloc/rooms_cubit/rooms_cubit.dart';
+import '../features/room/ui/pages/room_page.dart';
+import '../features/room/ui/pages/rooms_page.dart';
+
 import '../features/user/bloc/user_cubit/user_cubit.dart';
 import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
@@ -19,6 +29,80 @@ import '../core/injection/injection_container.dart';
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
   routes: [
+    //region setting
+    
+    ///setting
+    GoRoute(
+      path: RouteName.setting,
+      name: RouteName.setting,
+      builder: (_, state) {
+        String  settingId = state.uri.queryParameters['id'] ?? '';
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<SettingCubit>()..getData(settingId: settingId),
+            ),
+          ],
+          child: SettingPage(),
+        );
+      },
+    ),
+    
+    ///settings
+    GoRoute(
+      path: RouteName.settings,
+      name: RouteName.settings,
+      builder: (_, state) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<SettingsCubit>()..getData(),
+            ),
+          ],
+          child: SettingsPage(),
+        );
+      },
+    ),
+    //endregion
+    
+
+    //region room
+    
+    ///room
+    GoRoute(
+      path: RouteName.room,
+      name: RouteName.room,
+      builder: (_, state) {
+        String  roomId = state.uri.queryParameters['id'] ?? '';
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
+            ),
+          ],
+          child: RoomPage(),
+        );
+      },
+    ),
+    
+    ///rooms
+    GoRoute(
+      path: RouteName.rooms,
+      name: RouteName.rooms,
+      builder: (_, state) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<RoomsCubit>()..getData(),
+            ),
+          ],
+          child: RoomsPage(),
+        );
+      },
+    ),
+    //endregion
+    
+
     //region user
 
     ///user
@@ -106,6 +190,12 @@ final goRouter = GoRouter(
 );
 
 class RouteName {
+  static const setting = '/setting';
+  static const settings = '/settings';
+
+  static const room = '/room';
+  static const rooms = '/rooms';
+
   static const user = '/user';
   static const users = '/users';
 

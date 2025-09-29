@@ -12,7 +12,6 @@ class ErrorManager {
   static String getApiError(Response response) {
     switch (response.statusCode) {
       case 401:
-
         return '${S().userLogout} ${response.statusCode}';
 
       case 503:
@@ -88,7 +87,7 @@ void showErrorFromApi(AbstractState state) {
   if (!canShow) return;
   shownErrorDialog.add(state);
   if (shownErrorDialog.isNotEmpty) {
-    NoteMessage.showAwesomeError(context: ctx!, message: state.error).then((value) {
+    NoteMessage.showAwesomeError(message: state.error).then((value) {
       shownErrorDialog.removeWhere((e) => e.error == state.error);
     });
   }
