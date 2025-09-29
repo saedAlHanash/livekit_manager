@@ -208,12 +208,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 70),
-                    child: SvgPicture.asset(
-                      'images/logo-dark.svg',
-                    ),
-                  ),
+
                   Padding(
                     padding: const EdgeInsets.only(bottom: 25),
                     child: MyTextFormWidget(
