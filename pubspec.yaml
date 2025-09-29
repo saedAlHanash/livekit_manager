@@ -1,0 +1,91 @@
+name: livekit_manager
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  image_multi_type:
+    git:
+      url: https://github.com/saedAlHanash/image_multi_type
+
+
+  m_cubit:
+    path: ../../packages/m_cubit
+
+  #  fl_chart: ^1.0.0
+  flutter_bloc:
+  logger: ^2.6.1
+  package_info_plus: ^9.0.0
+  #  permission_handler: ^12.0.0+1
+  #  persistent_bottom_nav_bar_v2: ^5.4.0
+  pull_to_refresh: ^2.0.0
+  flutter_local_notifications: ^19.4.2
+  shared_preferences: ^2.5.3
+  collection: ^1.19.1
+  flutter_screenutil: ^5.9.3
+  dropdown_button2: ^2.3.9
+  awesome_dialog: ^3.2.1
+  carousel_slider: ^5.1.1
+  http: ^1.5.0
+  intl: ^0.20.2
+  go_router: ^16.2.4
+  get_it: ^8.2.0
+  group_button: ^5.3.4
+  livekit_client: ^2.5.1
+
+  drawable_text: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+    - assets/lotties/
+    - assets/
+
+  #  fonts:
+  #    - family: regular
+  #      fonts:
+  #        - asset: assets/fonts/Tajawal-Regular.ttf
+  #    - family: semeBold
+  #      fonts:
+  #        - asset: assets/fonts/Tajawal-Medium.ttf
+  #    - family: bold
+  #      fonts:
+  #        - asset: assets/fonts/Tajawal-Bold.ttf
+  #
+  fonts:
+    - family: regular
+      fonts:
+        - asset: assets/fonts/Almarai-Light.ttf
+    - family: semeBold
+      fonts:
+        - asset: assets/fonts/Almarai-Regular.ttf
+    - family: bold
+      fonts:
+        - asset: assets/fonts/Almarai-Bold.ttf
+
+
+flutter_intl:
+  enabled: true

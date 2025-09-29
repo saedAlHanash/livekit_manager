@@ -1,0 +1,156 @@
+{
+  "days": [
+    {
+      "id": "d1",
+      "title": "الأحد"
+    },
+    {
+      "id": "d2",
+      "title": "الإثنين"
+    },
+    {
+      "id": "d3",
+      "title": "الثلاثاء"
+    },
+    {
+      "id": "d4",
+      "title": "الأربعاء"
+    },
+    {
+      "id": "d5",
+      "title": "الخميس"
+    }
+  ],
+  "timeSlots": [
+    {
+      "id": "t1",
+      "title": "08:00"
+    },
+    {
+      "id": "t2",
+      "title": "09:00"
+    },
+    {
+      "id": "t3",
+      "title": "10:00"
+    },
+    {
+      "id": "t4",
+      "title": "11:00"
+    },
+    {
+      "id": "t5",
+      "title": "12:00"
+    },
+    {
+      "id": "t6",
+      "title": "13:00"
+    },
+    {
+      "id": "t7",
+      "title": "14:00"
+    },
+    {
+      "id": "t8",
+      "title": "15:00"
+    }
+  ],
+  "courses": [
+    {
+      "id": "c1",
+      "name": "الرياضيات",
+      "categories": [
+        {
+          "id": "cat1",
+          "name": "نظري",
+          "lectures": [
+            {
+              "id": "l1",
+              "title": "محاضرة 1",
+              "dayId": "d1",
+              "timeId": "t2"
+            },
+            {
+              "id": "l2",
+              "title": "محاضرة 2",
+              "dayId": "d3",
+              "timeId": "t4"
+            }
+          ]
+        },
+        {
+          "id": "cat2",
+          "name": "عملي",
+          "lectures": [
+            {
+              "id": "l3",
+              "title": "تمرين 1",
+              "dayId": "d5",
+              "timeId": "t6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "name": "الفيزياء",
+      "categories": [
+        {
+          "id": "cat3",
+          "name": "نظري",
+          "lectures": [
+            {
+              "id": "l4",
+              "title": "محاضرة 1",
+              "dayId": "d2",
+              "timeId": "t3"
+            },
+            {
+              "id": "l5",
+              "title": "محاضرة 2",
+              "dayId": "d4",
+              "timeId": "t5"
+            },
+            {
+              "id": "l6",
+              "title": "محاضرة 3",
+              "dayId": "d5",
+              "timeId": "t7"
+            }
+          ]
+        },
+        {
+          "id": "cat4",
+          "name": "عملي",
+          "lectures": [
+            {
+              "id": "l7",
+              "title": "مختبر 1",
+              "dayId": "d1",
+              "timeId": "t8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "name": "الكيمياء",
+      "categories": [
+        {
+          "id": "cat5",
+          "name": "نظري",
+          "lectures": [
+            {
+              "id": "l8",
+              "title": "محاضرة 1",
+              "dayId": "d3",
+              "timeId": "t1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
