@@ -288,13 +288,13 @@ class _ControlsWidgetState extends State<ControlsWidget> {
             ),
           if (participant.isScreenShareEnabled())
             IconButton(
-              icon: const Icon(Icons.screen_share_sharp),
+              icon: const Icon(Icons.stop_screen_share_sharp),
               onPressed: () => _disableScreenShare(),
               tooltip: 'unshare screen (experimental)',
             )
           else
             IconButton(
-              icon: const Icon(Icons.stop_screen_share_sharp),
+              icon: const Icon(Icons.screen_share_sharp),
               onPressed: () => _enableScreenShare(),
               tooltip: 'share screen (experimental)',
             ),
