@@ -30,13 +30,13 @@ final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
   routes: [
     //region setting
-    
+
     ///setting
     GoRoute(
       path: RouteName.setting,
       name: RouteName.setting,
       builder: (_, state) {
-        String  settingId = state.uri.queryParameters['id'] ?? '';
+        String settingId = state.uri.queryParameters['id'] ?? '';
         return MultiBlocProvider(
           providers: [
             BlocProvider(
@@ -47,7 +47,7 @@ final goRouter = GoRouter(
         );
       },
     ),
-    
+
     ///settings
     GoRoute(
       path: RouteName.settings,
@@ -64,27 +64,26 @@ final goRouter = GoRouter(
       },
     ),
     //endregion
-    
 
     //region room
-    
+
     ///room
-    GoRoute(
-      path: RouteName.room,
-      name: RouteName.room,
-      builder: (_, state) {
-        String  roomId = state.uri.queryParameters['id'] ?? '';
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
-            ),
-          ],
-          child: RoomPage(),
-        );
-      },
-    ),
-    
+    // GoRoute(
+    //   path: RouteName.room,
+    //   name: RouteName.room,
+    //   builder: (_, state) {
+    //     String  roomId = state.uri.queryParameters['id'] ?? '';
+    //     return MultiBlocProvider(
+    //       providers: [
+    //         BlocProvider(
+    //           create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
+    //         ),
+    //       ],
+    //       child: RoomPage(Room),
+    //     );
+    //   },
+    // ),
+    //
     ///rooms
     GoRoute(
       path: RouteName.rooms,
@@ -101,7 +100,6 @@ final goRouter = GoRouter(
       },
     ),
     //endregion
-    
 
     //region user
 

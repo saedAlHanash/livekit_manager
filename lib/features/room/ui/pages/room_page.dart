@@ -1,39 +1,235 @@
+import 'dart:convert';
+
+import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_manager/core/widgets/app_bar/app_bar_widget.dart';
+import 'package:livekit_manager/core/widgets/my_card_widget.dart';
+import 'package:livekit_manager/features/room/data/request/setting_message.dart';
 
-import '../../../../core/widgets/app_bar/app_bar_widget.dart';
-import '../../../../core/widgets/refresh_widget/refresh_widget.dart';
+import '../../../../core/strings/enum_manager.dart';
+import '../widget/participant_info.dart';
+import '../widget/sound_waveform.dart';
+import '../widget/users/dynamic_user.dart';
 
-import '../../bloc/room_cubit/room_cubit.dart';
+class RoomPage extends StatefulWidget {
+  const RoomPage(
+    this.room,
+    this.listener, {
+    super.key,
+  });
 
-class RoomPage extends StatelessWidget {
-  const RoomPage({super.key});
+  final Room room;
+  final EventsListener<RoomEvent> listener;
+
+  @override
+  State<StatefulWidget> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends State<RoomPage> {
+  List<ParticipantTrack> participantTracks = [];
+
+  EventsListener<RoomEvent> get _listener => widget.listener;
+
+  @override
+  void initState() {
+    super.initState();
+    // add callback for a `RoomEvent` as opposed to a `ParticipantEvent`
+    widget.room.addListener(_sortParticipants);
+    // add callbacks for finer grained events
+    _setUpListeners();
+    _sortParticipants();
+  }
+
+  @override
+  void dispose() {
+    // always dispose listener
+    (() async {
+      widget.room.removeListener(_sortParticipants);
+      await _listener.dispose();
+      await widget.room.dispose();
+    })();
+
+    super.dispose();
+  }
+
+  /// for more information, see [event types](https://docs.livekit.io/client/events/#events)
+  void _setUpListeners() => _listener
+    ..on<RoomDisconnectedEvent>((event) async {
+      WidgetsBindingCompatible.instance
+          ?.addPostFrameCallback((timeStamp) => Navigator.popUntil(context, (route) => route.isFirst));
+    })
+    ..on<ParticipantEvent>((event) {
+      // sort participants on many track events as noted in documentation linked above
+      _sortParticipants();
+    })
+    ..on<RoomRecordingStatusChanged>((event) {
+      context.showRecordingStatusChangedDialog(event.activeRecording);
+    })
+    ..on<LocalTrackPublishedEvent>((_) => _sortParticipants())
+    ..on<LocalTrackUnpublishedEvent>((_) => _sortParticipants())
+    ..on<TrackSubscribedEvent>((_) => _sortParticipants())
+    ..on<TrackUnsubscribedEvent>((_) => _sortParticipants())
+    ..on<ParticipantNameUpdatedEvent>((event) {
+      _sortParticipants();
+    })
+    ..on<DataReceivedEvent>((event) {
+      try {
+        final message = SettingMessage.fromJson(jsonDecode(utf8.decode(event.data)));
+        if (message.sid != widget.room.localParticipant?.sid) return;
+      } catch (err) {
+        loggerObject.i('Failed to decode: $err');
+      }
+    })
+    ..on<AudioPlaybackStatusChanged>((event) async {
+      if (!widget.room.canPlaybackAudio) {
+        final yesno = await context.showPlayAudioManuallyDialog();
+        if (yesno == true) {
+          await widget.room.startAudio();
+        }
+      }
+    });
+
+  void _sortParticipants() {
+    List<ParticipantTrack> userMediaTracks = [];
+    List<ParticipantTrack> screenTracks = [];
+    for (var participant in widget.room.remoteParticipants.values) {
+      screenTracks.add(
+        ParticipantTrack(
+          participant: participant,
+          type: participant.videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media,
+        ),
+      );
+    }
+    // sort speakers for the grid
+    userMediaTracks.sort((a, b) {
+      // loudest speaker first
+      if (a.participant.isSpeaking && b.participant.isSpeaking) {
+        if (a.participant.audioLevel > b.participant.audioLevel) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+
+      // last spoken at
+      final aSpokeAt = a.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+      final bSpokeAt = b.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+
+      if (aSpokeAt != bSpokeAt) {
+        return aSpokeAt > bSpokeAt ? -1 : 1;
+      }
+
+      // video on
+      if (a.participant.hasVideo != b.participant.hasVideo) {
+        return a.participant.hasVideo ? -1 : 1;
+      }
+
+      // joinedAt
+      return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
+    });
+
+    setState(() {
+      participantTracks = [...screenTracks, ...userMediaTracks];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<RoomCubit, RoomInitial>(
-          listenWhen: (p, c) => c.done,
-          listener: (context, state) {},
-        ),
-      ],
-      child: Scaffold(
-        appBar: AppBarWidget(),
-        body: BlocBuilder<RoomCubit, RoomInitial>(
-          builder: (context, state) {
-            return RefreshWidget(
-              isLoading: state.loading,
-              onRefresh: () {
-                context.read<RoomCubit>().getData(newData: true);
-              },
-              child: ListView(
-                shrinkWrap: true,
-                children: [],
-              ),
-            );
-          },
-        ),
+    return Scaffold(
+      appBar: AppBarWidget(),
+      body: ListView.builder(
+        itemCount: participantTracks.length,
+        itemBuilder: (context, i) {
+          final participant = participantTracks[i].participant as RemoteParticipant;
+          final audio = participantTracks[i].activeAudioTrack;
+          return MyCardWidget(
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
+            child: Row(
+              children: [
+                Container(
+                  height: 100.0.dg,
+                  width: 100.0.dg,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0).r,
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: DynamicUser(participantTrack: participantTracks[i]),
+                ),
+                15.0.horizontalSpace,
+                Expanded(
+                  child: Column(
+                    children: [
+                      DrawableText(
+                        text: participant.name,
+                        matchParent: true,
+                      ),
+                      Row(
+                        children: [
+                          participant.connectionQuality.icon,
+                          IconButton(
+                            onPressed: () {
+                              widget.room.localParticipant?.publishData(
+                                utf8.encode(
+                                  jsonEncode(
+                                    SettingMessage(
+                                      sid: participant.sid,
+                                      name: participant.name,
+                                      action: ManagerActions.video,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: participant.isCameraEnabled()
+                                ? const Icon(Icons.videocam)
+                                : const Icon(Icons.videocam_off),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              widget.room.localParticipant?.publishData(
+                                utf8.encode(
+                                  jsonEncode(
+                                    SettingMessage(
+                                      sid: participant.sid,
+                                      name: participant.name,
+                                      action: ManagerActions.mic,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: participant.isMicrophoneEnabled() ? const Icon(Icons.mic) : const Icon(Icons.mic_off),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: participant.isScreenShareAudioEnabled()
+                                ? const Icon(Icons.screen_share)
+                                : const Icon(Icons.stop_screen_share),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                if (audio != null)
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SoundWaveformWidget(
+                      key: ValueKey(audio.hashCode),
+                      audioTrack: audio,
+                      width: 8,
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

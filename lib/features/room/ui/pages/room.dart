@@ -2,31 +2,53 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/util/exts.dart';
 
+import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/utils.dart';
 import '../widget/controls.dart';
 import '../widget/participant.dart';
 import '../widget/participant_info.dart';
+import '../widget/users/dynamic_user.dart';
 
-class RoomPage extends StatefulWidget {
-  final Room room;
-  final EventsListener<RoomEvent> listener;
-
-  const RoomPage(
+class RoomPage1 extends StatefulWidget {
+  const RoomPage1(
     this.room,
     this.listener, {
     super.key,
   });
+  final Room room;
+  final EventsListener<RoomEvent> listener;
 
   @override
-  State<StatefulWidget> createState() => _RoomPageState();
+  State<StatefulWidget> createState() => _RoomPage1State();
 }
 
-class _RoomPageState extends State<RoomPage> {
+class _RoomPage1State extends State<RoomPage1> {
+  String? selectedUserId;
+
   List<ParticipantTrack> participantTracks = [];
+
+  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
+      .where((e) => e.participant.sid != selectedParticipantTrack.participant.sid)
+      .toList(growable: false);
+
+  ParticipantTrack get selectedParticipantTrack =>
+      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.first;
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
@@ -74,7 +96,7 @@ class _RoomPageState extends State<RoomPage> {
   void _setUpListeners() => _listener
     ..on<RoomDisconnectedEvent>((event) async {
       if (event.reason != null) {
-        print('Room disconnected: reason => ${event.reason}');
+        loggerObject.i('Room disconnected: reason => ${event.reason}');
       }
       WidgetsBindingCompatible.instance
           ?.addPostFrameCallback((timeStamp) => Navigator.popUntil(context, (route) => route.isFirst));
@@ -87,11 +109,11 @@ class _RoomPageState extends State<RoomPage> {
       context.showRecordingStatusChangedDialog(event.activeRecording);
     })
     ..on<RoomAttemptReconnectEvent>((event) {
-      print('Attempting to reconnect ${event.attempt}/${event.maxAttemptsRetry}, '
+      loggerObject.i('Attempting to reconnect ${event.attempt}/${event.maxAttemptsRetry}, '
           '(${event.nextRetryDelaysInMs}ms delay until next attempt)');
     })
     ..on<LocalTrackSubscribedEvent>((event) {
-      print('Local track subscribed: ${event.trackSid}');
+      loggerObject.i('Local track subscribed: ${event.trackSid}');
     })
     ..on<LocalTrackPublishedEvent>((_) => _sortParticipants())
     ..on<LocalTrackUnpublishedEvent>((_) => _sortParticipants())
@@ -99,27 +121,27 @@ class _RoomPageState extends State<RoomPage> {
     ..on<TrackUnsubscribedEvent>((_) => _sortParticipants())
     ..on<TrackE2EEStateEvent>(_onE2EEStateEvent)
     ..on<ParticipantNameUpdatedEvent>((event) {
-      print('Participant name updated: ${event.participant.identity}, name => ${event.name}');
+      loggerObject.i('Participant name updated: ${event.participant.identity}, name => ${event.name}');
       _sortParticipants();
     })
     ..on<ParticipantMetadataUpdatedEvent>((event) {
-      print('Participant metadata updated: ${event.participant.identity}, metadata => ${event.metadata}');
+      loggerObject.i('Participant metadata updated: ${event.participant.identity}, metadata => ${event.metadata}');
     })
     ..on<RoomMetadataChangedEvent>((event) {
-      print('Room metadata changed: ${event.metadata}');
+      loggerObject.i('Room metadata changed: ${event.metadata}');
     })
     ..on<DataReceivedEvent>((event) {
       String decoded = 'Failed to decode';
       try {
         decoded = utf8.decode(event.data);
       } catch (err) {
-        print('Failed to decode: $err');
+        loggerObject.i('Failed to decode: $err');
       }
       context.showDataReceivedDialog(decoded);
     })
     ..on<AudioPlaybackStatusChanged>((event) async {
       if (!widget.room.canPlaybackAudio) {
-        print('Audio playback failed for iOS Safari ..........');
+        loggerObject.i('Audio playback failed for iOS Safari ..........');
         bool? yesno = await context.showPlayAudioManuallyDialog();
         if (yesno == true) {
           await widget.room.startAudio();
@@ -134,13 +156,13 @@ class _RoomPageState extends State<RoomPage> {
     try {
       await widget.room.localParticipant?.setCameraEnabled(true);
     } catch (error) {
-      print('could not publish video: $error');
+      loggerObject.i('could not publish video: $error');
       await context.showErrorDialog(error);
     }
     try {
       await widget.room.localParticipant?.setMicrophoneEnabled(true);
     } catch (error) {
-      print('could not publish audio: $error');
+      loggerObject.i('could not publish audio: $error');
       await context.showErrorDialog(error);
     }
   }
@@ -150,7 +172,7 @@ class _RoomPageState extends State<RoomPage> {
   }
 
   void _onE2EEStateEvent(TrackE2EEStateEvent e2eeState) {
-    print('e2ee state: $e2eeState');
+    loggerObject.i('e2ee state: $e2eeState');
   }
 
   void _sortParticipants() {
@@ -161,7 +183,7 @@ class _RoomPageState extends State<RoomPage> {
         if (t.isScreenShare) {
           screenTracks.add(ParticipantTrack(
             participant: participant,
-            type: ParticipantTrackType.kScreenShare,
+            type: MediaType.screen,
           ));
         } else {
           userMediaTracks.add(ParticipantTrack(participant: participant));
@@ -202,7 +224,7 @@ class _RoomPageState extends State<RoomPage> {
         if (t.isScreenShare) {
           screenTracks.add(ParticipantTrack(
             participant: widget.room.localParticipant!,
-            type: ParticipantTrackType.kScreenShare,
+            type: MediaType.screen,
           ));
         } else {
           userMediaTracks.add(ParticipantTrack(participant: widget.room.localParticipant!));
@@ -223,7 +245,7 @@ class _RoomPageState extends State<RoomPage> {
             children: [
               Expanded(
                 child: participantTracks.isNotEmpty
-                    ? ParticipantWidget.widgetFor(participantTracks.first, showStatsLayer: true)
+                    ? DynamicUser(participantTrack: selectedParticipantTrack)
                     : Container(),
               ),
               if (widget.room.localParticipant != null)
@@ -232,7 +254,7 @@ class _RoomPageState extends State<RoomPage> {
                     widget.room,
                     widget.room.localParticipant!,
                   ),
-                )
+                ),
             ],
           ),
           Positioned(
@@ -243,12 +265,23 @@ class _RoomPageState extends State<RoomPage> {
               height: 120,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: math.max(0, participantTracks.length - 1),
-                itemBuilder: (BuildContext context, int index) => SizedBox(
-                  width: 180,
-                  height: 120,
-                  child: ParticipantWidget.widgetFor(participantTracks[index + 1]),
-                ),
+                itemCount: math.max(0, participantTracksWithoutSelected.length),
+                itemBuilder: (context, i) {
+                  final item = participantTracksWithoutSelected[i];
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        loggerObject.i(item.participant.name);
+                        selectedUserId = item.participant.sid;
+                      });
+                    },
+                    child: SizedBox(
+                      width: 180,
+                      height: 120,
+                      child: DynamicUser(participantTrack: item),
+                    ),
+                  );
+                },
               ),
             ),
           ),

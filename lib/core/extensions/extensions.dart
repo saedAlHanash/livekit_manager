@@ -9,11 +9,13 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:intl/intl.dart';
+import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
+import '../../features/room/ui/widget/participant_info.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
@@ -678,6 +680,46 @@ extension GlobalKeyH on GlobalKey {
     final size = renderBox?.size;
     return size;
   }
+}
+
+extension ParticipantH on Participant {
+  String get displayName {
+    if (identity.isNotEmpty) return identity;
+    if (name.isNotEmpty) return name;
+    return sid;
+  }
+}
+
+extension ParticipantTrackH on ParticipantTrack {
+  RemoteParticipant get participant => this.participant as RemoteParticipant;
+
+  MediaType get type => this.type;
+
+  RemoteTrackPublication<RemoteVideoTrack>? get videoPublication =>
+      participant.videoTrackPublications.where((element) => element.source == type.videoSourceType).firstOrNull;
+
+  RemoteTrackPublication<RemoteAudioTrack>? get audioPublication =>
+      participant.audioTrackPublications.where((element) => element.source == type.audioSourceType).firstOrNull;
+
+  VideoTrack? get activeVideoTrack => videoPublication?.track;
+
+  AudioTrack? get activeAudioTrack => audioPublication?.track;
+
+  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
+
+  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+}
+
+extension ConnectionQualityH on ConnectionQuality {
+  Widget get icon => ImageMultiType(
+        url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
+        color: {
+          ConnectionQuality.excellent: Colors.green,
+          ConnectionQuality.good: Colors.orange,
+          ConnectionQuality.poor: Colors.red,
+        }[this],
+        height: 16.0.dg,
+      );
 }
 
 class FormatDateTime {

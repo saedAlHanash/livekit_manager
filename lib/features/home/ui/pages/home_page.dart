@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../room/ui/pages/room.dart';
+import '../../../room/ui/pages/room_page.dart';
 import '../../../setting/ui/pages/prejoin.dart';
 
 class HomePage extends StatefulWidget {
@@ -208,7 +209,6 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(bottom: 25),
                     child: MyTextFormWidget(
