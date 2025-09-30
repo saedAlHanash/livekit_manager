@@ -1,0 +1,9 @@
+{
+  "identity": "teacher1",
+  "grants": {
+    "roomJoin": true,
+    "roomAdmin": true,
+    "canPublish": true,
+    "canSubscribe": true
+  }
+}
