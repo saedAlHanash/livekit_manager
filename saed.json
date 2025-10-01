@@ -1,5 +1,34 @@
-{
-  "sid": "",
-  "name": "saed",
-  "action": 0
-}
+[
+  {
+    "name": "سعيد",
+    "attributes": {
+      "imageUrl": ""
+    },
+    "video": {
+      "roomJoin": true,
+      "canPublish": true,
+      "canSubscribe": true,
+      "canPublishData": true,
+      "room": "r33",
+      "roomAdmin": true,
+      "canUpdateOwnMetadata": true
+    },
+    "iss": "APIpyb3vnL8GhUX",
+    "exp": 1759688377,
+    "nbf": 0,
+    "sub": "2=g185"
+  },
+  {
+    "exp": 1759329337,
+    "identity": "saed",
+    "iss": "APIQxZPjwpGoccr",
+    "nbf": 1759328437,
+    "sub": "saed",
+    "video": {
+      "canUpdateOwnMetadata": true,
+      "room": "v5v4-idmm",
+      "roomJoin": true,
+      "roomList": true
+    }
+  }
+]

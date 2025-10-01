@@ -1,3 +1,7 @@
+import 'package:flutter/foundation.dart';
+// import 'package:web/web.dart' as web;
+import 'package:livekit_client/livekit_client.dart';
+
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
 import '../features/setting/ui/pages/setting_page.dart';
@@ -68,22 +72,29 @@ final goRouter = GoRouter(
     //region room
 
     ///room
-    // GoRoute(
-    //   path: RouteName.room,
-    //   name: RouteName.room,
-    //   builder: (_, state) {
-    //     String  roomId = state.uri.queryParameters['id'] ?? '';
-    //     return MultiBlocProvider(
-    //       providers: [
-    //         BlocProvider(
-    //           create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
-    //         ),
-    //       ],
-    //       child: RoomPage(Room),
-    //     );
-    //   },
-    // ),
-    //
+    GoRoute(
+      path: RouteName.room,
+      name: RouteName.room,
+      builder: (_, state) {
+        String roomId = state.uri.queryParameters['id'] ?? '';
+        final extra = state.extra as List<dynamic>;
+        if (state.extra is! List) {
+          // if (kIsWeb) web.window.history.back();
+        }
+        final room = extra[0] as Room;
+        final listener = extra[1] as EventsListener<RoomEvent>;
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
+            ),
+          ],
+          child: RoomPage(room, listener),
+        );
+      },
+    ),
+
     ///rooms
     GoRoute(
       path: RouteName.rooms,

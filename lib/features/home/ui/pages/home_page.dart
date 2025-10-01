@@ -119,27 +119,6 @@ class _HomePageState extends State<HomePage> {
       var token = _tokenCtrl.text;
       var e2eeKey = _sharedKeyCtrl.text;
 
-      // if (kIsWeb) {
-      //   await Navigator.push<void>(
-      //     ctx,
-      //     MaterialPageRoute(
-      //       builder: (_) => PreJoinPage(
-      //         args: JoinArgs(
-      //           url: url,
-      //           token: token,
-      //           e2ee: _e2ee,
-      //           e2eeKey: e2eeKey,
-      //           simulcast: _simulcast,
-      //           adaptiveStream: _adaptiveStream,
-      //           dynacast: _dynacast,
-      //           preferredCodec: _preferredCodec,
-      //           enableBackupVideoCodec: ['VP9', 'AV1'].contains(_preferredCodec),
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      //   return;
-      // }
       final room = Room();
       try {
         final listener = room.createListener();

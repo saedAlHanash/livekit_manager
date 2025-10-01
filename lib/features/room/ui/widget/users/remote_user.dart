@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/my_card_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/participant_info.dart';
@@ -72,6 +74,9 @@ class _RemoteUserState extends State<RemoteUser> {
             fit: VideoViewFit.cover,
             activeVideoTrack!,
           )
-        : const NoVideoWidget();
+        : ImageMultiType(
+            url: participant.attributes['imageUrl'],
+            fit: BoxFit.cover,
+          );
   }
 }

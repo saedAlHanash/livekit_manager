@@ -45,10 +45,10 @@ class SoundWaveformWidget extends StatefulWidget {
   const SoundWaveformWidget({
     super.key,
     required this.audioTrack,
-    this.barCount = 5,
-    this.width = 5,
-    this.minHeight = 8,
-    this.maxHeight = 100,
+    this.barCount = 4,
+    this.width = 3,
+    this.minHeight = 3,
+    this.maxHeight = 15,
     this.durationInMilliseconds = 500,
   });
 
@@ -127,7 +127,7 @@ class _SoundWaveformWidgetState extends State<SoundWaveformWidget> with TickerPr
             count,
             (i) => AnimatedContainer(
               duration: Duration(milliseconds: widget.durationInMilliseconds ~/ count),
-              margin: const EdgeInsets.only(right: 5),
+              margin: const EdgeInsets.only(right: 2),
               height: samples[i] < minHeight
                   ? minHeight
                   : samples[i] > maxHeight

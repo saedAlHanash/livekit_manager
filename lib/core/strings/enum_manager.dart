@@ -78,5 +78,14 @@ enum ManagerActions {
   mic,
   video,
   shareScreen,
-  raseHand,
+  raseHand;
+
+  IconData get icon {
+    return switch (this) {
+      ManagerActions.mic => Icons.mic,
+      ManagerActions.video => Icons.videocam,
+      ManagerActions.shareScreen => Icons.screen_share,
+      ManagerActions.raseHand => Icons.front_hand,
+    };
+  }
 }

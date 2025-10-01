@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/util/exts.dart';
 import 'package:livekit_manager/core/widgets/app_bar/app_bar_widget.dart';
 import 'package:livekit_manager/core/widgets/my_card_widget.dart';
@@ -149,14 +151,15 @@ class _RoomPageState extends State<RoomPage> {
           final audio = participantTracks[i].activeAudioTrack;
           return MyCardWidget(
             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0).w,
             child: Row(
               children: [
                 Container(
-                  height: 100.0.dg,
-                  width: 100.0.dg,
+                  height: 80.0.dg,
+                  width: 80.0.dg,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0).r,
+                    shape: BoxShape.circle,
+                    color: AppColorManager.scaffoldColor,
                   ),
                   clipBehavior: Clip.hardEdge,
                   child: DynamicUser(participantTrack: participantTracks[i]),
@@ -168,49 +171,25 @@ class _RoomPageState extends State<RoomPage> {
                       DrawableText(
                         text: participant.name,
                         matchParent: true,
+                        drawablePadding: 5.0,
+                        drawableStart: participant.connectionQuality.icon,
                       ),
                       Row(
                         children: [
-                          participant.connectionQuality.icon,
-                          IconButton(
-                            onPressed: () {
-                              widget.room.localParticipant?.publishData(
-                                utf8.encode(
-                                  jsonEncode(
-                                    SettingMessage(
-                                      sid: participant.sid,
-                                      name: participant.name,
-                                      action: ManagerActions.video,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: participant.isCameraEnabled()
-                                ? const Icon(Icons.videocam)
-                                : const Icon(Icons.videocam_off),
+                          _Switch(
+                            participant: participant,
+                            action: ManagerActions.video,
+                            localParticipant: widget.room.localParticipant,
                           ),
-                          IconButton(
-                            onPressed: () {
-                              widget.room.localParticipant?.publishData(
-                                utf8.encode(
-                                  jsonEncode(
-                                    SettingMessage(
-                                      sid: participant.sid,
-                                      name: participant.name,
-                                      action: ManagerActions.mic,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: participant.isMicrophoneEnabled() ? const Icon(Icons.mic) : const Icon(Icons.mic_off),
+                          _Switch(
+                            participant: participant,
+                            action: ManagerActions.mic,
+                            localParticipant: widget.room.localParticipant,
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: participant.isScreenShareAudioEnabled()
-                                ? const Icon(Icons.screen_share)
-                                : const Icon(Icons.stop_screen_share),
+                          _Switch(
+                            participant: participant,
+                            action: ManagerActions.shareScreen,
+                            localParticipant: widget.room.localParticipant,
                           ),
                         ],
                       ),
@@ -218,18 +197,66 @@ class _RoomPageState extends State<RoomPage> {
                   ),
                 ),
                 if (audio != null)
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
+                  Container(
                     child: SoundWaveformWidget(
                       key: ValueKey(audio.hashCode),
                       audioTrack: audio,
                       width: 8,
+                      barCount: 3,
                     ),
                   ),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _Switch extends StatelessWidget {
+  const _Switch({super.key, required this.participant, required this.action, required this.localParticipant});
+
+  final RemoteParticipant participant;
+  final LocalParticipant? localParticipant;
+  final ManagerActions action;
+
+  @override
+  Widget build(BuildContext context) {
+    final value = switch (action) {
+      ManagerActions.mic => participant.isMicrophoneEnabled(),
+      ManagerActions.video => participant.isCameraEnabled(),
+      ManagerActions.shareScreen => participant.isScreenShareAudioEnabled(),
+      ManagerActions.raseHand => true,
+    };
+
+    return Transform.scale(
+      scale: 0.6,
+      child: Row(
+        children: [
+          ImageMultiType(
+            url: action.icon,
+            height: 40.0.r,
+            width: 40.0.r,
+            color: value ? Colors.green : Colors.red,
+          ),
+          Switch(
+            value: value,
+            onChanged: (value) {
+              localParticipant?.publishData(
+                utf8.encode(
+                  jsonEncode(
+                    SettingMessage(
+                      sid: participant.sid,
+                      name: participant.name,
+                      action: action,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
