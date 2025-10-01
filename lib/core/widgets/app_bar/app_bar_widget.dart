@@ -104,8 +104,10 @@ class BackBtnWidget extends StatelessWidget {
         context.pop();
       },
       icon: Icon(
-        Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-        color: isColorDark(appBarColor) ? Colors.white : Theme.of(context).appBarTheme.iconTheme?.color ?? AppColorManager.black,
+        Icons.arrow_back_ios,
+        color: isColorDark(appBarColor)
+            ? Colors.white
+            : Theme.of(context).appBarTheme.iconTheme?.color ?? AppColorManager.black,
       ),
     );
   }

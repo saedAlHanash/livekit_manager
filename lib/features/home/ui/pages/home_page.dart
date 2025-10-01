@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:livekit_client/livekit_client.dart';
@@ -43,39 +46,27 @@ class _HomePageState extends State<HomePage> {
   bool _multiCodec = false;
   String _preferredCodec = 'VP8';
 
+  StreamSubscription? _subscription;
   @override
   void initState() {
+    // _subscription = Hardware.instance.onDeviceChange.stream.listen(
+    //   (event) {},
+    // );
     super.initState();
     _readPrefs();
+    _checkPermissions();
   }
 
   @override
   void dispose() {
+    _subscription?.cancel();
     _uriCtrl.dispose();
     _tokenCtrl.dispose();
     super.dispose();
   }
 
   Future<void> _checkPermissions() async {
-    var status = await Permission.bluetooth.request();
-    if (status.isPermanentlyDenied) {
-      print('Bluetooth Permission disabled');
-    }
-
-    status = await Permission.bluetoothConnect.request();
-    if (status.isPermanentlyDenied) {
-      print('Bluetooth Connect Permission disabled');
-    }
-
-    status = await Permission.camera.request();
-    if (status.isPermanentlyDenied) {
-      print('Camera Permission disabled');
-    }
-
-    status = await Permission.microphone.request();
-    if (status.isPermanentlyDenied) {
-      print('Microphone Permission disabled');
-    }
+    await Permission.microphone.request();
   }
 
   // Read saved URL and Token
@@ -128,9 +119,29 @@ class _HomePageState extends State<HomePage> {
       var token = _tokenCtrl.text;
       var e2eeKey = _sharedKeyCtrl.text;
 
+      // if (kIsWeb) {
+      //   await Navigator.push<void>(
+      //     ctx,
+      //     MaterialPageRoute(
+      //       builder: (_) => PreJoinPage(
+      //         args: JoinArgs(
+      //           url: url,
+      //           token: token,
+      //           e2ee: _e2ee,
+      //           e2eeKey: e2eeKey,
+      //           simulcast: _simulcast,
+      //           adaptiveStream: _adaptiveStream,
+      //           dynacast: _dynacast,
+      //           preferredCodec: _preferredCodec,
+      //           enableBackupVideoCodec: ['VP9', 'AV1'].contains(_preferredCodec),
+      //         ),
+      //       ),
+      //     ),
+      //   );
+      //   return;
+      // }
+      final room = Room();
       try {
-        final room = Room();
-
         final listener = room.createListener();
 
         await room.prepareConnection(url, token);
@@ -145,6 +156,7 @@ class _HomePageState extends State<HomePage> {
         NoteMessage.showAwesomeError(message: error.toString());
         print('Could not connect $error');
       } finally {
+        room.disconnect();
         setState(() {
           _busy = false;
         });
