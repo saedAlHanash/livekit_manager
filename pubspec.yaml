@@ -25,8 +25,8 @@ dependencies:
 
 
   m_cubit:
-    path: ../../packages/m_cubit
-
+    git:
+      url: https://github.com/saedAlHanash/m_cubit
   #  fl_chart: ^1.0.0
   flutter_bloc:
   logger: ^2.6.1
