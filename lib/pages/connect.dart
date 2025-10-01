@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_example/pages/prejoin.dart';
-import 'package:livekit_example/widgets/text_field.dart';
+import 'package:livekit_manager/pages/prejoin.dart';
+import 'package:livekit_manager/pages/room.dart';
+import 'package:livekit_manager/widgets/text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -10,9 +11,7 @@ import '../exts.dart';
 
 class ConnectPage extends StatefulWidget {
   //
-  const ConnectPage({
-    super.key,
-  });
+  const ConnectPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _ConnectPageState();
@@ -81,8 +80,9 @@ class _ConnectPageState extends State<ConnectPage> {
   // Read saved URL and Token
   Future<void> _readPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    _uriCtrl.text =
-        const bool.hasEnvironment('URL') ? const String.fromEnvironment('URL') : prefs.getString(_storeKeyUri) ?? '';
+    _uriCtrl.text = const bool.hasEnvironment('URL')
+        ? const String.fromEnvironment('URL')
+        : prefs.getString(_storeKeyUri) ?? '';
     _tokenCtrl.text = const bool.hasEnvironment('TOKEN')
         ? const String.fromEnvironment('TOKEN')
         : prefs.getString(_storeKeyToken) ?? '';
@@ -121,31 +121,24 @@ class _ConnectPageState extends State<ConnectPage> {
       // Save URL and Token for convenience
       await _writePrefs();
 
-      print('Connecting with url: ${_uriCtrl.text}, '
-          'token: ${_tokenCtrl.text}...');
+      print(
+        'Connecting with url: ${_uriCtrl.text}, '
+        'token: ${_tokenCtrl.text}...',
+      );
 
       var url = _uriCtrl.text;
       var token = _tokenCtrl.text;
       var e2eeKey = _sharedKeyCtrl.text;
 
-      await Navigator.push<void>(
-        ctx,
-        MaterialPageRoute(
-          builder: (_) => PreJoinPage(
-            args: JoinArgs(
-              url: url,
-              token: token,
-              e2ee: _e2ee,
-              e2eeKey: e2eeKey,
-              simulcast: _simulcast,
-              adaptiveStream: _adaptiveStream,
-              dynacast: _dynacast,
-              preferredCodec: _preferredCodec,
-              enableBackupVideoCodec: ['VP9', 'AV1'].contains(_preferredCodec),
-            ),
-          ),
-        ),
-      );
+      final room = Room();
+      // Create a Listener before connecting
+      final listener = room.createListener();
+
+      await room.prepareConnection(url, token);
+
+      await room.connect(url, token, fastConnectOptions: FastConnectOptions());
+
+      await Navigator.push<void>(context, MaterialPageRoute(builder: (_) => RoomPage(room, listener)));
     } catch (error) {
       print('Could not connect $error');
       await ctx.showErrorDialog(error);
@@ -193,168 +186,129 @@ class _ConnectPageState extends State<ConnectPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20,
+    body: Container(
+      alignment: Alignment.center,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(padding: const EdgeInsets.only(bottom: 70), child: SvgPicture.asset('images/logo-dark.svg')),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: LKTextField(label: 'Server URL', ctrl: _uriCtrl),
               ),
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 70),
-                    child: SvgPicture.asset(
-                      'images/logo-dark.svg',
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: LKTextField(
-                      label: 'Server URL',
-                      ctrl: _uriCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: LKTextField(
-                      label: 'Token',
-                      ctrl: _tokenCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: LKTextField(
-                      label: 'Shared Key',
-                      ctrl: _sharedKeyCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('E2EE'),
-                        Switch(
-                          value: _e2ee,
-                          onChanged: (value) => _setE2EE(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Simulcast'),
-                        Switch(
-                          value: _simulcast,
-                          onChanged: (value) => _setSimulcast(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Adaptive Stream'),
-                        Switch(
-                          value: _adaptiveStream,
-                          onChanged: (value) => _setAdaptiveStream(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Dynacast'),
-                        Switch(
-                          value: _dynacast,
-                          onChanged: (value) => _setDynacast(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: _multiCodec ? 5 : 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Multi Codec'),
-                        Switch(
-                          value: _multiCodec,
-                          onChanged: (value) => _setMultiCodec(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (_multiCodec)
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          const Text('Preferred Codec:'),
-                          DropdownButton<String>(
-                            value: _preferredCodec,
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.blue,
-                            ),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.blue),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.blueAccent,
-                            ),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                _preferredCodec = value!;
-                              });
-                            },
-                            items: ['Preferred Codec', 'AV1', 'VP9', 'VP8', 'H264', 'H265']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )
-                        ])),
-                  ElevatedButton(
-                    onPressed: _busy ? null : () => _connect(context),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_busy)
-                          const Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                          ),
-                        const Text('CONNECT'),
-                      ],
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: LKTextField(label: 'Token', ctrl: _tokenCtrl),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: LKTextField(label: 'Shared Key', ctrl: _sharedKeyCtrl),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('E2EE'),
+                    Switch(value: _e2ee, onChanged: (value) => _setE2EE(value)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Simulcast'),
+                    Switch(value: _simulcast, onChanged: (value) => _setSimulcast(value)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Adaptive Stream'),
+                    Switch(value: _adaptiveStream, onChanged: (value) => _setAdaptiveStream(value)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Dynacast'),
+                    Switch(value: _dynacast, onChanged: (value) => _setDynacast(value)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: _multiCodec ? 5 : 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Multi Codec'),
+                    Switch(value: _multiCodec, onChanged: (value) => _setMultiCodec(value)),
+                  ],
+                ),
+              ),
+              if (_multiCodec)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Preferred Codec:'),
+                      DropdownButton<String>(
+                        value: _preferredCodec,
+                        icon: const Icon(Icons.arrow_drop_down, color: Colors.blue),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.blue),
+                        underline: Container(height: 2, color: Colors.blueAccent),
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            _preferredCodec = value!;
+                          });
+                        },
+                        items: ['Preferred Codec', 'AV1', 'VP9', 'VP8', 'H264', 'H265'].map<DropdownMenuItem<String>>((
+                          String value,
+                        ) {
+                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ElevatedButton(
+                onPressed: _busy ? null : () => _connect(context),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_busy)
+                      const Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        ),
+                      ),
+                    const Text('CONNECT'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

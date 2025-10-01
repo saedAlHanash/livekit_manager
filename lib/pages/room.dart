@@ -5,7 +5,7 @@ import 'dart:math' as math;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_example/pages/setting_message.dart';
+import 'package:livekit_manager/pages/setting_message.dart';
 
 import '../exts.dart';
 import '../utils.dart';
@@ -17,11 +17,7 @@ class RoomPage extends StatefulWidget {
   final Room room;
   final EventsListener<RoomEvent> listener;
 
-  const RoomPage(
-    this.room,
-    this.listener, {
-    super.key,
-  });
+  const RoomPage(this.room, this.listener, {super.key});
 
   @override
   State<StatefulWidget> createState() => _RoomPageState();
@@ -78,8 +74,9 @@ class _RoomPageState extends State<RoomPage> {
       if (event.reason != null) {
         print('Room disconnected: reason => ${event.reason}');
       }
-      WidgetsBindingCompatible.instance
-          ?.addPostFrameCallback((timeStamp) => Navigator.popUntil(context, (route) => route.isFirst));
+      WidgetsBindingCompatible.instance?.addPostFrameCallback(
+        (timeStamp) => Navigator.popUntil(context, (route) => route.isFirst),
+      );
     })
     ..on<ParticipantEvent>((event) {
       // sort participants on many track events as noted in documentation linked above
@@ -89,8 +86,10 @@ class _RoomPageState extends State<RoomPage> {
       context.showRecordingStatusChangedDialog(event.activeRecording);
     })
     ..on<RoomAttemptReconnectEvent>((event) {
-      print('Attempting to reconnect ${event.attempt}/${event.maxAttemptsRetry}, '
-          '(${event.nextRetryDelaysInMs}ms delay until next attempt)');
+      print(
+        'Attempting to reconnect ${event.attempt}/${event.maxAttemptsRetry}, '
+        '(${event.nextRetryDelaysInMs}ms delay until next attempt)',
+      );
     })
     ..on<LocalTrackSubscribedEvent>((event) {
       print('Local track subscribed: ${event.trackSid}');
@@ -134,7 +133,6 @@ class _RoomPageState extends State<RoomPage> {
               break;
           }
         });
-        if (message.action == ManagerActions.mic) {}
       } catch (err) {
         print('Failed to decode: $err');
       }
@@ -181,10 +179,7 @@ class _RoomPageState extends State<RoomPage> {
     for (var participant in widget.room.remoteParticipants.values) {
       for (var t in participant.videoTrackPublications) {
         if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
-            participant: participant,
-            type: ParticipantTrackType.kScreenShare,
-          ));
+          screenTracks.add(ParticipantTrack(participant: participant, type: ParticipantTrackType.kScreenShare));
         } else {
           userMediaTracks.add(ParticipantTrack(participant: participant));
         }
@@ -222,10 +217,9 @@ class _RoomPageState extends State<RoomPage> {
     if (localParticipantTracks != null) {
       for (var t in localParticipantTracks) {
         if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
-            participant: widget.room.localParticipant!,
-            type: ParticipantTrackType.kScreenShare,
-          ));
+          screenTracks.add(
+            ParticipantTrack(participant: widget.room.localParticipant!, type: ParticipantTrackType.kScreenShare),
+          );
         } else {
           userMediaTracks.add(ParticipantTrack(participant: widget.room.localParticipant!));
         }
@@ -249,30 +243,23 @@ class _RoomPageState extends State<RoomPage> {
                     : Container(),
               ),
               if (widget.room.localParticipant != null)
-                SafeArea(
-                  child: ControlsWidget(
-                    widget.room,
-                    widget.room.localParticipant!,
-                  ),
-                )
+                SafeArea(child: ControlsWidget(widget.room, widget.room.localParticipant!)),
             ],
           ),
           Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              child: Container(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: math.max(0, participantTracks.length - 1),
-                  itemBuilder: (BuildContext context, int index) => SizedBox(
-                    width: 180,
-                    height: 120,
-                    child: ParticipantWidget.widgetFor(participantTracks[index + 1]),
-                  ),
-                ),
-              )),
+            left: 0,
+            right: 0,
+            top: 0,
+            child: Container(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: math.max(0, participantTracks.length - 1),
+                itemBuilder: (BuildContext context, int index) =>
+                    SizedBox(width: 180, height: 120, child: ParticipantWidget.widgetFor(participantTracks[index + 1])),
+              ),
+            ),
+          ),
         ],
       ),
     );

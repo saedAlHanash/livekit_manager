@@ -1,4 +1,4 @@
-name: livekit_example
+name: livekit_manager
 description: Example app that uses LiveKit Flutter SDK
 publish_to: 'none'
 

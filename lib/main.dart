@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:livekit_example/theme.dart';
+import 'package:livekit_manager/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import 'pages/connect.dart';
@@ -31,14 +31,9 @@ void main() async {
 
 class LiveKitExampleApp extends StatelessWidget {
   //
-  const LiveKitExampleApp({
-    super.key,
-  });
+  const LiveKitExampleApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: 'LiveKit Flutter Example',
-        theme: darkTheme,
-        home: const ConnectPage(),
-      );
+  Widget build(BuildContext context) =>
+      MaterialApp(title: 'LiveKit Flutter Example', theme: darkTheme, home: const ConnectPage());
 }
