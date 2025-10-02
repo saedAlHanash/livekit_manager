@@ -6,8 +6,8 @@
 // import 'package:flutter/widgets.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 //  
-// import 'package:livekit_manager/core/strings/app_color_manager.dart';
-// import 'package:livekit_manager/generated/assets.dart';
+// import 'package:lk_assistant/core/strings/app_color_manager.dart';
+// import 'package:lk_assistant/generated/assets.dart';
 //
 // // TODO(dragostis): Missing functionality:
 // //   * mobile horizontal mode with adding/removing steps

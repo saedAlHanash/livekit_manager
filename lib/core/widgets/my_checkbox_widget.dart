@@ -2,7 +2,7 @@ import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
-import 'package:livekit_manager/core/widgets/spinner_widget.dart';
+import 'package:lk_assistant/core/widgets/spinner_widget.dart';
 
 import '../strings/app_color_manager.dart';
 

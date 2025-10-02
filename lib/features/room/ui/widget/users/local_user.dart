@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/core/widgets/my_card_widget.dart';
-import 'package:livekit_manager/features/room/ui/widget/participant_info.dart';
-import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
+import 'package:lk_assistant/core/widgets/my_card_widget.dart';
+import 'package:lk_assistant/features/room/ui/widget/participant_info.dart';
+import 'package:lk_assistant/features/room/ui/widget/sound_waveform.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';

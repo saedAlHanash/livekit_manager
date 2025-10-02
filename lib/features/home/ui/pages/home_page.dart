@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/util/snack_bar_message.dart';
-import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/widgets/my_text_form_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/util/snack_bar_message.dart';
 import '../../../room/ui/pages/room.dart';
-import '../../../room/ui/pages/room_page.dart';
-import '../../../setting/ui/pages/prejoin.dart';
+
+const _storeKeyToken = 'token';
 
 class HomePage extends StatefulWidget {
   //
@@ -25,324 +25,271 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //
-  static const _storeKeyUri = 'uri';
-  static const _storeKeyToken = 'token';
-  static const _storeKeySimulcast = 'simulcast';
-  static const _storeKeyAdaptiveStream = 'adaptive-stream';
-  static const _storeKeyDynacast = 'dynacast';
-  static const _storeKeyE2EE = 'e2ee';
-  static const _storeKeySharedKey = 'shared-key';
-  static const _storeKeyMultiCodec = 'multi-codec';
-
-  final _uriCtrl = TextEditingController();
   final _tokenCtrl = TextEditingController();
-  final _sharedKeyCtrl = TextEditingController();
-  bool _simulcast = true;
-  bool _adaptiveStream = true;
-  bool _dynacast = true;
-  bool _busy = false;
-  bool _e2ee = false;
-  bool _multiCodec = false;
-  String _preferredCodec = 'VP8';
 
+  bool _busy = false;
+
+  List<MediaDevice> _audioInputs = [];
   StreamSubscription? _subscription;
+
+  bool _enableAudio = true;
+  LocalAudioTrack? _audioTrack;
+
+  MediaDevice? _selectedAudioDevice;
+
   @override
   void initState() {
-    // _subscription = Hardware.instance.onDeviceChange.stream.listen(
-    //   (event) {},
-    // );
     super.initState();
     _readPrefs();
-    _checkPermissions();
+    _subscription = Hardware.instance.onDeviceChange.stream.listen(_loadDevices);
+    Hardware.instance.enumerateDevices().then(_loadDevices);
+    Permission.microphone.request();
+  }
+
+  @override
+  void deactivate() {
+    _subscription?.cancel();
+    super.deactivate();
   }
 
   @override
   void dispose() {
-    _subscription?.cancel();
-    _uriCtrl.dispose();
     _tokenCtrl.dispose();
+    _subscription?.cancel();
     super.dispose();
   }
 
-  Future<void> _checkPermissions() async {
-    await Permission.microphone.request();
+  void _loadDevices(List<MediaDevice> devices) async {
+    _audioInputs = devices.where((d) => d.kind == 'audioinput').toList();
+
+    if (_audioInputs.isNotEmpty) {
+      if (_selectedAudioDevice == null) {
+        _selectedAudioDevice = _audioInputs.first;
+        Future.delayed(const Duration(milliseconds: 100), () async {
+          await _changeLocalAudioTrack();
+          setState(() {});
+        });
+      }
+    }
+
+    setState(() {});
+  }
+
+  Future<void> _setEnableAudio(value) async {
+    _enableAudio = value;
+    if (!_enableAudio) {
+      await _audioTrack?.stop();
+      _audioTrack = null;
+    } else {
+      await _changeLocalAudioTrack();
+    }
+    setState(() {});
+  }
+
+  Future<void> _changeLocalAudioTrack() async {
+    if (_audioTrack != null) {
+      await _audioTrack!.stop();
+      _audioTrack = null;
+    }
+
+    if (_selectedAudioDevice != null) {
+      _audioTrack = await LocalAudioTrack.create(
+        AudioCaptureOptions(
+          deviceId: _selectedAudioDevice!.deviceId,
+        ),
+      );
+      await _audioTrack!.start();
+    }
   }
 
   // Read saved URL and Token
   Future<void> _readPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    _uriCtrl.text =
-        const bool.hasEnvironment('URL') ? const String.fromEnvironment('URL') : prefs.getString(_storeKeyUri) ?? '';
+
     _tokenCtrl.text = const bool.hasEnvironment('TOKEN')
         ? const String.fromEnvironment('TOKEN')
         : prefs.getString(_storeKeyToken) ?? '';
-    _sharedKeyCtrl.text = const bool.hasEnvironment('E2EEKEY')
-        ? const String.fromEnvironment('E2EEKEY')
-        : prefs.getString(_storeKeySharedKey) ?? '';
-    setState(() {
-      _simulcast = prefs.getBool(_storeKeySimulcast) ?? true;
-      _adaptiveStream = prefs.getBool(_storeKeyAdaptiveStream) ?? true;
-      _dynacast = prefs.getBool(_storeKeyDynacast) ?? true;
-      _e2ee = prefs.getBool(_storeKeyE2EE) ?? false;
-      _multiCodec = prefs.getBool(_storeKeyMultiCodec) ?? false;
-    });
   }
 
   // Save URL and Token
   Future<void> _writePrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_storeKeyUri, _uriCtrl.text);
     await prefs.setString(_storeKeyToken, _tokenCtrl.text);
-    await prefs.setString(_storeKeySharedKey, _sharedKeyCtrl.text);
-    await prefs.setBool(_storeKeySimulcast, _simulcast);
-    await prefs.setBool(_storeKeyAdaptiveStream, _adaptiveStream);
-    await prefs.setBool(_storeKeyDynacast, _dynacast);
-    await prefs.setBool(_storeKeyE2EE, _e2ee);
-    await prefs.setBool(_storeKeyMultiCodec, _multiCodec);
   }
 
-  Future<void> _connect(BuildContext ctx) async {
-    //
+  Future<void> _connect(BuildContext context) async {
+    setState(() => _busy = true);
+
+    var url = 'wss://coretik.coretech-mena.com';
+    // var url = 'wss://coretest-4xi5uo5z.livekit.cloud';
+
+    var token = _tokenCtrl.text;
+    _writePrefs();
+
     try {
-      setState(() {
-        _busy = true;
-      });
+      var screenEncoding = const VideoEncoding(
+        maxBitrate: 3 * 1000 * 1000,
+        maxFramerate: 15,
+      );
 
-      // Save URL and Token for convenience
-      await _writePrefs();
-
-      print('Connecting with url: ${_uriCtrl.text}, '
-          'token: ${_tokenCtrl.text}...');
-
-      var url = _uriCtrl.text;
-      var token = _tokenCtrl.text;
-      var e2eeKey = _sharedKeyCtrl.text;
-
-      final room = Room();
-      try {
-        final listener = room.createListener();
-
-        await room.prepareConnection(url, token);
-
-        await room.connect(url, token);
-
-        await Navigator.push<void>(
-          context,
-          MaterialPageRoute(builder: (_) => RoomPage(room, listener)),
-        );
-      } catch (error) {
-        NoteMessage.showAwesomeError(message: error.toString());
-        print('Could not connect $error');
-      } finally {
-        room.disconnect();
-        setState(() {
-          _busy = false;
-        });
-      }
-    } catch (error) {
-      print('Could not connect $error');
-      await NoteMessage.showErrorDialog(text: error.toString());
-    } finally {
-      setState(() {
-        _busy = false;
-      });
-    }
-  }
-
-  void _setSimulcast(bool? value) async {
-    if (value == null || _simulcast == value) return;
-    setState(() {
-      _simulcast = value;
-    });
-  }
-
-  void _setE2EE(bool? value) async {
-    if (value == null || _e2ee == value) return;
-    setState(() {
-      _e2ee = value;
-    });
-  }
-
-  void _setAdaptiveStream(bool? value) async {
-    if (value == null || _adaptiveStream == value) return;
-    setState(() {
-      _adaptiveStream = value;
-    });
-  }
-
-  void _setDynacast(bool? value) async {
-    if (value == null || _dynacast == value) return;
-    setState(() {
-      _dynacast = value;
-    });
-  }
-
-  void _setMultiCodec(bool? value) async {
-    if (value == null || _multiCodec == value) return;
-    setState(() {
-      _multiCodec = value;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Container(
-          alignment: Alignment.center,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20,
-              ),
-              constraints: const BoxConstraints(maxWidth: 400),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: MyTextFormWidget(
-                      label: 'Server URL',
-                      controller: _uriCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: MyTextFormWidget(
-                      label: 'Token',
-                      controller: _tokenCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: MyTextFormWidget(
-                      label: 'Shared Key',
-                      controller: _sharedKeyCtrl,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('E2EE'),
-                        Switch(
-                          value: _e2ee,
-                          onChanged: (value) => _setE2EE(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Simulcast'),
-                        Switch(
-                          value: _simulcast,
-                          onChanged: (value) => _setSimulcast(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Adaptive Stream'),
-                        Switch(
-                          value: _adaptiveStream,
-                          onChanged: (value) => _setAdaptiveStream(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Dynacast'),
-                        Switch(
-                          value: _dynacast,
-                          onChanged: (value) => _setDynacast(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: _multiCodec ? 5 : 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Multi Codec'),
-                        Switch(
-                          value: _multiCodec,
-                          onChanged: (value) => _setMultiCodec(value),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (_multiCodec)
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          const Text('Preferred Codec:'),
-                          DropdownButton<String>(
-                            value: _preferredCodec,
-                            icon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.blue,
-                            ),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.blue),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.blueAccent,
-                            ),
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
-                              setState(() {
-                                _preferredCodec = value!;
-                              });
-                            },
-                            items: ['Preferred Codec', 'AV1', 'VP9', 'VP8', 'H264', 'H265']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          )
-                        ])),
-                  ElevatedButton(
-                    onPressed: _busy ? null : () => _connect(context),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_busy)
-                          const Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                          ),
-                        const Text('CONNECT'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+      final room = Room(
+        roomOptions: RoomOptions(
+          adaptiveStream: true,
+          dynacast: true,
+          defaultAudioPublishOptions: const AudioPublishOptions(
+            name: 'custom_audio_track_name',
+          ),
+          defaultCameraCaptureOptions: const CameraCaptureOptions(
+            maxFrameRate: 30,
+            params: VideoParameters(
+              dimensions: VideoDimensions(1280, 720),
             ),
+          ),
+          defaultScreenShareCaptureOptions: const ScreenShareCaptureOptions(
+            useiOSBroadcastExtension: true,
+            params: VideoParameters(
+              dimensions: VideoDimensionsPresets.h1080_169,
+            ),
+          ),
+          defaultVideoPublishOptions: VideoPublishOptions(
+            simulcast: true,
+            videoCodec: 'H264',
+            backupVideoCodec: BackupVideoCodec(
+              enabled: false,
+            ),
+            screenShareEncoding: screenEncoding,
           ),
         ),
       );
+      // Create a Listener before connecting
+      final listener = room.createListener();
+
+      await room.prepareConnection(url, token);
+
+      await room.connect(
+        url,
+        token,
+        fastConnectOptions: FastConnectOptions(
+          microphone: TrackOption(track: _audioTrack),
+        ),
+      );
+
+      await Navigator.push<void>(
+        context,
+        MaterialPageRoute(builder: (_) => RoomPage1(room, listener)),
+      );
+    } catch (error) {
+      NoteMessage.showAwesomeError(message: error.toString());
+      loggerObject.e('Could not connect $error');
+    } finally {
+      setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        alignment: Alignment.center,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: MyTextFormWidget(
+                    label: 'Token',
+                    controller: _tokenCtrl,
+                  ),
+                ),
+                20.0.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Micriphone:'),
+                      Switch(
+                        value: _enableAudio,
+                        onChanged: (value) => _setEnableAudio(value),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<MediaDevice>(
+                      isExpanded: true,
+                      disabledHint: const Text('Disable Microphone'),
+                      hint: const Text(
+                        'Select Micriphone',
+                      ),
+                      items: _enableAudio
+                          ? _audioInputs
+                              .map((MediaDevice item) => DropdownMenuItem<MediaDevice>(
+                                    value: item,
+                                    child: Text(
+                                      item.label,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList()
+                          : [],
+                      value: _selectedAudioDevice,
+                      onChanged: (MediaDevice? value) async {
+                        if (value != null) {
+                          _selectedAudioDevice = value;
+                          await _changeLocalAudioTrack();
+                          setState(() {});
+                        }
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 40,
+                        width: 140,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: _busy ? null : () => _connect(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_busy)
+                        const Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: SizedBox(
+                            height: 15,
+                            width: 15,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                      const Text('CONNECT'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

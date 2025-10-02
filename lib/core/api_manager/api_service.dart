@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:logger/logger.dart';
 import 'package:m_cubit/util.dart';
 
@@ -61,21 +61,16 @@ class APIService {
 
     fixBody(body);
 
-    final uri = getUri(
-      url: url,
-      hostName: hostName,
-      query: query,
-      path: path,
-      body: body,
-      type: type,
-    );
+    final uri = getUri(url: url, hostName: hostName, query: query, path: path, body: body, type: type);
 
     try {
       late final http.Response response;
 
       switch (type) {
         case ApiType.get:
-          response = await http.get(uri, headers: (header ?? innerHeader)).timeout(connectionTimeOut, onTimeout: () => timeOut);
+          response = await http
+              .get(uri, headers: (header ?? innerHeader))
+              .timeout(connectionTimeOut, onTimeout: () => timeOut);
         case ApiType.post:
           response = await http
               .post(uri, body: jsonEncode(body), headers: (header ?? innerHeader))
@@ -142,9 +137,9 @@ class APIService {
     request.fields.addAll(fixFields(fields));
 
     final stream = await request.send().timeout(
-          const Duration(seconds: 40),
-          onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
-        );
+      const Duration(seconds: 40),
+      onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
+    );
 
     final response = await http.Response.fromStream(stream);
 
@@ -174,10 +169,7 @@ class UploadFile {
   dynamic get getImage => fileBytes ?? (initialImage.isBlank ? null : initialImage) ?? assetImage;
 
   UploadFile copyWith({Uint8List? fileBytes, String? nameField}) {
-    return UploadFile(
-      fileBytes: fileBytes ?? this.fileBytes,
-      nameField: nameField ?? this.nameField,
-    );
+    return UploadFile(fileBytes: fileBytes ?? this.fileBytes, nameField: nameField ?? this.nameField);
   }
 
   Map<String, dynamic> toJson() {
@@ -185,9 +177,6 @@ class UploadFile {
   }
 
   factory UploadFile.fromJson(Map<String, dynamic> map) {
-    return UploadFile(
-      fileBytes: map['fileBytes'] ?? Uint8List.fromList([]),
-      nameField: map['nameField'] ?? '',
-    );
+    return UploadFile(fileBytes: map['fileBytes'] ?? Uint8List.fromList([]), nameField: map['nameField'] ?? '');
   }
 }

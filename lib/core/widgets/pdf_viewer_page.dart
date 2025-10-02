@@ -1,5 +1,5 @@
-// import 'package:livekit_manager/core/app/bloc/loading_cubit.dart';
-// import 'package:livekit_manager/core/util/snack_bar_message.dart';
+// import 'package:lk_assistant/core/app/bloc/loading_cubit.dart';
+// import 'package:lk_assistant/core/util/snack_bar_message.dart';
 // import 'package:flutter/material.dart';
 //
 //

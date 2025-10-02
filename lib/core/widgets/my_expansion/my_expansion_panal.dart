@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/widgets/my_card_widget.dart';
+import 'package:lk_assistant/core/widgets/my_card_widget.dart';
 
 import '../../strings/app_color_manager.dart';
 

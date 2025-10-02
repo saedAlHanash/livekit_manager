@@ -21,7 +21,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:logger/logger.dart';
 
 import '../../strings/enum_manager.dart';

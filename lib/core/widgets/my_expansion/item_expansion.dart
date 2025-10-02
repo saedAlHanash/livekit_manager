@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' hide ExpansionPanelHeaderBuilder;
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:lk_assistant/core/strings/app_color_manager.dart';
 
 import 'my_expansion_panal.dart';
 

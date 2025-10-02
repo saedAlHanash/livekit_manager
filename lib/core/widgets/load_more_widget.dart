@@ -1,4 +1,4 @@
-// import 'package:livekit_manager/core/extensions/extensions.dart';
+// import 'package:lk_assistant/core/extensions/extensions.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 //

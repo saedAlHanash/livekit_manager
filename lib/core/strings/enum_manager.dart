@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:lk_assistant/core/strings/app_color_manager.dart';
 
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
@@ -89,3 +89,5 @@ enum ManagerActions {
     };
   }
 }
+
+enum LkUserType { manager, sharer, user }

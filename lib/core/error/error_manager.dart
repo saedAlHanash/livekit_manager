@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:http/http.dart';
-import 'package:livekit_manager/core/app/app_provider.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:lk_assistant/core/app/app_provider.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:m_cubit/abstraction.dart';
 
 import '../../generated/l10n.dart';

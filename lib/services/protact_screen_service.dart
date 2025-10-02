@@ -2,7 +2,7 @@
 //
 // import 'package:flutter/material.dart';
 // import 'package:screen_protector/screen_protector.dart';
-// import 'package:livekit_manager/core/api_manager/api_service.dart';
+// import 'package:lk_assistant/core/api_manager/api_service.dart';
 //
 // import '../core/app/app_widget.dart';
 //

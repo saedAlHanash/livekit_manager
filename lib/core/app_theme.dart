@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/core/util/shared_preferences.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/strings/app_color_manager.dart';
+import 'package:lk_assistant/core/strings/enum_manager.dart';
+import 'package:lk_assistant/core/util/shared_preferences.dart';
 
 import 'app/app_widget.dart';
 

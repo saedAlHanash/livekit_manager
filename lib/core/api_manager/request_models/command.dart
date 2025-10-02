@@ -1,4 +1,4 @@
-// import 'package:livekit_manager/core/extensions/extensions.dart';
+// import 'package:lk_assistant/core/extensions/extensions.dart';
 //
 // const commandInitial = Command(pag: 1, perPage: 20);
 //

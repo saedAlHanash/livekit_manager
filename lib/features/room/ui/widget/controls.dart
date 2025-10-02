@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_client/livekit_client.dart' as client;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_client/livekit_client.dart' as client;
+import 'package:livekit_client/livekit_client.dart';
+import 'package:lk_assistant/core/util/exts.dart';
 
 class ControlsWidget extends StatefulWidget {
   //
@@ -279,18 +278,18 @@ class _ControlsWidgetState extends State<ControlsWidget> {
               icon: const Icon(Icons.mic_off),
               tooltip: 'un-mute audio',
             ),
-          if (participant.isCameraEnabled())
-            IconButton(
-              onPressed: _disableVideo,
-              icon: const Icon(Icons.videocam),
-              tooltip: 'mute video',
-            )
-          else
-            IconButton(
-              onPressed: _enableVideo,
-              icon: const Icon(Icons.videocam_off),
-              tooltip: 'un-mute video',
-            ),
+          // if (participant.isCameraEnabled())
+          //   IconButton(
+          //     onPressed: _disableVideo,
+          //     icon: const Icon(Icons.videocam),
+          //     tooltip: 'mute video',
+          //   )
+          // else
+          //   IconButton(
+          //     onPressed: _enableVideo,
+          //     icon: const Icon(Icons.videocam_off),
+          //     tooltip: 'un-mute video',
+          //   ),
           if (participant.isScreenShareEnabled())
             IconButton(
               icon: const Icon(Icons.stop_screen_share_sharp),
@@ -307,11 +306,6 @@ class _ControlsWidgetState extends State<ControlsWidget> {
             onPressed: _onTapDisconnect,
             icon: const Icon(Icons.call_end),
             tooltip: 'disconnect',
-          ),
-          IconButton(
-            onPressed: _onTapSendData,
-            icon: const Icon(Icons.message),
-            tooltip: 'send demo data',
           ),
         ],
       ),

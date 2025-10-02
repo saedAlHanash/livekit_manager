@@ -1,6 +1,6 @@
-// import 'package:livekit_manager/core/strings/app_color_manager.dart';
+// import 'package:lk_assistant/core/strings/app_color_manager.dart';
 //
-// import 'package:livekit_manager/core/util/my_style.dart';
+// import 'package:lk_assistant/core/util/my_style.dart';
 //
 //
 // import 'package:drawable_text/drawable_text.dart';

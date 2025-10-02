@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:livekit_manager/core/widgets/liquid_progress_indicator/wave.dart';
+import 'package:lk_assistant/core/widgets/liquid_progress_indicator/wave.dart';
 
 class LiquidLinearProgressIndicator extends ProgressIndicator {
   ///The width of the border, if this is set [borderColor] must also be set.

@@ -1,4 +1,4 @@
-// import 'package:livekit_manager/core/api_manager/api_url.dart';
+// import 'package:lk_assistant/core/api_manager/api_url.dart';
 //
 // String fixAvatarImage(String? image) {
 //   if (image == null) return '';

@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:intl/intl.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
+import 'package:lk_assistant/core/strings/app_color_manager.dart';
+import 'package:lk_assistant/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 

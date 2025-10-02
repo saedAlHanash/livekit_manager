@@ -1,13 +1,10 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:go_router/go_router.dart';
-import 'package:livekit_manager/core/app/app_provider.dart';
-import 'package:livekit_manager/core/error/error_manager.dart';
-import 'package:livekit_manager/services/app_info_service.dart';
+import 'package:lk_assistant/core/error/error_manager.dart';
 import 'package:m_cubit/caching_service/caching_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +12,7 @@ import 'core/app/app_widget.dart';
 import 'core/injection/injection_container.dart' as di;
 import 'core/util/shared_preferences.dart';
 
-final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+// final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() async {
   // runZonedGuarded(() async {
@@ -24,7 +21,7 @@ void main() async {
     AppSharedPreference.init(value);
   });
 
-  await AppInfoService.initial();
+  // await AppInfoService.initial();
 
   await CachingService.initial(
     onError: (second) => showErrorFromApi(second),
@@ -37,7 +34,7 @@ void main() async {
 
   // await FirebaseService.initial();
 
-  await Note.initialize();
+  // await Note.initialize();
 
   await di.init();
 
@@ -56,16 +53,17 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+/*
 class Note {
   static Future initialize() async {
     var androidInitialize = const AndroidInitializationSettings('mipmap/ic_launcher');
     var iOSInitialize = const DarwinInitializationSettings();
-    final WindowsInitializationSettings initializationSettingsWindows = WindowsInitializationSettings(
-      appName: 'Flutter Local Notifications Example',
-      appUserModelId: 'Com.Dexterous.FlutterLocalNotificationsExample',
-      // Search online for GUID generators to make your own
-      guid: 'd49b0314-ee7a-4626-bf79-97cdb8a991bb',
-    );
+    // final WindowsInitializationSettings initializationSettingsWindows = WindowsInitializationSettings(
+    //   appName: 'Flutter Local Notifications Example',
+    //   appUserModelId: 'Com.Dexterous.FlutterLocalNotificationsExample',
+    //   // Search online for GUID generators to make your own
+    //   guid: 'd49b0314-ee7a-4626-bf79-97cdb8a991bb',
+    // );
     var initializationsSettings = InitializationSettings(
       android: androidInitialize,
       iOS: iOSInitialize,
@@ -101,3 +99,4 @@ class Note {
     );
   }
 }
+*/

@@ -1,34 +1,50 @@
 [
   {
-    "name": "سعيد",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2K_ZitixIDEiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIwIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTIifSwiaXNzIjoiQVBJZVNGaVY3eGlDUnpSIiwiZXhwIjoxNzU5NDI2ODE0LCJuYmYiOjAsInN1YiI6Im1hbmFnZXIxIn0.kXmljjKR5FRCqjjAA_LFVkf-tVnZ8f2rF0oP6QbD9Wo",
+    "room": "m2",
+    "identity": "manager1",
+    "display_name": "المدير 1",
+    "role": "participant",
+    "ttl": null,
+    "metadata": "",
     "attributes": {
-      "imageUrl": ""
-    },
-    "video": {
-      "roomJoin": true,
-      "canPublish": true,
-      "canSubscribe": true,
-      "canPublishData": true,
-      "room": "r33",
-      "roomAdmin": true,
-      "canUpdateOwnMetadata": true
-    },
-    "iss": "APIpyb3vnL8GhUX",
-    "exp": 1759688377,
-    "nbf": 0,
-    "sub": "2=g185"
+      "lkUserType": "0"
+    }
   },
   {
-    "exp": 1759329337,
-    "identity": "saed",
-    "iss": "APIQxZPjwpGoccr",
-    "nbf": 1759328437,
-    "sub": "saed",
-    "video": {
-      "canUpdateOwnMetadata": true,
-      "room": "v5v4-idmm",
-      "roomJoin": true,
-      "roomList": true
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2LTYp9ix2YMgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjEifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMiJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk0MjY4MTQsIm5iZiI6MCwic3ViIjoic2hhcmVyMSJ9.F6FAwDC_1VcNw8ibMN3KXRbz8oGulzDBZDT7B2Mm2BA",
+    "room": "m2",
+    "identity": "sharer1",
+    "display_name": "المشارك 1",
+    "role": "participant",
+    "ttl": null,
+    "metadata": "",
+    "attributes": {
+      "lkUserType": "1"
+    }
+  },
+  {
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZCAxIiwiYXR0cmlidXRlcyI6eyJsa1VzZXJUeXBlIjoiMiJ9LCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbSI6Im0yIn0sImlzcyI6IkFQSWVTRmlWN3hpQ1J6UiIsImV4cCI6MTc1OTQyNjgxNCwibmJmIjowLCJzdWIiOiJ1c2VyMSJ9.IIb8tDhsPOn72J_UaiYYCuAYbJhOcVuug_06uT9aUag",
+    "room": "m2",
+    "identity": "user1",
+    "display_name": "saed 1",
+    "role": "participant",
+    "ttl": null,
+    "metadata": "",
+    "attributes": {
+      "lkUserType": "2"
+    }
+  },
+  {
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZDIgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjIifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMiJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk0MjY4MTQsIm5iZiI6MCwic3ViIjoidXNlcjIifQ.H2TRr8rRD5z9yOJBZXHK_e72-ykC88pyKgfoJIyGkNg",
+    "room": "m2",
+    "identity": "user2",
+    "display_name": "saed2 1",
+    "role": "participant",
+    "ttl": null,
+    "metadata": "",
+    "attributes": {
+      "lkUserType": "2"
     }
   }
 ]

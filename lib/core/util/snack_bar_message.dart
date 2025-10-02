@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
+import 'package:lk_assistant/core/strings/enum_manager.dart';
 
 import '../../generated/l10n.dart';
 import '../app/app_widget.dart';

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:livekit_manager/core/widgets/liquid_progress_indicator/wave.dart';
+import 'package:lk_assistant/core/widgets/liquid_progress_indicator/wave.dart';
 
 const double _twoPi = math.pi * 2.0;
 const double _epsilon = .001;
@@ -29,12 +29,7 @@ class LiquidCircularProgressIndicator extends ProgressIndicator {
     this.borderColor,
     this.center,
     this.direction = Axis.vertical,
-  }) : super(
-          key: key,
-          value: value,
-          backgroundColor: backgroundColor,
-          valueColor: valueColor,
-        ) {
+  }) : super(key: key, value: value, backgroundColor: backgroundColor, valueColor: valueColor) {
     if (borderWidth != null && borderColor == null || borderColor != null && borderWidth == null) {
       throw ArgumentError("borderWidth and borderColor should both be set.");
     }
@@ -54,20 +49,11 @@ class _LiquidCircularProgressIndicatorState extends State<LiquidCircularProgress
     return ClipPath(
       clipper: _CircleClipper(),
       child: CustomPaint(
-        painter: _CirclePainter(
-          color: widget._getBackgroundColor(context),
-        ),
-        foregroundPainter: _CircleBorderPainter(
-          color: widget.borderColor,
-          width: widget.borderWidth,
-        ),
+        painter: _CirclePainter(color: widget._getBackgroundColor(context)),
+        foregroundPainter: _CircleBorderPainter(color: widget.borderColor, width: widget.borderWidth),
         child: Stack(
           children: [
-            Wave(
-              value: widget.value,
-              color: widget._getValueColor(context),
-              direction: widget.direction,
-            ),
+            Wave(value: widget.value, color: widget._getValueColor(context), direction: widget.direction),
             if (widget.center != null) Center(child: widget.center),
           ],
         ),

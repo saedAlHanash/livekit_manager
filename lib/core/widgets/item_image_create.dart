@@ -4,7 +4,7 @@
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:image_multi_type/circle_image_widget.dart';
 // import 'package:image_multi_type/image_multi_type.dart';
-// import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
+// import 'package:lk_assistant/core/widgets/my_text_form_widget.dart';
 //
 // import '../../../../core/util/pick_image_helper.dart';
 // import '../../generated/l10n.dart';

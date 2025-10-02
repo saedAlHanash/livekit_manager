@@ -1,4 +1,4 @@
-# livekit_manager
+# lk_assistant
 
 A new Flutter project.
 

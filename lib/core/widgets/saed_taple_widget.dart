@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
 
 import '../strings/app_color_manager.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:livekit_manager/core/widgets/another_stepper/widgets/common/stepper_dot_widget.dart';
+import 'package:lk_assistant/core/widgets/another_stepper/widgets/common/stepper_dot_widget.dart';
 
 import '../../dto/stepper_data.dart';
 import '../../utils/utils.dart';

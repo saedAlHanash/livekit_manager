@@ -5,18 +5,18 @@ import 'dart:math' as math;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/util/exts.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/util/exts.dart';
 
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/utils.dart';
@@ -31,6 +31,7 @@ class RoomPage1 extends StatefulWidget {
     this.listener, {
     super.key,
   });
+
   final Room room;
   final EventsListener<RoomEvent> listener;
 
@@ -179,15 +180,13 @@ class _RoomPage1State extends State<RoomPage1> {
     List<ParticipantTrack> userMediaTracks = [];
     List<ParticipantTrack> screenTracks = [];
     for (var participant in widget.room.remoteParticipants.values) {
-      for (var t in participant.videoTrackPublications) {
-        if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
+      if (participant.videoTrackPublications.any((e) => e.isScreenShare)) {
+        screenTracks.add(
+          ParticipantTrack(
             participant: participant,
             type: MediaType.screen,
-          ));
-        } else {
-          userMediaTracks.add(ParticipantTrack(participant: participant));
-        }
+          ),
+        );
       }
     }
     // sort speakers for the grid
@@ -221,16 +220,23 @@ class _RoomPage1State extends State<RoomPage1> {
     final localParticipantTracks = widget.room.localParticipant?.videoTrackPublications;
     if (localParticipantTracks != null) {
       for (var t in localParticipantTracks) {
-        if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
-            participant: widget.room.localParticipant!,
-            type: MediaType.screen,
-          ));
-        } else {
-          userMediaTracks.add(ParticipantTrack(participant: widget.room.localParticipant!));
-        }
+        screenTracks.add(ParticipantTrack(
+          participant: widget.room.localParticipant!,
+          type: t.isScreenShare ? MediaType.screen : MediaType.media,
+        ));
       }
     }
+
+    // final localParticipantAudioTracks = widget.room.localParticipant?.audioTrackPublications;
+    // if (localParticipantAudioTracks != null) {
+    //   for (var t in localParticipantAudioTracks) {
+    //     screenTracks.add(ParticipantTrack(
+    //       participant: t.participant,
+    //       type: MediaType.media,
+    //     ));
+    //   }
+    // }
+
     setState(() {
       participantTracks = [...screenTracks, ...userMediaTracks];
     });
@@ -238,6 +244,7 @@ class _RoomPage1State extends State<RoomPage1> {
 
   @override
   Widget build(BuildContext context) {
+    loggerObject.w(participantTracks.length);
     return Scaffold(
       body: Stack(
         children: [

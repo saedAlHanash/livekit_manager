@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/util/snack_bar_message.dart';
+import 'package:lk_assistant/core/util/snack_bar_message.dart';
 
 import '../../../room/ui/pages/room.dart';
 
@@ -46,18 +46,13 @@ class PreJoinPage extends StatefulWidget {
 
 class _PreJoinPageState extends State<PreJoinPage> {
   List<MediaDevice> _audioInputs = [];
-  List<MediaDevice> _videoInputs = [];
   StreamSubscription? _subscription;
 
   bool _busy = false;
-  bool _enableVideo = true;
   bool _enableAudio = true;
   LocalAudioTrack? _audioTrack;
-  LocalVideoTrack? _videoTrack;
 
-  MediaDevice? _selectedVideoDevice;
   MediaDevice? _selectedAudioDevice;
-  VideoParameters _selectedVideoParameters = VideoParametersPresets.h720_169;
 
   @override
   void initState() {
@@ -74,7 +69,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
 
   void _loadDevices(List<MediaDevice> devices) async {
     _audioInputs = devices.where((d) => d.kind == 'audioinput').toList();
-    _videoInputs = devices.where((d) => d.kind == 'videoinput').toList();
 
     if (_audioInputs.isNotEmpty) {
       if (_selectedAudioDevice == null) {
@@ -86,26 +80,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
       }
     }
 
-    if (_videoInputs.isNotEmpty) {
-      if (_selectedVideoDevice == null) {
-        _selectedVideoDevice = _videoInputs.first;
-        Future.delayed(const Duration(milliseconds: 100), () async {
-          await _changeLocalVideoTrack();
-          setState(() {});
-        });
-      }
-    }
-    setState(() {});
-  }
-
-  Future<void> _setEnableVideo(value) async {
-    _enableVideo = value;
-    if (!_enableVideo) {
-      await _videoTrack?.stop();
-      _videoTrack = null;
-    } else {
-      await _changeLocalVideoTrack();
-    }
     setState(() {});
   }
 
@@ -133,21 +107,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
         ),
       );
       await _audioTrack!.start();
-    }
-  }
-
-  Future<void> _changeLocalVideoTrack() async {
-    if (_videoTrack != null) {
-      await _videoTrack!.stop();
-      _videoTrack = null;
-    }
-
-    if (_selectedVideoDevice != null) {
-      _videoTrack = await LocalVideoTrack.createCameraTrack(CameraCaptureOptions(
-        deviceId: _selectedVideoDevice!.deviceId,
-        params: _selectedVideoParameters,
-      ));
-      await _videoTrack!.start();
     }
   }
 
@@ -226,7 +185,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
         args.token,
         fastConnectOptions: FastConnectOptions(
           microphone: TrackOption(track: _audioTrack),
-          camera: TrackOption(track: _videoTrack),
         ),
       );
 
@@ -245,7 +203,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
   }
 
   void _actionBack(BuildContext context) async {
-    await _setEnableVideo(false);
     await _setEnableAudio(false);
     Navigator.of(context).pop();
   }
@@ -275,128 +232,6 @@ class _PreJoinPageState extends State<PreJoinPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: SizedBox(
-                        width: 320,
-                        height: 240,
-                        child: Container(
-                          alignment: Alignment.center,
-                          color: Colors.black54,
-                          child: _videoTrack != null
-                              ? VideoTrackRenderer(
-                                  renderMode: VideoRenderMode.auto,
-                                  mirrorMode: VideoViewMirrorMode.off,
-                                  _videoTrack!,
-                                )
-                              : Container(
-                                  alignment: Alignment.center,
-                                  child: LayoutBuilder(
-                                    builder: (ctx, constraints) => Icon(
-                                      Icons.videocam_off,
-                                      size: math.min(constraints.maxHeight, constraints.maxWidth) * 0.3,
-                                    ),
-                                  ),
-                                ),
-                        ))),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Camera:'),
-                      Switch(
-                        value: _enableVideo,
-                        onChanged: (value) => _setEnableVideo(value),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 25),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<MediaDevice>(
-                      isExpanded: true,
-                      disabledHint: const Text('Disable Camera'),
-                      hint: const Text(
-                        'Select Camera',
-                      ),
-                      items: _enableVideo
-                          ? _videoInputs
-                              .map((MediaDevice item) => DropdownMenuItem<MediaDevice>(
-                                    value: item,
-                                    child: Text(
-                                      item.label,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList()
-                          : [],
-                      value: _selectedVideoDevice,
-                      onChanged: (MediaDevice? value) async {
-                        if (value != null) {
-                          _selectedVideoDevice = value;
-                          await _changeLocalVideoTrack();
-                          setState(() {});
-                        }
-                      },
-                      buttonStyleData: const ButtonStyleData(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        height: 40,
-                        width: 140,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 40,
-                      ),
-                    ),
-                  ),
-                ),
-                if (_enableVideo)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2<VideoParameters>(
-                        isExpanded: true,
-                        hint: const Text(
-                          'Select Video Dimensions',
-                        ),
-                        items: [
-                          VideoParametersPresets.h480_43,
-                          VideoParametersPresets.h540_169,
-                          VideoParametersPresets.h720_169,
-                          VideoParametersPresets.h1080_169,
-                        ]
-                            .map((VideoParameters item) => DropdownMenuItem<VideoParameters>(
-                                  value: item,
-                                  child: Text(
-                                    '${item.dimensions.width}x${item.dimensions.height}',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                        value: _selectedVideoParameters,
-                        onChanged: (VideoParameters? value) async {
-                          if (value != null) {
-                            _selectedVideoParameters = value;
-                            await _changeLocalVideoTrack();
-                            setState(() {});
-                          }
-                        },
-                        buttonStyleData: const ButtonStyleData(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          height: 40,
-                          width: 140,
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                        ),
-                      ),
-                    ),
-                  ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: Row(

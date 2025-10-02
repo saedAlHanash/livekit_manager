@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:livekit_manager/core/widgets/liquid_progress_indicator/wave.dart';
+import 'package:lk_assistant/core/widgets/liquid_progress_indicator/wave.dart';
 
 class LiquidCustomProgressIndicator extends ProgressIndicator {
   ///The widget to show in the center of the progress indicator.

@@ -1,7 +1,7 @@
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
+import 'package:lk_assistant/core/strings/enum_manager.dart';
 
 class SnakeBarWidget extends StatelessWidget {
   const SnakeBarWidget({super.key, required this.text});

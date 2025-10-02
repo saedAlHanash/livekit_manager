@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/remote_user.dart';
+import 'package:lk_assistant/features/room/ui/widget/users/remote_user.dart';
 
 import '../participant_info.dart';
 import 'local_user.dart';
