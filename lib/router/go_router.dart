@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
@@ -155,14 +157,20 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (_, state) {
-        String homeId = state.uri.queryParameters['id'] ?? '';
+        String link = state.uri.queryParameters['link'] ?? '';
+        String token = state.uri.queryParameters['token'] ?? '';
+
+        debugPrint('FULL URI: ${state.uri}');
+        debugPrint('QUERY: ${state.uri.queryParameters}');
+
+        // loggerObject.f('link: $link, token: $token');
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<HomeCubit>()..getData(homeId: homeId),
+              create: (context) => sl<HomeCubit>(),
             ),
           ],
-          child: HomePage(),
+          child: HomePage(link: link, token: token),
         );
       },
     ),
@@ -208,8 +216,8 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/home';
+  static const home = '/';
   static const homes = '/homes';
 
-  static const splash = '/';
+  static const splash = '/splash';
 }

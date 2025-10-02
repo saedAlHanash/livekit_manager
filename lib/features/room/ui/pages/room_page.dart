@@ -174,25 +174,28 @@ class _RoomPageState extends State<RoomPage> {
                         drawablePadding: 5.0,
                         drawableStart: participant.connectionQuality.icon,
                       ),
-                      Row(
-                        children: [
-                          _Switch(
-                            participant: participant,
-                            action: ManagerActions.video,
-                            localParticipant: widget.room.localParticipant,
-                          ),
-                          _Switch(
-                            participant: participant,
-                            action: ManagerActions.mic,
-                            localParticipant: widget.room.localParticipant,
-                          ),
-                          _Switch(
-                            participant: participant,
-                            action: ManagerActions.shareScreen,
-                            localParticipant: widget.room.localParticipant,
-                          ),
-                        ],
-                      ),
+                      if (participant.userType.isUser)
+                        Row(
+                          children: [
+                            _Switch(
+                              participant: participant,
+                              action: ManagerActions.video,
+                              localParticipant: widget.room.localParticipant,
+                            ),
+                            _Switch(
+                              participant: participant,
+                              action: ManagerActions.mic,
+                              localParticipant: widget.room.localParticipant,
+                            ),
+                            _Switch(
+                              participant: participant,
+                              action: ManagerActions.shareScreen,
+                              localParticipant: widget.room.localParticipant,
+                            ),
+                          ],
+                        )
+                      else
+                        DrawableText(text: 'VMW device'),
                     ],
                   ),
                 ),
@@ -226,7 +229,7 @@ class _Switch extends StatelessWidget {
     final value = switch (action) {
       ManagerActions.mic => participant.isMicrophoneEnabled(),
       ManagerActions.video => participant.isCameraEnabled(),
-      ManagerActions.shareScreen => participant.isScreenShareAudioEnabled(),
+      ManagerActions.shareScreen => participant.isScreenShareEnabled(),
       ManagerActions.raseHand => true,
     };
 

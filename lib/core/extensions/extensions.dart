@@ -708,6 +708,13 @@ extension ParticipantTrackH on ParticipantTrack {
   bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+
+  LkUserType get userType =>
+      LkUserType.values[(participant.attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+}
+
+extension RemoteParticipantH on RemoteParticipant {
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 }
 
 extension ConnectionQualityH on ConnectionQuality {

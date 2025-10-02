@@ -89,3 +89,15 @@ enum ManagerActions {
     };
   }
 }
+
+enum LkUserType {
+  manager,
+  sharer,
+  user;
+
+  bool get isManager => this == LkUserType.manager;
+
+  bool get isSharer => this == LkUserType.sharer;
+
+  bool get isUser => this == LkUserType.user;
+}

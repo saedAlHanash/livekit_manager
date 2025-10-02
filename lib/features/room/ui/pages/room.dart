@@ -31,6 +31,7 @@ class RoomPage1 extends StatefulWidget {
     this.listener, {
     super.key,
   });
+
   final Room room;
   final EventsListener<RoomEvent> listener;
 
