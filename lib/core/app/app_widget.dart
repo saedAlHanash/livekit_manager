@@ -105,7 +105,7 @@ class MyAppState extends State<MyApp> {
                   )
                 ],
                 child: MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(0.5)),
+                  data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
                   child: SafeArea(bottom: true, left: false, right: false, top: false, child: child!),
                 ),
               );
