@@ -63,7 +63,15 @@ class _RemoteUserState extends State<RemoteUser> {
   @override
   Widget build(BuildContext ctx) {
     return videoActive
-        ? VideoTrackRenderer(renderMode: VideoRenderMode.auto, fit: VideoViewFit.cover, activeVideoTrack!)
-        : Center(child: RoundImageWidget(url: participant.attributes['imageUrl'], fit: BoxFit.cover));
+        ? VideoTrackRenderer(
+            renderMode: VideoRenderMode.auto,
+            activeVideoTrack!,
+          )
+        : Center(
+            child: RoundImageWidget(
+              url: participant.attributes['imageUrl'],
+              fit: BoxFit.cover,
+            ),
+          );
   }
 }
