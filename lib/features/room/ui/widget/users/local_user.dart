@@ -74,6 +74,7 @@ class _LocalUserState extends State<LocalUser> {
                 radios: 20.0,
                 child: VideoTrackRenderer(
                   renderMode: VideoRenderMode.auto,
+                  fit: VideoViewFit.contain,
                   activeVideoTrack!,
                 ),
               )

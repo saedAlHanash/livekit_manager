@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +35,14 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   List<ParticipantTrack> participantTracks = [];
+  String? selectedUserId;
+
+  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
+      .where((e) => e.participant.sid != selectedParticipantTrack.participant.sid)
+      .toList(growable: false);
+
+  ParticipantTrack get selectedParticipantTrack =>
+      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.first;
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
@@ -144,74 +153,115 @@ class _RoomPageState extends State<RoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(),
-      body: ListView.builder(
-        itemCount: participantTracks.length,
-        itemBuilder: (context, i) {
-          final participant = participantTracks[i].participant as RemoteParticipant;
-          final audio = participantTracks[i].activeAudioTrack;
-          return MyCardWidget(
-            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0).w,
-            child: Row(
-              children: [
-                Container(
-                  height: 80.0.dg,
-                  width: 80.0.dg,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColorManager.scaffoldColor,
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: DynamicUser(participantTrack: participantTracks[i]),
-                ),
-                15.0.horizontalSpace,
-                Expanded(
-                  child: Column(
-                    children: [
-                      DrawableText(
-                        text: participant.name,
-                        matchParent: true,
-                        drawablePadding: 5.0,
-                        drawableStart: participant.connectionQuality.icon,
-                      ),
-                      if (participant.userType.isUser)
-                        Row(
-                          children: [
-                            _Switch(
-                              participant: participant,
-                              action: ManagerActions.video,
-                              localParticipant: widget.room.localParticipant,
-                            ),
-                            _Switch(
-                              participant: participant,
-                              action: ManagerActions.mic,
-                              localParticipant: widget.room.localParticipant,
-                            ),
-                            _Switch(
-                              participant: participant,
-                              action: ManagerActions.shareScreen,
-                              localParticipant: widget.room.localParticipant,
-                            ),
-                          ],
-                        )
-                      else
-                        DrawableText(text: 'VMW device'),
-                    ],
-                  ),
-                ),
-                if (audio != null)
-                  Container(
-                    child: SoundWaveformWidget(
-                      key: ValueKey(audio.hashCode),
-                      audioTrack: audio,
-                      width: 8,
-                      barCount: 3,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                color: AppColorManager.appBarColor,
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    DrawableText(
+                      text: 'Online users ',
+                      matchParent: true,
+                      size: 25.0.sp,
                     ),
-                  ),
-              ],
+                    Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: participantTracks.length,
+                        itemBuilder: (context, i) {
+                          final participant = participantTracks[i].participant as RemoteParticipant;
+                          final audio = participantTracks[i].activeAudioTrack;
+                          final isSelected = participant.sid == selectedParticipantTrack.participant.sid;
+                          return MyCardWidget(
+                            cardColor: isSelected ? AppColorManager.mainColor.withValues(alpha: 0.2) : null,
+                            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
+                            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0).w,
+                            child: Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedUserId = participant.sid;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: 80.0.dg,
+                                    width: 80.0.dg,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColorManager.scaffoldColor,
+                                    ),
+                                    clipBehavior: Clip.hardEdge,
+                                    child: DynamicUser(participantTrack: participantTracks[i]),
+                                  ),
+                                ),
+                                15.0.horizontalSpace,
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      DrawableText(
+                                        text: participant.name,
+                                        matchParent: true,
+                                        drawablePadding: 5.0,
+                                        drawableStart: participant.connectionQuality.icon,
+                                      ),
+                                      if (participant.userType.isUser)
+                                        Row(
+                                          children: [
+                                            _Switch(
+                                              participant: participant,
+                                              action: ManagerActions.video,
+                                              localParticipant: widget.room.localParticipant,
+                                            ),
+                                            _Switch(
+                                              participant: participant,
+                                              action: ManagerActions.mic,
+                                              localParticipant: widget.room.localParticipant,
+                                            ),
+                                            _Switch(
+                                              participant: participant,
+                                              action: ManagerActions.shareScreen,
+                                              localParticipant: widget.room.localParticipant,
+                                            ),
+                                          ],
+                                        )
+                                      else
+                                        DrawableText(text: 'VMW device'),
+                                    ],
+                                  ),
+                                ),
+                                if (audio != null)
+                                  Container(
+                                    child: SoundWaveformWidget(
+                                      key: ValueKey(audio.hashCode),
+                                      audioTrack: audio,
+                                      width: 8,
+                                      barCount: 3,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          );
-        },
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: DynamicUser(participantTrack: selectedParticipantTrack),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

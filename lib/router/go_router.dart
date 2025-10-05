@@ -157,8 +157,9 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (_, state) {
-        String link = state.uri.queryParameters['link'] ?? '';
-        String token = state.uri.queryParameters['token'] ?? '';
+        String link = state.uri.queryParameters['link'] ?? 'wss://coretik.coretech-mena.com';
+        String token = state.uri.queryParameters['token'] ??
+            'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2K_ZitixIDEiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIwIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJZVNGaVY3eGlDUnpSIiwiZXhwIjoxNzU5NTk5MjQwLCJuYmYiOjAsInN1YiI6Im1hbmFnZXIxIn0.64ikI0JjjfkjCt9gMJboTZH0lDLHrsIQAKYNRB-SO6o';
 
         debugPrint('FULL URI: ${state.uri}');
         debugPrint('QUERY: ${state.uri.queryParameters}');

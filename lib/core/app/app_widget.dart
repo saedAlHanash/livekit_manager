@@ -77,7 +77,7 @@ class MyAppState extends State<MyApp> {
     loggerObject.w(AppSharedPreference.getToken);
     return ScreenUtilInit(
       // designSize: const Size(375, 833),
-      designSize: MediaQuery.sizeOf(context),
+      designSize: Size(MediaQuery.sizeOf(context).width * 2, MediaQuery.sizeOf(context).height),
       // designSize: const Size(14440, 972),
       minTextAdapt: true,
       builder: (context, child) {
