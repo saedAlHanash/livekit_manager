@@ -38,11 +38,11 @@ class _RoomPageState extends State<RoomPage> {
   String? selectedUserId;
 
   List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
-      .where((e) => e.participant.sid != selectedParticipantTrack.participant.sid)
+      .where((e) => e.participant.sid != selectedParticipantTrack?.participant.sid)
       .toList(growable: false);
 
-  ParticipantTrack get selectedParticipantTrack =>
-      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.first;
+  ParticipantTrack? get selectedParticipantTrack =>
+      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.firstOrNull;
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
@@ -149,10 +149,14 @@ class _RoomPageState extends State<RoomPage> {
     });
   }
 
+  void _onTapDisconnect() async {
+    final result = await context.showDisconnectDialog();
+    if (result == true) await widget.room.disconnect();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Row(
@@ -167,6 +171,11 @@ class _RoomPageState extends State<RoomPage> {
                       text: 'Online users ',
                       matchParent: true,
                       size: 25.0.sp,
+                      drawableEnd: IconButton(
+                        onPressed: _onTapDisconnect,
+                        icon: const Icon(Icons.call_end),
+                        tooltip: 'disconnect',
+                      ),
                     ),
                     Divider(),
                     Expanded(
@@ -175,7 +184,7 @@ class _RoomPageState extends State<RoomPage> {
                         itemBuilder: (context, i) {
                           final participant = participantTracks[i].participant as RemoteParticipant;
                           final audio = participantTracks[i].activeAudioTrack;
-                          final isSelected = participant.sid == selectedParticipantTrack.participant.sid;
+                          final isSelected = participant.sid == selectedParticipantTrack?.participant.sid;
                           return MyCardWidget(
                             cardColor: isSelected ? AppColorManager.mainColor.withValues(alpha: 0.2) : null,
                             margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
@@ -253,13 +262,14 @@ class _RoomPageState extends State<RoomPage> {
                 ),
               ),
             ),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: DynamicUser(participantTrack: selectedParticipantTrack),
-              ),
-            )
+            if (selectedParticipantTrack != null)
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: DynamicUser(participantTrack: selectedParticipantTrack!),
+                ),
+              )
           ],
         ),
       ),
