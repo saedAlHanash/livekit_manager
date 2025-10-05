@@ -80,12 +80,12 @@ class _RoomPageState extends State<RoomPage> {
       _sortParticipants();
     })
     ..on<DataReceivedEvent>((event) {
-      try {
-        final message = SettingMessage.fromJson(jsonDecode(utf8.decode(event.data)));
-        if (message.sid != widget.room.localParticipant?.sid) return;
-      } catch (err) {
-        loggerObject.i('Failed to decode: $err');
-      }
+      // try {
+      //   final message = SettingMessage.fromJson(jsonDecode(utf8.decode(event.data)));
+      //   if (message.sid != widget.room.localParticipant?.sid) return;
+      // } catch (err) {
+      //   loggerObject.i('Failed to decode: $err');
+      // }
     })
     ..on<AudioPlaybackStatusChanged>((event) async {
       if (!widget.room.canPlaybackAudio) {
