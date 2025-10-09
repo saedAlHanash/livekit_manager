@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/app_bar/app_bar_widget.dart';
 import '../../../../core/widgets/refresh_widget/refresh_widget.dart';
-
 import '../../bloc/user_cubit/user_cubit.dart';
 
 class UserPage extends StatelessWidget {
@@ -38,5 +37,3 @@ class UserPage extends StatelessWidget {
     );
   }
 }
-
-

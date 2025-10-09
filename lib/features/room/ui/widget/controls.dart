@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_client/livekit_client.dart' as client;
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:livekit_client/livekit_client.dart' as client;
+import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/util/exts.dart';
 
 class ControlsWidget extends StatefulWidget {

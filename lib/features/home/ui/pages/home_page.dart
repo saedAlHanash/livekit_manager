@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/util/snack_bar_message.dart';
-import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../room/ui/pages/room_page.dart';
 
@@ -53,36 +50,8 @@ class _HomePageState extends State<HomePage> {
         maxFramerate: 15,
       );
 
-      final room = Room(
-        roomOptions: RoomOptions(
-          adaptiveStream: true,
-          dynacast: true,
-          defaultAudioPublishOptions: const AudioPublishOptions(
-            name: 'custom_audio_track_name',
-          ),
-          defaultCameraCaptureOptions: const CameraCaptureOptions(
-            maxFrameRate: 30,
-            params: VideoParameters(
-              dimensions: VideoDimensions(1280, 720),
-            ),
-          ),
-          defaultScreenShareCaptureOptions: const ScreenShareCaptureOptions(
-            useiOSBroadcastExtension: true,
-            params: VideoParameters(
-              dimensions: VideoDimensionsPresets.h1080_169,
-            ),
-          ),
-          defaultVideoPublishOptions: VideoPublishOptions(
-            simulcast: true,
-            videoCodec: 'H264',
-            backupVideoCodec: BackupVideoCodec(
-              enabled: false,
-            ),
-            screenShareEncoding: screenEncoding,
-          ),
-        ),
-      );
-      // Create a Listener before connecting
+      final room = Room();
+
       final listener = room.createListener();
 
       await room.prepareConnection(url, token);

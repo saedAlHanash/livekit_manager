@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/api_manager/api_url.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
@@ -5,7 +6,6 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/util/pair_class.dart';
 import 'package:livekit_manager/features/user/data/request/create_user_request.dart';
 import 'package:livekit_manager/features/user/data/response/user_response.dart';
-import 'package:http/http.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../core/error/error_manager.dart';
@@ -13,7 +13,7 @@ import '../../../../core/error/error_manager.dart';
 part 'users_state.dart';
 
 class UsersCubit extends MCubit<UsersInitial> {
-  UsersCubit() : super(UsersInitial.initial()) ;
+  UsersCubit() : super(UsersInitial.initial());
 
   @override
   String get nameCache => 'users';
@@ -24,11 +24,12 @@ class UsersCubit extends MCubit<UsersInitial> {
   //region getData
 
   void getDataFromCache() => getFromCache(
-  fromJson: User.fromJson, 
-  state: state,   
-  onSuccess: (data) {
+        fromJson: User.fromJson,
+        state: state,
+        onSuccess: (data) {
           emit(state.copyWith(result: data));
-        },);
+        },
+      );
 
   Future<void> getData({bool newData = false}) async {
     await getDataAbstract(
@@ -140,5 +141,3 @@ class UsersCubit extends MCubit<UsersInitial> {
     emit(state.copyWith(result: list));
   }
 }
-
-   

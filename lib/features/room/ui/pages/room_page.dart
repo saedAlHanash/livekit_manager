@@ -10,7 +10,6 @@ import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/util/exts.dart';
-import 'package:livekit_manager/core/widgets/app_bar/app_bar_widget.dart';
 import 'package:livekit_manager/core/widgets/my_card_widget.dart';
 import 'package:livekit_manager/features/room/data/request/setting_message.dart';
 
@@ -75,7 +74,6 @@ class _RoomPageState extends State<RoomPage> {
           ?.addPostFrameCallback((timeStamp) => Navigator.popUntil(context, (route) => route.isFirst));
     })
     ..on<ParticipantEvent>((event) {
-      // sort participants on many track events as noted in documentation linked above
       _sortParticipants();
     })
     ..on<RoomRecordingStatusChanged>((event) {

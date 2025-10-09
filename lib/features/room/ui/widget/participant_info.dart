@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 
 import '../../../../core/strings/enum_manager.dart';
-
-extension ParticipantTrackTypeExt on MediaType {}
 
 class ParticipantTrack {
   ParticipantTrack({
@@ -25,7 +19,6 @@ class ParticipantTrack {
 class ParticipantInfoWidget extends StatelessWidget {
   const ParticipantInfoWidget({
     this.title,
-
     this.connectionQuality = ConnectionQuality.unknown,
     this.enabledE2EE = false,
     super.key,

@@ -1,36 +1,29 @@
 import 'package:flutter/foundation.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 
-import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
-import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
-import '../features/setting/ui/pages/setting_page.dart';
-import '../features/setting/ui/pages/settings_page.dart';
-
-import '../features/room/bloc/room_cubit/room_cubit.dart';
-import '../features/room/bloc/rooms_cubit/rooms_cubit.dart';
-import '../features/room/ui/pages/room_page.dart';
-import '../features/room/ui/pages/rooms_page.dart';
-
-import '../features/user/bloc/user_cubit/user_cubit.dart';
-import '../features/user/bloc/users_cubit/users_cubit.dart';
-import '../features/user/ui/pages/user_page.dart';
-import '../features/user/ui/pages/users_page.dart';
-
+import '../core/injection/injection_container.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
 import '../features/home/ui/pages/home_page.dart';
 import '../features/home/ui/pages/homes_page.dart';
+import '../features/room/bloc/room_cubit/room_cubit.dart';
 
+import '../features/room/ui/pages/room_page.dart';
+import '../features/room/ui/pages/rooms_page.dart';
+import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
+import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
+import '../features/setting/ui/pages/setting_page.dart';
+import '../features/setting/ui/pages/settings_page.dart';
 import '../features/splash/ui/spalsh_page.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-
-import '../core/injection/injection_container.dart';
+import '../features/user/bloc/user_cubit/user_cubit.dart';
+import '../features/user/bloc/users_cubit/users_cubit.dart';
+import '../features/user/ui/pages/user_page.dart';
+import '../features/user/ui/pages/users_page.dart';
 
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
@@ -89,7 +82,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
+              create: (context) => sl<RoomCubit>(),
             ),
           ],
           child: RoomPage(room, listener),
@@ -97,21 +90,6 @@ final goRouter = GoRouter(
       },
     ),
 
-    ///rooms
-    GoRoute(
-      path: RouteName.rooms,
-      name: RouteName.rooms,
-      builder: (_, state) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => sl<RoomsCubit>()..getData(),
-            ),
-          ],
-          child: RoomsPage(),
-        );
-      },
-    ),
     //endregion
 
     //region user

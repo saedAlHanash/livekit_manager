@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-
+import 'package:flutter/material.dart';
 
 class NoVideoWidget extends StatelessWidget {
   //
@@ -13,7 +12,6 @@ class NoVideoWidget extends StatelessWidget {
         child: LayoutBuilder(
           builder: (ctx, constraints) => Icon(
             Icons.videocam_off_outlined,
-
             size: math.min(constraints.maxHeight, constraints.maxWidth) * 0.3,
           ),
         ),

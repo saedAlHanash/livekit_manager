@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/api_manager/api_url.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
@@ -5,7 +6,6 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/util/pair_class.dart';
 import 'package:livekit_manager/features/setting/data/request/create_setting_request.dart';
 import 'package:livekit_manager/features/setting/data/response/setting_response.dart';
-import 'package:http/http.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../core/error/error_manager.dart';
@@ -13,7 +13,7 @@ import '../../../../core/error/error_manager.dart';
 part 'settings_state.dart';
 
 class SettingsCubit extends MCubit<SettingsInitial> {
-  SettingsCubit() : super(SettingsInitial.initial()) ;
+  SettingsCubit() : super(SettingsInitial.initial());
 
   @override
   String get nameCache => 'settings';
@@ -24,11 +24,12 @@ class SettingsCubit extends MCubit<SettingsInitial> {
   //region getData
 
   void getDataFromCache() => getFromCache(
-  fromJson: Setting.fromJson, 
-  state: state,   
-  onSuccess: (data) {
+        fromJson: Setting.fromJson,
+        state: state,
+        onSuccess: (data) {
           emit(state.copyWith(result: data));
-        },);
+        },
+      );
 
   Future<void> getData({bool newData = false}) async {
     await getDataAbstract(
@@ -140,5 +141,3 @@ class SettingsCubit extends MCubit<SettingsInitial> {
     emit(state.copyWith(result: list));
   }
 }
-
-   

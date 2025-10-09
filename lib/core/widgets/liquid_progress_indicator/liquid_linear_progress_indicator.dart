@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:livekit_manager/core/widgets/liquid_progress_indicator/wave.dart';
 
 class LiquidLinearProgressIndicator extends ProgressIndicator {
