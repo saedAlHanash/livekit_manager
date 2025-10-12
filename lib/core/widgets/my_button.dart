@@ -111,8 +111,8 @@ class MyButton extends StatelessWidget {
         onTap: enable ? onTap : null,
         child: Container(
           width: width ?? .9.sw,
-          height: height ?? 45.0.h,
-          padding: padding ?? EdgeInsets.symmetric(vertical: 10.0).r,
+          height: height ?? 35.0.h,
+          // padding: padding ?? EdgeInsets.symmetric(vertical: 10.0).r,
           decoration: BoxDecoration(
             color: !enable ? Colors.grey : color ?? AppColorManager.mainColor,
             borderRadius: BorderRadius.circular(radios ?? 8.0.r),

@@ -13,6 +13,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   Future<void> initial() async {
     await Permission.microphone.request();
     await state.result.prepareConnection(state.url, state.token);
+    state.result.addListener(_sortParticipants);
   }
 
   void setListeners() {

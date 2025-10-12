@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/util/exts.dart';
@@ -252,9 +253,8 @@ class _RoomPage1State extends State<RoomPage1> {
             right: 0,
             top: 0,
             child: SizedBox(
-              height: 120,
+              width: 0.2.sw,
               child: ListView.builder(
-                scrollDirection: Axis.horizontal,
                 itemCount: math.max(0, participantTracksWithoutSelected.length),
                 itemBuilder: (context, i) {
                   final item = participantTracksWithoutSelected[i];

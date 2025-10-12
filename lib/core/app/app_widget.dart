@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_manager/features/home/bloc/home_cubit/home_cubit.dart';
 
+import '../../features/room/bloc/room_cubit/room_cubit.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
@@ -77,10 +78,12 @@ class MyAppState extends State<MyApp> {
     loggerObject.w(AppSharedPreference.getToken);
     return ScreenUtilInit(
       // designSize: const Size(375, 833),
-      designSize: Size(MediaQuery.sizeOf(context).width * 2, MediaQuery.sizeOf(context).height),
-      // designSize: const Size(14440, 972),
+      // designSize: Size(MediaQuery.sizeOf(context).width * 2, MediaQuery.sizeOf(context).height),
+      // designSize: const Size(1400, 972),
+      designSize: MediaQuery.of(context).size,
       minTextAdapt: true,
       builder: (context, child) {
+        loggerObject.w(MediaQuery.of(context).size);
         return GestureDetector(
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
@@ -101,7 +104,7 @@ class MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => sl<HomeCubit>(),
+                    create: (context) => sl<RoomCubit>(),
                   )
                 ],
                 child: MediaQuery(
