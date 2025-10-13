@@ -10,6 +10,8 @@ class RoomInitial extends AbstractState<Room> {
     required this.url,
     required this.token,
     required this.listener,
+    required this.participantTracks,
+    required this.selectedUserId,
   });
 
   final String url;
@@ -18,14 +20,32 @@ class RoomInitial extends AbstractState<Room> {
 
   final EventsListener<RoomEvent> listener;
 
+  final List<ParticipantTrack> participantTracks;
+
+  final String selectedUserId;
+
+  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
+      .where((e) => e.participant.sid != selectedParticipantTrack?.participant.sid)
+      .toList(growable: false);
+
+  ParticipantTrack? get selectedParticipantTrack =>
+      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.firstOrNull;
+
+  ConnectionState get connectionState => result.connectionState;
+  bool get isConnect => result.connectionState == ConnectionState.connected;
+
   factory RoomInitial.initial() {
     final room = Room();
     return RoomInitial(
       result: room,
       request: '',
-      url: 'wss://coretik.coretech-mena.com',
-      token: '',
+      url: 'ws://192.168.1.69:7880',
+      // url: 'wss://coretik.coretech-mena.com',
+      token:
+          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjAzODMwMjQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.TaW9EC2MyHku7ZiZp1_E08HHluuagLtwzzrGEWlVtC8',
       listener: room.createListener(),
+      participantTracks: const [],
+      selectedUserId: '',
     );
   }
 
@@ -40,6 +60,8 @@ class RoomInitial extends AbstractState<Room> {
         listener,
         url,
         token,
+        participantTracks,
+        selectedUserId,
       ];
 
   RoomInitial copyWith(
@@ -50,7 +72,9 @@ class RoomInitial extends AbstractState<Room> {
       String? request,
       String? url,
       String? token,
-      EventsListener<RoomEvent>? listener}) {
+      EventsListener<RoomEvent>? listener,
+      List<ParticipantTrack>? participantTracks,
+      String? selectedUserId}) {
     return RoomInitial(
         statuses: statuses ?? this.statuses,
         result: result ?? this.result,
@@ -59,6 +83,8 @@ class RoomInitial extends AbstractState<Room> {
         request: request ?? this.request,
         url: url ?? this.url,
         token: token ?? this.token,
-        listener: listener ?? this.listener);
+        listener: listener ?? this.listener,
+        participantTracks: participantTracks ?? this.participantTracks,
+        selectedUserId: selectedUserId ?? this.selectedUserId);
   }
 }

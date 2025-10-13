@@ -1,9 +1,9 @@
 [
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2K_ZitixIDEiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIwIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJZVNGaVY3eGlDUnpSIiwiZXhwIjoxNzU5NTk5MjQwLCJuYmYiOjAsInN1YiI6Im1hbmFnZXIxIn0.64ikI0JjjfkjCt9gMJboTZH0lDLHrsIQAKYNRB-SO6o",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjAzODMwMjQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.TaW9EC2MyHku7ZiZp1_E08HHluuagLtwzzrGEWlVtC8",
     "room": "m3",
     "identity": "manager1",
-    "display_name": "المدير 1",
+    "display_name": "Admin user",
     "role": "participant",
     "ttl": null,
     "metadata": "",
@@ -12,10 +12,10 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2LTYp9ix2YMgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjEifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk1OTkyNDAsIm5iZiI6MCwic3ViIjoic2hhcmVyMSJ9.Fa9RiXUeRpgeBlCH2OT-nbz1TpVm2IsKGyv09Z1Yh4Y",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2hhcmVyIHVzZXIiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIxIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InNoYXJlcjEifQ.dZqSIyEGS-5C9jSdImgZNVXGbJYwwbkbPqqSXGKfpTg",
     "room": "m3",
     "identity": "sharer1",
-    "display_name": "المشارك 1",
+    "display_name": "Sharer user",
     "role": "participant",
     "ttl": null,
     "metadata": "",
@@ -24,10 +24,10 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZCAxIiwiYXR0cmlidXRlcyI6eyJsa1VzZXJUeXBlIjoiMiJ9LCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbSI6Im0zIn0sImlzcyI6IkFQSWVTRmlWN3hpQ1J6UiIsImV4cCI6MTc1OTU5OTI0MCwibmJmIjowLCJzdWIiOiJ1c2VyMSJ9.37NQcDBktLqZYijgRhox8SEWdIBvtsQJ3P5DWON2HrA",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2FlZCBBbCBIYW5hc2giLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InVzZXIxIn0.qULtvdoN4FFyeywiyY8kP5FVK64wBhVhod1CiWl8N8s",
     "room": "m3",
     "identity": "user1",
-    "display_name": "saed 1",
+    "display_name": "Saed Al Hanash",
     "role": "participant",
     "ttl": null,
     "metadata": "",
@@ -36,10 +36,10 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZDIgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjIifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk1OTkyNDAsIm5iZiI6MCwic3ViIjoidXNlcjIifQ.lhUXtkxolB8kLcEICzVmHLFH-Y_njRjYkXUGQKSWdsM",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWJkIGFsLVJhaG1hbiAiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InVzZXIyIn0.-jIqdBBLB_gry_CKzLp8saBfgErZ4jCF6vMbSAGYFwg",
     "room": "m3",
     "identity": "user2",
-    "display_name": "saed2 1",
+    "display_name": "abd al-Rahman ",
     "role": "participant",
     "ttl": null,
     "metadata": "",

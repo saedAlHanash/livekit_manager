@@ -83,7 +83,7 @@ class MyAppState extends State<MyApp> {
       designSize: MediaQuery.of(context).size,
       minTextAdapt: true,
       builder: (context, child) {
-        loggerObject.w(MediaQuery.of(context).size);
+        // loggerObject.w(MediaQuery.of(context).size);
         return GestureDetector(
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
@@ -104,7 +104,7 @@ class MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => sl<RoomCubit>(),
+                    create: (context) => sl<RoomCubit>()..initial(),
                   )
                 ],
                 child: MediaQuery(

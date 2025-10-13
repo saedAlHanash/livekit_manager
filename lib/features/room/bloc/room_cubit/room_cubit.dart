@@ -1,8 +1,15 @@
+import 'dart:convert';
+
+import 'package:collection/collection.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/util/exts.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../core/api_manager/api_service.dart';
+import '../../../../core/app/app_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
+import '../../data/request/setting_message.dart';
 import '../../ui/widget/participant_info.dart';
 
 part 'room_state.dart';
@@ -29,11 +36,32 @@ class RoomCubit extends MCubit<RoomInitial> {
       ..on<TrackSubscribedEvent>((e) => _sortParticipants())
       ..on<TrackUnsubscribedEvent>((e) => _sortParticipants())
       ..on<ParticipantNameUpdatedEvent>((e) => _sortParticipants())
-      ..on<AudioPlaybackStatusChanged>((e) => _sortParticipants())
+      ..on<AudioPlaybackStatusChanged>((e) async {
+        if ((!state.result.canPlaybackAudio) && (await ctx?.showPlayAudioManuallyDialog()) == true) {
+          await state.result.startAudio();
+        }
+      })
       ..on<DataReceivedEvent>((e) {
         // Events handler most be hear, not another place.
         // Cuse this is the listener for data event.
         // Data will be as JSON type with modl with MessageAction enum.
+
+        try {
+          final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+          if (message.sid != state.result.localParticipant?.sid) return;
+          switch (message.action) {
+            case ManagerActions.mic:
+              break;
+            case ManagerActions.video:
+              break;
+            case ManagerActions.shareScreen:
+              break;
+            case ManagerActions.raseHand:
+              break;
+          }
+        } catch (err) {
+          loggerObject.i('Failed to decode: $err');
+        }
       });
   }
 
@@ -75,9 +103,17 @@ class RoomCubit extends MCubit<RoomInitial> {
       // joinedAt
       return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
     });
+    final list = [...screenTracks, ...userMediaTracks];
+    loggerObject.f(list.length);
+    emit(
+      state.copyWith(
+        participantTracks: list,
+      ),
+    );
   }
 
   Future<void> connect() async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
     await state.result.connect(
       state.url,
       state.token,
@@ -87,9 +123,30 @@ class RoomCubit extends MCubit<RoomInitial> {
         ),
       ),
     );
+    state.result.connectionState;
+    emit(state.copyWith(statuses: CubitStatuses.done));
+  }
+
+  void disconnect() async {
+    final result = await ctx!.showDisconnectDialog();
+    if (result == true) await state.result.disconnect();
   }
 
   void setUrl(String url) => emit(state.copyWith(url: url));
 
   void setToken(String token) => emit(state.copyWith(token: token));
+
+  void selectParticipant(String participantTrackId) {
+    emit(state.copyWith(selectedUserId: participantTrackId));
+  }
+
+  @override
+  Future<void> close() {
+    (() async {
+      state.result.removeListener(_sortParticipants);
+      await state.listener.dispose();
+      await state.result.dispose();
+    })();
+    return super.close();
+  }
 }

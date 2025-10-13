@@ -85,7 +85,7 @@ final goRouter = GoRouter(
               create: (context) => sl<RoomCubit>(),
             ),
           ],
-          child: RoomPage(room, listener),
+          child: Container(),
         );
       },
     ),
