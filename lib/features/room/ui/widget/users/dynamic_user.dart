@@ -6,9 +6,11 @@ import '../participant_info.dart';
 import 'local_user.dart';
 
 class DynamicUser extends StatelessWidget {
-  const DynamicUser({super.key, required this.participantTrack});
+  const DynamicUser({super.key, required this.participantTrack, this.fit = VideoViewFit.contain});
 
+  final VideoViewFit fit;
   final ParticipantTrack participantTrack;
+
   @override
   Widget build(BuildContext context) {
     if (participantTrack.participant is LocalParticipant) {

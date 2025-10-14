@@ -1,6 +1,6 @@
 [
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjAzODMwMjQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.TaW9EC2MyHku7ZiZp1_E08HHluuagLtwzzrGEWlVtC8",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjA0NTE5NzQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.03jkvGZ_qwL3jgvT0-VStTjId5Dhg2fMlATup65IFTQ",
     "room": "m3",
     "identity": "manager1",
     "display_name": "Admin user",
@@ -12,7 +12,7 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2hhcmVyIHVzZXIiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIxIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InNoYXJlcjEifQ.dZqSIyEGS-5C9jSdImgZNVXGbJYwwbkbPqqSXGKfpTg",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2hhcmVyIHVzZXIiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIxIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InNoYXJlcjEifQ.4V7CyS_DQW7YQMAD3CKPz7M2L0vfBQp1_zK-YtX4zQU",
     "room": "m3",
     "identity": "sharer1",
     "display_name": "Sharer user",
@@ -24,7 +24,7 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2FlZCBBbCBIYW5hc2giLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InVzZXIxIn0.qULtvdoN4FFyeywiyY8kP5FVK64wBhVhod1CiWl8N8s",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2FlZCBBbCBIYW5hc2giLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InVzZXIxIn0.lxf_3X1cv51ppV9QifM9As6voZgj_FcxsfCz5ISokaU",
     "room": "m3",
     "identity": "user1",
     "display_name": "Saed Al Hanash",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWJkIGFsLVJhaG1hbiAiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwMzgzMDI0LCJuYmYiOjAsInN1YiI6InVzZXIyIn0.-jIqdBBLB_gry_CKzLp8saBfgErZ4jCF6vMbSAGYFwg",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWJkIGFsLVJhaG1hbiAiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InVzZXIyIn0.4zuEN0suI8Rtar5GF3Fdc96qfPECmbEPKcWd2OBqd0k",
     "room": "m3",
     "identity": "user2",
     "display_name": "abd al-Rahman ",

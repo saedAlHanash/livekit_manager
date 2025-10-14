@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/core/widgets/my_card_widget.dart';
 import 'package:livekit_manager/features/room/data/request/setting_message.dart';
 
 import '../../../../core/strings/enum_manager.dart';
@@ -31,115 +30,103 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: cubit.disconnect,
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.call_end, color: Colors.white),
+      ),
       body: BlocBuilder<RoomCubit, RoomInitial>(
         builder: (context, state) {
+          loggerObject.i(state.raiseHands);
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    color: AppColorManager.appBarColor,
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        DrawableText(
-                          text: 'Online users ',
-                          matchParent: true,
-                          size: 25.0.sp,
-                          drawableEnd: IconButton(
-                            onPressed: cubit.disconnect,
-                            icon: const Icon(Icons.call_end),
-                            tooltip: 'disconnect',
-                          ),
+                  child: ListView.builder(
+                    itemCount: state.participantTracks.length,
+                    padding: EdgeInsets.all(15.0),
+                    itemBuilder: (context, i) {
+                      final participant = state.participantTracks[i].participant as RemoteParticipant;
+                      final audio = state.participantTracks[i].activeAudioTrack;
+                      final isSelected = participant.sid == state.selectedParticipantTrack?.participant.sid;
+                      // loggerObject.w('''
+                      // state.participantTracks[i].activeVideoTrack:${state.participantTracks[i].activeVideoTrack?.isActive}
+                      // state.participantTracks[i].activeAudioTrack:${state.participantTracks[i].activeAudioTrack?.isActive}
+                      // ''');
+                      return Container(
+                        height: 120.0.h,
+                        decoration: BoxDecoration(
+                          color: AppColorManager.appBarColor,
+                          borderRadius: BorderRadius.circular(12.0).r,
+                          border: Border.all(
+                              color: isSelected ? AppColorManager.mainColor : Colors.transparent, width: 3.0),
                         ),
-                        Divider(),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: state.participantTracks.length,
-                            itemBuilder: (context, i) {
-                              final participant = state.participantTracks[i].participant as RemoteParticipant;
-                              final audio = state.participantTracks[i].activeAudioTrack;
-                              final isSelected = participant.sid == state.selectedParticipantTrack?.participant.sid;
-                              return MyCardWidget(
-                                cardColor: isSelected ? AppColorManager.mainColor.withValues(alpha: 0.2) : null,
-                                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0).w,
-                                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 7.0).w,
-                                child: Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        cubit.selectParticipant(participant.sid);
-                                      },
-                                      child: Container(
-                                        height: 80.0.dg,
-                                        width: 80.0.dg,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColorManager.scaffoldColor,
-                                        ),
-                                        clipBehavior: Clip.hardEdge,
-                                        child: DynamicUser(participantTrack: state.participantTracks[i]),
-                                      ),
+                        clipBehavior: Clip.hardEdge,
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius: BorderRadius.circular(12.0).r,
+                          child: Stack(
+                            alignment: AlignmentGeometry.center,
+                            children: [
+                              DynamicUser(
+                                participantTrack: state.participantTracks[i],
+                                fit: VideoViewFit.cover,
+                              ),
+                              if (audio != null)
+                                Align(
+                                  alignment: AlignmentGeometry.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: SoundWaveformWidget(
+                                      key: ValueKey(audio.hashCode),
+                                      audioTrack: audio,
+                                      barCount: 3,
                                     ),
-                                    15.0.horizontalSpace,
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          DrawableText(
-                                            text: participant.name,
-                                            matchParent: true,
-                                            drawablePadding: 5.0,
-                                            drawableStart: participant.connectionQuality.icon,
-                                          ),
-                                          if (participant.userType.isUser)
-                                            Row(
-                                              children: [
-                                                _Switch(
-                                                  participant: participant,
-                                                  action: ManagerActions.video,
-                                                  localParticipant: state.result.localParticipant,
-                                                ),
-                                                _Switch(
-                                                  participant: participant,
-                                                  action: ManagerActions.mic,
-                                                  localParticipant: state.result.localParticipant,
-                                                ),
-                                                _Switch(
-                                                  participant: participant,
-                                                  action: ManagerActions.shareScreen,
-                                                  localParticipant: state.result.localParticipant,
-                                                ),
-                                              ],
-                                            )
-                                          else
-                                            DrawableText(text: 'VMW device'),
-                                        ],
-                                      ),
-                                    ),
-                                    if (audio != null)
-                                      Container(
-                                        child: SoundWaveformWidget(
-                                          key: ValueKey(audio.hashCode),
-                                          audioTrack: audio,
-                                          width: 8,
-                                          barCount: 3,
-                                        ),
-                                      ),
-                                  ],
+                                  ),
                                 ),
-                              );
-                            },
+                              if (state.raiseHands.contains(participant.sid))
+                                Align(
+                                  alignment: AlignmentGeometry.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ImageMultiType(
+                                      url: Icons.back_hand_outlined,
+                                      width: 18.0.w,
+                                    ),
+                                  ),
+                                ),
+                              if (participant.userType.isSharer)
+                                Align(
+                                  alignment: AlignmentGeometry.topRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ImageMultiType(
+                                      url: Icons.screenshot_monitor,
+                                      width: 18.0.w,
+                                    ),
+                                  ),
+                                ),
+                              Align(
+                                alignment: AlignmentGeometry.bottomCenter,
+                                child: _Switch(participant: participant),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
                 if (state.selectedParticipantTrack != null)
                   Expanded(
-                    flex: 3,
-                    child: Padding(
+                    flex: 5,
+                    child: Container(
+                      height: 1.0.sh,
+                      decoration: BoxDecoration(
+                        color: AppColorManager.appBarColor,
+                        borderRadius: BorderRadius.circular(12.0).r,
+                      ),
                       padding: const EdgeInsets.all(15.0),
                       child: DynamicUser(participantTrack: state.selectedParticipantTrack!),
                     ),
@@ -154,48 +141,49 @@ class _RoomPageState extends State<RoomPage> {
 }
 
 class _Switch extends StatelessWidget {
-  const _Switch({required this.participant, required this.action, required this.localParticipant});
+  const _Switch({required this.participant});
 
   final RemoteParticipant participant;
-  final LocalParticipant? localParticipant;
-  final ManagerActions action;
 
   @override
   Widget build(BuildContext context) {
-    final value = switch (action) {
-      ManagerActions.mic => participant.isMicrophoneEnabled(),
-      ManagerActions.video => participant.isCameraEnabled(),
-      ManagerActions.shareScreen => participant.isScreenShareEnabled(),
-      ManagerActions.raseHand => true,
-    };
-
-    return Transform.scale(
-      scale: 0.6,
+    final l = ManagerActions.values.where((e) => e != ManagerActions.raseHand);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
       child: Row(
-        children: [
-          ImageMultiType(
-            url: action.icon,
-            height: 40.0.r,
-            width: 40.0.r,
-            color: value ? Colors.green : Colors.red,
-          ),
-          Switch(
-            value: value,
-            onChanged: (value) {
-              localParticipant?.publishData(
-                utf8.encode(
-                  jsonEncode(
-                    SettingMessage(
-                      sid: participant.sid,
-                      name: participant.name,
-                      action: action,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: l.map(
+          (e) {
+            return InkWell(
+              onTap: () {
+                context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                      utf8.encode(
+                        jsonEncode(
+                          SettingMessage(
+                            sid: participant.sid,
+                            name: participant.name,
+                            action: e,
+                          ),
+                        ),
+                      ),
+                    );
+              },
+              child: ImageMultiType(
+                url: e.icon,
+                height: 15.0.r,
+                width: 15.0.r,
+                color: switch (e) {
+                  ManagerActions.mic => participant.isMicrophoneEnabled(),
+                  ManagerActions.video => participant.isCameraEnabled(),
+                  ManagerActions.shareScreen => participant.isScreenShareEnabled(),
+                  ManagerActions.raseHand => true,
+                }
+                    ? Colors.green
+                    : Colors.red,
+              ),
+            );
+          },
+        ).toList(),
       ),
     );
   }

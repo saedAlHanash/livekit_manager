@@ -76,7 +76,7 @@ class _SoundWaveformWidgetState extends State<SoundWaveformWidget> with TickerPr
     _listener?.on<AudioVisualizerEvent>((e) {
       if (mounted) {
         setState(() {
-          samples = e.event.map((e) => ((e as num) * 100).toDouble()).toList();
+          samples = e.event.map((e) => ((e as num) * 15).toDouble()).toList();
         });
       }
     });

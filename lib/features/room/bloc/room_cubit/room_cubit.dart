@@ -21,6 +21,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     await Permission.microphone.request();
     await state.result.prepareConnection(state.url, state.token);
     state.result.addListener(_sortParticipants);
+    setListeners();
   }
 
   void setListeners() {
@@ -48,7 +49,8 @@ class RoomCubit extends MCubit<RoomInitial> {
 
         try {
           final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-          if (message.sid != state.result.localParticipant?.sid) return;
+          loggerObject.w(message.toJson());
+          // if (message.sid != state.result.localParticipant?.sid) return;
           switch (message.action) {
             case ManagerActions.mic:
               break;
@@ -57,6 +59,15 @@ class RoomCubit extends MCubit<RoomInitial> {
             case ManagerActions.shareScreen:
               break;
             case ManagerActions.raseHand:
+              emit(state.copyWith(raiseHands: state.raiseHands..add(message.sid)));
+              Future.delayed(
+                Duration(seconds: 5),
+                () {
+                  emit(state.copyWith(raiseHands: {
+                    ...state.raiseHands..remove(message.sid),
+                  }, id: state.notifyIndex + 1));
+                },
+              );
               break;
           }
         } catch (err) {
@@ -80,36 +91,25 @@ class RoomCubit extends MCubit<RoomInitial> {
 
     userMediaTracks.sort((a, b) {
       if (a.participant.isSpeaking && b.participant.isSpeaking) {
-        if (a.participant.audioLevel > b.participant.audioLevel) {
-          return -1;
-        } else {
-          return 1;
-        }
+        return (a.participant.audioLevel > b.participant.audioLevel) ? -1 : 1;
       }
 
       // last spoken at
       final aSpokeAt = a.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
       final bSpokeAt = b.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
 
-      if (aSpokeAt != bSpokeAt) {
-        return aSpokeAt > bSpokeAt ? -1 : 1;
-      }
+      if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
 
       // video on
-      if (a.participant.hasVideo != b.participant.hasVideo) {
-        return a.participant.hasVideo ? -1 : 1;
-      }
+      if (a.participant.hasVideo != b.participant.hasVideo) return a.participant.hasVideo ? -1 : 1;
 
       // joinedAt
       return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
     });
+
     final list = [...screenTracks, ...userMediaTracks];
-    loggerObject.f(list.length);
-    emit(
-      state.copyWith(
-        participantTracks: list,
-      ),
-    );
+
+    emit(state.copyWith(participantTracks: list));
   }
 
   Future<void> connect() async {
@@ -117,11 +117,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     await state.result.connect(
       state.url,
       state.token,
-      fastConnectOptions: FastConnectOptions(
-        camera: TrackOption(
-          enabled: true,
-        ),
-      ),
+      fastConnectOptions: FastConnectOptions(),
     );
     state.result.connectionState;
     emit(state.copyWith(statuses: CubitStatuses.done));

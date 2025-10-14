@@ -196,6 +196,13 @@ extension SplitByLength on String {
       return Colors.grey; // Or throw ArgumentError('Invalid grade: $this');
     }
   }
+
+  String get firstCharacter {
+    if (isEmpty) {
+      return '';
+    }
+    return this[0];
+  }
 }
 
 extension StringHelper on String? {
