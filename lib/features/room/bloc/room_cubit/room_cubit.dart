@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/util/exts.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -113,14 +114,19 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   Future<void> connect() async {
-    emit(state.copyWith(statuses: CubitStatuses.loading));
-    await state.result.connect(
-      state.url,
-      state.token,
-      fastConnectOptions: FastConnectOptions(),
-    );
-    state.result.connectionState;
-    emit(state.copyWith(statuses: CubitStatuses.done));
+    try {
+      emit(state.copyWith(statuses: CubitStatuses.loading));
+      await state.result.connect(
+        state.url,
+        state.token,
+        fastConnectOptions: FastConnectOptions(),
+      );
+      state.result.connectionState;
+      emit(state.copyWith(statuses: CubitStatuses.done));
+    } catch (e) {
+      emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
+      showErrorFromApi(state);
+    }
   }
 
   void disconnect() async {

@@ -48,7 +48,7 @@ class RoomInitial extends AbstractState<Room> {
       url: 'ws://192.168.1.69:7880',
       // url: 'wss://coretik.coretech-mena.com',
       token:
-          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjA0NTE5NzQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.03jkvGZ_qwL3jgvT0-VStTjId5Dhg2fMlATup65IFTQ',
+          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjA1NTMxMDMsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.PzLp_lPjG6LiBsR31SLtMGQcJ-50bwuS4iJyg0FE1ug',
       listener: room.createListener(),
       raiseHands: {},
       participantTracks: const [],
