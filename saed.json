@@ -1,50 +1,137 @@
-[
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjA0NTE5NzQsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.03jkvGZ_qwL3jgvT0-VStTjId5Dhg2fMlATup65IFTQ",
-    "room": "m3",
-    "identity": "manager1",
-    "display_name": "Admin user",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "0"
+{
+  "sid": "PA_mKGK3jQePaq5",
+  "identity": "uSaed",
+  "state": "ACTIVE",
+  "tracks": [
+    {
+      "sid": "TR_AMEuapZMQGCbfR",
+      "type": "AUDIO",
+      "name": "custom_audio_track_name",
+      "muted": false,
+      "width": 0,
+      "height": 0,
+      "simulcast": false,
+      "disable_dtx": false,
+      "source": "MICROPHONE",
+      "layers": [],
+      "mime_type": "audio/opus",
+      "mid": "0",
+      "codecs": [
+        {
+          "mime_type": "audio/opus",
+          "mid": "0",
+          "cid": "36573cb8-e271-443c-a4a8-13d0e17889b0",
+          "layers": [],
+          "video_layer_mode": "MODE_UNUSED",
+          "sdp_cid": ""
+        }
+      ],
+      "stereo": false,
+      "disable_red": true,
+      "encryption": "NONE",
+      "stream": "camera",
+      "version": {
+        "unix_micro": "1760961551825871",
+        "ticks": 0
+      },
+      "audio_features": [],
+      "backup_codec_policy": "PREFER_REGRESSION"
+    },
+    {
+      "sid": "TR_VSa6MBmyXRksNy",
+      "type": "VIDEO",
+      "name": "screenshare",
+      "muted": false,
+      "width": 1920,
+      "height": 1080,
+      "simulcast": true,
+      "disable_dtx": false,
+      "source": "SCREEN_SHARE",
+      "layers": [
+        {
+          "quality": "LOW",
+          "width": 960,
+          "height": 540,
+          "bitrate": 150000,
+          "ssrc": 3635839627,
+          "spatial_layer": 0,
+          "rid": "q"
+        },
+        {
+          "quality": "MEDIUM",
+          "width": 1920,
+          "height": 1080,
+          "bitrate": 3000000,
+          "ssrc": 1049823392,
+          "spatial_layer": 1,
+          "rid": "h"
+        }
+      ],
+      "mime_type": "video/H264",
+      "mid": "2",
+      "codecs": [
+        {
+          "mime_type": "video/H264",
+          "mid": "2",
+          "cid": "283b9f8a-213f-4973-ae57-40021318e519",
+          "layers": [
+            {
+              "quality": "LOW",
+              "width": 960,
+              "height": 540,
+              "bitrate": 150000,
+              "ssrc": 3635839627,
+              "spatial_layer": 0,
+              "rid": "q"
+            },
+            {
+              "quality": "MEDIUM",
+              "width": 1920,
+              "height": 1080,
+              "bitrate": 3000000,
+              "ssrc": 1049823392,
+              "spatial_layer": 1,
+              "rid": "h"
+            }
+          ],
+          "video_layer_mode": "ONE_SPATIAL_LAYER_PER_STREAM",
+          "sdp_cid": ""
+        }
+      ],
+      "stereo": false,
+      "disable_red": false,
+      "encryption": "NONE",
+      "stream": "screen",
+      "version": {
+        "unix_micro": "1760962819603703",
+        "ticks": 0
+      },
+      "audio_features": [],
+      "backup_codec_policy": "PREFER_REGRESSION"
     }
+  ],
+  "metadata": "",
+  "joined_at": "1760961550",
+  "joined_at_ms": "1760961550943",
+  "name": "الضيف",
+  "version": 11,
+  "permission": {
+    "can_subscribe": true,
+    "can_publish": true,
+    "can_publish_data": true,
+    "can_publish_sources": [],
+    "hidden": false,
+    "recorder": false,
+    "can_update_metadata": false,
+    "agent": false,
+    "can_subscribe_metrics": false
   },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2hhcmVyIHVzZXIiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIxIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InNoYXJlcjEifQ.4V7CyS_DQW7YQMAD3CKPz7M2L0vfBQp1_zK-YtX4zQU",
-    "room": "m3",
-    "identity": "sharer1",
-    "display_name": "Sharer user",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "1"
-    }
+  "region": "",
+  "is_publisher": true,
+  "kind": "STANDARD",
+  "attributes": {
+    "imageUrl": "https://cdn-icons-png.flaticon.com/512/9187/9187604.png"
   },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiU2FlZCBBbCBIYW5hc2giLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InVzZXIxIn0.lxf_3X1cv51ppV9QifM9As6voZgj_FcxsfCz5ISokaU",
-    "room": "m3",
-    "identity": "user1",
-    "display_name": "Saed Al Hanash",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "2"
-    }
-  },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWJkIGFsLVJhaG1hbiAiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIyIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTMifSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYwNDUxOTc0LCJuYmYiOjAsInN1YiI6InVzZXIyIn0.4zuEN0suI8Rtar5GF3Fdc96qfPECmbEPKcWd2OBqd0k",
-    "room": "m3",
-    "identity": "user2",
-    "display_name": "abd al-Rahman ",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "2"
-    }
-  }
-]
+  "disconnect_reason": "UNKNOWN_REASON",
+  "kind_details": []
+}

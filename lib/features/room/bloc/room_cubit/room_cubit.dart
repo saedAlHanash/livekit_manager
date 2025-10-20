@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -136,7 +137,12 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void setUrl(String url) => emit(state.copyWith(url: url));
 
-  void setToken(String token) => emit(state.copyWith(token: token));
+  void setToken(String token) {
+    AppSharedPreference.cashToken(token);
+    emit(
+      state.copyWith(token: token),
+    );
+  }
 
   void selectParticipant(String participantTrackId) {
     emit(state.copyWith(selectedUserId: participantTrackId));

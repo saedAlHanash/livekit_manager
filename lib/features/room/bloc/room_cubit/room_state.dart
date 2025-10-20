@@ -45,10 +45,9 @@ class RoomInitial extends AbstractState<Room> {
       id: 0,
       result: room,
       request: '',
-      url: 'ws://192.168.1.69:7880',
+      url: '',
       // url: 'wss://coretik.coretech-mena.com',
-      token:
-          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWRtaW4gdXNlciIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjAifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMyJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjA1NTMxMDMsIm5iZiI6MCwic3ViIjoibWFuYWdlcjEifQ.PzLp_lPjG6LiBsR31SLtMGQcJ-50bwuS4iJyg0FE1ug',
+      token: '',
       listener: room.createListener(),
       raiseHands: {},
       participantTracks: const [],

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -722,6 +723,25 @@ extension ParticipantTrackH on ParticipantTrack {
 
 extension RemoteParticipantH on RemoteParticipant {
   LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  RemoteAudioTrack? get activeAudioTrack =>
+      audioTrackPublications.firstWhereOrNull((element) => element.enabled)?.track;
+
+  RemoteVideoTrack? get shareScreenTrack =>
+      videoTrackPublications.firstWhereOrNull((element) => element.isScreenShare)?.track;
+
+  RemoteVideoTrack? get cameraTrack =>
+      videoTrackPublications.firstWhereOrNull((element) => !element.isScreenShare)?.track;
+
+  bool get isSuspend => permissions.isSuspend;
+}
+
+extension ParticipantPermissionsH on ParticipantPermissions {
+  bool get isSuspend => !canSubscribe && !canPublish;
+
+  bool get isMuteAll => canSubscribe && !canPublish;
+
+  bool get isAll => canSubscribe && canPublish;
 }
 
 extension ConnectionQualityH on ConnectionQuality {

@@ -38,13 +38,13 @@ class PatchUrl {
   //
 }
 
-const additionalConst = '/api/v1/';
-const localUrl = '192.168.1.107:5001';
+const additionalConst = '/twirp/livekit.RoomService/';
+const localUrl = '192.168.1.69:7880';
 const liveUrl = 'portal-be.coretech-mena.com';
 
 String get baseUrl {
-  // return localUrl;
-  return liveUrl;
+  return localUrl;
+  // return liveUrl;
 }
 
 String imagePath = 'http://$baseUrl/documents/';
