@@ -8,7 +8,6 @@ import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/menu_widget.dart';
-import 'package:livekit_manager/features/room/data/request/change_track_request.dart';
 import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 
@@ -28,9 +27,9 @@ class ItemUserRemote extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i].participant as RemoteParticipant;
+        final participant = state.participantTracks[i].remoteParticipant;
         final audio = state.participantTracks[i].activeAudioTrack;
-        final isSelected = participant.sid == state.selectedParticipantTrack?.participant.sid;
+        final isSelected = participant.sid == state.selectedParticipant?.remoteParticipant.sid;
         return Container(
           height: 120.0.h,
           decoration: BoxDecoration(
@@ -45,9 +44,122 @@ class ItemUserRemote extends StatelessWidget {
             child: Stack(
               alignment: AlignmentGeometry.center,
               children: [
-                DynamicUser(
-                  participantTrack: state.participantTracks[i],
-                  fit: VideoViewFit.cover,
+                UserImageOrName(
+                  participant: state.participantTracks[i],
+                ),
+                Align(
+                  alignment: AlignmentGeometry.topCenter,
+                  child: Container(
+                    width: 1.0.sw,
+                    height: 30.0.h,
+                    padding: EdgeInsets.all(4.0).r,
+                    color: Colors.black38,
+                    child: DrawableText(
+                      text: participant.name,
+                      size: 11.0.sp,
+                    ),
+                  ),
+                ),
+                if (state.raiseHands.contains(participant.sid))
+                  Align(
+                    alignment: AlignmentGeometry.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ImageMultiType(
+                        url: Icons.back_hand_outlined,
+                        width: 18.0.w,
+                      ),
+                    ),
+                  ),
+                Align(
+                  alignment: AlignmentGeometry.topLeft,
+                  child: BlocBuilder<UserControlCubit, UserControlInitial>(
+                    builder: (context, state) {
+                      if (state.loading) {
+                        return SizedBox(
+                          height: 24.0.dg,
+                          width: 24.0.dg,
+                          child: MyStyle.loadingWidget(),
+                        );
+                      }
+                      return DynamicPopupMenu(
+                        icon: Icons.menu,
+                        items: [
+                          PopupMenuItemModel(
+                            label: (participant.isSuspend) ? 'Resume User' : 'Suspend User',
+                            icon: participant.isSuspend ? Icons.play_arrow : Icons.pause,
+                            onTap: () {
+                              if (participant.isSuspend) {
+                                context.read<UserControlCubit>().resume(participant.identity);
+                              } else {
+                                context.read<UserControlCubit>().suspend(participant.identity);
+                              }
+                            },
+                          ),
+                          PopupMenuItemModel(
+                            label: participant.isMicrophoneEnabled() ? 'Mute' : 'Allow to Speak',
+                            icon: participant.isMicrophoneEnabled() ? Icons.mic_off : Icons.mic,
+                            onTap: () {
+                              if (participant.permissions.canPublish) {
+                                context.read<UserControlCubit>().muteUser(participant.identity);
+                              } else {
+                                context.read<UserControlCubit>().resume(participant.identity);
+                              }
+                            },
+                          ),
+                          PopupMenuItemModel(
+                            label: 'Disconnect',
+                            icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
+                            onTap: () {
+                              context.read<UserControlCubit>().disconnect(participant.identity);
+                            },
+                          ),
+                          PopupMenuItemModel(
+                            label: 'Disconnect and Ban',
+                            icon: ImageMultiType(url: Icons.block, color: Colors.red),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ItemUserSpeaker extends StatelessWidget {
+  const ItemUserSpeaker({super.key, required this.i});
+
+  final int i;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RoomCubit, RoomInitial>(
+      builder: (context, state) {
+        final participant = state.participantTracks[i].remoteParticipant;
+        final audio = state.participantTracks[i].activeAudioTrack;
+        final isSelected = participant.sid == state.selectedParticipant?.remoteParticipant.sid;
+        return Container(
+          height: 120.0.h,
+          decoration: BoxDecoration(
+            color: AppColorManager.appBarColor,
+            borderRadius: BorderRadius.circular(12.0).r,
+            border: Border.all(color: isSelected ? AppColorManager.mainColor : Colors.transparent, width: 3.0),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: ClipRRect(
+            clipBehavior: Clip.hardEdge,
+            borderRadius: BorderRadius.circular(12.0).r,
+            child: Stack(
+              alignment: AlignmentGeometry.center,
+              children: [
+                UserImageOrName(
+                  participant: state.participantTracks[i],
                 ),
                 Align(
                   alignment: AlignmentGeometry.topCenter,
@@ -115,7 +227,7 @@ class ItemUserRemote extends StatelessWidget {
                           return DynamicPopupMenu(
                             items: [
                               PopupMenuItemModel(
-                                label: (participant.isSuspend) ? 'استئناف المستخدم' : 'تعليق المستخدم',
+                                label: (participant.isSuspend) ? 'Resume User' : 'Suspend User',
                                 icon: participant.isSuspend ? Icons.play_arrow : Icons.pause,
                                 onTap: () {
                                   if (participant.isSuspend) {
@@ -126,7 +238,7 @@ class ItemUserRemote extends StatelessWidget {
                                 },
                               ),
                               PopupMenuItemModel(
-                                label: participant.isMicrophoneEnabled() ? 'كتم' : 'السماح بالكلام',
+                                label: participant.isMicrophoneEnabled() ? 'Mute' : 'Allow to Speak',
                                 icon: participant.isMicrophoneEnabled() ? Icons.mic_off : Icons.mic,
                                 onTap: () {
                                   if (participant.permissions.canPublish) {
@@ -137,14 +249,14 @@ class ItemUserRemote extends StatelessWidget {
                                 },
                               ),
                               PopupMenuItemModel(
-                                label: 'قطع الاتصال',
+                                label: 'Disconnect',
                                 icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
                                 onTap: () {
                                   context.read<UserControlCubit>().disconnect(participant.identity);
                                 },
                               ),
                               PopupMenuItemModel(
-                                label: 'قطع الاتصال والحظر',
+                                label: 'Disconnect and Ban',
                                 icon: ImageMultiType(url: Icons.block, color: Colors.red),
                               ),
                             ],

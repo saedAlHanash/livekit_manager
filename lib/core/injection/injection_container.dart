@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:livekit_manager/features/home/bloc/home_cubit/home_cubit.dart';
 import 'package:livekit_manager/features/home/bloc/homes_cubit/homes_cubit.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
-
 import 'package:livekit_manager/features/setting/bloc/setting_cubit/setting_cubit.dart';
 import 'package:livekit_manager/features/setting/bloc/settings_cubit/settings_cubit.dart';
 import 'package:livekit_manager/features/user/bloc/user_cubit/user_cubit.dart';

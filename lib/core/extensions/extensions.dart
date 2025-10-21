@@ -16,7 +16,6 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
-import '../../features/room/ui/widget/participant_info.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
@@ -691,23 +690,15 @@ extension GlobalKeyH on GlobalKey {
 }
 
 extension ParticipantH on Participant {
-  String get displayName {
-    if (identity.isNotEmpty) return identity;
-    if (name.isNotEmpty) return name;
-    return sid;
-  }
-}
+  RemoteParticipant get remoteParticipant => this as RemoteParticipant;
 
-extension ParticipantTrackH on ParticipantTrack {
-  RemoteParticipant get participant => this.participant as RemoteParticipant;
-
-  MediaType get type => this.type;
+  MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
   RemoteTrackPublication<RemoteVideoTrack>? get videoPublication =>
-      participant.videoTrackPublications.where((element) => element.source == type.videoSourceType).firstOrNull;
+      remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
 
   RemoteTrackPublication<RemoteAudioTrack>? get audioPublication =>
-      participant.audioTrackPublications.where((element) => element.source == type.audioSourceType).firstOrNull;
+      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
   VideoTrack? get activeVideoTrack => videoPublication?.track;
 
@@ -718,20 +709,23 @@ extension ParticipantTrackH on ParticipantTrack {
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
   LkUserType get userType =>
-      LkUserType.values[(participant.attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+      LkUserType.values[(remoteParticipant.attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  String get displayName {
+    if (identity.isNotEmpty) return identity;
+    if (name.isNotEmpty) return name;
+    return sid;
+  }
 }
 
 extension RemoteParticipantH on RemoteParticipant {
   LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
-  RemoteAudioTrack? get activeAudioTrack =>
-      audioTrackPublications.firstWhereOrNull((element) => element.enabled)?.track;
+  RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
 
-  RemoteVideoTrack? get shareScreenTrack =>
-      videoTrackPublications.firstWhereOrNull((element) => element.isScreenShare)?.track;
+  RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
 
-  RemoteVideoTrack? get cameraTrack =>
-      videoTrackPublications.firstWhereOrNull((element) => !element.isScreenShare)?.track;
+  RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
 
   bool get isSuspend => permissions.isSuspend;
 }
@@ -742,6 +736,14 @@ extension ParticipantPermissionsH on ParticipantPermissions {
   bool get isMuteAll => canSubscribe && !canPublish;
 
   bool get isAll => canSubscribe && canPublish;
+
+  String get printFun {
+    return 'canSubscribe: $canSubscribe\n'
+        'canPublish: $canPublish\n'
+        'canPublishData: $canPublishData\n'
+        'canUpdateMetadata: $canUpdateMetadata\n'
+        'hidden: $hidden';
+  }
 }
 
 extension ConnectionQualityH on ConnectionQuality {

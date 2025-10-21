@@ -645,5 +645,7 @@
   "allStudentsRank": "All Students",
   "higherThanYou": "Higher Than You",
   "lowerThanYou": "Lower Than You",
-  "addOrder": "Add Order"
+  "addOrder": "Add Order",
+  "audiences": "Audiences",
+  "speakers": "Speakers"
 }

@@ -232,7 +232,7 @@ class _PreJoinPageState extends State<PreJoinPage> {
 
       await Navigator.push<void>(
         context,
-        MaterialPageRoute(builder: (_) => RoomPage1(room, listener)),
+        MaterialPageRoute(builder: (_) => RoomPage1()),
       );
     } catch (error) {
       NoteMessage.showAwesomeError(message: error.toString());

@@ -1,20 +1,15 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:math' as math;
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/util/exts.dart';
 
-import '../../../../core/strings/enum_manager.dart';
-import '../../../../core/util/utils.dart';
-import '../widget/controls.dart';
-import '../widget/participant_info.dart';
-import '../widget/users/dynamic_user.dart';
+class RoomPage1 extends StatelessWidget {
+  const RoomPage1({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+/*
 class RoomPage1 extends StatefulWidget {
   const RoomPage1(
     this.room,
@@ -32,14 +27,14 @@ class RoomPage1 extends StatefulWidget {
 class _RoomPage1State extends State<RoomPage1> {
   String? selectedUserId;
 
-  List<ParticipantTrack> participantTracks = [];
+  List<Participant> participantTracks = [];
 
-  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
-      .where((e) => e.participant.sid != selectedParticipantTrack.participant.sid)
+  List<Participant> get participantTracksWithoutSelected => participantTracks
+      .where((e) => e.sid != selectedParticipant.sid)
       .toList(growable: false);
 
-  ParticipantTrack get selectedParticipantTrack =>
-      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.first;
+  Participant get selectedParticipant =>
+      participantTracks.firstWhereOrNull((e) => e.sid == selectedUserId) ?? participantTracks.first;
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
@@ -167,25 +162,25 @@ class _RoomPage1State extends State<RoomPage1> {
   }
 
   void _sortParticipants() {
-    List<ParticipantTrack> userMediaTracks = [];
-    List<ParticipantTrack> screenTracks = [];
+    List<Participant> userMediaTracks = [];
+    List<Participant> screenTracks = [];
     for (var participant in widget.room.remoteParticipants.values) {
       for (var t in participant.videoTrackPublications) {
         if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
+          screenTracks.add(Participant(
             participant: participant,
             type: MediaType.screen,
           ));
         } else {
-          userMediaTracks.add(ParticipantTrack(participant: participant));
+          userMediaTracks.add(Participant(participant: participant));
         }
       }
     }
     // sort speakers for the grid
     userMediaTracks.sort((a, b) {
       // loudest speaker first
-      if (a.participant.isSpeaking && b.participant.isSpeaking) {
-        if (a.participant.audioLevel > b.participant.audioLevel) {
+      if (a.isSpeaking && b.isSpeaking) {
+        if (a.audioLevel > b.audioLevel) {
           return -1;
         } else {
           return 1;
@@ -193,32 +188,32 @@ class _RoomPage1State extends State<RoomPage1> {
       }
 
       // last spoken at
-      final aSpokeAt = a.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-      final bSpokeAt = b.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+      final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+      final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
 
       if (aSpokeAt != bSpokeAt) {
         return aSpokeAt > bSpokeAt ? -1 : 1;
       }
 
       // video on
-      if (a.participant.hasVideo != b.participant.hasVideo) {
-        return a.participant.hasVideo ? -1 : 1;
+      if (a.hasVideo != b.hasVideo) {
+        return a.hasVideo ? -1 : 1;
       }
 
       // joinedAt
-      return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
+      return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
     });
 
-    final localParticipantTracks = widget.room.localParticipant?.videoTrackPublications;
-    if (localParticipantTracks != null) {
-      for (var t in localParticipantTracks) {
+    final localParticipants = widget.room.localParticipant?.videoTrackPublications;
+    if (localParticipants != null) {
+      for (var t in localParticipants) {
         if (t.isScreenShare) {
-          screenTracks.add(ParticipantTrack(
+          screenTracks.add(Participant(
             participant: widget.room.localParticipant!,
             type: MediaType.screen,
           ));
         } else {
-          userMediaTracks.add(ParticipantTrack(participant: widget.room.localParticipant!));
+          userMediaTracks.add(Participant(participant: widget.room.localParticipant!));
         }
       }
     }
@@ -236,7 +231,7 @@ class _RoomPage1State extends State<RoomPage1> {
             children: [
               Expanded(
                 child: participantTracks.isNotEmpty
-                    ? DynamicUser(participantTrack: selectedParticipantTrack)
+                    ? DynamicUser(participantTrack: selectedParticipant)
                     : Container(),
               ),
               if (widget.room.localParticipant != null)
@@ -261,8 +256,8 @@ class _RoomPage1State extends State<RoomPage1> {
                   return InkWell(
                     onTap: () {
                       setState(() {
-                        loggerObject.i(item.participant.name);
-                        selectedUserId = item.participant.sid;
+                        loggerObject.i(item.name);
+                        selectedUserId = item.sid;
                       });
                     },
                     child: SizedBox(
@@ -280,3 +275,4 @@ class _RoomPage1State extends State<RoomPage1> {
     );
   }
 }
+*/

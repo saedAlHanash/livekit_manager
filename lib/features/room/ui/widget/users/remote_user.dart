@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/features/room/ui/widget/participant_info.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
@@ -12,7 +11,7 @@ import '../../../../../core/strings/enum_manager.dart';
 class RemoteUser extends StatefulWidget {
   const RemoteUser({super.key, required this.participantTrack, this.fit = VideoViewFit.contain});
 
-  final ParticipantTrack participantTrack;
+  final Participant participantTrack;
   final VideoViewFit fit;
 
   @override
@@ -20,7 +19,7 @@ class RemoteUser extends StatefulWidget {
 }
 
 class _RemoteUserState extends State<RemoteUser> {
-  RemoteParticipant get participant => widget.participantTrack.participant as RemoteParticipant;
+  RemoteParticipant get participant => widget.participantTrack.remoteParticipant;
 
   MediaType get type => widget.participantTrack.type;
 
@@ -53,7 +52,7 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   void didUpdateWidget(covariant RemoteUser oldWidget) {
-    oldWidget.participantTrack.participant.removeListener(_onParticipantChanged);
+    oldWidget.participantTrack.remoteParticipant.removeListener(_onParticipantChanged);
     participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
@@ -76,7 +75,9 @@ class _RemoteUserState extends State<RemoteUser> {
         : (!participant.attributes['imageUrl'].toString().isBlank)
             ? ImageMultiType(
                 url: participant.attributes['imageUrl'],
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
+                height: 100.0.r,
+                width: 100.0.r,
               )
             : Container(
                 height: 60.0,

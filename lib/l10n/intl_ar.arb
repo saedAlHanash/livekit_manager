@@ -644,5 +644,7 @@
   "allStudentsRank": "كل الطلاب",
   "higherThanYou": "اعلى منك",
   "lowerThanYou": "أقل منك",
-  "addOrder": "أضافة طلب"
+  "addOrder": "أضافة طلب",
+  "audiences": "الجمهور",
+  "speakers": "Speakers"
 }

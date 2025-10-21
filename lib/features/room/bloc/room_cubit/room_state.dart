@@ -24,16 +24,15 @@ class RoomInitial extends AbstractState<Room> {
   final EventsListener<RoomEvent> listener;
 
   final Set<String> raiseHands;
-  final List<ParticipantTrack> participantTracks;
+  final List<Participant> participantTracks;
 
   final String selectedUserId;
 
-  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
-      .where((e) => e.participant.sid != selectedParticipantTrack?.participant.sid)
-      .toList(growable: false);
+  List<Participant> get participantTracksWithoutSelected =>
+      participantTracks.where((e) => e.sid != selectedParticipant?.sid).toList(growable: false);
 
-  ParticipantTrack? get selectedParticipantTrack =>
-      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.firstOrNull;
+  Participant? get selectedParticipant =>
+      participantTracks.firstWhereOrNull((e) => e.sid == selectedUserId) ?? participantTracks.firstOrNull;
 
   ConnectionState get connectionState => result.connectionState;
 
@@ -80,7 +79,7 @@ class RoomInitial extends AbstractState<Room> {
       String? url,
       String? token,
       EventsListener<RoomEvent>? listener,
-      List<ParticipantTrack>? participantTracks,
+      List<Participant>? participantTracks,
       Set<String>? raiseHands,
       String? selectedUserId}) {
     return RoomInitial(

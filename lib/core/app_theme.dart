@@ -152,7 +152,12 @@ ThemeData get darkTheme => ThemeData(
         strokeCap: StrokeCap.round,
       ),
       primaryColorDark: Color(0xff13161D),
-      dividerColor: Color(0xff4D5259),
+      dividerColor: AppColorManager.mainColorDark,
+      dividerTheme: DividerThemeData(
+        color: Colors.black,
+        endIndent: 15.0.dg,
+        indent: 15.0.dg,
+      ),
       shadowColor: AppColorManager.darkColor.withValues(alpha: 0.5),
       listTileTheme: ListTileThemeData(
         horizontalTitleGap: 10.0,

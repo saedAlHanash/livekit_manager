@@ -7,6 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/safe_area_values.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../generated/l10n.dart';
 import '../app/app_widget.dart';
@@ -15,11 +18,36 @@ import '../widgets/my_button.dart';
 import '../widgets/snake_bar_widget.dart';
 
 class NoteMessage {
+  static void showTopMessage({required String message, required BuildContext context}) {
+    // if (ctx != null) return;
+    showTopSnackBar(
+      Overlay.of(context),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
+      CustomSnackBar.success(
+        message: message,
+      ),
+      safeAreaValues: SafeAreaValues(top: true),
+    );
+  }
+
   static void showSuccessSnackBar({required String message, required BuildContext context}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        content: DrawableText(
+          text: message,
+          color: Colors.white,
+          fontFamily: FontManager.bold.name,
+        ),
+        behavior: SnackBarBehavior.floating,
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        margin: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top + 16, // احترام SafeArea
+          left: 16,
+          right: 16,
+        ),
         backgroundColor: Colors.green,
+        elevation: 6,
+        duration: const Duration(seconds: 2),
       ),
     );
   }

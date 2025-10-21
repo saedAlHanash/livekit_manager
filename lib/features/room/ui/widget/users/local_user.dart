@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/my_card_widget.dart';
-import 'package:livekit_manager/features/room/ui/widget/participant_info.dart';
 import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
@@ -12,14 +11,14 @@ import '../no_video.dart';
 class LocalUser extends StatefulWidget {
   const LocalUser({super.key, required this.participantTrack});
 
-  final ParticipantTrack participantTrack;
+  final Participant participantTrack;
 
   @override
   State<LocalUser> createState() => _LocalUserState();
 }
 
 class _LocalUserState extends State<LocalUser> {
-  LocalParticipant get participant => widget.participantTrack.participant as LocalParticipant;
+  LocalParticipant get participant => widget.participantTrack.remoteParticipant as LocalParticipant;
 
   MediaType get type => widget.participantTrack.type;
 
@@ -52,7 +51,7 @@ class _LocalUserState extends State<LocalUser> {
 
   @override
   void didUpdateWidget(covariant LocalUser oldWidget) {
-    oldWidget.participantTrack.participant.removeListener(_onParticipantChanged);
+    oldWidget.participantTrack.remoteParticipant.removeListener(_onParticipantChanged);
     participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
@@ -79,14 +78,6 @@ class _LocalUserState extends State<LocalUser> {
                 ),
               )
             : const NoVideoWidget(),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ParticipantInfoWidget(
-            title: participant.displayName,
-            connectionQuality: participant.connectionQuality,
-            enabledE2EE: participant.isEncrypted,
-          ),
-        ),
         if (activeAudioTrack != null)
           Padding(
             padding: const EdgeInsets.all(20.0).r,

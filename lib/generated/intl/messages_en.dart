@@ -100,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "at": MessageLookupByLibrary.simpleMessage("At"),
     "atLeast": MessageLookupByLibrary.simpleMessage("At least"),
     "atMost": MessageLookupByLibrary.simpleMessage("At most"),
+    "audiences": MessageLookupByLibrary.simpleMessage("Audiences"),
     "august": MessageLookupByLibrary.simpleMessage("august"),
     "auto": MessageLookupByLibrary.simpleMessage("Auto"),
     "back": MessageLookupByLibrary.simpleMessage("Back"),
@@ -805,6 +806,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "slippageScaler": MessageLookupByLibrary.simpleMessage("Slippage Scaler"),
     "sort": MessageLookupByLibrary.simpleMessage("sort"),
     "source": MessageLookupByLibrary.simpleMessage("Source"),
+    "speakers": MessageLookupByLibrary.simpleMessage("Speakers"),
     "specialInstructions": MessageLookupByLibrary.simpleMessage(
       "Special instructions",
     ),

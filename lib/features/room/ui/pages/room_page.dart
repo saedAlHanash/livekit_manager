@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:livekit_manager/features/room/ui/widget/audiences_widget.dart';
+import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
+import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
-import '../widget/item_user.dart';
 import '../widget/users/dynamic_user.dart';
 
 class RoomPage extends StatefulWidget {
@@ -29,31 +31,32 @@ class _RoomPageState extends State<RoomPage> {
       ),
       body: BlocBuilder<RoomCubit, RoomInitial>(
         builder: (context, state) {
-          // loggerObject.i(state.raiseHands);
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.participantTracks.length,
-                    padding: EdgeInsets.all(15.0),
-                    itemBuilder: (context, i) {
-                      return ItemUserRemote(i: i);
-                    },
-                  ),
-                ),
-                if (state.selectedParticipantTrack != null)
+                Expanded(child: AudiencesWidget()),
+                Expanded(child: SpeakersWidget()),
+                if (state.selectedParticipant != null)
                   Expanded(
                     flex: 5,
-                    child: Container(
-                      height: 1.0.sh,
-                      decoration: BoxDecoration(
-                        color: AppColorManager.appBarColor,
-                        borderRadius: BorderRadius.circular(12.0).r,
-                      ),
-                      padding: const EdgeInsets.all(15.0),
-                      child: DynamicUser(participantTrack: state.selectedParticipantTrack!),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            width: 1.0.sw,
+                            decoration: BoxDecoration(
+                              color: AppColorManager.appBarColor,
+                              borderRadius: BorderRadius.circular(12.0).r,
+                            ),
+                            padding: const EdgeInsets.all(15.0),
+                            child: DynamicUser(participant: state.selectedParticipant!),
+                          ),
+                        ),
+                        Expanded(
+                          child: NotesWidget(),
+                        ),
+                      ],
                     ),
                   )
               ],
@@ -64,3 +67,4 @@ class _RoomPageState extends State<RoomPage> {
     );
   }
 }
+//audiences

@@ -12,7 +12,6 @@ import '../../../../core/api_manager/api_service.dart';
 import '../../../../core/app/app_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../data/request/setting_message.dart';
-import '../../ui/widget/participant_info.dart';
 
 part 'room_state.dart';
 
@@ -79,34 +78,29 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void _sortParticipants() {
-    List<ParticipantTrack> userMediaTracks = [];
-    List<ParticipantTrack> screenTracks = [];
+    List<Participant> userMediaTracks = [];
+    List<Participant> screenTracks = [];
 
     for (var participant in state.result.remoteParticipants.values) {
-      screenTracks.add(
-        ParticipantTrack(
-          participant: participant,
-          type: participant.videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media,
-        ),
-      );
+      screenTracks.add(participant);
     }
 
     userMediaTracks.sort((a, b) {
-      if (a.participant.isSpeaking && b.participant.isSpeaking) {
-        return (a.participant.audioLevel > b.participant.audioLevel) ? -1 : 1;
+      if (a.isSpeaking && b.isSpeaking) {
+        return (a.audioLevel > b.audioLevel) ? -1 : 1;
       }
 
       // last spoken at
-      final aSpokeAt = a.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-      final bSpokeAt = b.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+      final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+      final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
 
       if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
 
       // video on
-      if (a.participant.hasVideo != b.participant.hasVideo) return a.participant.hasVideo ? -1 : 1;
+      if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
 
       // joinedAt
-      return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
+      return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
     });
 
     final list = [...screenTracks, ...userMediaTracks];
