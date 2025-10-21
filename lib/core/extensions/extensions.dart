@@ -692,30 +692,51 @@ extension GlobalKeyH on GlobalKey {
 extension ParticipantH on Participant {
   RemoteParticipant get remoteParticipant => this as RemoteParticipant;
 
+  LocalParticipant get localParticipant => this as LocalParticipant;
+
   MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
-  RemoteTrackPublication<RemoteVideoTrack>? get videoPublication =>
-      remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  RemoteTrackPublication<RemoteVideoTrack>? get remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  }
 
-  RemoteTrackPublication<RemoteAudioTrack>? get audioPublication =>
+  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
       remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
-  VideoTrack? get activeVideoTrack => videoPublication?.track;
+  LocalTrackPublication<LocalVideoTrack>? get localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  }
 
-  AudioTrack? get activeAudioTrack => audioPublication?.track;
+  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+
+  //
+  // LocalTrackPublication<LocalVideoTrack>? get videoPublication {
+  //   return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  // }
+  //
+  // LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
+  //     remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+
+  VideoTrack? get activeVideoTrack =>
+      (this is LocalParticipant) ? localVideoPublication?.track : remoteVideoPublication?.track;
+
+  AudioTrack? get activeAudioTrack =>
+      (this is LocalParticipant) ? localAudioPublication?.track : remoteAudioPublication?.track;
 
   bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
-  LkUserType get userType =>
-      LkUserType.values[(remoteParticipant.attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
     if (identity.isNotEmpty) return identity;
     if (name.isNotEmpty) return name;
     return sid;
   }
+
+  bool get isSuspend => permissions.isSuspend;
 }
 
 extension RemoteParticipantH on RemoteParticipant {
@@ -726,8 +747,16 @@ extension RemoteParticipantH on RemoteParticipant {
   RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
 
   RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+}
 
-  bool get isSuspend => permissions.isSuspend;
+extension LocalParticipantH on LocalParticipant {
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
+
+  LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
+
+  LocalVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
 }
 
 extension ParticipantPermissionsH on ParticipantPermissions {

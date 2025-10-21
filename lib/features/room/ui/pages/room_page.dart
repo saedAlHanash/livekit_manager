@@ -37,11 +37,11 @@ class _RoomPageState extends State<RoomPage> {
               children: [
                 Expanded(child: AudiencesWidget()),
                 Expanded(child: SpeakersWidget()),
-                if (state.selectedParticipant != null)
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      children: [
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      if (state.selectedParticipant != null)
                         Expanded(
                           child: Container(
                             width: 1.0.sw,
@@ -53,12 +53,12 @@ class _RoomPageState extends State<RoomPage> {
                             child: DynamicUser(participant: state.selectedParticipant!),
                           ),
                         ),
-                        Expanded(
-                          child: NotesWidget(),
-                        ),
-                      ],
-                    ),
-                  )
+                      Expanded(
+                        child: NotesWidget(),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           );

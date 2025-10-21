@@ -9,50 +9,32 @@ import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
 
 class LocalUser extends StatefulWidget {
-  const LocalUser({super.key, required this.participantTrack});
+  const LocalUser({super.key, required this.participant});
 
-  final Participant participantTrack;
+  final Participant participant;
 
   @override
   State<LocalUser> createState() => _LocalUserState();
 }
 
 class _LocalUserState extends State<LocalUser> {
-  LocalParticipant get participant => widget.participantTrack.remoteParticipant as LocalParticipant;
-
-  MediaType get type => widget.participantTrack.type;
-
-  LocalTrackPublication<LocalVideoTrack>? get videoPublication =>
-      participant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
-
-  LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
-      participant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
-
-  VideoTrack? get activeVideoTrack => videoPublication?.track;
-
-  AudioTrack? get activeAudioTrack => audioPublication?.track;
-
-  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
-
-  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
-
   @override
   void initState() {
     super.initState();
-    participant.addListener(_onParticipantChanged);
+    widget.participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
   }
 
   @override
   void dispose() {
-    participant.removeListener(_onParticipantChanged);
+    widget.participant.removeListener(_onParticipantChanged);
     super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant LocalUser oldWidget) {
-    oldWidget.participantTrack.remoteParticipant.removeListener(_onParticipantChanged);
-    participant.addListener(_onParticipantChanged);
+    oldWidget.participant.localParticipant.removeListener(_onParticipantChanged);
+    widget.participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
   }
@@ -67,25 +49,25 @@ class _LocalUserState extends State<LocalUser> {
   Widget build(BuildContext ctx) {
     return Stack(
       children: [
-        videoActive
+        widget.participant.videoActive
             ? MyCardWidget(
                 margin: EdgeInsets.all(20.0).r,
                 radios: 20.0,
                 child: VideoTrackRenderer(
                   renderMode: VideoRenderMode.auto,
                   fit: VideoViewFit.contain,
-                  activeVideoTrack!,
+                  widget.participant.activeVideoTrack!,
                 ),
               )
             : const NoVideoWidget(),
-        if (activeAudioTrack != null)
+        if (widget.participant.activeAudioTrack != null)
           Padding(
             padding: const EdgeInsets.all(20.0).r,
             child: Align(
                 alignment: Alignment.topRight,
                 child: SoundWaveformWidget(
-                  key: ValueKey(activeAudioTrack!.hashCode),
-                  audioTrack: activeAudioTrack!,
+                  key: ValueKey(widget.participant.activeAudioTrack!.hashCode),
+                  audioTrack: widget.participant.activeAudioTrack!,
                   width: 8,
                 )),
           ),

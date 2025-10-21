@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "allRequest": MessageLookupByLibrary.simpleMessage("All Request"),
     "allStudents": MessageLookupByLibrary.simpleMessage("All students"),
     "allStudentsRank": MessageLookupByLibrary.simpleMessage("All Students"),
+    "allowToSpeak": MessageLookupByLibrary.simpleMessage("Allow to Speak"),
     "alreadyHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "Already Have An Account?",
     ),
@@ -268,6 +269,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dinar": MessageLookupByLibrary.simpleMessage("Dinar"),
     "direct": MessageLookupByLibrary.simpleMessage("Direct"),
+    "disconnect": MessageLookupByLibrary.simpleMessage("Disconnect"),
+    "disconnectAndBan": MessageLookupByLibrary.simpleMessage(
+      "Disconnect and Ban",
+    ),
     "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
     "doNotHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "Don\'t Have An Account?",
@@ -539,6 +544,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "mother": MessageLookupByLibrary.simpleMessage("Mother"),
     "msp": MessageLookupByLibrary.simpleMessage("MSP"),
     "mspPerToken": MessageLookupByLibrary.simpleMessage("MSP per Token"),
+    "mute": MessageLookupByLibrary.simpleMessage("Mute"),
     "myInfo": MessageLookupByLibrary.simpleMessage("My Info"),
     "myLocation": MessageLookupByLibrary.simpleMessage("My Location"),
     "myOrder": MessageLookupByLibrary.simpleMessage("My Orders"),
@@ -719,6 +725,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resend": MessageLookupByLibrary.simpleMessage("Resend"),
     "reset": MessageLookupByLibrary.simpleMessage("Reset"),
     "reset_password": MessageLookupByLibrary.simpleMessage("Reset Password"),
+    "resumeUser": MessageLookupByLibrary.simpleMessage("Resume User"),
     "returned": MessageLookupByLibrary.simpleMessage("Returned"),
     "reviewOrder": MessageLookupByLibrary.simpleMessage("Review Order"),
     "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
@@ -842,6 +849,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "summary": MessageLookupByLibrary.simpleMessage("summary"),
     "support": MessageLookupByLibrary.simpleMessage("Support"),
     "sure": MessageLookupByLibrary.simpleMessage("Sure"),
+    "suspendUser": MessageLookupByLibrary.simpleMessage("Suspend User"),
     "suspended": MessageLookupByLibrary.simpleMessage("Suspended"),
     "swapDetails": MessageLookupByLibrary.simpleMessage("Swap Details"),
     "swapNow": MessageLookupByLibrary.simpleMessage("Swap Now"),

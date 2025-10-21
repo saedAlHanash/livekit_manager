@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -29,7 +28,9 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -4691,6 +4692,51 @@ class S {
   /// `Speakers`
   String get speakers {
     return Intl.message('Speakers', name: 'speakers', desc: '', args: []);
+  }
+
+  /// `Mute`
+  String get mute {
+    return Intl.message('Mute', name: 'mute', desc: '', args: []);
+  }
+
+  /// `Allow to Speak`
+  String get allowToSpeak {
+    return Intl.message(
+      'Allow to Speak',
+      name: 'allowToSpeak',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disconnect`
+  String get disconnect {
+    return Intl.message('Disconnect', name: 'disconnect', desc: '', args: []);
+  }
+
+  /// `Disconnect and Ban`
+  String get disconnectAndBan {
+    return Intl.message(
+      'Disconnect and Ban',
+      name: 'disconnectAndBan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resume User`
+  String get resumeUser {
+    return Intl.message('Resume User', name: 'resumeUser', desc: '', args: []);
+  }
+
+  /// `Suspend User`
+  String get suspendUser {
+    return Intl.message(
+      'Suspend User',
+      name: 'suspendUser',
+      desc: '',
+      args: [],
+    );
   }
 }
 

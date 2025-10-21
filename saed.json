@@ -1,26 +1,95 @@
 [
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2YXYr9mK2LEg2KfZhNi62LHZgdipIiwiYXR0cmlidXRlcyI6eyJpbWFnZVVybCI6Imh0dHBzOi8vY2RuLWljb25zLXBuZy5mbGF0aWNvbi5jb20vNTEyLzk3MDMvOTcwMzU5Ni5wbmcifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb21MaXN0Ijp0cnVlLCJyb29tIjoiczEiLCJyb29tQWRtaW4iOnRydWUsImNhblVwZGF0ZU93bk1ldGFkYXRhIjp0cnVlfSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMDYwNzE4LCJuYmYiOjAsInN1YiI6Im1TYWVkIn0.Zi0Arj8wa07h-wgKq_GrKfB4DPxVm74GzanB9E5pKok",
-    "room": "s1",
-    "identity": "mSaed",
-    "display_name": "مدير الغرفة",
-    "role": "admin",
-    "ttl": null,
-    "metadata": "",
+    "room_name": "s1",
+    "identity": "S1",
+    "display_name": "Saed",
+    "role": "participant",
     "attributes": {
+      "org": "teamA",
+      "locale": "ar",
       "imageUrl": "https://cdn-icons-png.flaticon.com/512/9703/9703596.png"
+    },
+    "ttl": 3600,
+    "metadata": {
+      "joined_at": "2025-10-21T14:44:34Z"
+    },
+    "participantPermissions": {
+      "canSubscribe": true,
+      "canPublish": true,
+      "canPublishData": true,
+      "hidden": false,
+      "canUpdateMetadata": true,
+      "recorder": false,
+      "canPublishSources": [
+        "microphone"
+      ]
     }
   },
   {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNi22YrZgSIsImF0dHJpYnV0ZXMiOnsiaW1hZ2VVcmwiOiJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi85MTg3LzkxODc2MDQucG5nIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tTGlzdCI6ZmFsc2UsInJvb20iOiJzMSJ9LCJpc3MiOiJBUElReFpQandwR29jY3IiLCJleHAiOjE3NjEwNjA3MTgsIm5iZiI6MCwic3ViIjoidVNhZWQifQ.oLe-fnD0a51umnCPJihBGa7LKAGNh2S3_Mt9Z-dB2uE",
-    "room": "s1",
-    "identity": "uSaed",
-    "display_name": "الضيف",
-    "role": "user",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "imageUrl": "https://cdn-icons-png.flaticon.com/512/9187/9187604.png"
+    "room_name": "test-room",
+    "identity": "bob",
+    "display_name": "Bob",
+    "role": "admin",
+    "participantPermissions": {
+      "canSubscribe": true,
+      "canPublish": true,
+      "canPublishData": true,
+      "canPublishSources": [
+        "unknown",
+        "camera",
+        "microphone",
+        "screen_share",
+        "screen_share_audio"
+      ]
     }
-  }
+  },
+  [
+    {
+      "room_name": "test-room",
+      "identity": "alice",
+      "display_name": "Alice",
+      "role": "participant",
+      "attributes": {
+        "org": "teamA",
+        "locale": "ar"
+      },
+      "ttl": 3600,
+      "metadata": {
+        "joined_at": "2025-10-21T14:44:34Z"
+      },
+      "participantPermissions": {
+        "canSubscribe": true,
+        "canPublish": true,
+        "canPublishData": true,
+        "hidden": false,
+        "canUpdateMetadata": false,
+        "recorder": false,
+        "canPublishSources": ["camera"]
+      }
+    },
+    {
+      "room_name": "s1",
+      "identity": "S1",
+      "display_name": "Saed",
+      "role": "participant",
+      "attributes": {
+        "org": "teamA",
+        "locale": "ar",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/512/9703/9703596.png"
+      },
+      "ttl": 3600,
+      "metadata": {
+        "joined_at": "2025-10-21T14:44:34Z"
+      },
+      "participantPermissions": {
+        "canSubscribe": true,
+        "canPublish": true,
+        "canPublishData": true,
+        "hidden": false,
+        "canUpdateMetadata": true,
+        "recorder": false,
+        "canPublishSources": ["microphone"]
+      }
+    }
+  ]
 ]

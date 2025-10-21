@@ -647,5 +647,11 @@
   "lowerThanYou": "Lower Than You",
   "addOrder": "Add Order",
   "audiences": "Audiences",
-  "speakers": "Speakers"
+  "speakers": "Speakers",
+  "mute": "Mute",
+  "allowToSpeak": "Allow to Speak",
+  "disconnect": "Disconnect",
+  "disconnectAndBan": "Disconnect and Ban",
+  "resumeUser": "Resume User",
+  "suspendUser": "Suspend User"
 }

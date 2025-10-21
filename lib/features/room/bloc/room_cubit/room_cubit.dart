@@ -85,6 +85,10 @@ class RoomCubit extends MCubit<RoomInitial> {
       screenTracks.add(participant);
     }
 
+    if (state.result.localParticipant != null) {
+      screenTracks.add(state.result.localParticipant!);
+    }
+
     userMediaTracks.sort((a, b) {
       if (a.isSpeaking && b.isSpeaking) {
         return (a.audioLevel > b.audioLevel) ? -1 : 1;

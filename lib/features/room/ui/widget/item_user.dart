@@ -14,6 +14,7 @@ import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart'
 import '../../../../core/strings/app_color_manager.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/my_style.dart';
+import '../../../../generated/l10n.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
 import '../../data/request/setting_message.dart';
@@ -27,9 +28,9 @@ class ItemUserRemote extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i].remoteParticipant;
-        final audio = state.participantTracks[i].activeAudioTrack;
-        final isSelected = participant.sid == state.selectedParticipant?.remoteParticipant.sid;
+        final participant = state.participantTracks[i];
+        // final audio = state.participantTracks[i].activeAudioTrack;
+        final isSelected = participant.sid == state.selectedParticipant?.sid;
         return Container(
           height: 120.0.h,
           decoration: BoxDecoration(
@@ -86,7 +87,7 @@ class ItemUserRemote extends StatelessWidget {
                         icon: Icons.menu,
                         items: [
                           PopupMenuItemModel(
-                            label: (participant.isSuspend) ? 'Resume User' : 'Suspend User',
+                            label: (participant.isSuspend) ? S.of(context).resumeUser : S.of(context).suspendUser,
                             icon: participant.isSuspend ? Icons.play_arrow : Icons.pause,
                             onTap: () {
                               if (participant.isSuspend) {
@@ -97,7 +98,7 @@ class ItemUserRemote extends StatelessWidget {
                             },
                           ),
                           PopupMenuItemModel(
-                            label: participant.isMicrophoneEnabled() ? 'Mute' : 'Allow to Speak',
+                            label: participant.isMicrophoneEnabled() ? S.of(context).mute : S.of(context).allowToSpeak,
                             icon: participant.isMicrophoneEnabled() ? Icons.mic_off : Icons.mic,
                             onTap: () {
                               if (participant.permissions.canPublish) {
@@ -108,14 +109,14 @@ class ItemUserRemote extends StatelessWidget {
                             },
                           ),
                           PopupMenuItemModel(
-                            label: 'Disconnect',
+                            label: S.of(context).disconnect,
                             icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
                             onTap: () {
                               context.read<UserControlCubit>().disconnect(participant.identity);
                             },
                           ),
                           PopupMenuItemModel(
-                            label: 'Disconnect and Ban',
+                            label: S.of(context).disconnectAndBan,
                             icon: ImageMultiType(url: Icons.block, color: Colors.red),
                           ),
                         ],
@@ -141,9 +142,9 @@ class ItemUserSpeaker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i].remoteParticipant;
+        final participant = state.participantTracks[i];
         final audio = state.participantTracks[i].activeAudioTrack;
-        final isSelected = participant.sid == state.selectedParticipant?.remoteParticipant.sid;
+        final isSelected = participant.sid == state.selectedParticipant?.sid;
         return Container(
           height: 120.0.h,
           decoration: BoxDecoration(
@@ -278,7 +279,7 @@ class ItemUserSpeaker extends StatelessWidget {
 class _Switch extends StatelessWidget {
   const _Switch({required this.participant});
 
-  final RemoteParticipant participant;
+  final Participant participant;
 
   @override
   Widget build(BuildContext context) {

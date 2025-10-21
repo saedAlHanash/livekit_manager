@@ -18,9 +18,9 @@ class DynamicUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (participant is LocalParticipant) {
-      return LocalUser(participantTrack: participant);
+      return LocalUser(participant: participant);
     } else if (participant is RemoteParticipant) {
-      return RemoteUser(participantTrack: participant);
+      return RemoteUser(participant: participant);
     }
     throw UnimplementedError('Unknown participant type');
   }
