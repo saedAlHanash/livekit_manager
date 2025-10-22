@@ -96,7 +96,7 @@ Uri getUri({
   if ((hostName ?? baseUrl) == liveUrl) {
     uri = Uri.https(hostName ?? baseUrl, url, query);
   } else {
-    uri = Uri.http(hostName ?? baseUrl, url, query);
+    uri = Uri.https(hostName ?? baseUrl, url, query);
   }
 
   logRequest(

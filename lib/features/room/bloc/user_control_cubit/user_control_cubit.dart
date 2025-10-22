@@ -1,9 +1,7 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/app/app_widget.dart';
+import 'package:livekit_manager/core/api_manager/api_url.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:m_cubit/abstraction.dart';
 
 import '../../data/request/change_track_request.dart';
@@ -15,69 +13,112 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   UserControlCubit() : super(UserControlInitial.initial());
 
   Future<void> suspend(String userId) async {
-    emit(
-      state.copyWith(
-        statuses: CubitStatuses.loading,
-        updateRequest: UpdateParticipantRequest(
-          identity: userId,
-          permission: Permission(canPublish: false, canPublishData: false, canSubscribe: false),
-        ),
-      ),
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.suspend,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
-    _apiUpdateParticipant(userId);
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
   Future<void> resume(String userId) async {
-    emit(
-      state.copyWith(
-        statuses: CubitStatuses.loading,
-        updateRequest: UpdateParticipantRequest(identity: userId, permission: Permission()),
-      ),
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.resume,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
-    _apiUpdateParticipant(userId);
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> _apiUpdateParticipant(String userId) async {
+  Future<void> suspendAll() async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
-      url: 'UpdateParticipant',
+      url: PostUrl.suspendAll,
       type: ApiType.post,
       body: state.updateRequest.toJson(),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> muteUser(String userId) async {
-    emit(
-      state.copyWith(
-        statuses: CubitStatuses.loading,
-        updateRequest: UpdateParticipantRequest(
-          identity: userId,
-          permission: Permission(canPublish: false, canPublishData: false, canSubscribe: true),
-        ),
-      ),
-    );
-    _apiUpdateParticipant(userId);
-  }
-
-  Future<void> suspendUser() async {
+  Future<void> resumeAll() async {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
-      url: 'MutePublishedTrack',
+      url: PostUrl.resumeAll,
       type: ApiType.post,
-      body: state.mRequest.toJson(),
+      body: state.updateRequest.toJson(),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> disconnect(String userId) async {
+  Future<void> allowScreenShare(String userId) async {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
-      url: 'RemoveParticipant',
+      url: PostUrl.allowScreenShare,
       type: ApiType.post,
-      body: {"room": ctx!.read<RoomCubit>().state.result.name, "identity": userId},
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  void reActiveMiceButton() {}
+  Future<void> stopScreenShare(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.stopScreenShare,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> allowCamera(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.allowCamera,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> stopCamera(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.stopCamera,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> allowAudio(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.allowAudio,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> stopAudio(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.stopAudio,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> kick(String userId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      url: PostUrl.Kick,
+      type: ApiType.post,
+      body: state.updateRequest.toJson()..addAll({'identity': userId}),
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
 }

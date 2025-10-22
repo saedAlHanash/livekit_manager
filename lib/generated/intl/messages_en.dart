@@ -824,6 +824,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Statistical analyses",
     ),
     "stop": MessageLookupByLibrary.simpleMessage("Stop"),
+    "stopCamera": MessageLookupByLibrary.simpleMessage("Stop camera"),
+    "stopShareScreen": MessageLookupByLibrary.simpleMessage(
+      "Stop share screen",
+    ),
     "studentPhone": MessageLookupByLibrary.simpleMessage("Student Phone"),
     "studentRecordStatus": MessageLookupByLibrary.simpleMessage(
       "Student record status",

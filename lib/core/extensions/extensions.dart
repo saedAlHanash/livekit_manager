@@ -710,6 +710,12 @@ extension ParticipantH on Participant {
   LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
       localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
+  bool get isAdmin {
+    return attributes['type'].toString() == LkUserType.manager.index.toString();
+  }
+
+  String get image => attributes['imageUrl'].toString();
+
   //
   // LocalTrackPublication<LocalVideoTrack>? get videoPublication {
   //   return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;

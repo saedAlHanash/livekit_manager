@@ -34,9 +34,9 @@ class UserImageOrName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (!participant.attributes['imageUrl'].toString().isBlank)
+    return (!participant.image.isBlank)
         ? ImageMultiType(
-            url: participant.attributes['imageUrl'],
+            url: participant.image,
             fit: BoxFit.cover,
             height: size,
             width: size,
@@ -51,7 +51,7 @@ class UserImageOrName extends StatelessWidget {
             alignment: AlignmentGeometry.center,
             child: DrawableText(
               text: participant.displayName.firstCharacter.toUpperCase(),
-              size: 30.0.sp,
+              size: 24.0.sp,
             ),
           );
   }

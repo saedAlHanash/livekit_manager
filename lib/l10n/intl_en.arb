@@ -653,5 +653,7 @@
   "disconnect": "Disconnect",
   "disconnectAndBan": "Disconnect and Ban",
   "resumeUser": "Resume User",
-  "suspendUser": "Suspend User"
+  "suspendUser": "Suspend User",
+  "stopCamera": "Stop camera",
+  "stopShareScreen": "Stop share screen"
 }

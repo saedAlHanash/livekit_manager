@@ -109,7 +109,7 @@ class RoomCubit extends MCubit<RoomInitial> {
 
     final list = [...screenTracks, ...userMediaTracks];
 
-    emit(state.copyWith(participantTracks: list));
+    emit(state.copyWith(participantTracks: list, id: state.notifyIndex + 1));
   }
 
   Future<void> connect() async {
@@ -130,7 +130,11 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void disconnect() async {
     final result = await ctx!.showDisconnectDialog();
-    if (result == true) await state.result.disconnect();
+    try {
+      if (result == true) await state.result.disconnect();
+    } catch (e) {
+      loggerObject.e(e);
+    }
   }
 
   void setUrl(String url) => emit(state.copyWith(url: url));

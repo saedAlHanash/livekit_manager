@@ -4738,6 +4738,21 @@ class S {
       args: [],
     );
   }
+
+  /// `Stop camera`
+  String get stopCamera {
+    return Intl.message('Stop camera', name: 'stopCamera', desc: '', args: []);
+  }
+
+  /// `Stop share screen`
+  String get stopShareScreen {
+    return Intl.message(
+      'Stop share screen',
+      name: 'stopShareScreen',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

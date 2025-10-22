@@ -54,25 +54,18 @@ class _RemoteUserState extends State<RemoteUser> {
             fit: widget.fit,
             widget.participant.activeVideoTrack!,
           )
-        : (!widget.participant.attributes['imageUrl'].toString().isBlank)
-            ? ImageMultiType(
-                url: widget.participant.attributes['imageUrl'],
-                fit: BoxFit.contain,
-                height: 100.0.r,
-                width: 100.0.r,
-              )
-            : Container(
-                height: 60.0,
-                width: 60.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: widget.participant.sid.colorFromId),
-                ),
-                alignment: AlignmentGeometry.center,
-                child: DrawableText(
-                  text: widget.participant.displayName.firstCharacter.toUpperCase(),
-                  size: 30.0.sp,
-                ),
-              );
+        : Container(
+            height: 60.0,
+            width: 60.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: widget.participant.sid.colorFromId),
+            ),
+            alignment: AlignmentGeometry.center,
+            child: DrawableText(
+              text: widget.participant.displayName.firstCharacter.toUpperCase(),
+              size: 30.0.sp,
+            ),
+          );
   }
 }

@@ -18,7 +18,6 @@ class SpeakersWidget extends StatelessWidget {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
         final list = state.participantTracks.where((e) => e.permissions.canPublish);
-        loggerObject.w(list.map((e) => e.permissions.printFun));
         return Container(
           decoration: BoxDecoration(
             color: AppColorManager.appBarColor,
@@ -35,7 +34,8 @@ class SpeakersWidget extends StatelessWidget {
               ),
               Divider(),
               Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => 10.0.verticalSpace,
                   itemCount: list.length,
                   padding: EdgeInsets.all(15.0),
                   itemBuilder: (context, i) {

@@ -646,5 +646,7 @@
   "lowerThanYou": "أقل منك",
   "addOrder": "أضافة طلب",
   "audiences": "الجمهور",
-  "speakers": "Speakers"
+  "speakers": "Speakers",
+  "stopCamera": "Stop camera",
+  "stopShareScreen": "Stop share screen"
 }

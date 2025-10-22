@@ -103,9 +103,11 @@ class MyAppState extends State<MyApp> {
                 providers: [
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
-                      ..setUrl('ws://192.168.1.69:7880')
+                      // ..setUrl('ws://192.168.1.69:7880')
+                      ..setUrl('wss://coretik.coretech-mena.com')
                       ..setToken(
-                          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYWRtaW4iLCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6InMxIiwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbUFkbWluIjp0cnVlLCJyb29tTGlzdCI6dHJ1ZSwiY2FuVXBkYXRlTWV0YWRhdGEiOnRydWUsImhpZGRlbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZX0sImlzcyI6IkFQSVF4WlBqd3BHb2NjciIsImV4cCI6MTc2MTE0OTQ4NCwibmJmIjowLCJzdWIiOiJhZG1pbiJ9.u2loOU0SaZxz5nq_6vejcD_hBXRrvA9v3EitGuKSZ60')
+                        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6ImFkbWluIiwiaXNzIjoiQVBJZVNGaVY3eGlDUnpSIiwibmJmIjoxNzYxMTQyMTc4LCJpYXQiOjE3NjExNDIxNzgsImV4cCI6MTc2MTE0NTc3OCwidmlkZW8iOnsiYWdlbnQiOmZhbHNlLCJjYW5QdWJsaXNoIjpmYWxzZSwiY2FuUHVibGlzaERhdGEiOnRydWUsImNhblB1Ymxpc2hTb3VyY2VzIjpbXSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5TdWJzY3JpYmVNZXRyaWNzIjpmYWxzZSwiY2FuVXBkYXRlT3duTWV0YWRhdGEiOmZhbHNlLCJkZXN0aW5hdGlvblJvb20iOiIiLCJoaWRkZW4iOmZhbHNlLCJpbmdyZXNzQWRtaW4iOmZhbHNlLCJyZWNvcmRlciI6ZmFsc2UsInJvb20iOiJzMSIsInJvb21BZG1pbiI6dHJ1ZSwicm9vbUNyZWF0ZSI6dHJ1ZSwicm9vbUpvaW4iOnRydWUsInJvb21MaXN0Ijp0cnVlLCJyb29tUmVjb3JkIjpmYWxzZX0sInNpcCI6eyJhZG1pbiI6ZmFsc2UsImNhbGwiOmZhbHNlfSwibmFtZSI6IkFkbWluIiwibWV0YWRhdGEiOiIiLCJzaGEyNTYiOiIiLCJraW5kIjoiIiwiYXR0cmlidXRlcyI6eyJ0eXBlIjoiMCIsImltYWdlVXJsIjoiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvOTcwMy85NzAzNTk2LnBuZyJ9LCJyb29tQ29uZmlnIjp7fX0.WZpZfrX8G4b20Gx-dLV3JmZUodBQ_brJSOJ6_Kfxi9E',
+                      )
                       ..initial(),
                   ),
                   BlocProvider(create: (context) => sl<UserControlCubit>()),

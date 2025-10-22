@@ -26,7 +26,7 @@ class UpdateParticipantRequest {
         "room": ctx?.read<RoomCubit>().state.result.name ?? '',
         "identity": identity,
         "metadata": metadata,
-        "permission": permission?.toJson(),
+        // "permission": permission?.toJson(),
       };
 }
 

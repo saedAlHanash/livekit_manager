@@ -1,12 +1,95 @@
-[
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcImpvaW5lZF9hdFwiOlwiMjAyNS0xMC0yMVQxNDo0NDozNFpcIn0iLCJuYW1lIjoiU2FlZCIsImF0dHJpYnV0ZXMiOnsib3JnIjoidGVhbUEiLCJsb2NhbGUiOiJhciIsImltYWdlVXJsIjoiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvOTcwMy85NzAzNTk2LnBuZyJ9LCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6InMxIiwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbUFkbWluIjpmYWxzZSwicm9vbUxpc3QiOmZhbHNlLCJjYW5VcGRhdGVNZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlfSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMTMwMTY0LCJuYmYiOjAsInN1YiI6IlMxIn0.mkI-zUjgNC9ic59UgKNu7kmqmUonfiaNzs9Wt4FlvBA",
-    "identity": "S1",
-    "display_name": "Saed"
-  },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQm9iIiwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsInJvb20iOiJ0ZXN0LXJvb20iLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tQWRtaW4iOnRydWUsInJvb21MaXN0Ijp0cnVlLCJjYW5VcGRhdGVNZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlfSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMTQ4MTY0LCJuYmYiOjAsInN1YiI6ImJvYiJ9.N4YbxWD2Kad-OchjAY_oIO5mcqv3Q2CrNCfjTwLBSYg",
-    "identity": "bob",
-    "display_name": "Bob"
-  }
-]
+{
+  "participants": [
+    {
+      "sid": "PA_hSrNRF2otd9L",
+      "identity": "admin",
+      "state": "ACTIVE",
+      "tracks": [],
+      "metadata": "",
+      "joined_at": "1761141496",
+      "joined_at_ms": "1761141496194",
+      "name": "Admin",
+      "version": 2,
+      "permission": {
+        "can_subscribe": true,
+        "can_publish": true,
+        "can_publish_data": true,
+        "can_publish_sources": [],
+        "hidden": false,
+        "recorder": false,
+        "can_update_metadata": true,
+        "agent": true,
+        "can_subscribe_metrics": true
+      },
+      "region": "",
+      "is_publisher": false,
+      "kind": "STANDARD",
+      "attributes": {},
+      "disconnect_reason": "UNKNOWN_REASON",
+      "kind_details": []
+    },
+    {
+      "sid": "PA_uzeqgi8A2Cpf",
+      "identity": "saed",
+      "state": "ACTIVE",
+      "tracks": [
+        {
+          "sid": "TR_AMVVtuVPmDoFi2",
+          "type": "AUDIO",
+          "name": "custom_audio_track_name",
+          "muted": false,
+          "width": 0,
+          "height": 0,
+          "simulcast": false,
+          "disable_dtx": false,
+          "source": "MICROPHONE",
+          "layers": [],
+          "mime_type": "audio/opus",
+          "mid": "0",
+          "codecs": [
+            {
+              "mime_type": "audio/opus",
+              "mid": "0",
+              "cid": "059fcc26-4732-42b8-8f02-f395459ef144",
+              "layers": [],
+              "video_layer_mode": "MODE_UNUSED",
+              "sdp_cid": ""
+            }
+          ],
+          "stereo": false,
+          "disable_red": true,
+          "encryption": "NONE",
+          "stream": "camera",
+          "version": {
+            "unix_micro": "1761141512037448",
+            "ticks": 0
+          },
+          "audio_features": [],
+          "backup_codec_policy": "PREFER_REGRESSION"
+        }
+      ],
+      "metadata": "",
+      "joined_at": "1761141511",
+      "joined_at_ms": "1761141511467",
+      "name": "Saed",
+      "version": 3,
+      "permission": {
+        "can_subscribe": true,
+        "can_publish": true,
+        "can_publish_data": true,
+        "can_publish_sources": [],
+        "hidden": false,
+        "recorder": false,
+        "can_update_metadata": true,
+        "agent": true,
+        "can_subscribe_metrics": true
+      },
+      "region": "",
+      "is_publisher": true,
+      "kind": "STANDARD",
+      "attributes": {},
+      "disconnect_reason": "UNKNOWN_REASON",
+      "kind_details": []
+    }
+  ]
+}
