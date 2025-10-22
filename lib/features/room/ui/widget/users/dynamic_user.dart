@@ -27,9 +27,10 @@ class DynamicUser extends StatelessWidget {
 }
 
 class UserImageOrName extends StatelessWidget {
-  const UserImageOrName({super.key, required this.participant});
+  const UserImageOrName({super.key, required this.participant, this.size = 60.0});
 
   final Participant participant;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,12 @@ class UserImageOrName extends StatelessWidget {
         ? ImageMultiType(
             url: participant.attributes['imageUrl'],
             fit: BoxFit.cover,
+            height: size,
+            width: size,
           )
         : Container(
-            height: 60.0,
-            width: 60.0,
+            height: size,
+            width: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: participant.sid.colorFromId),

@@ -1,95 +1,12 @@
 [
   {
-    "room_name": "s1",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJtZXRhZGF0YSI6IntcImpvaW5lZF9hdFwiOlwiMjAyNS0xMC0yMVQxNDo0NDozNFpcIn0iLCJuYW1lIjoiU2FlZCIsImF0dHJpYnV0ZXMiOnsib3JnIjoidGVhbUEiLCJsb2NhbGUiOiJhciIsImltYWdlVXJsIjoiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvOTcwMy85NzAzNTk2LnBuZyJ9LCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6InMxIiwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbUFkbWluIjpmYWxzZSwicm9vbUxpc3QiOmZhbHNlLCJjYW5VcGRhdGVNZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlfSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMTMwMTY0LCJuYmYiOjAsInN1YiI6IlMxIn0.mkI-zUjgNC9ic59UgKNu7kmqmUonfiaNzs9Wt4FlvBA",
     "identity": "S1",
-    "display_name": "Saed",
-    "role": "participant",
-    "attributes": {
-      "org": "teamA",
-      "locale": "ar",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/512/9703/9703596.png"
-    },
-    "ttl": 3600,
-    "metadata": {
-      "joined_at": "2025-10-21T14:44:34Z"
-    },
-    "participantPermissions": {
-      "canSubscribe": true,
-      "canPublish": true,
-      "canPublishData": true,
-      "hidden": false,
-      "canUpdateMetadata": true,
-      "recorder": false,
-      "canPublishSources": [
-        "microphone"
-      ]
-    }
+    "display_name": "Saed"
   },
   {
-    "room_name": "test-room",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQm9iIiwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsInJvb20iOiJ0ZXN0LXJvb20iLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tQWRtaW4iOnRydWUsInJvb21MaXN0Ijp0cnVlLCJjYW5VcGRhdGVNZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlfSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMTQ4MTY0LCJuYmYiOjAsInN1YiI6ImJvYiJ9.N4YbxWD2Kad-OchjAY_oIO5mcqv3Q2CrNCfjTwLBSYg",
     "identity": "bob",
-    "display_name": "Bob",
-    "role": "admin",
-    "participantPermissions": {
-      "canSubscribe": true,
-      "canPublish": true,
-      "canPublishData": true,
-      "canPublishSources": [
-        "unknown",
-        "camera",
-        "microphone",
-        "screen_share",
-        "screen_share_audio"
-      ]
-    }
-  },
-  [
-    {
-      "room_name": "test-room",
-      "identity": "alice",
-      "display_name": "Alice",
-      "role": "participant",
-      "attributes": {
-        "org": "teamA",
-        "locale": "ar"
-      },
-      "ttl": 3600,
-      "metadata": {
-        "joined_at": "2025-10-21T14:44:34Z"
-      },
-      "participantPermissions": {
-        "canSubscribe": true,
-        "canPublish": true,
-        "canPublishData": true,
-        "hidden": false,
-        "canUpdateMetadata": false,
-        "recorder": false,
-        "canPublishSources": ["camera"]
-      }
-    },
-    {
-      "room_name": "s1",
-      "identity": "S1",
-      "display_name": "Saed",
-      "role": "participant",
-      "attributes": {
-        "org": "teamA",
-        "locale": "ar",
-        "imageUrl": "https://cdn-icons-png.flaticon.com/512/9703/9703596.png"
-      },
-      "ttl": 3600,
-      "metadata": {
-        "joined_at": "2025-10-21T14:44:34Z"
-      },
-      "participantPermissions": {
-        "canSubscribe": true,
-        "canPublish": true,
-        "canPublishData": true,
-        "hidden": false,
-        "canUpdateMetadata": true,
-        "recorder": false,
-        "canPublishSources": ["microphone"]
-      }
-    }
-  ]
+    "display_name": "Bob"
+  }
 ]

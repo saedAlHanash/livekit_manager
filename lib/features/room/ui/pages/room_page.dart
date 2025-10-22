@@ -38,7 +38,7 @@ class _RoomPageState extends State<RoomPage> {
                 Expanded(child: AudiencesWidget()),
                 Expanded(child: SpeakersWidget()),
                 Expanded(
-                  flex: 5,
+                  flex: 3,
                   child: Column(
                     children: [
                       if (state.selectedParticipant != null)

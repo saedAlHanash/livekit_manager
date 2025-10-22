@@ -8,6 +8,7 @@ import 'package:livekit_manager/core/util/snack_bar_message.dart';
 import '../../../../generated/l10n.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import 'item_user.dart';
+import 'item_user_lt.dart';
 
 class AudiencesWidget extends StatelessWidget {
   const AudiencesWidget({super.key});
@@ -25,23 +26,19 @@ class AudiencesWidget extends StatelessWidget {
           child: Column(
             children: [
               10.0.verticalSpace,
-              InkWell(
-                onTap: () {
-                  NoteMessage.showTopMessage(message: 'fdgsdfgghdfgh', context: context);
-                },
-                child: DrawableText(
-                  text: S.of(context).audiences,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0).r,
-                  matchParent: true,
-                ),
+              DrawableText(
+                text: S.of(context).audiences,
+                padding: EdgeInsets.symmetric(horizontal: 20.0).r,
+                matchParent: true,
               ),
               Divider(),
               Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => 10.0.verticalSpace,
                   itemCount: state.participantTracks.length,
                   padding: EdgeInsets.all(15.0),
                   itemBuilder: (context, i) {
-                    return ItemUserRemote(i: i);
+                    return ItemUserRemoteLT(i: i);
                   },
                 ),
               ),

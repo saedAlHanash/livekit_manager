@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +15,7 @@ import '../../../../core/util/my_style.dart';
 import '../../../../generated/l10n.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
-import '../../data/request/setting_message.dart';
+import 'item_user_lt.dart';
 
 class ItemUserRemote extends StatelessWidget {
   const ItemUserRemote({super.key, required this.i});
@@ -133,6 +131,7 @@ class ItemUserRemote extends StatelessWidget {
   }
 }
 
+
 class ItemUserSpeaker extends StatelessWidget {
   const ItemUserSpeaker({super.key, required this.i});
 
@@ -214,7 +213,7 @@ class ItemUserSpeaker extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: _Switch(participant: participant),
+                        child: ListStateUser(participant: participant),
                       ),
                       BlocBuilder<UserControlCubit, UserControlInitial>(
                         builder: (context, state) {
@@ -276,72 +275,3 @@ class ItemUserSpeaker extends StatelessWidget {
   }
 }
 
-class _Switch extends StatelessWidget {
-  const _Switch({required this.participant});
-
-  final Participant participant;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = ManagerActions.values.where((e) => e != ManagerActions.raseHand);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: l.map(
-          (e) {
-            return InkWell(
-              onTap: () {
-                // if (ManagerActions.mic == e) {
-                //   context.read<UserControlCubit>()
-                //     ..setMuteRequest(
-                //       ChangeTrackRequest(
-                //         room: context.read<RoomCubit>().state.result.name!,
-                //         identity: participant.identity,
-                //         trackSid: participant.activeAudioTrack?.sid ?? '',
-                //         muted: true,
-                //       ),
-                //     )
-                //     ..muteUser();
-                //   return;
-                // }
-                context.read<RoomCubit>().state.result.localParticipant?.publishData(
-                      utf8.encode(
-                        jsonEncode(
-                          SettingMessage(
-                            sid: participant.sid,
-                            name: participant.name,
-                            action: e,
-                          ),
-                        ),
-                      ),
-                    );
-              },
-              child: BlocBuilder<UserControlCubit, UserControlInitial>(
-                buildWhen: (p, c) => e.index == ManagerActions.mic.index,
-                builder: (context, state) {
-                  if (state.loading) {
-                    return MyStyle.loadingWidget();
-                  }
-                  return ImageMultiType(
-                    url: e.icon,
-                    height: 15.0.r,
-                    width: 15.0.r,
-                    color: switch (e) {
-                      ManagerActions.mic => participant.isMicrophoneEnabled(),
-                      ManagerActions.video => participant.isCameraEnabled(),
-                      ManagerActions.shareScreen => participant.isScreenShareEnabled(),
-                      ManagerActions.raseHand => true,
-                    }
-                        ? Colors.green
-                        : Colors.red,
-                  );
-                },
-              ),
-            );
-          },
-        ).toList(),
-      ),
-    );
-  }
-}
