@@ -105,7 +105,7 @@ class MyAppState extends State<MyApp> {
                     create: (context) => sl<RoomCubit>()
                       ..setUrl('ws://192.168.1.69:7880')
                       ..setToken(
-                          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQWxpY2UiLCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6InRlc3Qtcm9vbSIsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb21BZG1pbiI6ZmFsc2UsInJvb21MaXN0IjpmYWxzZSwiY2FuVXBkYXRlTWV0YWRhdGEiOmZhbHNlLCJjYW5QdWJsaXNoU291cmNlcyI6WyJjYW1lcmEiXSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlLCJwYXJ0aWNpcGFudFBlcm1pc3Npb25zIjp7ImNhbl9zdWJzY3JpYmUiOnRydWUsImNhbl9wdWJsaXNoIjp0cnVlLCJjYW5fcHVibGlzaF9kYXRhIjp0cnVlLCJjYW5fcHVibGlzaF9zb3VyY2VzIjpbMV0sImNhbl91cGRhdGVfbWV0YWRhdGEiOmZhbHNlLCJoaWRkZW4iOmZhbHNlLCJyZWNvcmRlciI6ZmFsc2V9fSwiaXNzIjoiQVBJUXhaUGp3cEdvY2NyIiwiZXhwIjoxNzYxMDc5NDgyLCJuYmYiOjAsInN1YiI6ImFsaWNlIn0.6lycr0UiVpIVc44kG5nAVks_owQclpjRnBRqg7roF34')
+                          'eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiQm9iIiwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsInJvb20iOiJ0ZXN0LXJvb20iLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tQWRtaW4iOnRydWUsInJvb21MaXN0Ijp0cnVlLCJjYW5VcGRhdGVNZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlLCJwYXJ0aWNpcGFudFBlcm1pc3Npb25zIjp7ImNhbl9zdWJzY3JpYmUiOnRydWUsImNhbl9wdWJsaXNoIjp0cnVlLCJjYW5fcHVibGlzaF9kYXRhIjp0cnVlLCJjYW5fcHVibGlzaF9zb3VyY2VzIjpbMCwxLDIsMyw0XSwiY2FuX3VwZGF0ZV9tZXRhZGF0YSI6dHJ1ZSwiaGlkZGVuIjpmYWxzZSwicmVjb3JkZXIiOmZhbHNlfX0sImlzcyI6IkFQSVF4WlBqd3BHb2NjciIsImV4cCI6MTc2MTE0MTIyOCwibmJmIjowLCJzdWIiOiJib2IifQ.OJ8sPSUn3J70FRVSQoYqwl2p4eQt6o4gERh0B0cndOM')
                       ..initial(),
                   ),
                   BlocProvider(create: (context) => sl<UserControlCubit>()),
