@@ -1,0 +1,18 @@
+{
+  "identity": "saed",
+  "name": "saed",
+  "videoGrants": {
+    "canPublish": false,
+    "canPublishData": true,
+    "canSubscribe": true,
+    "room": "s1",
+    "roomAdmin": true,
+    "roomCreate": true,
+    "roomJoin": true,
+    "roomList": true
+  },
+  "attributes": {
+    "type": "2",
+    "imageUrl": "https://scontent-sof1-1.xx.fbcdn.net/v/t39.30808-6/300497351_1681341658914861_3273902336906444586_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=oDCEEFzNXnQQ7kNvwEsTg5t&_nc_oc=Adkeubn0y4hHeDF1CTLnn6Q4Cj_HXcOCPNjbE6DqZcKigrZKjuHcTkhKdQwfgsQPBQw&_nc_zt=23&_nc_ht=scontent-sof1-1.xx&_nc_gid=kGpf5LJWoyazIbsG1u6-sg&oh=00_AffsthVymjqa6C5QbmrU-0adFB9ujCk95FFGt2DJqs5S4w&oe=68FED420"
+  }
+}

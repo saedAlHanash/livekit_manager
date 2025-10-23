@@ -91,4 +91,9 @@ class Assets {
   static const String lottiesLoader = 'assets/lotties/loader.json';
   static const String lottiesLottieMainColorDominant = 'assets/lotties/lottie_main_color_dominant.json';
   static const String lottiesNoSwaps = 'assets/lotties/no_swaps.json';
+  static const String soundsAcceptRequest = 'assets/sounds/accept_request.mp3';
+  static const String soundsDisconnectUser = 'assets/sounds/disconnect_user.mp3';
+  static const String soundsNewJoin = 'assets/sounds/new_join.mp3';
+  static const String soundsNote = 'assets/sounds/note.mp3';
+  static const String soundsShareScreen = 'assets/sounds/share_screen.mp3';
 }

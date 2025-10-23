@@ -29,6 +29,9 @@ class ItemUserRemoteLT extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.0).r,
           ),
           child: ListTile(
+            onTap: () {
+              context.read<RoomCubit>().selectParticipant(participant.sid);
+            },
             contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0).r,
             leading: ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(200),

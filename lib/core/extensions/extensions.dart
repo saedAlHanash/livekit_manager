@@ -696,19 +696,19 @@ extension ParticipantH on Participant {
 
   MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
-  RemoteTrackPublication<RemoteVideoTrack>? get remoteVideoPublication {
-    return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
   }
 
-  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
-      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  List<RemoteTrackPublication<RemoteAudioTrack>> get remoteAudioPublication =>
+      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
-  LocalTrackPublication<LocalVideoTrack>? get localVideoPublication {
-    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  List<LocalTrackPublication<LocalVideoTrack>> get localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).toList();
   }
 
-  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
-      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  List<LocalTrackPublication<LocalAudioTrack>> get localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
   bool get isAdmin {
     return attributes['type'].toString() == LkUserType.manager.index.toString();
@@ -716,19 +716,11 @@ extension ParticipantH on Participant {
 
   String get image => attributes['imageUrl'].toString();
 
-  //
-  // LocalTrackPublication<LocalVideoTrack>? get videoPublication {
-  //   return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
-  // }
-  //
-  // LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
-  //     remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
-
   VideoTrack? get activeVideoTrack =>
-      (this is LocalParticipant) ? localVideoPublication?.track : remoteVideoPublication?.track;
+      (this is LocalParticipant) ? localVideoPublication.firstOrNull?.track : remoteVideoPublication.firstOrNull?.track;
 
   AudioTrack? get activeAudioTrack =>
-      (this is LocalParticipant) ? localAudioPublication?.track : remoteAudioPublication?.track;
+      (this is LocalParticipant) ? localAudioPublication.firstOrNull?.track : remoteAudioPublication.firstOrNull?.track;
 
   bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 

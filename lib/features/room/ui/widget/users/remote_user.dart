@@ -7,6 +7,7 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
+import '../no_video.dart';
 
 class RemoteUser extends StatefulWidget {
   const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain});
@@ -49,23 +50,18 @@ class _RemoteUserState extends State<RemoteUser> {
   @override
   Widget build(BuildContext ctx) {
     return widget.participant.videoActive
-        ? VideoTrackRenderer(
-            renderMode: VideoRenderMode.auto,
-            fit: widget.fit,
-            widget.participant.activeVideoTrack!,
+        ? Row(
+            children: [
+              for (var o in widget.participant.remoteVideoPublication)
+                Expanded(
+                  child: VideoTrackRenderer(
+                    renderMode: VideoRenderMode.auto,
+                    fit: widget.fit,
+                    o.track as VideoTrack,
+                  ),
+                ),
+            ],
           )
-        : Container(
-            height: 60.0,
-            width: 60.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: widget.participant.sid.colorFromId),
-            ),
-            alignment: AlignmentGeometry.center,
-            child: DrawableText(
-              text: widget.participant.displayName.firstCharacter.toUpperCase(),
-              size: 30.0.sp,
-            ),
-          );
+        : const NoVideoWidget();
   }
 }
