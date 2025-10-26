@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 
+import '../util/my_style.dart';
+
 class PopupMenuItemModel {
   final dynamic label;
   final dynamic icon;
@@ -18,18 +20,26 @@ class PopupMenuItemModel {
 class DynamicPopupMenu extends StatelessWidget {
   final List<PopupMenuItemModel> items;
   final dynamic icon;
+  final bool loading;
 
   const DynamicPopupMenu({
     super.key,
     required this.items,
     this.icon,
+    this.loading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final iconColor = theme.iconTheme.color;
-
+    if (loading) {
+      return SizedBox(
+        height: 24.0.dg,
+        width: 24.0.dg,
+        child: MyStyle.loadingWidget(),
+      );
+    }
     return PopupMenuButton<int>(
       offset: const Offset(0, 10.0),
       icon: ImageMultiType(url: icon ?? Icons.more_vert),

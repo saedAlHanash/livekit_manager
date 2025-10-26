@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:m_cubit/abstraction.dart';
@@ -151,7 +152,7 @@ class RoomCubit extends MCubit<RoomInitial> {
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             loggerObject.w(message.toJson());
-            // if (message.sid != state.result.localParticipant?.sid) return;
+            // if (message.identity != state.result.localParticipant?.identity) return;
             switch (message.action) {
               case ManagerActions.mic:
                 break;
@@ -160,12 +161,12 @@ class RoomCubit extends MCubit<RoomInitial> {
               case ManagerActions.shareScreen:
                 break;
               case ManagerActions.raseHand:
-                emit(state.copyWith(raiseHands: state.raiseHands..add(message.sid)));
+                emit(state.copyWith(raiseHands: state.raiseHands..add(message.identity)));
                 Future.delayed(
                   Duration(seconds: 5),
                   () {
                     emit(state.copyWith(raiseHands: {
-                      ...state.raiseHands..remove(message.sid),
+                      ...state.raiseHands..remove(message.identity),
                     }, id: state.notifyIndex + 1));
                   },
                 );
@@ -180,7 +181,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void _sortParticipants() {
-    List<Participant> userMediaTracks = [];
+    // List<Participant> userMediaTracks = [];
     List<Participant> screenTracks = [];
 
     for (var participant in state.result.remoteParticipants.values) {
@@ -190,28 +191,38 @@ class RoomCubit extends MCubit<RoomInitial> {
     if (state.result.localParticipant != null) {
       screenTracks.add(state.result.localParticipant!);
     }
+    screenTracks.sort(
+      (a, b) {
+        if (a.permissions.isSuspend != b.permissions.isSuspend) {
+          return a.permissions.isSuspend ? 1 : -1;
+        }
+        return 0;
+      },
+    );
 
-    userMediaTracks.sort((a, b) {
-      if (a.isSpeaking && b.isSpeaking) {
-        return (a.audioLevel > b.audioLevel) ? -1 : 1;
-      }
+    // userMediaTracks.sort((a, b) {
+    //   if (a.isSpeaking && b.isSpeaking) {
+    //     return (a.audioLevel > b.audioLevel) ? -1 : 1;
+    //   }
+    //
+    //   // last spoken at
+    //   final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+    //   final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+    //
+    //   if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
+    //
+    //   // video on
+    //   if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
+    //
+    //   // joinedAt
+    //   return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
+    // });
 
-      // last spoken at
-      final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-      final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+    final list = [
+      ...screenTracks, /*...userMediaTracks*/
+    ];
 
-      if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
-
-      // video on
-      if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
-
-      // joinedAt
-      return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
-    });
-
-    final list = [...screenTracks, ...userMediaTracks];
-
-    emit(state.copyWith(participantTracks: list, id: state.notifyIndex + 1));
+    emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
   }
 
   Future<void> connect() async {

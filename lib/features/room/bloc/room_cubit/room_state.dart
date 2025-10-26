@@ -10,7 +10,7 @@ class RoomInitial extends AbstractState<Room> {
     required this.url,
     required this.token,
     required this.listener,
-    required this.participantTracks,
+    required this.participant,
     required this.raiseHands,
     required this.selectedUserId,
   });
@@ -24,15 +24,15 @@ class RoomInitial extends AbstractState<Room> {
   final EventsListener<RoomEvent> listener;
 
   final Set<String> raiseHands;
-  final List<Participant> participantTracks;
+  final List<Participant> participant;
 
   final String selectedUserId;
 
   List<Participant> get participantTracksWithoutSelected =>
-      participantTracks.where((e) => e.sid != selectedParticipant?.sid).toList(growable: false);
+      participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
 
   Participant? get selectedParticipant =>
-      participantTracks.firstWhereOrNull((e) => e.sid == selectedUserId) ?? participantTracks.firstOrNull;
+      participant.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participant.firstOrNull;
 
   ConnectionState get connectionState => result.connectionState;
 
@@ -49,7 +49,7 @@ class RoomInitial extends AbstractState<Room> {
       token: '',
       listener: room.createListener(),
       raiseHands: {},
-      participantTracks: const [],
+      participant: const [],
       selectedUserId: '',
     );
   }
@@ -65,10 +65,14 @@ class RoomInitial extends AbstractState<Room> {
         listener,
         url,
         token,
-        participantTracks,
+        participant,
         raiseHands,
         selectedUserId,
       ];
+
+  List<Participant> get speakers => participant.where((e) => !e.permissions.isSilence).toList();
+
+  String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 
   RoomInitial copyWith(
       {CubitStatuses? statuses,
@@ -79,7 +83,7 @@ class RoomInitial extends AbstractState<Room> {
       String? url,
       String? token,
       EventsListener<RoomEvent>? listener,
-      List<Participant>? participantTracks,
+      List<Participant>? participant,
       Set<String>? raiseHands,
       String? selectedUserId}) {
     return RoomInitial(
@@ -91,7 +95,7 @@ class RoomInitial extends AbstractState<Room> {
         url: url ?? this.url,
         token: token ?? this.token,
         listener: listener ?? this.listener,
-        participantTracks: participantTracks ?? this.participantTracks,
+        participant: participant ?? this.participant,
         raiseHands: raiseHands ?? this.raiseHands,
         selectedUserId: selectedUserId ?? this.selectedUserId);
   }

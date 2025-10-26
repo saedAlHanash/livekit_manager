@@ -726,7 +726,7 @@ extension ParticipantH on Participant {
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
     if (identity.isNotEmpty) return identity;
@@ -738,7 +738,7 @@ extension ParticipantH on Participant {
 }
 
 extension RemoteParticipantH on RemoteParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
 
   RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
 
@@ -748,7 +748,7 @@ extension RemoteParticipantH on RemoteParticipant {
 }
 
 extension LocalParticipantH on LocalParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
 
   LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
 
@@ -758,11 +758,11 @@ extension LocalParticipantH on LocalParticipant {
 }
 
 extension ParticipantPermissionsH on ParticipantPermissions {
-  bool get isSuspend => !canSubscribe && !canPublish;
+  bool get isSuspend => canSubscribe == false && canPublish == false;
 
-  bool get isMuteAll => canSubscribe && !canPublish;
+  bool get isSilence => canPublish == false;
 
-  bool get isAll => canSubscribe && canPublish;
+  bool get isDeafblind => canSubscribe == false;
 
   String get printFun {
     return 'canSubscribe: $canSubscribe\n'

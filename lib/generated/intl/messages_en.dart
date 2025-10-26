@@ -246,6 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateOfBirth": MessageLookupByLibrary.simpleMessage("Date of Birth"),
     "day": MessageLookupByLibrary.simpleMessage("day"),
     "days": MessageLookupByLibrary.simpleMessage("Days"),
+    "deafblinding": MessageLookupByLibrary.simpleMessage("Deaf-blinding"),
     "december": MessageLookupByLibrary.simpleMessage("december"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete Account"),
@@ -753,6 +754,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "section": MessageLookupByLibrary.simpleMessage("Section"),
     "secured": MessageLookupByLibrary.simpleMessage("Secured"),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
+    "seeAndHear": MessageLookupByLibrary.simpleMessage("See and hear"),
     "see_all": MessageLookupByLibrary.simpleMessage("See all"),
     "selectAssessment": MessageLookupByLibrary.simpleMessage(
       "Select Assessment",
@@ -808,6 +810,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signinToStayConnected": MessageLookupByLibrary.simpleMessage(
       "SignIn to stay connected",
     ),
+    "silence": MessageLookupByLibrary.simpleMessage("Silence"),
     "sizes": MessageLookupByLibrary.simpleMessage("Sizes"),
     "slippage": MessageLookupByLibrary.simpleMessage("Slippage"),
     "slippageScaler": MessageLookupByLibrary.simpleMessage("Slippage Scaler"),
@@ -817,6 +820,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "specialInstructions": MessageLookupByLibrary.simpleMessage(
       "Special instructions",
     ),
+    "speech": MessageLookupByLibrary.simpleMessage("Speech"),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
     "startExam": MessageLookupByLibrary.simpleMessage("Start Exam"),
     "startOfYear": MessageLookupByLibrary.simpleMessage("Start of year"),

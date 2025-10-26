@@ -6,6 +6,7 @@ import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/menu_widget.dart';
+import 'package:livekit_manager/features/room/ui/widget/controllers.dart';
 import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 
@@ -26,9 +27,9 @@ class ItemUserRemote extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i];
+        final participant = state.participant[i];
         // final audio = state.participantTracks[i].activeAudioTrack;
-        final isSelected = participant.sid == state.selectedParticipant?.sid;
+        final isSelected = participant.identity == state.selectedParticipant?.identity;
         return Container(
           height: 120.0.h,
           decoration: BoxDecoration(
@@ -44,7 +45,7 @@ class ItemUserRemote extends StatelessWidget {
               alignment: AlignmentGeometry.center,
               children: [
                 UserImageOrName(
-                  participant: state.participantTracks[i],
+                  participant: state.participant[i],
                 ),
                 Align(
                   alignment: AlignmentGeometry.topCenter,
@@ -59,7 +60,7 @@ class ItemUserRemote extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (state.raiseHands.contains(participant.sid))
+                if (state.raiseHands.contains(participant.identity))
                   Align(
                     alignment: AlignmentGeometry.bottomLeft,
                     child: Padding(
@@ -88,8 +89,8 @@ class ItemUserSpeaker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i];
-        final isSelected = participant.sid == state.selectedParticipant?.sid;
+        final participant = state.speakers[i];
+        final isSelected = participant.identity == state.selectedParticipant?.identity;
         return Container(
           height: 120.0.h,
           decoration: BoxDecoration(
@@ -98,43 +99,43 @@ class ItemUserSpeaker extends StatelessWidget {
             border: Border.all(color: isSelected ? AppColorManager.mainColor : Colors.transparent, width: 3.0),
           ),
           clipBehavior: Clip.hardEdge,
-          child: ClipRRect(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: BorderRadius.circular(12.0).r,
-            child: Stack(
-              alignment: AlignmentGeometry.center,
-              children: [
-                UserImageOrName(
-                  participant: state.participantTracks[i],
+          child: Stack(
+            alignment: AlignmentGeometry.center,
+            children: [
+              UserImageOrName(
+                participant: participant,
+              ),
+              Align(
+                alignment: AlignmentGeometry.bottomCenter,
+                child: Container(
+                  width: 1.0.sw,
+                  height: 30.0.h,
+                  padding: EdgeInsets.all(4.0).r,
+                  color: Colors.black26,
+                  child: DrawableText(
+                    text: participant.name,
+                    matchParent: true,
+                    textAlign: TextAlign.center,
+                    size: 11.0.sp,
+                  ),
                 ),
+              ),
+              Align(
+                alignment: AlignmentGeometry.topLeft,
+                child: participant.isAdmin ? null : ControllersDynamic(participant: participant, speaker: true),
+              ),
+              if (state.raiseHands.contains(participant.identity))
                 Align(
-                  alignment: AlignmentGeometry.bottomCenter,
-                  child: Container(
-                    width: 1.0.sw,
-                    height: 30.0.h,
-                    padding: EdgeInsets.all(4.0).r,
-                    color: Colors.black26,
-                    child: DrawableText(
-                      text: participant.name,
-                      matchParent: true,
-                      textAlign: TextAlign.center,
-                      size: 11.0.sp,
+                  alignment: AlignmentGeometry.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ImageMultiType(
+                      url: Icons.back_hand_outlined,
+                      width: 18.0.w,
                     ),
                   ),
                 ),
-                if (state.raiseHands.contains(participant.sid))
-                  Align(
-                    alignment: AlignmentGeometry.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ImageMultiType(
-                        url: Icons.back_hand_outlined,
-                        width: 18.0.w,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         );
       },

@@ -35,7 +35,7 @@ class AudiencesWidget extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   separatorBuilder: (context, index) => 10.0.verticalSpace,
-                  itemCount: state.participantTracks.length,
+                  itemCount: state.participant.length,
                   padding: EdgeInsets.all(15.0),
                   itemBuilder: (context, i) {
                     return ItemUserRemoteLT(i: i);

@@ -4753,6 +4753,31 @@ class S {
       args: [],
     );
   }
+
+  /// `Speech`
+  String get speech {
+    return Intl.message('Speech', name: 'speech', desc: '', args: []);
+  }
+
+  /// `Silence`
+  String get silence {
+    return Intl.message('Silence', name: 'silence', desc: '', args: []);
+  }
+
+  /// `See and hear`
+  String get seeAndHear {
+    return Intl.message('See and hear', name: 'seeAndHear', desc: '', args: []);
+  }
+
+  /// `Deaf-blinding`
+  String get deafblinding {
+    return Intl.message(
+      'Deaf-blinding',
+      name: 'deafblinding',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

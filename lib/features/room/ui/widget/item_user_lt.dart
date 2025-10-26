@@ -21,27 +21,30 @@ class ItemUserRemoteLT extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participant = state.participantTracks[i];
-        final isSelected = participant.sid == state.selectedParticipant?.sid;
-        return Container(
-          decoration: BoxDecoration(
-            color: isSelected ? AppColorManager.cardColor : AppColorManager.appBarColor,
-            borderRadius: BorderRadius.circular(12.0).r,
-          ),
-          child: ListTile(
-            onTap: () {
-              context.read<RoomCubit>().selectParticipant(participant.sid);
-            },
-            contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0).r,
-            leading: ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(200),
-              child: UserImageOrName(
-                participant: state.participantTracks[i],
-                size: 40.0.dg,
-              ),
+        final participant = state.participant[i];
+        final isSelected = participant.identity == state.selectedParticipant?.identity;
+        return Opacity(
+          opacity: participant.isSuspend ? 0.5 : 1,
+          child: Container(
+            decoration: BoxDecoration(
+              color: isSelected ? AppColorManager.cardColor : AppColorManager.appBarColor,
+              borderRadius: BorderRadius.circular(12.0).r,
             ),
-            title: DrawableText(text: participant.displayName),
-            trailing: participant.isAdmin ? null : Controllers(participant: participant),
+            child: ListTile(
+              onTap: () {
+                context.read<RoomCubit>().selectParticipant(participant.identity);
+              },
+              contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0).r,
+              leading: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(200),
+                child: UserImageOrName(
+                  participant: state.participant[i],
+                  size: 40.0.dg,
+                ),
+              ),
+              title: DrawableText(text: participant.displayName),
+              trailing: participant.isAdmin ? null : ControllersDynamic(participant: participant),
+            ),
           ),
         );
       },

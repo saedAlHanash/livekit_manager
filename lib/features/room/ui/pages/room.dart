@@ -30,11 +30,11 @@ class _RoomPage1State extends State<RoomPage1> {
   List<Participant> participantTracks = [];
 
   List<Participant> get participantTracksWithoutSelected => participantTracks
-      .where((e) => e.sid != selectedParticipant.sid)
+      .where((e) => e.identity != selectedParticipant.identity)
       .toList(growable: false);
 
   Participant get selectedParticipant =>
-      participantTracks.firstWhereOrNull((e) => e.sid == selectedUserId) ?? participantTracks.first;
+      participantTracks.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participantTracks.first;
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
@@ -257,7 +257,7 @@ class _RoomPage1State extends State<RoomPage1> {
                     onTap: () {
                       setState(() {
                         loggerObject.i(item.name);
-                        selectedUserId = item.sid;
+                        selectedUserId = item.identity;
                       });
                     },
                     child: SizedBox(

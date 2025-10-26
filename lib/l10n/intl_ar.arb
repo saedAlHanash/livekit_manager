@@ -648,5 +648,9 @@
   "audiences": "الجمهور",
   "speakers": "Speakers",
   "stopCamera": "Stop camera",
-  "stopShareScreen": "Stop share screen"
+  "stopShareScreen": "Stop share screen",
+  "speech": "Speech",
+  "silence": "Silence",
+  "seeAndHear": "See and hear",
+  "deafblinding": "Deaf-blinding"
 }

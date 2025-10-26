@@ -70,6 +70,7 @@ class Assets {
   static const String iconsSchoolBag = 'assets/icons/school_bag.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
   static const String iconsSettings = 'assets/icons/settings.svg';
+  static const String iconsSilence = 'assets/icons/silence.svg';
   static const String iconsSpy = 'assets/icons/spy.svg';
   static const String iconsStudents = 'assets/icons/students.svg';
   static const String iconsStudentsF = 'assets/icons/students_f.svg';
@@ -81,11 +82,17 @@ class Assets {
   static const String images3dWallet = 'assets/images/3d_wallet.png';
   static const String imagesAppbarBackIcon = 'assets/images/appbar_back_icon.png';
   static const String imagesAvatar = 'assets/images/avatar.png';
+  static const String imagesDeafblind = 'assets/images/deafblind.png';
   static const String imagesDotedLine = 'assets/images/doted_line.png';
   static const String imagesEducation = 'assets/images/education.png';
   static const String imagesExamFinal = 'assets/images/exam_final.png';
+  static const String imagesLookIcon = 'assets/images/look-icon.png';
+  static const String imagesMedia = 'assets/images/media.png';
   static const String imagesPatternLines = 'assets/images/pattern_lines.png';
   static const String imagesSchoolBag = 'assets/images/school_bag.png';
+  static const String imagesSilence = 'assets/images/silence.png';
+  static const String imagesSilenceIcon = 'assets/images/silence-icon.png';
+  static const String imagesSpeak = 'assets/images/speak.png';
   static const String imagesStudentBehavior = 'assets/images/student_behavior.png';
   static const String lottiesAiSaed = 'assets/lotties/ai_saed.json';
   static const String lottiesLoader = 'assets/lotties/loader.json';
