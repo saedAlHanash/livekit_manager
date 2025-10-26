@@ -6,15 +6,15 @@ import '../participant_info.dart';
 import 'local_user.dart';
 
 class DynamicUser extends StatelessWidget {
-  const DynamicUser({super.key, required this.participantTrack});
+  const DynamicUser({super.key, required this.participant});
 
-  final ParticipantTrack participantTrack;
+  final Participant participant;
   @override
   Widget build(BuildContext context) {
-    if (participantTrack.participant is LocalParticipant) {
-      return LocalUser(participantTrack: participantTrack);
-    } else if (participantTrack.participant is RemoteParticipant) {
-      return RemoteUser(participantTrack: participantTrack);
+    if (participant is LocalParticipant) {
+      return LocalUser(participant: participant);
+    } else if (participant is RemoteParticipant) {
+      return RemoteUser(participant: participant);
     }
     throw UnimplementedError('Unknown participant type');
   }

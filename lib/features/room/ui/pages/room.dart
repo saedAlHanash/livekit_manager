@@ -4,24 +4,17 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
-import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/strings/app_color_manager.dart';
 import 'package:lk_assistant/core/util/exts.dart';
+import 'package:lk_assistant/features/room/ui/widget/no_video.dart';
 
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/utils.dart';
+import '../../data/request/setting_message.dart';
 import '../widget/controls.dart';
-import '../widget/participant.dart';
 import '../widget/participant_info.dart';
 import '../widget/users/dynamic_user.dart';
 
@@ -42,18 +35,17 @@ class RoomPage1 extends StatefulWidget {
 class _RoomPage1State extends State<RoomPage1> {
   String? selectedUserId;
 
-  List<ParticipantTrack> participantTracks = [];
-
-  List<ParticipantTrack> get participantTracksWithoutSelected => participantTracks
-      .where((e) => e.participant.sid != selectedParticipantTrack.participant.sid)
-      .toList(growable: false);
-
-  ParticipantTrack get selectedParticipantTrack =>
-      participantTracks.firstWhereOrNull((e) => e.participant.sid == selectedUserId) ?? participantTracks.first;
+  List<Participant> participants = [];
 
   EventsListener<RoomEvent> get _listener => widget.listener;
 
   bool get fastConnection => widget.room.engine.fastConnectOptions != null;
+
+  List<Participant> get participantTracksWithoutSelected =>
+      participants.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
+
+  Participant? get selectedParticipant =>
+      participants.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participants.firstOrNull;
 
   @override
   void initState() {
@@ -131,22 +123,28 @@ class _RoomPage1State extends State<RoomPage1> {
     ..on<RoomMetadataChangedEvent>((event) {
       loggerObject.i('Room metadata changed: ${event.metadata}');
     })
-    ..on<DataReceivedEvent>((event) {
-      String decoded = 'Failed to decode';
+    ..on<DataReceivedEvent>((e) {
       try {
-        decoded = utf8.decode(event.data);
+        final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+
+        loggerObject.w(message.toJson());
+        if (message.identity != widget.room.localParticipant?.identity) return;
+
+        switch (message.action) {
+          case ManagerActions.mic:
+            break;
+          case ManagerActions.video:
+            break;
+          case ManagerActions.shareScreen:
+            setState(() {
+              selectedUserId = message.name;
+            });
+            break;
+          case ManagerActions.raseHand:
+            break;
+        }
       } catch (err) {
         loggerObject.i('Failed to decode: $err');
-      }
-      context.showDataReceivedDialog(decoded);
-    })
-    ..on<AudioPlaybackStatusChanged>((event) async {
-      if (!widget.room.canPlaybackAudio) {
-        loggerObject.i('Audio playback failed for iOS Safari ..........');
-        bool? yesno = await context.showPlayAudioManuallyDialog();
-        if (yesno == true) {
-          await widget.room.startAudio();
-        }
       }
     });
 
@@ -177,83 +175,34 @@ class _RoomPage1State extends State<RoomPage1> {
   }
 
   void _sortParticipants() {
-    List<ParticipantTrack> userMediaTracks = [];
-    List<ParticipantTrack> screenTracks = [];
+    List<Participant> screenTracks = [];
+
     for (var participant in widget.room.remoteParticipants.values) {
-      if (participant.videoTrackPublications.any((e) => e.isScreenShare)) {
-        screenTracks.add(
-          ParticipantTrack(
-            participant: participant,
-            type: MediaType.screen,
-          ),
-        );
+      if (participant.videoTrackPublications.isNotEmpty) {
+        screenTracks.add(participant);
       }
     }
-    // sort speakers for the grid
-    userMediaTracks.sort((a, b) {
-      // loudest speaker first
-      if (a.participant.isSpeaking && b.participant.isSpeaking) {
-        if (a.participant.audioLevel > b.participant.audioLevel) {
-          return -1;
-        } else {
-          return 1;
-        }
-      }
-
-      // last spoken at
-      final aSpokeAt = a.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-      final bSpokeAt = b.participant.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-
-      if (aSpokeAt != bSpokeAt) {
-        return aSpokeAt > bSpokeAt ? -1 : 1;
-      }
-
-      // video on
-      if (a.participant.hasVideo != b.participant.hasVideo) {
-        return a.participant.hasVideo ? -1 : 1;
-      }
-
-      // joinedAt
-      return a.participant.joinedAt.millisecondsSinceEpoch - b.participant.joinedAt.millisecondsSinceEpoch;
-    });
 
     final localParticipantTracks = widget.room.localParticipant?.videoTrackPublications;
     if (localParticipantTracks != null) {
-      for (var t in localParticipantTracks) {
-        screenTracks.add(ParticipantTrack(
-          participant: widget.room.localParticipant!,
-          type: t.isScreenShare ? MediaType.screen : MediaType.media,
-        ));
-      }
+      screenTracks.add(widget.room.localParticipant!);
     }
 
-    // final localParticipantAudioTracks = widget.room.localParticipant?.audioTrackPublications;
-    // if (localParticipantAudioTracks != null) {
-    //   for (var t in localParticipantAudioTracks) {
-    //     screenTracks.add(ParticipantTrack(
-    //       participant: t.participant,
-    //       type: MediaType.media,
-    //     ));
-    //   }
-    // }
-
     setState(() {
-      participantTracks = [...screenTracks, ...userMediaTracks];
+      participants = [...screenTracks];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    loggerObject.w(participantTracks.length);
+    loggerObject.w(participants.length);
     return Scaffold(
       body: Stack(
         children: [
           Column(
             children: [
               Expanded(
-                child: participantTracks.isNotEmpty
-                    ? DynamicUser(participantTrack: selectedParticipantTrack)
-                    : Container(),
+                child: selectedParticipant != null ? DynamicUser(participant: selectedParticipant!) : NoVideoWidget(),
               ),
               if (widget.room.localParticipant != null)
                 SafeArea(
@@ -275,17 +224,22 @@ class _RoomPage1State extends State<RoomPage1> {
                 itemCount: math.max(0, participantTracksWithoutSelected.length),
                 itemBuilder: (context, i) {
                   final item = participantTracksWithoutSelected[i];
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        loggerObject.i(item.participant.name);
-                        selectedUserId = item.participant.sid;
-                      });
-                    },
-                    child: SizedBox(
-                      width: 180,
-                      height: 120,
-                      child: DynamicUser(participantTrack: item),
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      color: AppColorManager.appBarColor,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    width: 180.0.dg,
+                    height: 120.0.dg,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          loggerObject.i(item.name);
+                          selectedUserId = item.identity;
+                        });
+                      },
+                      child: DynamicUser(participant: item),
                     ),
                   );
                 },

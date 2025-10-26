@@ -10,22 +10,9 @@ import 'package:lk_assistant/features/room/ui/widget/sound_waveform.dart';
 
 import '../../../../core/strings/enum_manager.dart';
 
-extension ParticipantTrackTypeExt on MediaType {}
-
-class ParticipantTrack {
-  ParticipantTrack({
-    required this.participant,
-    this.type = MediaType.media,
-  });
-
-  Participant participant;
-  final MediaType type;
-}
-
 class ParticipantInfoWidget extends StatelessWidget {
   const ParticipantInfoWidget({
     this.title,
-
     this.connectionQuality = ConnectionQuality.unknown,
     this.enabledE2EE = false,
     super.key,

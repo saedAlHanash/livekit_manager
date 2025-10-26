@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,6 @@ import 'package:lk_assistant/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
-import '../../features/room/ui/widget/participant_info.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
@@ -683,31 +683,87 @@ extension GlobalKeyH on GlobalKey {
 }
 
 extension ParticipantH on Participant {
-  String get displayName {
-    if (identity.isNotEmpty) return identity;
-    if (name.isNotEmpty) return name;
-    return sid;
+  RemoteParticipant get remoteParticipant => this as RemoteParticipant;
+
+  LocalParticipant get localParticipant => this as LocalParticipant;
+
+  MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
+
+  List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
   }
-}
 
-extension ParticipantTrackH on ParticipantTrack {
-  RemoteParticipant get participant => this.participant as RemoteParticipant;
+  List<RemoteTrackPublication<RemoteAudioTrack>> get remoteAudioPublication =>
+      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
-  MediaType get type => this.type;
+  List<LocalTrackPublication<LocalVideoTrack>> get localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).toList();
+  }
 
-  RemoteTrackPublication<RemoteVideoTrack>? get videoPublication =>
-      participant.videoTrackPublications.where((element) => element.source == type.videoSourceType).firstOrNull;
+  List<LocalTrackPublication<LocalAudioTrack>> get localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
-  RemoteTrackPublication<RemoteAudioTrack>? get audioPublication =>
-      participant.audioTrackPublications.where((element) => element.source == type.audioSourceType).firstOrNull;
+  bool get isAdmin {
+    return attributes['type'].toString() == LkUserType.manager.index.toString();
+  }
 
-  VideoTrack? get activeVideoTrack => videoPublication?.track;
+  String get image => attributes['imageUrl'].toString();
 
-  AudioTrack? get activeAudioTrack => audioPublication?.track;
+  VideoTrack? get activeVideoTrack =>
+      (this is LocalParticipant) ? localVideoPublication.firstOrNull?.track : remoteVideoPublication.firstOrNull?.track;
+
+  AudioTrack? get activeAudioTrack =>
+      (this is LocalParticipant) ? localAudioPublication.firstOrNull?.track : remoteAudioPublication.firstOrNull?.track;
 
   bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  String get displayName {
+    if (identity.isNotEmpty) return identity;
+    if (name.isNotEmpty) return name;
+    return identity;
+  }
+
+  bool get isSuspend => permissions.isSuspend;
+}
+
+extension RemoteParticipantH on RemoteParticipant {
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
+
+  RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
+
+  RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+}
+
+extension LocalParticipantH on LocalParticipant {
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+
+  LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
+
+  LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
+
+  LocalVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+}
+
+extension ParticipantPermissionsH on ParticipantPermissions {
+  bool get isSuspend => canSubscribe == false && canPublish == false;
+
+  bool get isSilence => canPublish == false;
+
+  bool get isDeafblind => canSubscribe == false;
+
+  String get printFun {
+    return 'canSubscribe: $canSubscribe\n'
+        'canPublish: $canPublish\n'
+        'canPublishData: $canPublishData\n'
+        'canUpdateMetadata: $canUpdateMetadata\n'
+        'hidden: $hidden';
+  }
 }
 
 extension ConnectionQualityH on ConnectionQuality {

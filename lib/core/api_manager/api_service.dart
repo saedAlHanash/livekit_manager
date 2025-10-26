@@ -54,6 +54,7 @@ class APIService {
     Map<String, String>? header,
     String? path,
     String? hostName,
+    String? additional,
   }) async {
     // if (!await network.isConnected) noInternet;
 
@@ -61,7 +62,15 @@ class APIService {
 
     fixBody(body);
 
-    final uri = getUri(url: url, hostName: hostName, query: query, path: path, body: body, type: type);
+    final uri = getUri(
+      url: url,
+      hostName: hostName,
+      query: query,
+      path: path,
+      body: body,
+      type: type,
+      additional: additional,
+    );
 
     try {
       late final http.Response response;
@@ -137,9 +146,9 @@ class APIService {
     request.fields.addAll(fixFields(fields));
 
     final stream = await request.send().timeout(
-      const Duration(seconds: 40),
-      onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
-    );
+          const Duration(seconds: 40),
+          onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
+        );
 
     final response = await http.Response.fromStream(stream);
 

@@ -10,32 +10,16 @@ import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
 
 class LocalUser extends StatefulWidget {
-  const LocalUser({super.key, required this.participantTrack});
+  const LocalUser({super.key, required this.participant});
 
-  final ParticipantTrack participantTrack;
+  final Participant participant;
 
   @override
   State<LocalUser> createState() => _LocalUserState();
 }
 
 class _LocalUserState extends State<LocalUser> {
-  LocalParticipant get participant => widget.participantTrack.participant as LocalParticipant;
-
-  MediaType get type => widget.participantTrack.type;
-
-  LocalTrackPublication<LocalVideoTrack>? get videoPublication =>
-      participant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
-
-  LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
-      participant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
-
-  VideoTrack? get activeVideoTrack => videoPublication?.track;
-
-  AudioTrack? get activeAudioTrack => audioPublication?.track;
-
-  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
-
-  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+  Participant get participant => widget.participant;
 
   @override
   void initState() {
@@ -52,7 +36,7 @@ class _LocalUserState extends State<LocalUser> {
 
   @override
   void didUpdateWidget(covariant LocalUser oldWidget) {
-    oldWidget.participantTrack.participant.removeListener(_onParticipantChanged);
+    oldWidget.participant.removeListener(_onParticipantChanged);
     participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
@@ -68,13 +52,13 @@ class _LocalUserState extends State<LocalUser> {
   Widget build(BuildContext ctx) {
     return Stack(
       children: [
-        videoActive
+        participant.videoActive
             ? MyCardWidget(
                 margin: EdgeInsets.all(20.0).r,
                 radios: 20.0,
                 child: VideoTrackRenderer(
                   renderMode: VideoRenderMode.auto,
-                  activeVideoTrack!,
+                  participant.activeVideoTrack!,
                 ),
               )
             : const NoVideoWidget(),
@@ -86,14 +70,14 @@ class _LocalUserState extends State<LocalUser> {
             enabledE2EE: participant.isEncrypted,
           ),
         ),
-        if (activeAudioTrack != null)
+        if (participant.activeAudioTrack != null)
           Padding(
             padding: const EdgeInsets.all(20.0).r,
             child: Align(
                 alignment: Alignment.topRight,
                 child: SoundWaveformWidget(
-                  key: ValueKey(activeAudioTrack!.hashCode),
-                  audioTrack: activeAudioTrack!,
+                  key: ValueKey(participant.activeAudioTrack!.hashCode),
+                  audioTrack: participant.activeAudioTrack!,
                   width: 8,
                 )),
           ),

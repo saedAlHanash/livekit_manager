@@ -88,17 +88,19 @@ Uri getUri({
   Map<String, dynamic>? body,
   String? path,
   String? hostName,
+  String? additional,
 }) {
-  url = additionalConst + url;
+  url = (additional ?? additionalConst) + url;
 
   if (path != null) url = '$url/$path';
   Uri uri;
   if ((hostName ?? baseUrl) == liveUrl) {
     uri = Uri.https(hostName ?? baseUrl, url, query);
   } else {
-    uri = Uri.http(hostName ?? baseUrl, url, query);
+    uri = Uri.https(hostName ?? baseUrl, url, query);
   }
 
+  print(uri.toString());
   logRequest(
       type: type,
       url: url,

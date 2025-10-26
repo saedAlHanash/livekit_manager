@@ -90,7 +90,7 @@ final goRouter = GoRouter(
               create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
             ),
           ],
-          child: RoomPage(room, listener),
+          child: Container(),
         );
       },
     ),

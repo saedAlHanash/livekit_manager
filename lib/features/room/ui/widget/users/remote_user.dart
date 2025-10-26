@@ -1,37 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:image_multi_type/image_multi_type_pakage.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:lk_assistant/features/room/ui/widget/participant_info.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
 
 class RemoteUser extends StatefulWidget {
-  const RemoteUser({super.key, required this.participantTrack});
+  const RemoteUser({super.key, required this.participant});
 
-  final ParticipantTrack participantTrack;
+  final Participant participant;
 
   @override
   State<RemoteUser> createState() => _RemoteUserState();
 }
 
 class _RemoteUserState extends State<RemoteUser> {
-  RemoteParticipant get participant => widget.participantTrack.participant as RemoteParticipant;
-
-  MediaType get type => widget.participantTrack.type;
-
-  RemoteTrackPublication<RemoteVideoTrack>? get videoPublication =>
-      participant.videoTrackPublications.where((element) => element.source == type.videoSourceType).firstOrNull;
-
-  RemoteTrackPublication<RemoteAudioTrack>? get audioPublication =>
-      participant.audioTrackPublications.where((element) => element.source == type.audioSourceType).firstOrNull;
-
-  VideoTrack? get activeVideoTrack => videoPublication?.track;
-
-  AudioTrack? get activeAudioTrack => audioPublication?.track;
-
-  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
-
-  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+  Participant get participant => widget.participant;
 
   @override
   void initState() {
@@ -48,7 +33,7 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   void didUpdateWidget(covariant RemoteUser oldWidget) {
-    oldWidget.participantTrack.participant.removeListener(_onParticipantChanged);
+    oldWidget.participant.removeListener(_onParticipantChanged);
     participant.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
@@ -62,10 +47,10 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   Widget build(BuildContext ctx) {
-    return videoActive
+    return participant.videoActive
         ? VideoTrackRenderer(
             renderMode: VideoRenderMode.auto,
-            activeVideoTrack!,
+            participant.activeVideoTrack!,
           )
         : Center(
             child: RoundImageWidget(

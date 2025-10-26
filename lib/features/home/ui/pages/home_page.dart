@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:lk_assistant/core/widgets/my_text_form_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/snack_bar_message.dart';
 import '../../../room/ui/pages/room.dart';
 
@@ -102,6 +105,39 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> getToken() async {
+    final r = await APIService().callApi(
+      url: 'GetJoinToken',
+      type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/Index/',
+      body: {
+        "identity": "Sharer",
+        "name": "Sharer user",
+        "videoGrants": {
+          "canPublish": true,
+          "canPublishData": true,
+          "canSubscribe": true,
+          "room": "s1",
+          "roomAdmin": false,
+          "roomCreate": true,
+          "roomJoin": true,
+          "roomList": false
+        },
+        "attributes": {
+          "type": LkUserType.sharer.index.toString(),
+          // "imageUrl": ""
+        }
+      },
+    );
+
+    try {
+      setState(() {
+        _tokenCtrl.text = r.jsonBodyPure['token'];
+      });
+    } catch (e) {}
+  }
+
   // Read saved URL and Token
   Future<void> _readPrefs() async {
     final prefs = await SharedPreferences.getInstance();
@@ -120,8 +156,10 @@ class _HomePageState extends State<HomePage> {
   Future<void> _connect(BuildContext context) async {
     setState(() => _busy = true);
 
+    // var url = 'wss://coretik.coretech-mena.com';
+    // var url = 'ws://192.168.1.166:7880';
+    // var url = 'ws://192.168.1.69:7880';
     var url = 'wss://coretik.coretech-mena.com';
-    // var url = 'wss://coretest-4xi5uo5z.livekit.cloud';
 
     var token = _tokenCtrl.text;
     _writePrefs();
@@ -207,6 +245,12 @@ class _HomePageState extends State<HomePage> {
                   child: MyTextFormWidget(
                     label: 'Token',
                     controller: _tokenCtrl,
+                    iconWidget: IconButton(
+                      onPressed: () {
+                        getToken();
+                      },
+                      icon: ImageMultiType(url: Icons.generating_tokens),
+                    ),
                   ),
                 ),
                 20.0.verticalSpace,
