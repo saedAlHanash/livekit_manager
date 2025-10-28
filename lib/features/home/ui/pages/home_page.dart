@@ -41,14 +41,14 @@ class _HomePageState extends State<HomePage> {
       hostName: 'coretik-be.coretech-mena.com',
       additional: '/api/v1/Index/',
       body: {
-        "identity": "Admin",
-        "name": "Admin",
+        "identity": "Sharer",
+        "name": "Sharer",
         "videoGrants": {
-          "canPublish": false,
+          "canPublish": true,
           "canPublishData": true,
           "canSubscribe": true,
           "room": "s1",
-          "roomAdmin": true,
+          "roomAdmin": false,
           "roomCreate": true,
           "roomJoin": true,
           "roomList": true
