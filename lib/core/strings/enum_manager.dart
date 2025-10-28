@@ -90,4 +90,68 @@ enum ManagerActions {
   }
 }
 
-enum LkUserType { manager, sharer, user }
+enum LkUserType {
+  manager,
+  sharer,
+  user;
+
+  bool get isManager => this == LkUserType.manager;
+
+  bool get isSharer => this == LkUserType.sharer;
+
+  bool get isUser => this == LkUserType.user;
+}
+
+enum PermissionType {
+  speak,
+  listen,
+  both;
+
+  Map<String, dynamic> revokePermissions(Participant participant) {
+    final Map<String, dynamic> map = switch (this) {
+      PermissionType.speak => {
+          "canSubscribe": participant.permissions.canSubscribe,
+          "canPublish": false,
+          //----------
+          "canPublishData": true,
+        },
+      PermissionType.listen => {
+          "canSubscribe": false,
+          "canPublish": participant.permissions.canPublish,
+          //----------
+          "canPublishData": true,
+        },
+      PermissionType.both => {
+          "canSubscribe": false,
+          "canPublish": false,
+          //----------
+          "canPublishData": true,
+        },
+    };
+    return map..addAll({'identity': participant.identity});
+  }
+
+  Map<String, dynamic> grantPermissions(Participant participant) {
+    final Map<String, dynamic> map = switch (this) {
+      PermissionType.speak => {
+          "canSubscribe": participant.permissions.canSubscribe,
+          "canPublish": true,
+          //----------
+          "canPublishData": true,
+        },
+      PermissionType.listen => {
+          "canSubscribe": true,
+          "canPublish": participant.permissions.canPublish,
+          //----------
+          "canPublishData": true,
+        },
+      PermissionType.both => {
+          "canSubscribe": true,
+          "canPublish": true,
+          //----------
+          "canPublishData": true,
+        },
+    };
+    return map..addAll({'identity': participant.identity});
+  }
+}

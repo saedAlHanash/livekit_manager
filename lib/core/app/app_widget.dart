@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:lk_assistant/features/home/bloc/home_cubit/home_cubit.dart';
 
+import '../../features/room/bloc/room_cubit/room_cubit.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
@@ -100,6 +101,11 @@ class MyAppState extends State<MyApp> {
             builder: (ctx, child) {
               return MultiBlocProvider(
                 providers: [
+                  BlocProvider(
+                    create: (context) => sl<RoomCubit>()
+                      ..setUrl('wss://coretik.coretech-mena.com')
+                      ..initial(),
+                  ),
                   BlocProvider(
                     create: (context) => sl<HomeCubit>(),
                   )

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
 
@@ -86,9 +87,7 @@ final goRouter = GoRouter(
 
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => sl<RoomCubit>()..getData(roomId: roomId),
-            ),
+            BlocProvider(create: (context) => sl<RoomCubit>()),
           ],
           child: Container(),
         );
