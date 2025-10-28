@@ -91,51 +91,56 @@ class ItemUserSpeaker extends StatelessWidget {
       builder: (context, state) {
         final participant = state.speakers[i];
         final isSelected = participant.identity == state.selectedParticipant?.identity;
-        return Container(
-          height: 120.0.h,
-          decoration: BoxDecoration(
-            color: AppColorManager.appBarColor,
-            borderRadius: BorderRadius.circular(12.0).r,
-            border: Border.all(color: isSelected ? AppColorManager.mainColor : Colors.transparent, width: 3.0),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Stack(
-            alignment: AlignmentGeometry.center,
-            children: [
-              UserImageOrName(
-                participant: participant,
-              ),
-              Align(
-                alignment: AlignmentGeometry.bottomCenter,
-                child: Container(
-                  width: 1.0.sw,
-                  height: 30.0.h,
-                  padding: EdgeInsets.all(4.0).r,
-                  color: Colors.black26,
-                  child: DrawableText(
-                    text: participant.name,
-                    matchParent: true,
-                    textAlign: TextAlign.center,
-                    size: 11.0.sp,
-                  ),
+        return InkWell(
+          onTap: () {
+            context.read<RoomCubit>().selectParticipant(participant.identity);
+          },
+          child: Container(
+            height: 120.0.h,
+            decoration: BoxDecoration(
+              color: AppColorManager.appBarColor,
+              borderRadius: BorderRadius.circular(12.0).r,
+              border: Border.all(color: isSelected ? AppColorManager.mainColor : Colors.transparent, width: 3.0),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(
+              alignment: AlignmentGeometry.center,
+              children: [
+                UserImageOrName(
+                  participant: participant,
                 ),
-              ),
-              Align(
-                alignment: AlignmentGeometry.topLeft,
-                child: participant.isAdmin ? null : ControllersDynamic(participant: participant, speaker: true),
-              ),
-              if (state.raiseHands.contains(participant.identity))
                 Align(
-                  alignment: AlignmentGeometry.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ImageMultiType(
-                      url: Icons.back_hand_outlined,
-                      width: 18.0.w,
+                  alignment: AlignmentGeometry.bottomCenter,
+                  child: Container(
+                    width: 1.0.sw,
+                    height: 30.0.h,
+                    padding: EdgeInsets.all(4.0).r,
+                    color: Colors.black26,
+                    child: DrawableText(
+                      text: participant.name,
+                      matchParent: true,
+                      textAlign: TextAlign.center,
+                      size: 11.0.sp,
                     ),
                   ),
                 ),
-            ],
+                Align(
+                  alignment: AlignmentGeometry.topLeft,
+                  child: participant.isAdmin ? null : ControllersDynamic(participant: participant, speaker: true),
+                ),
+                if (state.raiseHands.contains(participant.identity))
+                  Align(
+                    alignment: AlignmentGeometry.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ImageMultiType(
+                        url: Icons.back_hand_outlined,
+                        width: 18.0.w,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         );
       },

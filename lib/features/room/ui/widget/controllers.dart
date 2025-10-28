@@ -67,27 +67,22 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               suspend(),
               if (participant.permissions.isSilence) silence(),
               deafblind(),
-              PopupMenuItemModel(
-                label: 'Make main view',
-                icon: ImageMultiType(url: Icons.screenshot_monitor),
-                onTap: () {
-                  final m = SettingMessage(
-                    identity: context.read<RoomCubit>().state.sharerId,
-                    name: participant.name,
-                    action: ManagerActions.shareScreen,
-                  );
-                  loggerObject.w(m.toJson());
-                  context.read<RoomCubit>().state.result.localParticipant?.publishData(
-                        utf8.encode(
-                          jsonEncode(m),
-                        ),
-                      );
-                },
-              ),
-              PopupMenuItemModel(
-                icon: null,
-                label: DrawableText(text: participant.userType.name),
-              ),
+              if (participant.videoActive)
+                PopupMenuItemModel(
+                  label: 'Make main view',
+                  icon: ImageMultiType(url: Icons.screenshot_monitor),
+                  onTap: () {
+                    final m = SettingMessage(
+                      identity: context.read<RoomCubit>().state.sharerId,
+                      name: participant.identity,
+                      action: ManagerActions.shareScreen,
+                    );
+                    loggerObject.w(m.toJson());
+                    context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                          utf8.encode(jsonEncode(m)),
+                        );
+                  },
+                ),
               PopupMenuItemModel(
                 label: S.of(context).disconnect,
                 icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
@@ -95,10 +90,10 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   context.read<UserControlCubit>().kick(participant.identity);
                 },
               ),
-              PopupMenuItemModel(
-                label: S.of(context).disconnectAndBan,
-                icon: ImageMultiType(url: Icons.block, color: Colors.red),
-              ),
+              // PopupMenuItemModel(
+              //   label: S.of(context).disconnectAndBan,
+              //   icon: ImageMultiType(url: Icons.block, color: Colors.red),
+              // ),
             ],
           ],
         );

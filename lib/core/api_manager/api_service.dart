@@ -54,6 +54,7 @@ class APIService {
     Map<String, String>? header,
     String? path,
     String? hostName,
+    String? additional,
   }) async {
     // if (!await network.isConnected) noInternet;
 
@@ -64,6 +65,7 @@ class APIService {
     final uri = getUri(
       url: url,
       hostName: hostName,
+      additional: additional,
       query: query,
       path: path,
       body: body,
@@ -75,7 +77,9 @@ class APIService {
 
       switch (type) {
         case ApiType.get:
-          response = await http.get(uri, headers: (header ?? innerHeader)).timeout(connectionTimeOut, onTimeout: () => timeOut);
+          response = await http
+              .get(uri, headers: (header ?? innerHeader))
+              .timeout(connectionTimeOut, onTimeout: () => timeOut);
         case ApiType.post:
           response = await http
               .post(uri, body: jsonEncode(body), headers: (header ?? innerHeader))

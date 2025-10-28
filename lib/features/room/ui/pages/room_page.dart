@@ -7,6 +7,7 @@ import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../widget/managers_widget.dart';
 import '../widget/users/dynamic_user.dart';
 
 class RoomPage extends StatefulWidget {
@@ -36,7 +37,14 @@ class _RoomPageState extends State<RoomPage> {
             child: Row(
               children: [
                 Expanded(child: AudiencesWidget()),
-                Expanded(child: SpeakersWidget()),
+                Expanded(
+                    child: Column(
+                  children: [
+                    Expanded(flex: 3, child: SpeakersWidget()),
+                    10.0.verticalSpace,
+                    Expanded(child: ManagersWidget()),
+                  ],
+                )),
                 Expanded(
                   flex: 3,
                   child: Column(
