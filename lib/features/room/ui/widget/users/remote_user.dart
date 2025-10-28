@@ -51,13 +51,14 @@ class _RemoteUserState extends State<RemoteUser> {
         ? Row(
             children: [
               for (var o in widget.participant.remoteVideoPublication)
-                Expanded(
-                  child: VideoTrackRenderer(
-                    renderMode: VideoRenderMode.auto,
-                    fit: widget.fit,
-                    o.track as VideoTrack,
+                if (o.track != null)
+                  Expanded(
+                    child: VideoTrackRenderer(
+                      renderMode: VideoRenderMode.auto,
+                      fit: widget.fit,
+                      o.track!,
+                    ),
                   ),
-                ),
             ],
           )
         : const NoVideoWidget();
