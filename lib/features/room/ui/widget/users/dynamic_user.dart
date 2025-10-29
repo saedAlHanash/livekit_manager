@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/remote_user.dart';
 import 'package:m_cubit/m_cubit.dart';
 
@@ -29,14 +30,30 @@ class DynamicUser extends StatelessWidget {
 class UserImageOrName extends StatelessWidget {
   const UserImageOrName({super.key, required this.participant, this.size = 60.0});
 
-  final Participant participant;
+  final Participant? participant;
   final double size;
 
   @override
   Widget build(BuildContext context) {
-    return (!participant.image.isBlank)
+    if (participant == null) {
+      return Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColorManager.dividerColor),
+        ),
+        alignment: AlignmentGeometry.center,
+        child: DrawableText(
+          text: '?',
+          size: 24.0.sp,
+        ),
+      );
+    }
+
+    return (!participant!.image.isBlank)
         ? ImageMultiType(
-            url: participant.image,
+            url: participant!.image,
             fit: BoxFit.cover,
             height: size,
             width: size,
@@ -46,11 +63,11 @@ class UserImageOrName extends StatelessWidget {
             width: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: participant.identity.colorFromId),
+              border: Border.all(color: participant!.identity.colorFromId),
             ),
             alignment: AlignmentGeometry.center,
             child: DrawableText(
-              text: participant.displayName.firstCharacter.toUpperCase(),
+              text: participant!.displayName.firstCharacter.toUpperCase(),
               size: 24.0.sp,
             ),
           );

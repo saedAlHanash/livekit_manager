@@ -21,6 +21,17 @@ part 'room_state.dart';
 class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
 
+  @override
+  String get nameCache => 'roomNotes';
+
+  @override
+  String get filter => state.result.name ?? '';
+
+  Future<void> getDataFromCache() async {
+    final data = await getListCached(fromJson: SettingMessage.fromJson);
+    emit(state.copyWith(raiseHands: data, id: state.notifyIndex + 1));
+  }
+
   Future<void> initial() async {
     await Permission.microphone.request();
     await state.result.prepareConnection(state.url, state.token);
@@ -39,7 +50,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹🔹 أحداث عامة للمشاركين (Participant Events)
       // هذا الحدث عام، يُطلق عند حدوث أي تغيير يخص المشاركين (اتصال، نشر، إلغاء نشر...).
       ..on<ParticipantEvent>((e) {
-        loggerObject.d(e.toString());
+        // loggerObject.d(e.toString());
         _sortParticipants();
       })
 
@@ -145,36 +156,20 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
-          // Events handler most be hear, not another place.
-          // Cuse this is the listener for data event.
-          // Data will be as JSON type with modl with MessageAction enum.
-
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-            loggerObject.w(message.toJson());
-            // if (message.identity != state.result.localParticipant?.identity) return;
+            if (!message.toUserType.isManager) return;
+
+            SoundService.play(Assets.soundsNote);
             switch (message.action) {
-              case ManagerActions.mic:
-                break;
-              case ManagerActions.video:
-                break;
-              case ManagerActions.shareScreen:
-                break;
-              case ManagerActions.raseHand:
-                emit(state.copyWith(raiseHands: state.raiseHands..add(message.identity)));
-                Future.delayed(
-                  Duration(seconds: 5),
-                  () {
-                    emit(state.copyWith(raiseHands: {
-                      ...state.raiseHands..remove(message.identity),
-                    }, id: state.notifyIndex + 1));
-                  },
-                );
-                await SoundService.play(Assets.soundsNewJoin);
-                break;
+              case ManagerActions.requestPermission:
+              case ManagerActions.requestToDisconnect:
+              case ManagerActions.message:
+              case ManagerActions.changeScreen:
+                await addOrUpdateToCache(message);
             }
           } catch (err) {
-            loggerObject.i('Failed to decode: $err');
+            loggerObject.e('Failed to decode: $err');
           }
         },
       );
@@ -234,6 +229,7 @@ class RoomCubit extends MCubit<RoomInitial> {
         fastConnectOptions: FastConnectOptions(),
       );
       state.result.connectionState;
+      getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
@@ -261,6 +257,22 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void selectParticipant(String participantTrackId) {
     emit(state.copyWith(selectedUserId: participantTrackId));
+  }
+
+  void raiseHand() {}
+  Future<void> addOrUpdateToCache(SettingMessage item) async {
+    final listJson = await addOrUpdateDate([item]);
+    if (listJson == null) return;
+    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
+    emit(state.copyWith(raiseHands: list));
+  }
+
+  Future<void> deleteFromCache(String id) async {
+    final listJson = await deleteDate([id]);
+    if (listJson == null) return;
+    loggerObject.w('id: $id, listJson: $listJson');
+    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
+    emit(state.copyWith(raiseHands: list));
   }
 
   @override

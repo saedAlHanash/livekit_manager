@@ -23,13 +23,15 @@ class RoomInitial extends AbstractState<Room> {
 
   final EventsListener<RoomEvent> listener;
 
-  final Set<String> raiseHands;
+  final List<SettingMessage> raiseHands;
   final List<Participant> participant;
 
   final String selectedUserId;
 
   List<Participant> get participantTracksWithoutSelected =>
       participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
+
+  Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
 
   Participant? get selectedParticipant =>
       participant.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participant.firstOrNull;
@@ -48,8 +50,9 @@ class RoomInitial extends AbstractState<Room> {
       // url: 'wss://coretik.coretech-mena.com',
       token: '',
       listener: room.createListener(),
-      raiseHands: {},
+      raiseHands: [],
       participant: const [],
+
       selectedUserId: '',
     );
   }
@@ -74,29 +77,31 @@ class RoomInitial extends AbstractState<Room> {
 
   String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 
-  RoomInitial copyWith(
-      {CubitStatuses? statuses,
-      Room? result,
-      String? error,
-      int? id,
-      String? request,
-      String? url,
-      String? token,
-      EventsListener<RoomEvent>? listener,
-      List<Participant>? participant,
-      Set<String>? raiseHands,
-      String? selectedUserId}) {
+  RoomInitial copyWith({
+    CubitStatuses? statuses,
+    Room? result,
+    String? error,
+    int? id,
+    String? request,
+    String? url,
+    String? token,
+    EventsListener<RoomEvent>? listener,
+    List<Participant>? participant,
+    List<SettingMessage>? raiseHands,
+    String? selectedUserId,
+  }) {
     return RoomInitial(
-        statuses: statuses ?? this.statuses,
-        result: result ?? this.result,
-        error: error ?? this.error,
-        id: id ?? this.id,
-        request: request ?? this.request,
-        url: url ?? this.url,
-        token: token ?? this.token,
-        listener: listener ?? this.listener,
-        participant: participant ?? this.participant,
-        raiseHands: raiseHands ?? this.raiseHands,
-        selectedUserId: selectedUserId ?? this.selectedUserId);
+      statuses: statuses ?? this.statuses,
+      result: result ?? this.result,
+      error: error ?? this.error,
+      id: id ?? this.id,
+      request: request ?? this.request,
+      url: url ?? this.url,
+      token: token ?? this.token,
+      listener: listener ?? this.listener,
+      participant: participant ?? this.participant,
+      raiseHands: raiseHands ?? this.raiseHands,
+      selectedUserId: selectedUserId ?? this.selectedUserId,
+    );
   }
 }

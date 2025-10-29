@@ -51,7 +51,6 @@ class SaedTableWidget extends StatelessWidget {
               children: data.mapIndexed((i, e) {
                 return InkWell(
                   onTap: () {
-                    loggerObject.w(onTapItem == null);
                     onTapItem?.call(i);
                   },
                   child: CellWidget(

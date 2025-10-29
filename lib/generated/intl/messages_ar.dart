@@ -489,6 +489,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "longTerm": MessageLookupByLibrary.simpleMessage("طويل الأجل"),
     "lowerThanYou": MessageLookupByLibrary.simpleMessage("أقل منك"),
     "mail": MessageLookupByLibrary.simpleMessage("ذكر"),
+    "makeMainView": MessageLookupByLibrary.simpleMessage("Make main view"),
     "makeMoney": MessageLookupByLibrary.simpleMessage(
       "قم بالتسجيل لكسب وتوفير المال باستخدام E-move",
     ),
@@ -696,6 +697,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "request": MessageLookupByLibrary.simpleMessage("الطلب"),
     "requestAndSuggestion": MessageLookupByLibrary.simpleMessage("طلب واقتراح"),
+    "requestedPermission": MessageLookupByLibrary.simpleMessage(
+      "requested permission",
+    ),
+    "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
+      "requested to leave the session",
+    ),
     "requests": MessageLookupByLibrary.simpleMessage("الطلبات"),
     "rescan": MessageLookupByLibrary.simpleMessage("إعادة المسح"),
     "resend": MessageLookupByLibrary.simpleMessage("إعادة الإرسال"),
@@ -902,6 +909,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "walletName": MessageLookupByLibrary.simpleMessage("اسم المحفظة"),
     "walletPrivatekey": MessageLookupByLibrary.simpleMessage(
       "المفتاح الخاص للمحفظة",
+    ),
+    "wantsToJoinOrGetPermission": MessageLookupByLibrary.simpleMessage(
+      "Wants to join or get permission",
     ),
     "weTextedYouACodeToVerifyYourPhoneNumber":
         MessageLookupByLibrary.simpleMessage(

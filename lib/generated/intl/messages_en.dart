@@ -503,6 +503,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "longTerm": MessageLookupByLibrary.simpleMessage("Long term"),
     "lowerThanYou": MessageLookupByLibrary.simpleMessage("Lower Than You"),
     "mail": MessageLookupByLibrary.simpleMessage("Mail"),
+    "makeMainView": MessageLookupByLibrary.simpleMessage("Make main view"),
     "makeMoney": MessageLookupByLibrary.simpleMessage(
       "Make your own money easily",
     ),
@@ -720,6 +721,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "request": MessageLookupByLibrary.simpleMessage("Request"),
     "requestAndSuggestion": MessageLookupByLibrary.simpleMessage(
       "Request and Suggestion",
+    ),
+    "requestedPermission": MessageLookupByLibrary.simpleMessage(
+      "requested permission",
+    ),
+    "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
+      "requested to leave the session",
     ),
     "requests": MessageLookupByLibrary.simpleMessage("Requests"),
     "rescan": MessageLookupByLibrary.simpleMessage("Rescan"),
@@ -942,6 +949,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "walletName": MessageLookupByLibrary.simpleMessage("Wallet name"),
     "walletPrivatekey": MessageLookupByLibrary.simpleMessage(
       "Wallet privateKey",
+    ),
+    "wantsToJoinOrGetPermission": MessageLookupByLibrary.simpleMessage(
+      "Wants to join or get permission",
     ),
     "weTextedYouACodeToVerifyYourPhoneNumber":
         MessageLookupByLibrary.simpleMessage(

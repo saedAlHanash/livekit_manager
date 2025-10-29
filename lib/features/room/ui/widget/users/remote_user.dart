@@ -50,7 +50,6 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   Widget build(BuildContext ctx) {
-    loggerObject.w(widget.participant.remoteVideoPublication);
     return widget.participant.videoActive
         ? Row(
             children: [

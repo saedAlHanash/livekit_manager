@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/audiences_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
@@ -30,45 +31,49 @@ class _RoomPageState extends State<RoomPage> {
         backgroundColor: Colors.red,
         child: const Icon(Icons.call_end, color: Colors.white),
       ),
-      body: BlocBuilder<RoomCubit, RoomInitial>(
+      body: BlocBuilder<UserControlCubit, UserControlInitial>(
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                Expanded(child: AudiencesWidget()),
-                Expanded(
-                    child: Column(
+          return BlocBuilder<RoomCubit, RoomInitial>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
                   children: [
-                    Expanded(flex: 3, child: SpeakersWidget()),
-                    10.0.verticalSpace,
-                    Expanded(child: ManagersWidget()),
-                  ],
-                )),
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    children: [
-                      if (state.selectedParticipant != null)
-                        Expanded(
-                          child: Container(
-                            width: 1.0.sw,
-                            decoration: BoxDecoration(
-                              color: AppColorManager.appBarColor,
-                              borderRadius: BorderRadius.circular(12.0).r,
+                    Expanded(child: AudiencesWidget()),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        Expanded(flex: 3, child: SpeakersWidget()),
+                        10.0.verticalSpace,
+                        Expanded(child: ManagersWidget()),
+                      ],
+                    )),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          if (state.selectedParticipant != null)
+                            Expanded(
+                              child: Container(
+                                width: 1.0.sw,
+                                decoration: BoxDecoration(
+                                  color: AppColorManager.appBarColor,
+                                  borderRadius: BorderRadius.circular(12.0).r,
+                                ),
+                                padding: const EdgeInsets.all(15.0),
+                                child: DynamicUser(participant: state.selectedParticipant!),
+                              ),
                             ),
-                            padding: const EdgeInsets.all(15.0),
-                            child: DynamicUser(participant: state.selectedParticipant!),
+                          Expanded(
+                            child: NotesWidget(),
                           ),
-                        ),
-                      Expanded(
-                        child: NotesWidget(),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    )
+                  ],
+                ),
+              );
+            },
           );
         },
       ),

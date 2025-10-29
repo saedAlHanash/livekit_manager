@@ -4778,6 +4778,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Make main view`
+  String get makeMainView {
+    return Intl.message(
+      'Make main view',
+      name: 'makeMainView',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `requested permission`
+  String get requestedPermission {
+    return Intl.message(
+      'requested permission',
+      name: 'requestedPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wants to join or get permission`
+  String get wantsToJoinOrGetPermission {
+    return Intl.message(
+      'Wants to join or get permission',
+      name: 'wantsToJoinOrGetPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `requested to leave the session`
+  String get requestedToLeaveTheSession {
+    return Intl.message(
+      'requested to leave the session',
+      name: 'requestedToLeaveTheSession',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

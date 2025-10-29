@@ -23,7 +23,7 @@ void main() async {
 
   await CachingService.initial(
     onError: (second) => showErrorFromApi(second),
-    version: 3,
+    version: 4,
     timeInterval: 60,
   );
   // if (kIsWeb) {

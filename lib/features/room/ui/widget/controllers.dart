@@ -1,11 +1,7 @@
-import 'dart:convert';
-
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 
@@ -69,18 +65,16 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               deafblind(),
               if (participant.videoActive)
                 PopupMenuItemModel(
-                  label: 'Make main view',
+                  label: S.of(context).makeMainView,
                   icon: ImageMultiType(url: Icons.screenshot_monitor),
                   onTap: () {
                     final m = SettingMessage(
-                      identity: context.read<RoomCubit>().state.sharerId,
-                      name: participant.identity,
-                      action: ManagerActions.shareScreen,
+                      toIdentity: context.read<RoomCubit>().state.sharerId,
+                      action: ManagerActions.changeScreen,
+                      toUserType: LkUserType.sharer,
                     );
-                    loggerObject.w(m.toJson());
-                    context.read<RoomCubit>().state.result.localParticipant?.publishData(
-                          utf8.encode(jsonEncode(m)),
-                        );
+
+                    context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
                   },
                 ),
               PopupMenuItemModel(

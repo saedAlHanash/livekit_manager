@@ -73,7 +73,6 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    loggerObject.w(AppSharedPreference.getToken);
     return ScreenUtilInit(
       // designSize: const Size(375, 833),
       // designSize: Size(MediaQuery.sizeOf(context).width * 2, MediaQuery.sizeOf(context).height),

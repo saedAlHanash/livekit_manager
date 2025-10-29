@@ -69,17 +69,17 @@ enum MediaType {
 }
 
 enum ManagerActions {
-  mic,
-  video,
-  shareScreen,
-  raseHand;
+  requestPermission,
+  requestToDisconnect,
+  message,
+  changeScreen;
 
   IconData get icon {
     return switch (this) {
-      ManagerActions.mic => Icons.mic,
-      ManagerActions.video => Icons.videocam,
-      ManagerActions.shareScreen => Icons.screen_share,
-      ManagerActions.raseHand => Icons.front_hand,
+      ManagerActions.requestPermission => Icons.pan_tool_outlined,
+      ManagerActions.requestToDisconnect => Icons.exit_to_app,
+      ManagerActions.message => Icons.message,
+      ManagerActions.changeScreen => Icons.screen_share_outlined,
     };
   }
 }
