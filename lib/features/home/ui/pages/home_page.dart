@@ -40,10 +40,10 @@ class _HomePageState extends State<HomePage> {
       hostName: 'coretik-be.coretech-mena.com',
       additional: '/api/v1/Index/',
       body: {
-        "identity": "Sharer",
-        "name": "Sharer",
+        "identity": "Admin",
+        "name": "Admin",
         "videoGrants": {
-          "canPublish": true,
+          "canPublish": false,
           "canPublishData": true,
           "canSubscribe": true,
           "room": "s1",
@@ -52,7 +52,9 @@ class _HomePageState extends State<HomePage> {
           "roomJoin": true,
           "roomList": true
         },
-        "attributes": {"type": LkUserType.sharer.index.toString()}
+        "attributes": {
+          "type": LkUserType.manager.index.toString(),
+        }
       },
     );
 
