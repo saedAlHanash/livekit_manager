@@ -414,6 +414,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "gracePeriod": MessageLookupByLibrary.simpleMessage("Grace period"),
     "grandfather": MessageLookupByLibrary.simpleMessage("Grandfather"),
     "group": MessageLookupByLibrary.simpleMessage("Group"),
+    "groupMessage": MessageLookupByLibrary.simpleMessage("Group message"),
     "haveBeenCreated": MessageLookupByLibrary.simpleMessage(
       "Your Account Had Been Created",
     ),
@@ -864,6 +865,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "summary": MessageLookupByLibrary.simpleMessage("summary"),
     "support": MessageLookupByLibrary.simpleMessage("Support"),
     "sure": MessageLookupByLibrary.simpleMessage("Sure"),
+    "suspendAll": MessageLookupByLibrary.simpleMessage("Suspend All"),
     "suspendUser": MessageLookupByLibrary.simpleMessage("Suspend User"),
     "suspended": MessageLookupByLibrary.simpleMessage("Suspended"),
     "swapDetails": MessageLookupByLibrary.simpleMessage("Swap Details"),

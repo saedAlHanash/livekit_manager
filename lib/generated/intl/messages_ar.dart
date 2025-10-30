@@ -252,7 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateOfBirth": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "day": MessageLookupByLibrary.simpleMessage("يوم"),
     "days": MessageLookupByLibrary.simpleMessage("أيام"),
-    "deafblinding": MessageLookupByLibrary.simpleMessage("Deaf-blinding"),
+    "deafblinding": MessageLookupByLibrary.simpleMessage("صم وعمى"),
     "december": MessageLookupByLibrary.simpleMessage("كانون الأول"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteAccount": MessageLookupByLibrary.simpleMessage("حذف الحساب"),
@@ -274,6 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dinar": MessageLookupByLibrary.simpleMessage("دينار"),
     "direct": MessageLookupByLibrary.simpleMessage("مباشر"),
+    "disconnect": MessageLookupByLibrary.simpleMessage("قطع الاتصال"),
     "dismiss": MessageLookupByLibrary.simpleMessage("تجاهل"),
     "doNotHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "لا تمتلك حساب؟",
@@ -404,6 +405,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "gracePeriod": MessageLookupByLibrary.simpleMessage("فترة السماح"),
     "grandfather": MessageLookupByLibrary.simpleMessage("الجد"),
     "group": MessageLookupByLibrary.simpleMessage("مجموعة"),
+    "groupMessage": MessageLookupByLibrary.simpleMessage("Group message"),
     "haveBeenCreated": MessageLookupByLibrary.simpleMessage("تم إنشاء حسابك"),
     "helloThereCreateNewAccount": MessageLookupByLibrary.simpleMessage(
       "مرحبًا، أنشئ حسابًا جديدًا",
@@ -489,7 +491,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "longTerm": MessageLookupByLibrary.simpleMessage("طويل الأجل"),
     "lowerThanYou": MessageLookupByLibrary.simpleMessage("أقل منك"),
     "mail": MessageLookupByLibrary.simpleMessage("ذكر"),
-    "makeMainView": MessageLookupByLibrary.simpleMessage("Make main view"),
+    "makeMainView": MessageLookupByLibrary.simpleMessage("جعله العرض الرئيسي"),
     "makeMoney": MessageLookupByLibrary.simpleMessage(
       "قم بالتسجيل لكسب وتوفير المال باستخدام E-move",
     ),
@@ -697,11 +699,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "request": MessageLookupByLibrary.simpleMessage("الطلب"),
     "requestAndSuggestion": MessageLookupByLibrary.simpleMessage("طلب واقتراح"),
-    "requestedPermission": MessageLookupByLibrary.simpleMessage(
-      "requested permission",
-    ),
+    "requestedPermission": MessageLookupByLibrary.simpleMessage("طلب إذن"),
     "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
-      "requested to leave the session",
+      "طلب مغادرة الجلسة",
     ),
     "requests": MessageLookupByLibrary.simpleMessage("الطلبات"),
     "rescan": MessageLookupByLibrary.simpleMessage("إعادة المسح"),
@@ -737,7 +737,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "section": MessageLookupByLibrary.simpleMessage("الشعبة"),
     "secured": MessageLookupByLibrary.simpleMessage("مؤمن"),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
-    "seeAndHear": MessageLookupByLibrary.simpleMessage("See and hear"),
+    "seeAndHear": MessageLookupByLibrary.simpleMessage("رؤية وسماع"),
     "see_all": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "selectAssessment": MessageLookupByLibrary.simpleMessage("اختر التقييم"),
     "selectFromMap": MessageLookupByLibrary.simpleMessage("من الخريطة"),
@@ -789,15 +789,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "signinToStayConnected": MessageLookupByLibrary.simpleMessage(
       "سجّل الدخول للبقاء متصلاً",
     ),
-    "silence": MessageLookupByLibrary.simpleMessage("Silence"),
+    "silence": MessageLookupByLibrary.simpleMessage("صامت"),
     "sizes": MessageLookupByLibrary.simpleMessage("الأحجام"),
     "slippage": MessageLookupByLibrary.simpleMessage("الانزلاق السعري"),
     "slippageScaler": MessageLookupByLibrary.simpleMessage("مقياس الانزلاق"),
     "sort": MessageLookupByLibrary.simpleMessage("ترتيب"),
     "source": MessageLookupByLibrary.simpleMessage("المصدر"),
-    "speakers": MessageLookupByLibrary.simpleMessage("Speakers"),
+    "speakers": MessageLookupByLibrary.simpleMessage("المتحدثون"),
     "specialInstructions": MessageLookupByLibrary.simpleMessage("تعليمات خاصة"),
-    "speech": MessageLookupByLibrary.simpleMessage("Speech"),
+    "speech": MessageLookupByLibrary.simpleMessage("الكلام"),
     "start": MessageLookupByLibrary.simpleMessage("ابدأ"),
     "startExam": MessageLookupByLibrary.simpleMessage("بدء الامتحان"),
     "startOfYear": MessageLookupByLibrary.simpleMessage("بداية العام"),
@@ -805,9 +805,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تحليلات إحصائية",
     ),
     "stop": MessageLookupByLibrary.simpleMessage("إيقاف"),
-    "stopCamera": MessageLookupByLibrary.simpleMessage("Stop camera"),
+    "stopCamera": MessageLookupByLibrary.simpleMessage("إيقاف الكاميرا"),
     "stopShareScreen": MessageLookupByLibrary.simpleMessage(
-      "Stop share screen",
+      "إيقاف مشاركة الشاشة",
     ),
     "studentPhone": MessageLookupByLibrary.simpleMessage("هاتف الطالب"),
     "studentRecordStatus": MessageLookupByLibrary.simpleMessage(
@@ -832,6 +832,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "summary": MessageLookupByLibrary.simpleMessage("ملخص"),
     "support": MessageLookupByLibrary.simpleMessage("الدعم"),
     "sure": MessageLookupByLibrary.simpleMessage("متأكد"),
+    "suspendAll": MessageLookupByLibrary.simpleMessage("تعليق الكل"),
     "suspended": MessageLookupByLibrary.simpleMessage("معلق"),
     "swapDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المبادلة"),
     "swapNow": MessageLookupByLibrary.simpleMessage("بادل الآن"),
@@ -911,7 +912,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "المفتاح الخاص للمحفظة",
     ),
     "wantsToJoinOrGetPermission": MessageLookupByLibrary.simpleMessage(
-      "Wants to join or get permission",
+      "يريد الانضمام أو الحصول على إذن",
     ),
     "weTextedYouACodeToVerifyYourPhoneNumber":
         MessageLookupByLibrary.simpleMessage(

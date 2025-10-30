@@ -6,6 +6,7 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 
 import '../../data/request/change_track_request.dart';
+import '../../data/request/message_request.dart';
 import '../../data/request/update_participant_request.dart';
 
 part 'user_control_state.dart';
@@ -142,10 +143,18 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> kick(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
-      url: PostUrl.Kick,
+      url: PostUrl.kick,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
+  Future<void> sendMessage(MessageRequest request) async {
+    await APIService().callApi(
+      url: PostUrl.sendMessage,
+      type: ApiType.post,
+      body: request.toJson(),
+    );
   }
 }

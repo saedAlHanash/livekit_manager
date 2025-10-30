@@ -18,25 +18,27 @@ class PostUrl {
 
   static const suspend = 'Index/Suspend';
 
-  static String resume = 'Index/Resume';
+  static const resume = 'Index/Resume';
 
-  static String suspendAll = 'Index/SuspendAll';
+  static const suspendAll = 'Index/SuspendAll';
 
-  static String resumeAll = 'Index/ResumeAll';
+  static const resumeAll = 'Index/ResumeAll';
 
-  static String allowScreenShare = 'Index/AllowScreenShare';
+  static const allowScreenShare = 'Index/AllowScreenShare';
 
-  static String stopScreenShare = 'Index/StopScreenShare';
+  static const stopScreenShare = 'Index/StopScreenShare';
 
-  static String allowCamera = 'Index/AllowCamera';
+  static const allowCamera = 'Index/AllowCamera';
 
-  static String stopCamera = 'Index/StopCamera';
+  static const stopCamera = 'Index/StopCamera';
 
-  static String allowAudio = 'Index/AllowAudio';
+  static const allowAudio = 'Index/AllowAudio';
 
-  static String stopAudio = 'Index/StopAudio';
+  static const stopAudio = 'Index/StopAudio';
 
-  static String Kick = 'Index/Kick';
+  static const kick = 'Index/Kick';
+
+  static const sendMessage = 'Index/SendData';
 }
 
 class PutUrl {

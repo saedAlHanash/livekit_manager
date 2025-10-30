@@ -58,32 +58,32 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                     context.read<UserControlCubit>().stopScreenShare(participant.identity);
                   },
                 ),
+              PopupMenuItemModel(
+                label: S.of(context).makeMainView,
+                icon: ImageMultiType(url: Icons.screenshot_monitor),
+                onTap: () {
+                  final m = SettingMessage(
+                    toIdentity: context.read<RoomCubit>().state.sharerId,
+                    action: ManagerActions.changeScreen,
+                    toUserType: LkUserType.sharer,
+                  );
+
+                  context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
+                },
+              ),
               silence(),
             ] else ...[
               suspend(),
               if (participant.permissions.isSilence) silence(),
-              deafblind(),
+              // deafblind(),
               if (participant.videoActive)
                 PopupMenuItemModel(
-                  label: S.of(context).makeMainView,
-                  icon: ImageMultiType(url: Icons.screenshot_monitor),
+                  label: S.of(context).disconnect,
+                  icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
                   onTap: () {
-                    final m = SettingMessage(
-                      toIdentity: context.read<RoomCubit>().state.sharerId,
-                      action: ManagerActions.changeScreen,
-                      toUserType: LkUserType.sharer,
-                    );
-
-                    context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
+                    context.read<UserControlCubit>().kick(participant.identity);
                   },
                 ),
-              PopupMenuItemModel(
-                label: S.of(context).disconnect,
-                icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
-                onTap: () {
-                  context.read<UserControlCubit>().kick(participant.identity);
-                },
-              ),
               // PopupMenuItemModel(
               //   label: S.of(context).disconnectAndBan,
               //   icon: ImageMultiType(url: Icons.block, color: Colors.red),

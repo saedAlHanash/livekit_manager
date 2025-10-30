@@ -1,9 +1,11 @@
+import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/audiences_widget.dart';
+import 'package:livekit_manager/features/room/ui/widget/controls.dart';
 import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
 
@@ -26,50 +28,52 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: cubit.disconnect,
-        backgroundColor: Colors.red,
-        child: const Icon(Icons.call_end, color: Colors.white),
-      ),
       body: BlocBuilder<UserControlCubit, UserControlInitial>(
         builder: (context, state) {
           return BlocBuilder<RoomCubit, RoomInitial>(
             builder: (context, state) {
               return Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Row(
+                child: Column(
                   children: [
-                    Expanded(child: AudiencesWidget()),
                     Expanded(
-                        child: Column(
-                      children: [
-                        Expanded(flex: 3, child: SpeakersWidget()),
-                        10.0.verticalSpace,
-                        Expanded(child: ManagersWidget()),
-                      ],
-                    )),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
+                      child: Row(
                         children: [
-                          if (state.selectedParticipant != null)
-                            Expanded(
-                              child: Container(
-                                width: 1.0.sw,
-                                decoration: BoxDecoration(
-                                  color: AppColorManager.appBarColor,
-                                  borderRadius: BorderRadius.circular(12.0).r,
-                                ),
-                                padding: const EdgeInsets.all(15.0),
-                                child: DynamicUser(participant: state.selectedParticipant!),
-                              ),
-                            ),
+                          Expanded(child: AudiencesWidget()),
                           Expanded(
-                            child: NotesWidget(),
-                          ),
+                              child: Column(
+                            children: [
+                              Expanded(flex: 3, child: SpeakersWidget()),
+                              10.0.verticalSpace,
+                              Expanded(child: ManagersWidget()),
+                            ],
+                          )),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              children: [
+                                if (state.selectedParticipant != null)
+                                  Expanded(
+                                    child: Container(
+                                      width: 1.0.sw,
+                                      decoration: BoxDecoration(
+                                        color: AppColorManager.appBarColor,
+                                        borderRadius: BorderRadius.circular(12.0).r,
+                                      ),
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: DynamicUser(participant: state.selectedParticipant!),
+                                    ),
+                                  ),
+                                Expanded(
+                                  child: NotesWidget(),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
+                    ),
+                    ControlsWidget(),
                   ],
                 ),
               );

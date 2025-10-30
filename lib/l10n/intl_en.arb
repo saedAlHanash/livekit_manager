@@ -663,5 +663,7 @@
   "makeMainView": "Make main view",
   "requestedPermission": "requested permission",
   "wantsToJoinOrGetPermission": "Wants to join or get permission",
-  "requestedToLeaveTheSession": "requested to leave the session"
+  "requestedToLeaveTheSession": "requested to leave the session",
+  "suspendAll": "Suspend All",
+  "groupMessage": "Group message"
 }
