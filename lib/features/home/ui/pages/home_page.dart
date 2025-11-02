@@ -47,13 +47,13 @@ class _HomePageState extends State<HomePage> {
           "canPublish": true,
           "canPublishData": true,
           "canSubscribe": true,
-          "room": "s1",
+          "room": "c9d94a6f-617b-4eb6-8a25-08de1a1b2df0",
           "roomAdmin": false,
           "roomCreate": true,
           "roomJoin": true,
           "roomList": true
         },
-        "attributes": {"type": LkUserType.sharer.index.toString()}
+        "attributes": {"lkUserType": LkUserType.sharer.index.toString()}
       },
     );
 

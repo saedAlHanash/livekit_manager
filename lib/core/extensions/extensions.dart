@@ -711,7 +711,7 @@ extension ParticipantH on Participant {
       localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
   bool get isAdmin {
-    return attributes['type'].toString() == LkUserType.manager.index.toString();
+    return attributes['lkUserType'].toString() == LkUserType.manager.index.toString();
   }
 
   String get image => attributes['imageUrl'].toString();
