@@ -33,36 +33,36 @@ class _HomePageState extends State<HomePage> {
 
   final _tokenCtrl = TextEditingController(text: AppSharedPreference.getToken);
 
-  Future<void> getToken() async {
-    final r = await APIService().callApi(
-      url: 'GetJoinToken',
-      type: ApiType.post,
-      hostName: 'coretik-be.coretech-mena.com',
-      additional: '/api/v1/Index/',
-      body: {
-        "identity": "Admin",
-        "name": "Admin",
-        "videoGrants": {
-          "canPublish": false,
-          "canPublishData": true,
-          "canSubscribe": true,
-          "room": "s1",
-          "roomAdmin": false,
-          "roomCreate": true,
-          "roomJoin": true,
-          "roomList": true
-        },
-        "attributes": {
-          "type": LkUserType.manager.index.toString(),
-        }
-      },
-    );
-
-    setState(() {
-      _tokenCtrl.text = r.jsonBodyPure['token'];
-      AppSharedPreference.cashToken(_tokenCtrl.text);
-    });
-  }
+  // Future<void> getToken() async {
+  //   final r = await APIService().callApi(
+  //     url: 'GetJoinToken',
+  //     type: ApiType.post,
+  //     hostName: 'coretik-be.coretech-mena.com',
+  //     additional: '/api/v1/Index/',
+  //     body: {
+  //       "identity": "Admin",
+  //       "name": "Admin",
+  //       "videoGrants": {
+  //         "canPublish": false,
+  //         "canPublishData": true,
+  //         "canSubscribe": true,
+  //         "room": "s1",
+  //         "roomAdmin": false,
+  //         "roomCreate": true,
+  //         "roomJoin": true,
+  //         "roomList": true
+  //       },
+  //       "attributes": {
+  //         "type": LkUserType.manager.index.toString(),
+  //       }
+  //     },
+  //   );
+  //
+  //   setState(() {
+  //     _tokenCtrl.text = r.jsonBodyPure['token'];
+  //     AppSharedPreference.cashToken(_tokenCtrl.text);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -85,27 +85,28 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           DrawableText(text: state.url),
-                          20.0.verticalSpace,
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 25),
-                            child: MyTextFormWidget(
-                              label: 'Token',
-                              controller: _tokenCtrl,
-                              iconWidget: IconButton(
-                                onPressed: () {
-                                  getToken();
-                                },
-                                icon: ImageMultiType(url: Icons.generating_tokens),
-                              ),
-                            ),
-                          ),
+                          // 20.0.verticalSpace,
+                          // Padding(
+                          //   padding: const EdgeInsets.only(bottom: 25),
+                          //   child: MyTextFormWidget(
+                          //     label: 'Token',
+                          //     controller: _tokenCtrl,
+                          //     iconWidget: IconButton(
+                          //       onPressed: () {
+                          //         // getToken();
+                          //       },
+                          //       icon: ImageMultiType(url: Icons.generating_tokens),
+                          //     ),
+                          //   ),
+                          // ),
                           20.0.verticalSpace,
                           MyButton(
                             width: 1.0.sw,
                             loading: state.loading,
                             onTap: () {
                               cubit
-                                ..setToken(_tokenCtrl.text)
+                                ..setUrl(widget.link)
+                                ..setToken(widget.token)
                                 ..connect();
                               // cubit.initial().then(
                               //   (value) {
