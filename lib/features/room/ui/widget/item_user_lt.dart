@@ -32,7 +32,7 @@ class ItemUserRemoteLT extends StatelessWidget {
               size: 40.0.dg,
             ),
           ),
-          title: DrawableText(text: participant.displayName),
+          title: DrawableText(text: participant.identity, selectable: true),
           trailing: participant.userType.isUser ? ControllersDynamic(participant: participant) : null,
         ),
       ),

@@ -3,20 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/core/widgets/menu_widget.dart';
-import 'package:livekit_manager/features/room/ui/widget/controllers.dart';
-import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
+import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 
 import '../../../../core/strings/app_color_manager.dart';
-import '../../../../core/strings/enum_manager.dart';
-import '../../../../core/util/my_style.dart';
-import '../../../../generated/l10n.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
-import '../../bloc/user_control_cubit/user_control_cubit.dart';
-import 'item_user_lt.dart';
+import 'controllers.dart';
 
 class ItemUserRemote extends StatelessWidget {
   const ItemUserRemote({super.key, required this.i});
@@ -128,17 +121,41 @@ class ItemUserSpeaker extends StatelessWidget {
                   alignment: AlignmentGeometry.topLeft,
                   child: participant.isAdmin ? null : ControllersDynamic(participant: participant, speaker: true),
                 ),
-                if (state.raiseHands.contains(participant.identity))
-                  Align(
-                    alignment: AlignmentGeometry.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ImageMultiType(
-                        url: Icons.back_hand_outlined,
-                        width: 18.0.w,
-                      ),
+                Align(
+                  alignment: AlignmentGeometry.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      spacing: 7.0.w,
+                      children: [
+                        if (!participant.isMuted)
+                          InkWell(
+                            child: ImageMultiType(
+                              url: !participant.isMuted ? Icons.mic : Icons.mic_off,
+                            ),
+                          ),
+                        if (participant.isCameraEnabled())
+                          InkWell(
+                            child: ImageMultiType(
+                              url: !participant.isCameraEnabled()
+                                  ? Icons.videocam_off_outlined
+                                  : Icons.videocam_outlined,
+                              // color: participant.isMuted ? Colors.red : Colors.green,
+                            ),
+                          ),
+                        if (participant.isScreenShareEnabled())
+                          InkWell(
+                            child: ImageMultiType(
+                              url: !participant.isScreenShareEnabled()
+                                  ? Icons.stop_screen_share_outlined
+                                  : Icons.screen_share_outlined,
+                              // color: participant.isMuted ? Colors.red : Colors.green,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
+                ),
               ],
             ),
           ),
