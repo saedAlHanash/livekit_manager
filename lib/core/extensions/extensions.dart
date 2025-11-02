@@ -729,8 +729,8 @@ extension ParticipantH on Participant {
   LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
-    if (identity.isNotEmpty) return identity;
     if (name.isNotEmpty) return name;
+    if (identity.isNotEmpty) return identity;
     return sid;
   }
 
