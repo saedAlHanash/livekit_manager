@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           "roomJoin": true,
           "roomList": true
         },
-        "attributes": {"type": LkUserType.manager.index.toString()}
+        "attributes": {"type": LkUserType.sharer.index.toString()}
       },
     );
 
@@ -109,10 +109,6 @@ class _HomePageState extends State<HomePage> {
                                   cubit
                                     ..setToken(_tokenCtrl.text)
                                     ..connect();
-                                  // cubit.initial().then(
-                                  //   (value) {
-                                  //   },
-                                  // );
                                 },
                                 text: 'Join',
                               )
