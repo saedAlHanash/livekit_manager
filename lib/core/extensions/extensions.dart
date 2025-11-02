@@ -711,7 +711,7 @@ extension ParticipantH on Participant {
       localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
 
   bool get isAdmin {
-    return attributes['type'].toString() == LkUserType.manager.index.toString();
+    return attributes['lkUserType'].toString() == LkUserType.manager.index.toString();
   }
 
   String get image => attributes['imageUrl'].toString();
@@ -726,7 +726,7 @@ extension ParticipantH on Participant {
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
-  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
     if (identity.isNotEmpty) return identity;
@@ -738,7 +738,7 @@ extension ParticipantH on Participant {
 }
 
 extension RemoteParticipantH on RemoteParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
 
@@ -748,7 +748,7 @@ extension RemoteParticipantH on RemoteParticipant {
 }
 
 extension LocalParticipantH on LocalParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['type'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
 
