@@ -148,14 +148,17 @@ class RoomCubit extends MCubit<RoomInitial> {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             loggerObject.w(message.toJson());
 
-            if (!message.toUserType.isUser) return;
+            if (!message.toUserType.isSharer) return;
 
-            if (message.toIdentity.isNotEmpty && message.toIdentity != state.result.localParticipant?.identity) return;
+            // if (message.toIdentity.isNotEmpty && message.toIdentity != state.result.localParticipant?.identity) return;
 
             switch (message.action) {
               case ManagerActions.requestPermission:
               case ManagerActions.requestToDisconnect:
               case ManagerActions.changeScreen:
+                selectParticipant(message.id);
+                break;
+
               case ManagerActions.message:
                 emit(state.copyWith(loadingPermissions: false));
                 break;

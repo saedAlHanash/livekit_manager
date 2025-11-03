@@ -701,6 +701,10 @@ extension ParticipantH on Participant {
     return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
   }
 
+  List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublications {
+    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
+  }
+
   RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
       remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
@@ -734,8 +738,8 @@ extension ParticipantH on Participant {
   LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
-    if (identity.isNotEmpty) return identity;
     if (name.isNotEmpty) return name;
+    if (identity.isNotEmpty) return identity;
     return sid;
   }
 
