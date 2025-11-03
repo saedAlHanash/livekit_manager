@@ -79,20 +79,21 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               silence(),
             ] else ...[
               suspend(),
-              if (participant.permissions.isSilence) silence(),
-              // deafblind(),
-              if (participant.videoActive)
-                PopupMenuItemModel(
-                  label: S.of(context).disconnect,
-                  icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
-                  onTap: () {
-                    context.read<UserControlCubit>().kick(participant.identity);
-                  },
-                ),
-              // PopupMenuItemModel(
-              //   label: S.of(context).disconnectAndBan,
-              //   icon: ImageMultiType(url: Icons.block, color: Colors.red),
-              // ),
+              if (!participant.permissions.isSuspend) silence(),
+              PopupMenuItemModel(
+                label: S.of(context).disconnect,
+                icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
+                onTap: () {
+                  context.read<UserControlCubit>().kick(participant.identity);
+                },
+              ),
+              PopupMenuItemModel(
+                onTap: () {
+                  context.read<UserControlCubit>().kick(participant.identity, block: true);
+                },
+                label: S.of(context).disconnectAndBan,
+                icon: ImageMultiType(url: Icons.block, color: Colors.red),
+              ),
             ],
           ],
         );

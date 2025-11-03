@@ -140,12 +140,18 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> kick(String participant) async {
+  Future<void> kick(String participant, {bool block = false}) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
       url: PostUrl.kick,
       type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+      body: state.updateRequest.toJson()
+        ..addAll(
+          {
+            'identity': participant,
+            if (block) 'isBlock': true,
+          },
+        ),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }

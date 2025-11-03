@@ -84,12 +84,12 @@ class _HomePageState extends State<HomePage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DrawableText(text: state.url),
-                          20.0.verticalSpace,
+                          // DrawableText(text: state.url),
+                          // 20.0.verticalSpace,
                           Padding(
                             padding: const EdgeInsets.only(bottom: 25),
                             child: MyTextFormWidget(
-                              label: 'Code',
+                              label: 'Token',
                               controller: _tokenCtrl,
                               iconWidget: IconButton(
                                 onPressed: () {
