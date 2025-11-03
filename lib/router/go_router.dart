@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/util/shared_preferences.dart';
 
 import '../core/injection/injection_container.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
@@ -129,9 +130,22 @@ final goRouter = GoRouter(
     GoRoute(
       path: RouteName.home,
       name: RouteName.home,
-      builder: (_, state) {
+      builder: (context, state) {
         String link = state.uri.queryParameters['link'] ?? 'wss://coretik.coretech-mena.com';
         String token = state.uri.queryParameters['token'] ?? '';
+        String theme = state.uri.queryParameters['theme'] ?? '';
+        if (theme.isNotEmpty) {
+          if (theme == 'dark') {
+            AppSharedPreference.setThemeMode(ThemeMode.dark);
+            WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+          } else if (theme == 'light') {
+            AppSharedPreference.setThemeMode(ThemeMode.light);
+            View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          }
+        } else {
+          AppSharedPreference.setThemeMode(ThemeMode.system);
+          View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+        }
 
         debugPrint('FULL URI: ${state.uri}');
         debugPrint('QUERY: ${state.uri.queryParameters}');
