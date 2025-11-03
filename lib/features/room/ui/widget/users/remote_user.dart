@@ -53,7 +53,7 @@ class _RemoteUserState extends State<RemoteUser> {
     return widget.participant.videoActive
         ? Row(
             children: [
-              for (var o in widget.participant.remoteVideoPublication)
+              for (var o in widget.participant.remoteVideoPublications)
                 if (o.track != null)
                   Expanded(
                     child: VideoTrackRenderer(

@@ -31,6 +31,13 @@ class MyApp extends StatefulWidget {
       await state?.setLocale(Locale.fromSubtags(languageCode: AppSharedPreference.getLocal));
     }
   }
+
+  static Future<void> changeTheme(BuildContext context, ThemeMode mode) async {
+    if (context.mounted) {
+      final state = context.findAncestorStateOfType<MyAppState>();
+      await state?.changeThem(mode);
+    }
+  }
 }
 
 class MyAppState extends State<MyApp> {

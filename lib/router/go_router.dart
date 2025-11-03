@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 
+import '../core/app/app_widget.dart';
 import '../core/injection/injection_container.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
@@ -136,15 +138,16 @@ final goRouter = GoRouter(
         String theme = state.uri.queryParameters['theme'] ?? '';
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
-            AppSharedPreference.setThemeMode(ThemeMode.dark);
-            WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+            MyApp.changeTheme(context, ThemeMode.dark);
           } else if (theme == 'light') {
             AppSharedPreference.setThemeMode(ThemeMode.light);
-            View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+            MyApp.changeTheme(context, ThemeMode.light);
+            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
           }
         } else {
           AppSharedPreference.setThemeMode(ThemeMode.system);
-          View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          // AppSharedPreference.setThemeMode(ThemeMode.system);
+          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
         }
 
         debugPrint('FULL URI: ${state.uri}');

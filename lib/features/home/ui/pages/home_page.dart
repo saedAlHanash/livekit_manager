@@ -85,20 +85,20 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           DrawableText(text: state.url),
-                          // 20.0.verticalSpace,
-                          // Padding(
-                          //   padding: const EdgeInsets.only(bottom: 25),
-                          //   child: MyTextFormWidget(
-                          //     label: 'Token',
-                          //     controller: _tokenCtrl,
-                          //     iconWidget: IconButton(
-                          //       onPressed: () {
-                          //         // getToken();
-                          //       },
-                          //       icon: ImageMultiType(url: Icons.generating_tokens),
-                          //     ),
-                          //   ),
-                          // ),
+                          20.0.verticalSpace,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 25),
+                            child: MyTextFormWidget(
+                              label: 'Code',
+                              controller: _tokenCtrl,
+                              iconWidget: IconButton(
+                                onPressed: () {
+                                  // getToken();
+                                },
+                                icon: ImageMultiType(url: Icons.generating_tokens),
+                              ),
+                            ),
+                          ),
                           20.0.verticalSpace,
                           MyButton(
                             width: 1.0.sw,

@@ -119,7 +119,9 @@ class ItemUserSpeaker extends StatelessWidget {
                 ),
                 Align(
                   alignment: AlignmentGeometry.topLeft,
-                  child: participant.isAdmin ? null : ControllersDynamic(participant: participant, speaker: true),
+                  child: participant.userType.isManager
+                      ? null
+                      : ControllersDynamic(participant: participant, speaker: true),
                 ),
                 Align(
                   alignment: AlignmentGeometry.topRight,
