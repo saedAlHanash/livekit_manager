@@ -144,24 +144,20 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
-          // Events handler most be hear, not another place.
-          // Cuse this is the listener for data event.
-          // Data will be as JSON type with modl with MessageAction enum.
-
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+            loggerObject.w(message.toJson());
 
-            if (message.identity != state.result.localParticipant?.identity) return;
+            if (!message.toUserType.isUser) return;
+
+            if (message.toIdentity.isNotEmpty && message.toIdentity != state.result.localParticipant?.identity) return;
 
             switch (message.action) {
-              case ManagerActions.mic:
-                break;
-              case ManagerActions.video:
-                break;
-              case ManagerActions.shareScreen:
-                selectParticipant(message.name);
-                break;
-              case ManagerActions.raseHand:
+              case ManagerActions.requestPermission:
+              case ManagerActions.requestToDisconnect:
+              case ManagerActions.changeScreen:
+              case ManagerActions.message:
+                emit(state.copyWith(loadingPermissions: false));
                 break;
             }
           } catch (err) {
@@ -180,7 +176,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       }
     }
 
-    if (state.result.localParticipant != null) {
+    if (state.result.localParticipant?.userType == LkUserType.sharer && state.result.localParticipant != null) {
       screenTracks.add(state.result.localParticipant!);
     }
 
@@ -233,6 +229,43 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void selectParticipant(String participantId) {
     emit(state.copyWith(selectedParticipantId: participantId));
+  }
+
+  Future<void> raiseHand() async {
+    await state.result.localParticipant?.publishData(
+      utf8.encode(
+        jsonEncode(
+          SettingMessage(
+            id: state.result.localParticipant?.identity ?? '',
+            toUserType: LkUserType.manager,
+            action: ManagerActions.requestPermission,
+            metadata: {
+              'name': state.result.localParticipant?.name,
+              'id': state.result.localParticipant?.identity,
+            },
+          ),
+        ),
+      ),
+    );
+    emit(state.copyWith(loadingPermissions: true));
+  }
+
+  Future<void> sendMessage(String message) async {
+    await state.result.localParticipant?.publishData(
+      utf8.encode(
+        jsonEncode(
+          SettingMessage(
+            toUserType: LkUserType.manager,
+            action: ManagerActions.message,
+            metadata: {
+              'message': message,
+              'name': state.result.localParticipant?.name,
+              'id': state.result.localParticipant?.identity,
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   @override

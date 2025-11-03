@@ -1,11 +1,8 @@
+import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:image_multi_type/image_multi_type_pakage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lk_assistant/core/extensions/extensions.dart';
-import 'package:lk_assistant/features/room/ui/widget/participant_info.dart';
-
-import '../../../../../core/strings/enum_manager.dart';
-import '../no_video.dart';
 
 class RemoteUser extends StatefulWidget {
   const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain});
@@ -48,19 +45,23 @@ class _RemoteUserState extends State<RemoteUser> {
   @override
   Widget build(BuildContext ctx) {
     return widget.participant.videoActive
-        ? Row(
-            children: [
-              for (var o in widget.participant.remoteVideoPublication)
-                if (o.track != null)
-                  Expanded(
-                    child: VideoTrackRenderer(
-                      renderMode: VideoRenderMode.auto,
-                      fit: widget.fit,
-                      o.track!,
-                    ),
-                  ),
-            ],
+        ? VideoTrackRenderer(
+            renderMode: VideoRenderMode.auto,
+            fit: widget.fit,
+            widget.participant.activeVideoTrack!,
           )
-        : const NoVideoWidget();
+        : Container(
+            height: 60.0,
+            width: 60.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: widget.participant.identity.colorFromId),
+            ),
+            alignment: AlignmentGeometry.center,
+            child: DrawableText(
+              text: widget.participant.displayName.firstCharacter.toUpperCase(),
+              size: 30.0.sp,
+            ),
+          );
   }
 }

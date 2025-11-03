@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:lk_assistant/core/strings/app_color_manager.dart';
 import 'package:lk_assistant/core/util/exts.dart';
 import 'package:lk_assistant/features/room/ui/widget/no_video.dart';
@@ -39,13 +40,21 @@ class _RoomPage1State extends State<RoomPage1> {
           body: Column(
             children: [
               Expanded(child: VideoWidget()),
-              if (state.result.localParticipant != null)
-                SafeArea(
-                  child: ControlsWidget(
-                    state.result,
-                    state.result.localParticipant!,
-                  ),
-                ),
+              if (state.result.localParticipant != null) ...[
+                state.result.localParticipant?.userType == LkUserType.sharer
+                    ? SafeArea(
+                        child: ControlsWidget(
+                          state.result,
+                          state.result.localParticipant!,
+                        ),
+                      )
+                    : SafeArea(
+                        child: ControlsUserWidget(
+                          state.result,
+                          state.result.localParticipant!,
+                        ),
+                      ),
+              ],
             ],
           ),
         );

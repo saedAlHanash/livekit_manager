@@ -15,6 +15,31 @@ class PostUrl {
   static const createUser = 'user/Add';
   static const homes = 'home/GetAll';
   static const createHome = 'home/Add';
+  static const getLatestState = 'Index/GetLatestState';
+
+  static const suspend = 'Index/Suspend';
+
+  static const resume = 'Index/Resume';
+
+  static const suspendAll = 'Index/SuspendAll';
+
+  static const resumeAll = 'Index/ResumeAll';
+
+  static const allowScreenShare = 'Index/AllowScreenShare';
+
+  static const stopScreenShare = 'Index/StopScreenShare';
+
+  static const allowCamera = 'Index/AllowCamera';
+
+  static const stopCamera = 'Index/StopCamera';
+
+  static const allowAudio = 'Index/AllowAudio';
+
+  static const stopAudio = 'Index/StopAudio';
+
+  static const kick = 'Index/Kick';
+
+  static const sendMessage = 'Index/SendData';
   //
 }
 

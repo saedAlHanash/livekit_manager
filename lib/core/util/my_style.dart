@@ -100,16 +100,17 @@ class MyStyle {
     boxShadow: MyStyle.allShadowDark,
   );
 
-  static Widget loadingWidget({Color? color}) {
-    return Padding(
+  static Widget loadingWidget({Color? color, double? size}) {
+    final p = Padding(
       padding: const EdgeInsets.all(8.0).r,
       child: Center(
         child: CircularProgressIndicator.adaptive(
           backgroundColor: color,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          valueColor: AlwaysStoppedAnimation<Color>(isColorDark(color) ? Colors.white : AppColorManager.mainColor),
         ),
       ),
     );
+    return size == null ? p : SizedBox(width: size, height: size, child: p);
   }
 
   static var outlineBorder = BoxDecoration(

@@ -15,6 +15,9 @@ import 'package:get_it/get_it.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/room/bloc/my_status_cubit/my_status_cubit.dart';
+import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -26,6 +29,8 @@ Future<void> init() async {
   //region room
   sl.registerFactory(() => RoomCubit());
   sl.registerFactory(() => RoomsCubit());
+  sl.registerFactory(() => UserControlCubit());
+  sl.registerFactory(() => MyStatusCubit());
   //endregion
 
   //region user

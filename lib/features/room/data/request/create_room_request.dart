@@ -23,4 +23,3 @@ class CreateRoomRequest {
         "id": id,
       };
 }
-

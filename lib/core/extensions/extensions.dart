@@ -25,6 +25,7 @@ import '../error/error_manager.dart';
 import '../util/pair_class.dart';
 import '../util/snack_bar_message.dart';
 import '../widgets/spinner_widget.dart';
+import 'package:livekit_client/livekit_client.dart' as lk;
 
 extension SplitByLength on String {
   String get splitLongString {
@@ -696,31 +697,35 @@ extension ParticipantH on Participant {
 
   MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
-  List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublication {
-    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
+  RemoteTrackPublication<RemoteVideoTrack>? get remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
   }
 
-  List<RemoteTrackPublication<RemoteAudioTrack>> get remoteAudioPublication =>
-      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
+  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
+      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
-  List<LocalTrackPublication<LocalVideoTrack>> get localVideoPublication {
-    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).toList();
+  LocalTrackPublication<LocalVideoTrack>? get localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
   }
 
-  List<LocalTrackPublication<LocalAudioTrack>> get localAudioPublication =>
-      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).toList();
-
-  bool get isAdmin {
-    return attributes['lkUserType'].toString() == LkUserType.manager.index.toString();
-  }
+  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
 
   String get image => attributes['imageUrl'].toString();
 
+  //
+  // LocalTrackPublication<LocalVideoTrack>? get videoPublication {
+  //   return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  // }
+  //
+  // LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
+  //     remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+
   VideoTrack? get activeVideoTrack =>
-      (this is LocalParticipant) ? localVideoPublication.firstOrNull?.track : remoteVideoPublication.firstOrNull?.track;
+      (this is LocalParticipant) ? localVideoPublication?.track : remoteVideoPublication?.track;
 
   AudioTrack? get activeAudioTrack =>
-      (this is LocalParticipant) ? localAudioPublication.firstOrNull?.track : remoteAudioPublication.firstOrNull?.track;
+      (this is LocalParticipant) ? localAudioPublication?.track : remoteAudioPublication?.track;
 
   bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 
@@ -731,15 +736,13 @@ extension ParticipantH on Participant {
   String get displayName {
     if (identity.isNotEmpty) return identity;
     if (name.isNotEmpty) return name;
-    return identity;
+    return sid;
   }
 
   bool get isSuspend => permissions.isSuspend;
 }
 
 extension RemoteParticipantH on RemoteParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
-
   RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
 
   RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
@@ -748,8 +751,6 @@ extension RemoteParticipantH on RemoteParticipant {
 }
 
 extension LocalParticipantH on LocalParticipant {
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
-
   LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
 
   LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
@@ -758,11 +759,11 @@ extension LocalParticipantH on LocalParticipant {
 }
 
 extension ParticipantPermissionsH on ParticipantPermissions {
-  bool get isSuspend => canSubscribe == false && canPublish == false;
+  bool get isSuspend => !canSubscribe && !canPublish;
 
-  bool get isSilence => canPublish == false;
+  bool get isSilence => !canPublish && canSubscribe;
 
-  bool get isDeafblind => canSubscribe == false;
+  bool get isAll => canSubscribe && canPublish;
 
   String get printFun {
     return 'canSubscribe: $canSubscribe\n'
@@ -783,6 +784,16 @@ extension ConnectionQualityH on ConnectionQuality {
         }[this],
         height: 16.0.dg,
       );
+}
+
+extension ConnectionStateH on lk.ConnectionState {
+  bool get isDisconnected => this == lk.ConnectionState.disconnected;
+
+  bool get isConnecting => this == lk.ConnectionState.connecting;
+
+  bool get isReconnecting => this == lk.ConnectionState.reconnecting;
+
+  bool get isConnected => this == lk.ConnectionState.connected;
 }
 
 class FormatDateTime {

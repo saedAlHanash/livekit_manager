@@ -12,6 +12,7 @@ class RoomInitial extends AbstractState<Room> {
     required this.listener,
     required this.participant,
     required this.raiseHands,
+    required this.loadingPermissions,
     required this.selectedParticipantId,
   });
 
@@ -24,6 +25,7 @@ class RoomInitial extends AbstractState<Room> {
   final EventsListener<RoomEvent> listener;
 
   final Set<String> raiseHands;
+  final bool loadingPermissions;
   final List<Participant> participant;
 
   final String selectedParticipantId;
@@ -49,6 +51,7 @@ class RoomInitial extends AbstractState<Room> {
       token: '',
       listener: room.createListener(),
       raiseHands: {},
+      loadingPermissions: false,
       participant: const [],
       selectedParticipantId: '',
     );
@@ -67,6 +70,7 @@ class RoomInitial extends AbstractState<Room> {
         token,
         participant,
         raiseHands,
+        loadingPermissions,
         selectedParticipantId,
       ];
 
@@ -85,6 +89,7 @@ class RoomInitial extends AbstractState<Room> {
       EventsListener<RoomEvent>? listener,
       List<Participant>? participant,
       Set<String>? raiseHands,
+      bool? loadingPermissions,
       String? selectedParticipantId}) {
     return RoomInitial(
         statuses: statuses ?? this.statuses,
@@ -97,6 +102,7 @@ class RoomInitial extends AbstractState<Room> {
         listener: listener ?? this.listener,
         participant: participant ?? this.participant,
         raiseHands: raiseHands ?? this.raiseHands,
+        loadingPermissions: loadingPermissions ?? this.loadingPermissions,
         selectedParticipantId: selectedParticipantId ?? this.selectedParticipantId);
   }
 }

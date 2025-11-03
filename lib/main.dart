@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app/app_widget.dart';
 import 'core/injection/injection_container.dart' as di;
 import 'core/util/shared_preferences.dart';
-
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 // final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() async {
@@ -31,6 +31,7 @@ void main() async {
   if (kIsWeb) {
     GoRouter.optionURLReflectsImperativeAPIs = true;
   }
+  if (kIsWeb) usePathUrlStrategy();
 
   // await FirebaseService.initial();
 

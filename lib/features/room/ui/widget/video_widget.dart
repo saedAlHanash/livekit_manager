@@ -36,21 +36,25 @@ class _VideoWidgetState extends State<VideoWidget> {
                     itemCount: state.participantTracksWithoutSelected.length,
                     itemBuilder: (context, i) {
                       final participant = state.participantTracksWithoutSelected[i];
-                      return InkWell(
-                        onTap: () {
-                          context.read<RoomCubit>().selectParticipant(participant.identity);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: AppColorManager.appBarColor,
-                            border: Border.all(color: AppColorManager.mainColor),
+                      return Tooltip(
+                        message: participant.identity,
+                        waitDuration: Duration(seconds: 1),
+                        child: InkWell(
+                          onTap: () {
+                            context.read<RoomCubit>().selectParticipant(participant.identity);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: AppColorManager.appBarColor,
+                              border: Border.all(color: AppColorManager.mainColor),
+                            ),
+                            padding: EdgeInsets.all(3),
+                            clipBehavior: Clip.hardEdge,
+                            width: 180.0.dg,
+                            height: 120.0.dg,
+                            child: DynamicUser(participant: participant),
                           ),
-                          padding: EdgeInsets.all(3),
-                          clipBehavior: Clip.hardEdge,
-                          width: 180.0.dg,
-                          height: 120.0.dg,
-                          child: DynamicUser(participant: participant),
                         ),
                       );
                     },

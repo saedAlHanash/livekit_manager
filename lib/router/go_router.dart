@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
 
+import '../core/util/shared_preferences.dart';
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
 import '../features/setting/ui/pages/setting_page.dart';
@@ -153,7 +154,24 @@ final goRouter = GoRouter(
     GoRoute(
       path: RouteName.home,
       name: RouteName.home,
-      builder: (_, state) {
+      builder: (context, state) {
+        String link = state.uri.queryParameters['link'] ?? 'wss://coretik.coretech-mena.com';
+        String token = state.uri.queryParameters['token'] ?? '';
+        String theme = state.uri.queryParameters['theme'] ?? '';
+
+        if (theme.isNotEmpty) {
+          if (theme == 'dark') {
+            AppSharedPreference.setThemeMode(ThemeMode.dark);
+            WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+          } else if (theme == 'light') {
+            AppSharedPreference.setThemeMode(ThemeMode.light);
+            View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          }
+        } else {
+          AppSharedPreference.setThemeMode(ThemeMode.system);
+          View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+        }
+
         String homeId = state.uri.queryParameters['id'] ?? '';
         return MultiBlocProvider(
           providers: [
@@ -161,7 +179,10 @@ final goRouter = GoRouter(
               create: (context) => sl<HomeCubit>()..getData(homeId: homeId),
             ),
           ],
-          child: HomePage(),
+          child: HomePage(
+            link: link,
+            token: token,
+          ),
         );
       },
     ),
