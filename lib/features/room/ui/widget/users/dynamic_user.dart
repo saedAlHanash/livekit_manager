@@ -28,9 +28,11 @@ class DynamicUser extends StatelessWidget {
 }
 
 class UserImageOrName extends StatelessWidget {
-  const UserImageOrName({super.key, required this.participant, this.size = 60.0});
+  const UserImageOrName({super.key, required this.participant, this.size = 60.0, this.image, this.name});
 
   final Participant? participant;
+  final String? image;
+  final String? name;
   final double size;
 
   @override
@@ -44,10 +46,17 @@ class UserImageOrName extends StatelessWidget {
           border: Border.all(color: AppColorManager.dividerColor),
         ),
         alignment: AlignmentGeometry.center,
-        child: DrawableText(
-          text: '?',
-          size: 24.0.sp,
-        ),
+        child: image != null
+            ? ImageMultiType(
+                url: participant!.image,
+                fit: BoxFit.cover,
+                height: size,
+                width: size,
+              )
+            : DrawableText(
+                text: name?.firstCharacter ?? '?',
+                size: 24.0.sp,
+              ),
       );
     }
 

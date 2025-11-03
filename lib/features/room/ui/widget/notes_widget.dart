@@ -38,10 +38,17 @@ class NotesWidget extends StatelessWidget {
                   separatorBuilder: (context, i) => 10.0.verticalSpace,
                   itemBuilder: (context, i) {
                     final item = state.raiseHands[i];
+
+                    final p = state.getParticipantById(item.id);
                     switch (item.action) {
                       case ManagerActions.requestPermission:
                         return ListTile(
-                          leading: const Icon(Icons.handshake, color: Colors.orange),
+                          leading: UserImageOrName(
+                            participant: p,
+                            image: item.image,
+                            name: item.name,
+                            size: 30.0.r,
+                          ),
                           title: DrawableText(text: '${item.name} ${S.of(context).requestedPermission}'),
                           subtitle: DrawableText(text: S.of(context).wantsToJoinOrGetPermission),
                           trailing: Row(
@@ -101,7 +108,12 @@ class NotesWidget extends StatelessWidget {
 
                       case ManagerActions.requestToDisconnect:
                         return ListTile(
-                          leading: const Icon(Icons.logout, color: Colors.redAccent),
+                          leading: UserImageOrName(
+                            participant: p,
+                            image: item.image,
+                            name: item.name,
+                            size: 30.0.r,
+                          ),
                           title: DrawableText(text: '${item.name} ${S.of(context).requestedToLeaveTheSession}'),
                           trailing: ElevatedButton(
                             onPressed: () {},
@@ -110,10 +122,11 @@ class NotesWidget extends StatelessWidget {
                         );
 
                       case ManagerActions.message:
-                        final p = state.getParticipantById(item.id);
                         return ListTile(
                           leading: UserImageOrName(
                             participant: p,
+                            image: item.image,
+                            name: item.name,
                             size: 30.0.r,
                           ),
                           title: DrawableText(text: item.name),

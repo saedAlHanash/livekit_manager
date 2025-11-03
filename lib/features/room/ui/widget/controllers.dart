@@ -66,6 +66,11 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                     toIdentity: context.read<RoomCubit>().state.sharerId,
                     action: ManagerActions.changeScreen,
                     toUserType: LkUserType.sharer,
+                    metadata: {
+                      'name': participant.name,
+                      if (participant.image.isNotEmpty) 'image': participant.image,
+                      'id': participant.identity,
+                    },
                   );
 
                   context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);

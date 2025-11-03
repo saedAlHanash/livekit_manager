@@ -23,6 +23,7 @@ class SettingMessage {
   String get name => metadata?['name'] ?? '';
 
   String get message => metadata?['message'] ?? '';
+  String get image => metadata?['image'] ?? '';
 
   String get userId => metadata?['id'] ?? '';
 
