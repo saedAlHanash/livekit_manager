@@ -34,40 +34,42 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
-  final _tokenCtrl = TextEditingController(text: AppSharedPreference.getToken);
+  final _codeC = TextEditingController(text: AppSharedPreference.getToken);
+  String token = '';
 
   Future<void> getToken() async {
     final r = await APIService().callApi(
-      url: 'GetJoinToken',
+      url: 'GetAccessToken',
       type: ApiType.post,
       hostName: 'coretik-be.coretech-mena.com',
       additional: '/api/v1/Index/',
       body: {
-        "identity": "Sharer",
-        "name": "Sharer",
-        "videoGrants": {
-          "canPublish": false,
-          "canPublishData": true,
-          "canSubscribe": false,
-          "room": "d747e704-a038-4a11-afbc-08de1ab1dade",
-          "roomAdmin": false,
-          "roomCreate": true,
-          "roomJoin": true,
-          "roomList": true
-        },
-        "attributes": {"lkUserType": LkUserType.user.index.toString()}
+        'code': _codeC.text,
+        // "identity": "Sharer",
+        // "name": "Sharer",
+        // "videoGrants": {
+        //   "canPublish": false,
+        //   "canPublishData": true,
+        //   "canSubscribe": false,
+        //   "room": "d747e704-a038-4a11-afbc-08de1ab1dade",
+        //   "roomAdmin": false,
+        //   "roomCreate": true,
+        //   "roomJoin": true,
+        //   "roomList": true
+        // },
+        // "attributes": {"lkUserType": LkUserType.user.index.toString()}
       },
     );
 
     setState(() {
-      _tokenCtrl.text = r.jsonBodyPure['token'];
-      AppSharedPreference.cashToken(_tokenCtrl.text);
+      token = r.jsonBodyPure['token'] ?? 'NON';
+      AppSharedPreference.cashToken(_codeC.text);
     });
   }
 
   @override
   void initState() {
-    _tokenCtrl.text = widget.token;
+    token = widget.token;
     super.initState();
   }
 
@@ -123,25 +125,43 @@ class _HomePageState extends State<HomePage> {
                                   20.0.verticalSpace,
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 25),
-                                    child: MyTextFormWidget(
-                                      label: 'Token',
-                                      controller: _tokenCtrl,
-                                      iconWidget: IconButton(
-                                        onPressed: () {
-                                          getToken();
-                                        },
-                                        icon: ImageMultiType(url: Icons.generating_tokens),
-                                      ),
+                                    child: Row(
+                                      spacing: 10.0,
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: MyTextFormWidget(
+                                            label: 'Code',
+                                            controller: _codeC,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: MyButton(
+                                            onTap: () {
+                                              getToken();
+                                            },
+                                            child: DrawableText(
+                                              text: 'Get Token',
+                                              size: 12.0.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   20.0.verticalSpace,
+                                  if (token.isNotEmpty)
+                                    DrawableText(
+                                      text: token,
+                                      selectable: true,
+                                    ),
                                 ],
                                 MyButton(
                                   width: 1.0.sw,
                                   loading: state.loading,
                                   onTap: () async {
                                     cubit
-                                      ..setToken(_tokenCtrl.text)
+                                      ..setToken(token)
                                       ..setUrl(widget.link);
                                     await cubit.connect();
                                     if (context.mounted) {
