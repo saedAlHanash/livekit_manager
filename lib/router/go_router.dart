@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lk_assistant/core/api_manager/api_url.dart';
 
 import '../core/app/app_widget.dart';
 import '../core/injection/injection_container.dart';
@@ -143,7 +144,7 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        String link = state.uri.queryParameters['link'] ?? 'wss://coretik.coretech-mena.com';
+        String link = state.uri.queryParameters['link'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
         if (theme.isNotEmpty) {

@@ -112,7 +112,7 @@ class MyAppState extends State<MyApp> {
                 providers: [
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
-                      ..setUrl('wss://coretik.coretech-mena.com')
+                      ..setUrl('ws://192.168.1.69:7880')
                       ..initial(),
                   ),
                   BlocProvider(create: (_) => sl<MyStatusCubit>()),

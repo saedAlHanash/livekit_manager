@@ -3,7 +3,7 @@ class GetUrl {
   static const room = 'Room/Get';
   static const user = 'user/Get';
   static const home = 'home/Get';
-  //
+//
 }
 
 class PostUrl {
@@ -40,7 +40,7 @@ class PostUrl {
   static const kick = 'Index/Kick';
 
   static const sendMessage = 'Index/SendData';
-  //
+//
 }
 
 class PutUrl {
@@ -48,7 +48,7 @@ class PutUrl {
   static const updateRoom = 'Room/Update';
   static const updateUser = 'user/Update';
   static const updateHome = 'home/Update';
-  //
+//
 }
 
 class DeleteUrl {
@@ -56,7 +56,7 @@ class DeleteUrl {
   static const deleteRoom = 'Room/Delete';
   static const deleteUser = 'user/Delete';
   static const deleteHome = 'home/Delete';
-  //
+//
 }
 
 class PatchUrl {
@@ -64,12 +64,21 @@ class PatchUrl {
 }
 
 const additionalConst = '/api/v1/';
-const localUrl = '192.168.1.107:5001';
-const liveUrl = 'portal-be.coretech-mena.com';
+
+const wsLocalUrl = 'ws://192.168.1.69:7880';
+const wsLiveUrl = 'wss://coretik.coretech-mena.com';
+
+const localUrl = '192.168.1.69:5002';
+const liveUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
-  // return localUrl;
-  return liveUrl;
+  return localUrl;
+  // return liveUrl;
+}
+
+String get wsLink {
+  return wsLocalUrl;
+  // return wsLiveUrl;
 }
 
 String imagePath = 'http://$baseUrl/documents/';

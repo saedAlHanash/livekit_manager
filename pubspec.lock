@@ -413,10 +413,10 @@ packages:
     dependency: "direct main"
     description:
       name: livekit_client
-      sha256: "4c1663c1e6ac20a743d9a46c7bc71f17e1949db99d245750c68661d554e30cd2"
+      sha256: ddb4467d306be472898b2459c87768121aba030173b3664ef367f7f7f4c96897
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.1"
+    version: "2.5.3"
   logger:
     dependency: "direct main"
     description:

@@ -1,50 +1,55 @@
-[
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2K_ZitixIDEiLCJhdHRyaWJ1dGVzIjp7ImxrVXNlclR5cGUiOiIwIn0sInZpZGVvIjp7InJvb21Kb2luIjp0cnVlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJyb29tIjoibTIifSwiaXNzIjoiQVBJZVNGaVY3eGlDUnpSIiwiZXhwIjoxNzU5NDI2ODE0LCJuYmYiOjAsInN1YiI6Im1hbmFnZXIxIn0.kXmljjKR5FRCqjjAA_LFVkf-tVnZ8f2rF0oP6QbD9Wo",
-    "room": "m2",
-    "identity": "manager1",
-    "display_name": "المدير 1",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "0"
-    }
+{
+  "egress_id": "EG_mFzP3jjkKNpQ",
+  "room_id": "RM_iHoj5LaVj6SR",
+  "room_name": "s1",
+  "source_type": "EGRESS_SOURCE_TYPE_WEB",
+  "status": "EGRESS_STARTING",
+  "started_at": "1762864073534023457",
+  "ended_at": "0",
+  "updated_at": "1762864073534023457",
+  "details": "",
+  "error": "",
+  "error_code": 0,
+  "room_composite": {
+    "room_name": "s1",
+    "layout": "",
+    "audio_only": true,
+    "audio_mixing": "DEFAULT_MIXING",
+    "video_only": false,
+    "custom_base_url": "",
+    "file_outputs": [
+      {
+        "file_type": "DEFAULT_FILETYPE",
+        "filepath": "saed.mp4",
+        "disable_manifest": false
+      }
+    ],
+    "stream_outputs": [],
+    "segment_outputs": [],
+    "image_outputs": [],
+    "webhooks": []
   },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoi2KfZhNmF2LTYp9ix2YMgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjEifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMiJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk0MjY4MTQsIm5iZiI6MCwic3ViIjoic2hhcmVyMSJ9.F6FAwDC_1VcNw8ibMN3KXRbz8oGulzDBZDT7B2Mm2BA",
-    "room": "m2",
-    "identity": "sharer1",
-    "display_name": "المشارك 1",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "1"
-    }
+  "file": {
+    "filename": "saed.ogg",
+    "started_at": "0",
+    "ended_at": "0",
+    "duration": "0",
+    "size": "0",
+    "location": ""
   },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZCAxIiwiYXR0cmlidXRlcyI6eyJsa1VzZXJUeXBlIjoiMiJ9LCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwiY2FuUHVibGlzaCI6dHJ1ZSwiY2FuU3Vic2NyaWJlIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwicm9vbSI6Im0yIn0sImlzcyI6IkFQSWVTRmlWN3hpQ1J6UiIsImV4cCI6MTc1OTQyNjgxNCwibmJmIjowLCJzdWIiOiJ1c2VyMSJ9.IIb8tDhsPOn72J_UaiYYCuAYbJhOcVuug_06uT9aUag",
-    "room": "m2",
-    "identity": "user1",
-    "display_name": "saed 1",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "2"
+  "stream_results": [],
+  "file_results": [
+    {
+      "filename": "saed.ogg",
+      "started_at": "0",
+      "ended_at": "0",
+      "duration": "0",
+      "size": "0",
+      "location": ""
     }
-  },
-  {
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic2FlZDIgMSIsImF0dHJpYnV0ZXMiOnsibGtVc2VyVHlwZSI6IjIifSwidmlkZW8iOnsicm9vbUpvaW4iOnRydWUsImNhblB1Ymxpc2giOnRydWUsImNhblN1YnNjcmliZSI6dHJ1ZSwiY2FuUHVibGlzaERhdGEiOnRydWUsInJvb20iOiJtMiJ9LCJpc3MiOiJBUEllU0ZpVjd4aUNSelIiLCJleHAiOjE3NTk0MjY4MTQsIm5iZiI6MCwic3ViIjoidXNlcjIifQ.H2TRr8rRD5z9yOJBZXHK_e72-ykC88pyKgfoJIyGkNg",
-    "room": "m2",
-    "identity": "user2",
-    "display_name": "saed2 1",
-    "role": "participant",
-    "ttl": null,
-    "metadata": "",
-    "attributes": {
-      "lkUserType": "2"
-    }
-  }
-]
+  ],
+  "segment_results": [],
+  "image_results": [],
+  "manifest_location": "",
+  "backup_storage_used": false
+}

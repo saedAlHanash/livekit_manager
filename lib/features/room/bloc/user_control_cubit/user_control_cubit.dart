@@ -16,15 +16,10 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   @override
   get mState => state;
 
-  final _hostName = 'coretik-be.coretech-mena.com';
-  final _additional = '/api/v1/';
-
   Future<void> suspend(String userId) async {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.suspend,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -35,8 +30,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.resume,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -47,8 +40,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.suspendAll,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson(),
     );
@@ -59,8 +50,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.resumeAll,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson(),
     );
@@ -71,8 +60,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.allowScreenShare,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -83,8 +70,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.stopScreenShare,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -95,8 +80,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.allowCamera,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -107,8 +90,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.stopCamera,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -119,8 +100,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.allowAudio,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -131,8 +110,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final result = await APIService().callApi(
       url: PostUrl.stopAudio,
-      hostName: _hostName,
-      additional: _additional,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': userId}),
     );
@@ -144,8 +121,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
-      hostName: _hostName,
-      additional: _additional,
       body: state.updateRequest.toJson()
         ..addAll(
           type.revokePermissions(participant),
@@ -159,8 +134,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
-      hostName: _hostName,
-      additional: _additional,
       body: state.updateRequest.toJson()
         ..addAll(
           type.grantPermissions(participant),
@@ -174,8 +147,6 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.kick,
       type: ApiType.post,
-      hostName: _hostName,
-      additional: _additional,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));

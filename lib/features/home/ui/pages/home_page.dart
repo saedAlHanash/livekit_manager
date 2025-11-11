@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:lk_assistant/core/api_manager/api_service.dart';
+import 'package:lk_assistant/core/api_manager/api_url.dart';
 import 'package:lk_assistant/core/extensions/extensions.dart';
 import 'package:lk_assistant/core/widgets/my_text_form_widget.dart';
 
@@ -34,42 +35,38 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
-  final _codeC = TextEditingController(text: AppSharedPreference.getToken);
-  String token = '';
+  final _tokenCtrl = TextEditingController(text: AppSharedPreference.getToken);
 
   Future<void> getToken() async {
     final r = await APIService().callApi(
-      url: 'GetAccessToken',
+      url: 'Index/GetJoinToken',
       type: ApiType.post,
-      hostName: 'coretik-be.coretech-mena.com',
-      additional: '/api/v1/Index/',
       body: {
-        'code': _codeC.text,
-        // "identity": "Sharer",
-        // "name": "Sharer",
-        // "videoGrants": {
-        //   "canPublish": false,
-        //   "canPublishData": true,
-        //   "canSubscribe": false,
-        //   "room": "d747e704-a038-4a11-afbc-08de1ab1dade",
-        //   "roomAdmin": false,
-        //   "roomCreate": true,
-        //   "roomJoin": true,
-        //   "roomList": true
-        // },
-        // "attributes": {"lkUserType": LkUserType.user.index.toString()}
+        "identity": "Sharer",
+        "name": "Sharer",
+        "videoGrants": {
+          "canPublish": true,
+          "canPublishData": true,
+          "canSubscribe": true,
+          "room": "s1",
+          "roomAdmin": false,
+          "roomCreate": true,
+          "roomJoin": true,
+          "roomList": true
+        },
+        "attributes": {"lkUserType": LkUserType.sharer.index.toString()}
       },
     );
 
     setState(() {
-      token = r.jsonBodyPure['token'] ?? 'NON';
-      AppSharedPreference.cashToken(_codeC.text);
+      _tokenCtrl.text = r.jsonBodyPure['token'];
+      AppSharedPreference.cashToken(_tokenCtrl.text);
     });
   }
 
   @override
   void initState() {
-    token = widget.token;
+    _tokenCtrl.text = widget.token;
     super.initState();
   }
 
@@ -80,26 +77,26 @@ class _HomePageState extends State<HomePage> {
         return BlocListener<MyStatusCubit, MyStatusInitial>(
           listenWhen: (p, c) => c.statuses.done,
           listener: (context, sState) {
-            switch ((sState.result.state.canPublish, sState.result.state.canSubscribe)) {
-              //suspended
-              case (false, false):
-                if (state.result.localParticipant?.permissions.isSuspend ?? true) return;
-                context.read<UserControlCubit>().suspend(state.result.localParticipant!.identity);
-                break;
-              //only listen
-              case (false, true):
-                if (state.result.localParticipant?.permissions.isSilence ?? true) return;
-                context.read<UserControlCubit>().revoke(state.result.localParticipant!, PermissionType.speak);
-                break;
-              //only speak
-              case (true, false):
-                break;
-              //normal
-              case (true, true):
-                if (state.result.localParticipant?.permissions.isAll ?? true) return;
-                context.read<UserControlCubit>().grant(state.result.localParticipant!, PermissionType.both);
-                break;
-            }
+            // switch ((sState.result.state.canPublish, sState.result.state.canSubscribe)) {
+            //   //suspended
+            //   case (false, false):
+            //     if (state.result.localParticipant?.permissions.isSuspend ?? true) return;
+            //     context.read<UserControlCubit>().suspend(state.result.localParticipant!.identity);
+            //     break;
+            //   //only listen
+            //   case (false, true):
+            //     if (state.result.localParticipant?.permissions.isSilence ?? true) return;
+            //     context.read<UserControlCubit>().revoke(state.result.localParticipant!, PermissionType.speak);
+            //     break;
+            //   //only speak
+            //   case (true, false):
+            //     break;
+            //   //normal
+            //   case (true, true):
+            //     if (state.result.localParticipant?.permissions.isAll ?? true) return;
+            //     context.read<UserControlCubit>().grant(state.result.localParticipant!, PermissionType.both);
+            //     break;
+            // }
           },
           child: Scaffold(
             body: Padding(
@@ -125,45 +122,28 @@ class _HomePageState extends State<HomePage> {
                                   20.0.verticalSpace,
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 25),
-                                    child: Row(
-                                      spacing: 10.0,
-                                      children: [
-                                        Expanded(
-                                          flex: 5,
-                                          child: MyTextFormWidget(
-                                            label: 'Code',
-                                            controller: _codeC,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: MyButton(
-                                            onTap: () {
-                                              getToken();
-                                            },
-                                            child: DrawableText(
-                                              text: 'Get Token',
-                                              size: 12.0.sp,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                    child: MyTextFormWidget(
+                                      label: 'Token',
+                                      controller: _tokenCtrl,
+                                      iconWidget: IconButton(
+                                        onPressed: () {
+                                          getToken();
+                                        },
+                                        icon: ImageMultiType(url: Icons.generating_tokens),
+                                      ),
                                     ),
                                   ),
                                   20.0.verticalSpace,
-                                  if (token.isNotEmpty)
-                                    DrawableText(
-                                      text: token,
-                                      selectable: true,
-                                    ),
                                 ],
                                 MyButton(
                                   width: 1.0.sw,
                                   loading: state.loading,
                                   onTap: () async {
                                     cubit
-                                      ..setToken(token)
-                                      ..setUrl(widget.link);
+                                      ..setToken(_tokenCtrl.text)
+                                      ..setUrl(wsLink);
                                     await cubit.connect();
+
                                     if (context.mounted) {
                                       context
                                           .read<MyStatusCubit>()

@@ -20,15 +20,11 @@ class MyStatusCubit extends MCubit<MyStatusInitial> {
   @override
   get mState => state;
 
-  final _hostName = 'coretik-be.coretech-mena.com';
-  final _additional = '/api/v1/';
   Future<void> fetchMyStatus(String identity) async {
     emit(state.copyWith(statuses: CubitStatuses.loading));
     final response = await APIService().callApi(
       url: PostUrl.getLatestState,
       type: ApiType.post,
-      hostName: _hostName,
-      additional: _additional,
       body: {
         "room": ctx?.read<RoomCubit>().state.result.name,
         "identity": identity,
