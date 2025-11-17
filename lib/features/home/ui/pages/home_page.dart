@@ -13,6 +13,7 @@ import 'package:lk_assistant/core/widgets/my_text_form_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/shared_preferences.dart';
 import '../../../../core/widgets/my_button.dart';
+import '../../../../services/record_service.dart';
 import '../../../room/bloc/my_status_cubit/my_status_cubit.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/bloc/user_control_cubit/user_control_cubit.dart';
@@ -151,6 +152,51 @@ class _HomePageState extends State<HomePage> {
                                     }
                                   },
                                   text: 'Join',
+                                ),
+                                20.0.verticalSpace,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: MyButton(
+                                        width: 1.0.sw,
+                                        onTap: () async {
+                                          RecorderService.startRecording();
+                                          return;
+                                          cubit
+                                            ..setToken(_tokenCtrl.text)
+                                            ..setUrl(wsLink);
+                                          await cubit.connect();
+
+                                          if (context.mounted) {
+                                            context
+                                                .read<MyStatusCubit>()
+                                                .fetchMyStatus(state.result.localParticipant?.identity ?? '');
+                                          }
+                                        },
+                                        text: 'start',
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: MyButton(
+                                        width: 1.0.sw,
+                                        onTap: () async {
+                                          RecorderService.stopRecording();
+                                          return;
+                                          cubit
+                                            ..setToken(_tokenCtrl.text)
+                                            ..setUrl(wsLink);
+                                          await cubit.connect();
+
+                                          if (context.mounted) {
+                                            context
+                                                .read<MyStatusCubit>()
+                                                .fetchMyStatus(state.result.localParticipant?.identity ?? '');
+                                          }
+                                        },
+                                        text: 'stop',
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
