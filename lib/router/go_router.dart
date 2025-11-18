@@ -147,18 +147,16 @@ final goRouter = GoRouter(
         String link = state.uri.queryParameters['link'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
+
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
             MyApp.changeTheme(context, ThemeMode.dark);
           } else if (theme == 'light') {
             AppSharedPreference.setThemeMode(ThemeMode.light);
             MyApp.changeTheme(context, ThemeMode.light);
-            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
           }
         } else {
           AppSharedPreference.setThemeMode(ThemeMode.system);
-          // AppSharedPreference.setThemeMode(ThemeMode.system);
-          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
         }
 
         String homeId = state.uri.queryParameters['id'] ?? '';

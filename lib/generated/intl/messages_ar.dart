@@ -172,6 +172,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "clickToUpdate": MessageLookupByLibrary.simpleMessage("انقر للتعديل"),
     "closeExam": MessageLookupByLibrary.simpleMessage("إغلاق الامتحان"),
     "closed": MessageLookupByLibrary.simpleMessage("مغلق"),
+    "code": MessageLookupByLibrary.simpleMessage("رمز الغرفة"),
     "codeSentToEmail": MessageLookupByLibrary.simpleMessage(
       "تم إرسال رمز التأكيد إلى البريد الإلكتروني: ",
     ),
@@ -444,6 +445,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "isSuccess": MessageLookupByLibrary.simpleMessage("نجاح!"),
     "is_required": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "january": MessageLookupByLibrary.simpleMessage("كانون الثاني"),
+    "join": MessageLookupByLibrary.simpleMessage("الانضمام"),
     "joiningDate": MessageLookupByLibrary.simpleMessage("تاريخ الانضمام"),
     "july": MessageLookupByLibrary.simpleMessage("تموز"),
     "june": MessageLookupByLibrary.simpleMessage("حزيران"),

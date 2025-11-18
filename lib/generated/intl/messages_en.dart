@@ -163,6 +163,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "clickToUpdate": MessageLookupByLibrary.simpleMessage("Click To Update"),
     "closeExam": MessageLookupByLibrary.simpleMessage("Close exam"),
     "closed": MessageLookupByLibrary.simpleMessage("Closed"),
+    "code": MessageLookupByLibrary.simpleMessage("Code"),
     "codeSentToEmail": MessageLookupByLibrary.simpleMessage(
       "Confirmation code sent to email: ",
     ),
@@ -453,6 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "isSuccess": MessageLookupByLibrary.simpleMessage("Success!"),
     "is_required": MessageLookupByLibrary.simpleMessage("Required"),
     "january": MessageLookupByLibrary.simpleMessage("january"),
+    "join": MessageLookupByLibrary.simpleMessage("Join"),
     "joiningDate": MessageLookupByLibrary.simpleMessage("Joining Date"),
     "july": MessageLookupByLibrary.simpleMessage("july"),
     "june": MessageLookupByLibrary.simpleMessage("june"),

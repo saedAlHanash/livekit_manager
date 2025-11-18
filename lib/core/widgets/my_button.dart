@@ -54,11 +54,11 @@ class MyButton extends StatelessWidget {
                 )
               : endIcon,
           drawableStart: startIcon,
-          size: 18.0.sp,
         );
 
     return SizedBox(
       width: width ?? .9.sw,
+      height: 40.0.h,
       child: ElevatedButton(
         style: ButtonStyle(
           surfaceTintColor: WidgetStatePropertyAll(color),

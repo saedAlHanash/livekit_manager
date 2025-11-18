@@ -73,14 +73,14 @@ const localUrl = '192.168.1.69:5002';
 const liveUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
-  return localUrl;
-  // return liveUrl;
+  // return localUrl;
+  return liveUrl;
 }
 
 String get wsLink {
   // return wsLocalUrl;
-  return wsLiveTest;
-  // return wsLiveUrl;
+  // return wsLiveTest;
+  return wsLiveUrl;
 }
 
 String imagePath = 'http://$baseUrl/documents/';
