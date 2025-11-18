@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 
+import '../core/api_manager/api_url.dart';
 import '../core/app/app_widget.dart';
 import '../core/injection/injection_container.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
@@ -133,7 +134,7 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        String link = state.uri.queryParameters['link'] ?? 'wss://coretik.coretech-mena.com';
+        String link = state.uri.queryParameters['link'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
         if (theme.isNotEmpty) {

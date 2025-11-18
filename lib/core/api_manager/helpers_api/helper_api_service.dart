@@ -95,9 +95,11 @@ Uri getUri({
   if (path != null) url = '$url/$path';
   Uri uri;
   if ((hostName ?? baseUrl) == liveUrl) {
-    uri = Uri.https(hostName ?? baseUrl, url, query);
+    uri =
+        (baseUrl == localUrl) ? Uri.http(hostName ?? baseUrl, url, query) : Uri.https(hostName ?? baseUrl, url, query);
   } else {
-    uri = Uri.https(hostName ?? baseUrl, url, query);
+    uri =
+        (baseUrl == localUrl) ? Uri.http(hostName ?? baseUrl, url, query) : Uri.https(hostName ?? baseUrl, url, query);
   }
 
   logRequest(

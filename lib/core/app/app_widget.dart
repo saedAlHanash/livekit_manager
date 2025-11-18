@@ -12,6 +12,7 @@ import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
 import '../api_manager/api_service.dart';
+import '../api_manager/api_url.dart';
 import '../app_theme.dart';
 import '../injection/injection_container.dart';
 import '../util/shared_preferences.dart';
@@ -109,8 +110,7 @@ class MyAppState extends State<MyApp> {
                 providers: [
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
-                      // ..setUrl('ws://192.168.1.69:7880')
-                      ..setUrl('wss://coretik.coretech-mena.com')
+                      ..setUrl(wsLink)
                       ..initial(),
                   ),
                   BlocProvider(create: (context) => sl<UserControlCubit>()),

@@ -234,6 +234,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
       showErrorFromApi(state);
+      loggerObject.e(e);
     }
   }
 

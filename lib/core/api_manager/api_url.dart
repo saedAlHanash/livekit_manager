@@ -62,12 +62,23 @@ class PatchUrl {
 }
 
 const additionalConst = '/api/v1/';
-const localUrl = 'coretik-be.coretech-mena.com';
-const liveUrl = 'portal-be.coretech-mena.com';
+
+const wsLocalUrl = 'ws://192.168.1.69:7880';
+const wsLiveTest = 'ws://87.106.161.145:7880';
+const wsLiveUrl = 'wss://coretik.coretech-mena.com';
+
+const localUrl = '192.168.1.69:5002';
+const liveUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
   return localUrl;
   // return liveUrl;
+}
+
+String get wsLink {
+  // return wsLocalUrl;
+  return wsLiveTest;
+  // return wsLiveUrl;
 }
 
 String imagePath = 'http://$baseUrl/documents/';

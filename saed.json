@@ -1,15 +1,324 @@
 {
-  "room": "s1",
-  "identity": "BE2A.250530.026.D1",
-  "date": "2025-11-02T10:54:46.9374143",
-  "state": {
-    "canSubscribe": true,
-    "canPublishData": true,
-    "canPublish": true,
-    "cameraMuted": false,
-    "microphoneMuted": true,
-    "screenShareMuted": false,
-    "screenShareAudioMuted": false
-  },
-  "id": "78ddc00a-372f-4352-8251-08de17a9b765"
+  "items": [
+    {
+      "egress_id": "EG_nymeRHoqNxCr",
+      "room_id": "RM_xDYJ2bKL6LHS",
+      "room_name": "s1",
+      "source_type": "EGRESS_SOURCE_TYPE_WEB",
+      "status": "EGRESS_FAILED",
+      "started_at": "1762784576910674859",
+      "ended_at": "1762784605742102893",
+      "updated_at": "1762784605742102893",
+      "details": "End reason: Failure",
+      "error": "Local upload failed: open /your-hls-playlist.m3u8_00000.ts: permission denied",
+      "error_code": 400,
+      "room_composite": {
+        "room_name": "s1",
+        "layout": "",
+        "audio_only": false,
+        "audio_mixing": "DEFAULT_MIXING",
+        "video_only": false,
+        "custom_base_url": "",
+        "segments": {
+          "protocol": "DEFAULT_SEGMENTED_FILE_PROTOCOL",
+          "filename_prefix": "your-hls-playlist.m3u8",
+          "playlist_name": "",
+          "live_playlist_name": "",
+          "segment_duration": 0,
+          "filename_suffix": "INDEX",
+          "disable_manifest": false
+        },
+        "file_outputs": [],
+        "stream_outputs": [],
+        "segment_outputs": [],
+        "image_outputs": [],
+        "webhooks": []
+      },
+      "segments": {
+        "playlist_name": "your-hls-playlist.m3u8.m3u8",
+        "live_playlist_name": "",
+        "duration": "8173205435",
+        "size": "0",
+        "playlist_location": "",
+        "live_playlist_location": "",
+        "segment_count": "0",
+        "started_at": "1762784597687173742",
+        "ended_at": "1762784605860379177"
+      },
+      "stream_results": [],
+      "file_results": [],
+      "segment_results": [
+        {
+          "playlist_name": "your-hls-playlist.m3u8.m3u8",
+          "live_playlist_name": "",
+          "duration": "8173205435",
+          "size": "0",
+          "playlist_location": "",
+          "live_playlist_location": "",
+          "segment_count": "0",
+          "started_at": "1762784597687173742",
+          "ended_at": "1762784605860379177"
+        }
+      ],
+      "image_results": [],
+      "manifest_location": "",
+      "backup_storage_used": false
+    },
+    {
+      "egress_id": "EG_TfVkF6roXUux",
+      "room_id": "RM_xDYJ2bKL6LHS",
+      "room_name": "s1",
+      "source_type": "EGRESS_SOURCE_TYPE_WEB",
+      "status": "EGRESS_FAILED",
+      "started_at": "1762784725278916078",
+      "ended_at": "1762784736118655750",
+      "updated_at": "1762784736118655750",
+      "details": "End reason: Failure",
+      "error": "Local upload failed: open /your-hls-playlist.m3u8_00000.ts: permission denied",
+      "error_code": 400,
+      "room_composite": {
+        "room_name": "s1",
+        "layout": "",
+        "audio_only": false,
+        "audio_mixing": "DEFAULT_MIXING",
+        "video_only": false,
+        "custom_base_url": "",
+        "segments": {
+          "protocol": "DEFAULT_SEGMENTED_FILE_PROTOCOL",
+          "filename_prefix": "your-hls-playlist.m3u8",
+          "playlist_name": "",
+          "live_playlist_name": "",
+          "segment_duration": 0,
+          "filename_suffix": "INDEX",
+          "disable_manifest": false
+        },
+        "file_outputs": [],
+        "stream_outputs": [],
+        "segment_outputs": [],
+        "image_outputs": [],
+        "webhooks": []
+      },
+      "segments": {
+        "playlist_name": "your-hls-playlist.m3u8.m3u8",
+        "live_playlist_name": "",
+        "duration": "8145276219",
+        "size": "0",
+        "playlist_location": "",
+        "live_playlist_location": "",
+        "segment_count": "0",
+        "started_at": "1762784728072806513",
+        "ended_at": "1762784736218082732"
+      },
+      "stream_results": [],
+      "file_results": [],
+      "segment_results": [
+        {
+          "playlist_name": "your-hls-playlist.m3u8.m3u8",
+          "live_playlist_name": "",
+          "duration": "8145276219",
+          "size": "0",
+          "playlist_location": "",
+          "live_playlist_location": "",
+          "segment_count": "0",
+          "started_at": "1762784728072806513",
+          "ended_at": "1762784736218082732"
+        }
+      ],
+      "image_results": [],
+      "manifest_location": "",
+      "backup_storage_used": false
+    },
+    {
+      "egress_id": "EG_4CYt4spHA2rk",
+      "room_id": "RM_xDYJ2bKL6LHS",
+      "room_name": "s1",
+      "source_type": "EGRESS_SOURCE_TYPE_WEB",
+      "status": "EGRESS_FAILED",
+      "started_at": "1762784767100111557",
+      "ended_at": "1762784777926534428",
+      "updated_at": "1762784777926534428",
+      "details": "End reason: Failure",
+      "error": "Local upload failed: open /your-hls-playlist.m3u8_00000.ts: permission denied",
+      "error_code": 400,
+      "room_composite": {
+        "room_name": "s1",
+        "layout": "",
+        "audio_only": false,
+        "audio_mixing": "DEFAULT_MIXING",
+        "video_only": false,
+        "custom_base_url": "",
+        "segments": {
+          "protocol": "DEFAULT_SEGMENTED_FILE_PROTOCOL",
+          "filename_prefix": "your-hls-playlist.m3u8",
+          "playlist_name": "",
+          "live_playlist_name": "",
+          "segment_duration": 0,
+          "filename_suffix": "INDEX",
+          "disable_manifest": false
+        },
+        "file_outputs": [],
+        "stream_outputs": [],
+        "segment_outputs": [],
+        "image_outputs": [],
+        "webhooks": []
+      },
+      "segments": {
+        "playlist_name": "your-hls-playlist.m3u8.m3u8",
+        "live_playlist_name": "",
+        "duration": "8161981423",
+        "size": "0",
+        "playlist_location": "",
+        "live_playlist_location": "",
+        "segment_count": "0",
+        "started_at": "1762784769874405128",
+        "ended_at": "1762784778036386551"
+      },
+      "stream_results": [],
+      "file_results": [],
+      "segment_results": [
+        {
+          "playlist_name": "your-hls-playlist.m3u8.m3u8",
+          "live_playlist_name": "",
+          "duration": "8161981423",
+          "size": "0",
+          "playlist_location": "",
+          "live_playlist_location": "",
+          "segment_count": "0",
+          "started_at": "1762784769874405128",
+          "ended_at": "1762784778036386551"
+        }
+      ],
+      "image_results": [],
+      "manifest_location": "",
+      "backup_storage_used": false
+    },
+    {
+      "egress_id": "EG_qnzhLdFXzSKh",
+      "room_id": "RM_pGQ5hx3YxwFM",
+      "room_name": "s1",
+      "source_type": "EGRESS_SOURCE_TYPE_WEB",
+      "status": "EGRESS_STARTING",
+      "started_at": "1762861384041985514",
+      "ended_at": "0",
+      "updated_at": "1762861384041985514",
+      "details": "",
+      "error": "",
+      "error_code": 0,
+      "room_composite": {
+        "room_name": "s1",
+        "layout": "",
+        "audio_only": false,
+        "audio_mixing": "DEFAULT_MIXING",
+        "video_only": false,
+        "custom_base_url": "",
+        "segments": {
+          "protocol": "DEFAULT_SEGMENTED_FILE_PROTOCOL",
+          "filename_prefix": "your-hls-playlist.m3u8",
+          "playlist_name": "",
+          "live_playlist_name": "",
+          "segment_duration": 0,
+          "filename_suffix": "INDEX",
+          "disable_manifest": false
+        },
+        "file_outputs": [],
+        "stream_outputs": [],
+        "segment_outputs": [],
+        "image_outputs": [],
+        "webhooks": []
+      },
+      "segments": {
+        "playlist_name": "your-hls-playlist.m3u8.m3u8",
+        "live_playlist_name": "",
+        "duration": "0",
+        "size": "0",
+        "playlist_location": "",
+        "live_playlist_location": "",
+        "segment_count": "0",
+        "started_at": "0",
+        "ended_at": "0"
+      },
+      "stream_results": [],
+      "file_results": [],
+      "segment_results": [
+        {
+          "playlist_name": "your-hls-playlist.m3u8.m3u8",
+          "live_playlist_name": "",
+          "duration": "0",
+          "size": "0",
+          "playlist_location": "",
+          "live_playlist_location": "",
+          "segment_count": "0",
+          "started_at": "0",
+          "ended_at": "0"
+        }
+      ],
+      "image_results": [],
+      "manifest_location": "",
+      "backup_storage_used": false
+    },
+    {
+      "egress_id": "EG_VEpheMmnexwQ",
+      "room_id": "RM_iHoj5LaVj6SR",
+      "room_name": "s1",
+      "source_type": "EGRESS_SOURCE_TYPE_WEB",
+      "status": "EGRESS_STARTING",
+      "started_at": "1762862327291437227",
+      "ended_at": "0",
+      "updated_at": "1762862327291437227",
+      "details": "",
+      "error": "",
+      "error_code": 0,
+      "room_composite": {
+        "room_name": "s1",
+        "layout": "",
+        "audio_only": false,
+        "audio_mixing": "DEFAULT_MIXING",
+        "video_only": false,
+        "custom_base_url": "",
+        "segments": {
+          "protocol": "DEFAULT_SEGMENTED_FILE_PROTOCOL",
+          "filename_prefix": "your-hls-playlist.m3u8",
+          "playlist_name": "",
+          "live_playlist_name": "",
+          "segment_duration": 0,
+          "filename_suffix": "INDEX",
+          "disable_manifest": false
+        },
+        "file_outputs": [],
+        "stream_outputs": [],
+        "segment_outputs": [],
+        "image_outputs": [],
+        "webhooks": []
+      },
+      "segments": {
+        "playlist_name": "your-hls-playlist.m3u8.m3u8",
+        "live_playlist_name": "",
+        "duration": "0",
+        "size": "0",
+        "playlist_location": "",
+        "live_playlist_location": "",
+        "segment_count": "0",
+        "started_at": "0",
+        "ended_at": "0"
+      },
+      "stream_results": [],
+      "file_results": [],
+      "segment_results": [
+        {
+          "playlist_name": "your-hls-playlist.m3u8.m3u8",
+          "live_playlist_name": "",
+          "duration": "0",
+          "size": "0",
+          "playlist_location": "",
+          "live_playlist_location": "",
+          "segment_count": "0",
+          "started_at": "0",
+          "ended_at": "0"
+        }
+      ],
+      "image_results": [],
+      "manifest_location": "",
+      "backup_storage_used": false
+    }
+  ]
 }

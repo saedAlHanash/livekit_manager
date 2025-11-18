@@ -47,12 +47,10 @@ class RoomInitial extends AbstractState<Room> {
       result: room,
       request: '',
       url: '',
-      // url: 'wss://coretik.coretech-mena.com',
       token: '',
       listener: room.createListener(),
       raiseHands: [],
       participant: const [],
-
       selectedUserId: '',
     );
   }
