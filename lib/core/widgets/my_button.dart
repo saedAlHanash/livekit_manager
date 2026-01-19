@@ -100,6 +100,8 @@ class MyButton extends StatelessWidget {
               : icon == null
                   ? null
                   : ImageMultiType(url: icon, color: textColor ?? Colors.white, height: 24.0.r, width: 24.0.r),
+          matchParent: true,
+          textAlign: TextAlign.center,
           drawableStart: iconStart == null ? null : ImageMultiType(url: iconStart, color: textColor ?? Colors.white),
         );
 

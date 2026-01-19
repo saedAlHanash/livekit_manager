@@ -13,16 +13,16 @@ import '../../bloc/room_cubit/room_cubit.dart';
 import '../widget/managers_widget.dart';
 import '../widget/users/dynamic_user.dart';
 
-class RoomPage extends StatefulWidget {
-  const RoomPage({
+class TeacherPage extends StatefulWidget {
+  const TeacherPage({
     super.key,
   });
 
   @override
-  State<StatefulWidget> createState() => _RoomPageState();
+  State<StatefulWidget> createState() => _TeacherPageState();
 }
 
-class _RoomPageState extends State<RoomPage> {
+class _TeacherPageState extends State<TeacherPage> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
   @override
@@ -39,21 +39,14 @@ class _RoomPageState extends State<RoomPage> {
                     Expanded(
                       child: Row(
                         children: [
-                          Expanded(child: AudiencesWidget()),
-                          Expanded(
-                              child: Column(
-                            children: [
-                              Expanded(flex: 3, child: SpeakersWidget()),
-                              10.0.verticalSpace,
-                              Expanded(child: ManagersWidget()),
-                            ],
-                          )),
+                          Expanded(child: SpeakersWidget()),
                           Expanded(
                             flex: 3,
                             child: Column(
                               children: [
                                 if (state.selectedParticipant != null)
                                   Expanded(
+                                    flex: 2,
                                     child: Container(
                                       width: 1.0.sw,
                                       decoration: BoxDecoration(
@@ -65,7 +58,17 @@ class _RoomPageState extends State<RoomPage> {
                                     ),
                                   ),
                                 Expanded(
-                                  child: NotesWidget(),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: NotesWidget(),
+                                      ),
+                                      Expanded(
+                                        child: ControlsWidget(),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -73,7 +76,6 @@ class _RoomPageState extends State<RoomPage> {
                         ],
                       ),
                     ),
-                    ControlsWidget(),
                   ],
                 ),
               );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
@@ -16,17 +17,18 @@ class ControllersDynamic extends StatefulWidget {
   const ControllersDynamic({super.key, this.speaker = false, required this.participant});
 
   final bool speaker;
-  final Participant participant;
+  final Participant? participant;
 
   @override
   State<ControllersDynamic> createState() => _ControllersDynamicState();
 }
 
 class _ControllersDynamicState extends State<ControllersDynamic> {
-  Participant get participant => widget.participant;
+  Participant get participant => widget.participant!;
 
   @override
   Widget build(BuildContext context) {
+    if (widget.participant == null) return 0.0.verticalSpace;
     return BlocBuilder<UserControlCubit, UserControlInitial>(
       buildWhen: (p, c) => c.id == participant.identity,
       builder: (context, state) {
@@ -34,7 +36,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
           icon: widget.speaker ? Icons.more_vert_rounded : Icons.menu,
           items: [
             if (widget.speaker) ...[
-              if (!participant.isMuted)
+              if (!(participant.isMuted))
                 PopupMenuItemModel(
                   label: S.of(context).mute,
                   icon: Icons.mic_off,
@@ -77,8 +79,8 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                 },
               ),
               silence(),
-            ] else ...[
               suspend(),
+            ] else ...[
               if (!participant.permissions.isSuspend) silence(),
               PopupMenuItemModel(
                 label: S.of(context).disconnect,

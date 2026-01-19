@@ -90,7 +90,7 @@ class MyAppState extends State<MyApp> {
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
             darkTheme: darkTheme,
-            theme: darkTheme,
+            theme: lightTheme,
             themeMode: AppSharedPreference.getThemeMode,
             routerConfig: goRouter,
             debugShowCheckedModeBanner: false,

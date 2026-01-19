@@ -134,7 +134,7 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        String link = state.uri.queryParameters['link'] ?? wsLink;
+        String link = state.uri.queryParameters['url'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
         if (theme.isNotEmpty) {
@@ -151,10 +151,6 @@ final goRouter = GoRouter(
           // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
         }
 
-        debugPrint('FULL URI: ${state.uri}');
-        debugPrint('QUERY: ${state.uri.queryParameters}');
-
-        // loggerObject.f('link: $link, token: $token');
         return MultiBlocProvider(
           providers: [
             BlocProvider(

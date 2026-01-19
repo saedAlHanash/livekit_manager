@@ -405,7 +405,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "gracePeriod": MessageLookupByLibrary.simpleMessage("فترة السماح"),
     "grandfather": MessageLookupByLibrary.simpleMessage("الجد"),
     "group": MessageLookupByLibrary.simpleMessage("مجموعة"),
-    "groupMessage": MessageLookupByLibrary.simpleMessage("Group message"),
+    "groupMessage": MessageLookupByLibrary.simpleMessage("رسالة جماعية"),
     "haveBeenCreated": MessageLookupByLibrary.simpleMessage("تم إنشاء حسابك"),
     "helloThereCreateNewAccount": MessageLookupByLibrary.simpleMessage(
       "مرحبًا، أنشئ حسابًا جديدًا",
@@ -710,6 +710,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reset_password": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
+    "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف الطالب"),
     "returned": MessageLookupByLibrary.simpleMessage("استعادة"),
     "reviewOrder": MessageLookupByLibrary.simpleMessage("عرض الطلب"),
     "reviews": MessageLookupByLibrary.simpleMessage("التقييمات"),
@@ -833,6 +834,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "support": MessageLookupByLibrary.simpleMessage("الدعم"),
     "sure": MessageLookupByLibrary.simpleMessage("متأكد"),
     "suspendAll": MessageLookupByLibrary.simpleMessage("تعليق الكل"),
+    "suspendUser": MessageLookupByLibrary.simpleMessage("إيقاف مؤقت"),
     "suspended": MessageLookupByLibrary.simpleMessage("معلق"),
     "swapDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المبادلة"),
     "swapNow": MessageLookupByLibrary.simpleMessage("بادل الآن"),

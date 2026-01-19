@@ -1,12 +1,9 @@
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/util/snack_bar_message.dart';
-import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/send_message_dialog.dart';
 
@@ -26,10 +23,24 @@ class ControlsWidget extends StatelessWidget {
       builder: (context, cState) {
         return BlocBuilder<RoomCubit, RoomInitial>(
           builder: (context, state) {
-            return Row(
-              spacing: 12.0,
+            return Column(
               mainAxisSize: MainAxisSize.min,
+              spacing: 12.0,
               children: [
+                MyButton(
+                  onTap: () {},
+                  text: state.result.localParticipant?.isScreenShareEnabled() == true
+                      ? 'إيقاف مشاركة الشاشة'
+                      : 'مشاركة الشاشة',
+                  color: AppColorManager.appBarColor,
+                  icon: 24.0.dg.horizontalSpace,
+                  iconStart: ImageMultiType(
+                    height: 24.0.dg,
+                    width: 24.0.dg,
+                    url: Icons.screen_share_outlined,
+                    color: AppColorManager.textColor,
+                  ),
+                ),
                 MyButton(
                   loading: cState.loading,
                   onTap: () {
@@ -37,7 +48,8 @@ class ControlsWidget extends StatelessWidget {
                   },
                   text: S.of(context).suspendAll,
                   color: AppColorManager.appBarColor,
-                  icon: ImageMultiType(
+                  icon: 24.0.dg.horizontalSpace,
+                  iconStart: ImageMultiType(
                     height: 24.0.dg,
                     width: 24.0.dg,
                     url: Assets.imagesSilenceIcon,
@@ -50,22 +62,28 @@ class ControlsWidget extends StatelessWidget {
                   },
                   text: S.of(context).groupMessage,
                   color: AppColorManager.appBarColor,
-                  icon: ImageMultiType(
+                  icon: 24.0.dg.horizontalSpace,
+                  iconStart: ImageMultiType(
+                    url: Icons.message,
                     height: 24.0.dg,
                     width: 24.0.dg,
-                    url: Icons.message,
                     color: AppColorManager.textColor,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
+                MyButton(
+                  text: 'إنهاء الجلسة',
+                  textColor: Colors.white,
+                  color: AppColorManager.red,
+                  onTap: () {
                     context.read<RoomCubit>().disconnect();
                   },
-                  icon: const Icon(
-                    Icons.call_end,
-                    color: Colors.red,
+                  icon: 24.0.dg.horizontalSpace,
+                  iconStart: ImageMultiType(
+                    url: Icons.call_end,
+                    color: Colors.white,
+                    height: 24.0.dg,
+                    width: 24.0.dg,
                   ),
-                  tooltip: S.of(context).disconnect,
                 ),
               ],
             );

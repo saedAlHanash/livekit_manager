@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
@@ -43,12 +44,6 @@ class NotesWidget extends StatelessWidget {
                     switch (item.action) {
                       case ManagerActions.requestPermission:
                         return ListTile(
-                          leading: UserImageOrName(
-                            participant: p,
-                            image: item.image,
-                            name: item.name,
-                            size: 30.0.r,
-                          ),
                           title: DrawableText(text: '${item.name} ${S.of(context).requestedPermission}'),
                           subtitle: DrawableText(text: S.of(context).wantsToJoinOrGetPermission),
                           trailing: Row(
@@ -108,12 +103,14 @@ class NotesWidget extends StatelessWidget {
 
                       case ManagerActions.requestToDisconnect:
                         return ListTile(
-                          leading: UserImageOrName(
-                            participant: p,
-                            image: item.image,
-                            name: item.name,
-                            size: 30.0.r,
-                          ),
+                          leading: p == null
+                              ? 0.0.verticalSpace
+                              : UserImageOrName(
+                                  participant: p,
+                                  image: item.image,
+                                  name: item.name,
+                                  size: 30.0.r,
+                                ),
                           title: DrawableText(text: '${item.name} ${S.of(context).requestedToLeaveTheSession}'),
                           trailing: ElevatedButton(
                             onPressed: () {},
@@ -123,12 +120,14 @@ class NotesWidget extends StatelessWidget {
 
                       case ManagerActions.message:
                         return ListTile(
-                          leading: UserImageOrName(
-                            participant: p,
-                            image: item.image,
-                            name: item.name,
-                            size: 30.0.r,
-                          ),
+                          leading: p == null
+                              ? 0.0.verticalSpace
+                              : UserImageOrName(
+                                  participant: p,
+                                  image: item.image,
+                                  name: item.name,
+                                  size: 30.0.r,
+                                ),
                           title: DrawableText(text: item.name),
                           subtitle: DrawableText(text: item.message),
                           trailing: IconButton(

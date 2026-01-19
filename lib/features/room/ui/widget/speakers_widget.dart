@@ -38,10 +38,10 @@ class SpeakersWidget extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   separatorBuilder: (context, index) => 10.0.verticalSpace,
-                  itemCount: state.speakers.length,
+                  itemCount: state.participantTracksWithoutManager.length,
                   padding: EdgeInsets.all(15.0),
                   itemBuilder: (context, i) {
-                    return ItemUserSpeaker(i: i);
+                    return ItemUserSpeaker(participant: state.participantTracksWithoutManager[i]);
                   },
                 ),
               ),

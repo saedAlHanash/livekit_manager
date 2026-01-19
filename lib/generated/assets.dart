@@ -75,6 +75,7 @@ class Assets {
   static const String iconsStudents = 'assets/icons/students.svg';
   static const String iconsStudentsF = 'assets/icons/students_f.svg';
   static const String iconsSwap = 'assets/icons/swap.svg';
+  static const String iconsSyLogo = 'assets/icons/sy_logo.svg';
   static const String images3dCity = 'assets/images/3d_city.png';
   static const String images3dLock = 'assets/images/3d_lock.png';
   static const String images3dSafe = 'assets/images/3d_safe.png';

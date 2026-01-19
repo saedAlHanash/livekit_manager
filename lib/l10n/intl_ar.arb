@@ -659,5 +659,7 @@
   "requestedToLeaveTheSession": "طلب مغادرة الجلسة",
   "suspendAll": "تعليق الكل",
   "disconnect": "قطع الاتصال",
-  "groupMessage": "Group message"
+  "resumeUser": "استئناف الطالب",
+  "suspendUser": "إيقاف مؤقت",
+  "groupMessage": "رسالة جماعية"
 }
