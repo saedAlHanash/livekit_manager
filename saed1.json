@@ -1,16 +1,22 @@
 {
-  "identity": "user",
-  "name": "user",
+  "identity": "Egress user",
+  "name": "Egress user",
   "videoGrants": {
+    "agent": true,
     "canPublish": true,
     "canPublishData": true,
     "canSubscribe": true,
-    "room": "s1",
-    "roomAdmin": false,
+    "canSubscribeMetrics": true,
+    "canUpdateOwnMetadata": true,
+    "destinationRoom": "s2",
+    "hidden": false,
+    "ingressAdmin": false,
+    "recorder": true,
+    "room": "s2",
+    "roomAdmin": true,
     "roomCreate": true,
-    "roomJoin": true
-  },
-  "attributes": {
-    "lkUserType": "2"
+    "roomJoin": true,
+    "roomList": true,
+    "roomRecord": true
   }
 }

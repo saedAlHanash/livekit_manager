@@ -82,9 +82,6 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      // designSize: const Size(375, 833),
-      // designSize: Size(MediaQuery.sizeOf(context).width * 2, MediaQuery.sizeOf(context).height),
-      // designSize: const Size(1400, 972),
       designSize: MediaQuery.of(context).size,
       minTextAdapt: true,
       builder: (context, child) {
@@ -93,7 +90,7 @@ class MyAppState extends State<MyApp> {
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
             darkTheme: darkTheme,
-            theme: lightTheme,
+            theme: darkTheme,
             themeMode: AppSharedPreference.getThemeMode,
             routerConfig: goRouter,
             debugShowCheckedModeBanner: false,
