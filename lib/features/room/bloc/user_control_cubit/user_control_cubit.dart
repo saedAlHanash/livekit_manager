@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_background/flutter_background.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/api_manager/api_url.dart';
@@ -5,9 +7,12 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 
+import '../../../../core/app/app_widget.dart';
+import '../../../../core/util/exts.dart';
 import '../../data/request/change_track_request.dart';
 import '../../data/request/message_request.dart';
 import '../../data/request/update_participant_request.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 part 'user_control_state.dart';
 
@@ -162,5 +167,126 @@ class UserControlCubit extends MCubit<UserControlInitial> {
       type: ApiType.post,
       body: request.toJson(),
     );
+  }
+
+  //---------------------Local----------------------
+
+  void setLocalParticipant(LocalParticipant? localParticipant) {
+    emit(state.copyWith(request: localParticipant));
+  }
+
+  Future<void> toggleLocalMic() async {
+    if (state.localParticipant?.isMicrophoneEnabled() == true) {
+      await stopLocalMic();
+    } else {
+      await startLocalMic();
+    }
+  }
+
+  Future<void> stopLocalMic() async {
+    await state.localParticipant?.setMicrophoneEnabled(false);
+  }
+
+  Future<void> startLocalMic() async {
+    await state.localParticipant?.setMicrophoneEnabled(true);
+  }
+
+  Future<void> unpublishAll() async {
+    final result = await ctx?.showUnPublishDialog();
+    if (result == true) await state.localParticipant?.unpublishAllTracks();
+  }
+
+  Future<void> toggleLocalCamera() async {
+    if (state.localParticipant?.isCameraEnabled() == true) {
+      await stopLocalCamera();
+    } else {
+      await startLocalCamera();
+    }
+  }
+
+  Future<void> stopLocalCamera() async {
+    await state.localParticipant?.setCameraEnabled(false);
+  }
+
+  Future<void> startLocalCamera() async {
+    await state.localParticipant?.setCameraEnabled(true);
+  }
+
+  Future<void> toggleLocalScreenShare() async {
+    if (state.localParticipant?.isScreenShareEnabled() == true) {
+      await stopLocalScreenShare();
+    } else {
+      await startLocalScreenShare();
+    }
+  }
+
+  Future<void> stopLocalScreenShare() async {
+    await state.localParticipant?.setScreenShareEnabled(false);
+
+    if (lkPlatformIs(PlatformType.android)) {
+      try {
+        await FlutterBackground.disableBackgroundExecution();
+      } catch (error) {
+        loggerObject.e('error disabling screen share: $error');
+      }
+    }
+  }
+
+  Future<void> startLocalScreenShare() async {
+    if (lkPlatformIsDesktop()) {
+      try {
+        final source = await showDialog<DesktopCapturerSource>(
+          context: ctx!,
+          builder: (context) => ScreenSelectDialog(),
+        );
+
+        if (source == null) return;
+
+        var track = await LocalVideoTrack.createScreenShareTrack(
+          ScreenShareCaptureOptions(sourceId: source.id, maxFrameRate: 15.0),
+        );
+        await state.localParticipant?.publishVideoTrack(track);
+      } catch (e) {
+        loggerObject.e('could not publish video: $e');
+      }
+      return;
+    }
+    if (lkPlatformIs(PlatformType.android)) {
+      final hasCapturePermission = await Helper.requestCapturePermission();
+      if (!hasCapturePermission) return;
+
+      requestBackgroundPermission([bool isRetry = false]) async {
+        try {
+          bool hasPermissions = await FlutterBackground.hasPermissions;
+          if (!isRetry) {
+            const androidConfig = FlutterBackgroundAndroidConfig(
+              notificationTitle: 'Screen Sharing',
+              notificationText: 'IMS app is sharing the screen.',
+              notificationImportance: AndroidNotificationImportance.normal,
+            );
+            hasPermissions = await FlutterBackground.initialize(androidConfig: androidConfig);
+          }
+          if (hasPermissions && !FlutterBackground.isBackgroundExecutionEnabled) {
+            await FlutterBackground.enableBackgroundExecution();
+          }
+        } catch (e) {
+          loggerObject.e('could not publish video: $e');
+          if (isRetry) return;
+          return await Future.delayed(
+            Duration(seconds: 1),
+            () => requestBackgroundPermission(true),
+          );
+        }
+      }
+
+      await requestBackgroundPermission();
+    }
+
+    if (lkPlatformIsWebMobile()) {
+      await ctx?.showErrorDialog('Screen share is not supported on mobile web');
+      return;
+    }
+
+    await state.localParticipant?.setScreenShareEnabled(true, captureScreenAudio: true);
   }
 }

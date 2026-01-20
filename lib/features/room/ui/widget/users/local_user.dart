@@ -11,7 +11,7 @@ import '../no_video.dart';
 class LocalUser extends StatefulWidget {
   const LocalUser({super.key, required this.participant});
 
-  final Participant participant;
+  final Participant? participant;
 
   @override
   State<LocalUser> createState() => _LocalUserState();
@@ -21,20 +21,20 @@ class _LocalUserState extends State<LocalUser> {
   @override
   void initState() {
     super.initState();
-    widget.participant.addListener(_onParticipantChanged);
+    widget.participant?.addListener(_onParticipantChanged);
     _onParticipantChanged();
   }
 
   @override
   void dispose() {
-    widget.participant.removeListener(_onParticipantChanged);
+    widget.participant?.removeListener(_onParticipantChanged);
     super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant LocalUser oldWidget) {
-    oldWidget.participant.localParticipant.removeListener(_onParticipantChanged);
-    widget.participant.addListener(_onParticipantChanged);
+    oldWidget.participant?.localParticipant.removeListener(_onParticipantChanged);
+    widget.participant?.addListener(_onParticipantChanged);
     _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
   }
@@ -47,29 +47,27 @@ class _LocalUserState extends State<LocalUser> {
 
   @override
   Widget build(BuildContext ctx) {
+    if (widget.participant == null) return NoVideoWidget();
     return Stack(
       children: [
-        widget.participant.videoActive
-            ? MyCardWidget(
-                margin: EdgeInsets.all(20.0).r,
-                radios: 20.0,
-                child: VideoTrackRenderer(
-                  renderMode: VideoRenderMode.auto,
-                  fit: VideoViewFit.contain,
-                  widget.participant.activeVideoTrack!,
-                ),
+        widget.participant!.videoActive
+            ? VideoTrackRenderer(
+                renderMode: VideoRenderMode.auto,
+                fit: VideoViewFit.contain,
+                widget.participant!.activeVideoTrack!,
               )
             : const NoVideoWidget(),
-        if (widget.participant.activeAudioTrack != null)
+        if (widget.participant!.activeAudioTrack != null)
           Padding(
             padding: const EdgeInsets.all(20.0).r,
             child: Align(
-                alignment: Alignment.topRight,
-                child: SoundWaveformWidget(
-                  key: ValueKey(widget.participant.activeAudioTrack!.hashCode),
-                  audioTrack: widget.participant.activeAudioTrack!,
-                  width: 8,
-                )),
+              alignment: Alignment.topRight,
+              child: SoundWaveformWidget(
+                key: ValueKey(widget.participant!.activeAudioTrack!.hashCode),
+                audioTrack: widget.participant!.activeAudioTrack!,
+                width: 8,
+              ),
+            ),
           ),
       ],
     );

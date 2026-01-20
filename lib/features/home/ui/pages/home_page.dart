@@ -7,6 +7,9 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
+import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../core/api_manager/api_service.dart';
 import '../../../../core/api_manager/api_url.dart';
@@ -33,9 +36,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
+  UserControlCubit get ucCubit => context.read<UserControlCubit>();
+
+  var t = '';
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocConsumer<RoomCubit, RoomInitial>(
+      listener: (context, state) {
+        if (state.isConnect) {
+          ucCubit.setLocalParticipant(state.result.localParticipant);
+        }
+      },
       builder: (context, state) {
         return state.isConnect
             ? TeacherPage()
@@ -55,13 +67,15 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           DrawableText(text: state.url),
                           20.0.verticalSpace,
+                          MyTextFormWidget(onChanged: (value) => t = value),
+                          20.0.verticalSpace,
                           MyButton(
                             width: 1.0.sw,
                             loading: state.loading,
                             onTap: () {
                               cubit
                                 ..setUrl(widget.link)
-                                ..setToken(widget.token)
+                                ..setToken(t.isBlank ? widget.token : t)
                                 ..connect();
                             },
                             text: 'بدأ الجلسة',

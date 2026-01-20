@@ -84,6 +84,7 @@ class MyButton extends StatelessWidget {
         DrawableText(
           text: text,
           color: Colors.white,
+          size: 12.0.sp,
           fontWeight: bold ? FontWeight.bold : null,
           drawablePadding: 5.0.w,
           drawableEnd: loading

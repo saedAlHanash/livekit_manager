@@ -4,20 +4,25 @@ class UserControlInitial extends AbstractState<String> {
   const UserControlInitial({
     required super.result,
     super.error,
-    required super.request,
+    super.request,
     super.statuses,
     super.createUpdateRequest,
     super.id,
   });
 
-  ChangeTrackRequest get mRequest => request;
+  LocalParticipant? get localParticipant => request;
 
   UpdateParticipantRequest get updateRequest => createUpdateRequest;
+
+  bool get micEnabled => localParticipant?.isMicrophoneEnabled() == true;
+
+  bool get cameraEnabled => localParticipant?.isCameraEnabled() == true;
+
+  bool get screenShareEnabled => localParticipant?.isScreenShareEnabled() == true;
 
   factory UserControlInitial.initial() {
     return UserControlInitial(
       result: '',
-      request: ChangeTrackRequest.fromJson({}),
       createUpdateRequest: UpdateParticipantRequest.fromJson({}),
     );
   }
@@ -38,7 +43,7 @@ class UserControlInitial extends AbstractState<String> {
     String? result,
     String? error,
     dynamic id,
-    ChangeTrackRequest? request,
+    LocalParticipant? request,
     UpdateParticipantRequest? updateRequest,
   }) {
     return UserControlInitial(

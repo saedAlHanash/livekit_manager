@@ -105,12 +105,12 @@ class MyAppState extends State<MyApp> {
             builder: (ctx, child) {
               return MultiBlocProvider(
                 providers: [
+                  BlocProvider(create: (context) => sl<UserControlCubit>()),
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
                       ..setUrl(wsLink)
                       ..initial(),
                   ),
-                  BlocProvider(create: (context) => sl<UserControlCubit>()),
                 ],
                 child: MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
