@@ -5,6 +5,7 @@ import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
@@ -65,5 +66,28 @@ class _RemoteUserState extends State<RemoteUser> {
             ],
           )
         : const NoVideoWidget();
+  }
+}
+
+class ListRemoteUser extends StatelessWidget {
+  const ListRemoteUser({super.key, required this.participants, required this.fit});
+
+  final List<Participant> participants;
+  final VideoViewFit fit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: participants
+          .map(
+            (e) => Expanded(
+              child: Container(
+                decoration: BoxDecoration(border: Border.all(color: AppColorManager.mainColor)),
+                child: RemoteUser(participant: e),
+              ),
+            ),
+          )
+          .toList(),
+    );
   }
 }

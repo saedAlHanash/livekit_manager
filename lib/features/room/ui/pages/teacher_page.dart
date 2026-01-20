@@ -2,6 +2,7 @@ import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/audiences_widget.dart';
@@ -14,6 +15,7 @@ import '../../../../core/widgets/my_card_widget.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../widget/managers_widget.dart';
 import '../widget/users/dynamic_user.dart';
+import '../widget/users/remote_user.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({
@@ -55,8 +57,7 @@ class _TeacherPageState extends State<TeacherPage> {
                                         color: AppColorManager.appBarColor,
                                         borderRadius: BorderRadius.circular(12.0).r,
                                       ),
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: DynamicUser(participant: state.selectedParticipant!),
+                                      child: ListRemoteUser(participants: state.students, fit: VideoViewFit.cover),
                                     ),
                                   ),
                                 Expanded(
@@ -67,12 +68,8 @@ class _TeacherPageState extends State<TeacherPage> {
                                         child: NotesWidget(),
                                       ),
                                       Expanded(
-                                        flex: 4,
+                                        flex: 2,
                                         child: LocalMedia(),
-                                      ),
-                                      Expanded(
-                                        flex: 5,
-                                        child: ControlsWidget(),
                                       ),
                                     ],
                                   ),
@@ -83,6 +80,7 @@ class _TeacherPageState extends State<TeacherPage> {
                         ],
                       ),
                     ),
+                    ControlsWidget(),
                   ],
                 ),
               );

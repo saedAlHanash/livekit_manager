@@ -155,9 +155,7 @@ final goRouter = GoRouter(
 
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => sl<HomeCubit>(),
-            ),
+            BlocProvider(create: (context) => sl<HomeCubit>()),
           ],
           child: HomePage(link: link, token: token),
         );

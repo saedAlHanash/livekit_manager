@@ -34,6 +34,9 @@ class RoomInitial extends AbstractState<Room> {
   List<Participant> get participantTracksWithoutManager =>
       participant.where((e) => e.userType.isUser || e.userType.isSharer).toList(growable: false);
 
+  List<Participant> get students =>
+      participant.where((e) => e.userType.isUser && e is! LocalParticipant).toList(growable: false);
+
   Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
 
   Participant? get selectedParticipant =>

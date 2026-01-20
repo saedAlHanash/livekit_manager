@@ -1,16 +1,10 @@
+import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/core/util/snack_bar_message.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
-import 'package:livekit_manager/features/room/ui/widget/send_message_dialog.dart';
 
-import '../../../../core/widgets/my_button.dart';
-import '../../../../generated/assets.dart';
-import '../../../../generated/l10n.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 
 class ControlsWidget extends StatelessWidget {
@@ -22,88 +16,83 @@ class ControlsWidget extends StatelessWidget {
       builder: (context, cState) {
         return BlocBuilder<RoomCubit, RoomInitial>(
           builder: (context, state) {
-            loggerObject.w(state.result.localParticipant?.isCameraEnabled());
-            return Column(
+            return Row(
               mainAxisSize: MainAxisSize.min,
-              spacing: 12.0,
               children: [
-                Row(
-                  spacing: 5.0,
-                  children: [
-                    Expanded(
-                      child: MyButton(
-                        onTap: context.read<UserControlCubit>().toggleLocalCamera,
-                        text: cState.cameraEnabled ? 'إيقاف الكاميرا' : ' الكاميرا',
-                        color: cState.cameraEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                        iconStart: ImageMultiType(
-                          height: 24.0.dg,
-                          width: 24.0.dg,
-                          url: cState.cameraEnabled ? Icons.videocam_off_outlined : Icons.videocam_outlined,
-                          color: AppColorManager.textColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: MyButton(
-                        onTap: context.read<UserControlCubit>().toggleLocalMic,
-                        text: cState.micEnabled ? 'إيقاف الصوت' : ' الصوت',
-                        color: cState.micEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                        iconStart: ImageMultiType(
-                          height: 24.0.dg,
-                          width: 24.0.dg,
-                          url: cState.micEnabled ? Icons.mic_off : Icons.mic,
-                          color: AppColorManager.textColor,
-                        ),
-                      ),
-                    ),
-                  ],
+                _Item(
+                  onTap: context.read<UserControlCubit>().toggleLocalCamera,
+                  title: cState.cameraEnabled ? 'إيقاف' : 'كاميرا',
+                  color: cState.cameraEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                  icon: cState.cameraEnabled ? Icons.videocam_off_outlined : Icons.videocam_outlined,
                 ),
-                MyButton(
+                12.w.horizontalSpace,
+                _Item(
+                  onTap: context.read<UserControlCubit>().toggleLocalMic,
+                  title: cState.micEnabled ? 'إيقاف' : 'مايك',
+                  color: cState.micEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                  icon: cState.micEnabled ? Icons.mic_off : Icons.mic,
+                ),
+                12.w.horizontalSpace,
+                _Item(
                   onTap: context.read<UserControlCubit>().toggleLocalScreenShare,
-                  text: cState.screenShareEnabled ? 'إيقاف الشاشة' : ' الشاشة',
+                  title: cState.screenShareEnabled ? 'إيقاف' : 'شاشة',
                   color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                  icon: 24.0.dg.horizontalSpace,
-                  iconStart: ImageMultiType(
-                    height: 24.0.dg,
-                    width: 24.0.dg,
-                    url: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
-                    color: AppColorManager.textColor,
-                  ),
+                  icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
                 ),
-                // MyButton(
-                //   onTap: () {
-                //     NoteMessage.showMyDialog(child: SendMessageDialog());
-                //   },
-                //   text: S.of(context).groupMessage,
-                //   color: AppColorManager.appBarColor,
-                //   icon: 24.0.dg.horizontalSpace,
-                //   iconStart: ImageMultiType(
-                //     url: Icons.message,
-                //     height: 24.0.dg,
-                //     width: 24.0.dg,
-                //     color: AppColorManager.textColor,
-                //   ),
-                // ),
-                MyButton(
-                  text: 'إنهاء الجلسة',
-                  textColor: Colors.white,
-                  color: AppColorManager.red,
+                12.w.horizontalSpace,
+                _Item(
                   onTap: () {
                     context.read<RoomCubit>().disconnect();
                   },
-                  icon: 24.0.dg.horizontalSpace,
-                  iconStart: ImageMultiType(
-                    url: Icons.call_end,
-                    color: Colors.white,
-                    height: 24.0.dg,
-                    width: 24.0.dg,
-                  ),
+                  title: 'إنهاء',
+                  color: AppColorManager.red,
+                  icon: Icons.call_end,
                 ),
               ],
             );
           },
         );
       },
+    );
+  }
+}
+
+class _Item extends StatelessWidget {
+  const _Item({
+    super.key,
+    required this.icon,
+    this.title,
+    required this.onTap,
+    required this.color,
+    this.iconColor = Colors.white,
+  });
+
+  final IconData icon;
+  final String? title;
+  final Color color;
+  final Color iconColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Tooltip(
+        message: title,
+        child: Container(
+          width: 45.dg,
+          height: 45.dg,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: 26.dg,
+          ),
+        ),
+      ),
     );
   }
 }
