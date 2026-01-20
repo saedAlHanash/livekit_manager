@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
-import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/local_user.dart';
 
 import '../../../../core/strings/app_color_manager.dart';
-
 import '../../../../core/widgets/my_card_widget.dart';
 
 class LocalMedia extends StatelessWidget {

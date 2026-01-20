@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 
 import '../core/api_manager/api_url.dart';
@@ -137,6 +138,7 @@ final goRouter = GoRouter(
         String link = state.uri.queryParameters['url'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
+        loggerObject.w(state.uri.toString());
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
             MyApp.changeTheme(context, ThemeMode.dark);

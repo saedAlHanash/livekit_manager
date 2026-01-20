@@ -41,6 +41,12 @@ class _HomePageState extends State<HomePage> {
   var t = '';
 
   @override
+  void initState() {
+    t = widget.token;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<RoomCubit, RoomInitial>(
       listener: (context, state) {
