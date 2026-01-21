@@ -1,4 +1,4 @@
-package com.coretech_livekitManager.livekit_manager
+package com.coretech.lkManager
 
 import io.flutter.embedding.android.FlutterActivity
 
