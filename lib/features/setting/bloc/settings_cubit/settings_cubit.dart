@@ -16,6 +16,9 @@ class SettingsCubit extends MCubit<SettingsInitial> {
   SettingsCubit() : super(SettingsInitial.initial());
 
   @override
+  get mState => state;
+
+  @override
   String get nameCache => 'settings';
 
   @override
@@ -24,12 +27,12 @@ class SettingsCubit extends MCubit<SettingsInitial> {
   //region getData
 
   void getDataFromCache() => getFromCache(
-        fromJson: Setting.fromJson,
-        state: state,
-        onSuccess: (data) {
-          emit(state.copyWith(result: data));
-        },
-      );
+    fromJson: Setting.fromJson,
+    state: state,
+    onSuccess: (data) {
+      emit(state.copyWith(result: data));
+    },
+  );
 
   Future<void> getData({bool newData = false}) async {
     await getDataAbstract(

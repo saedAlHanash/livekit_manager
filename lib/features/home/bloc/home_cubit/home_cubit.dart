@@ -12,6 +12,9 @@ class HomeCubit extends MCubit<HomeInitial> {
   HomeCubit() : super(HomeInitial.initial());
 
   @override
+  get mState => state;
+
+  @override
   String get nameCache => 'home';
 
   @override
