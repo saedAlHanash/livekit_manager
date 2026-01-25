@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
 
 import '../../generated/l10n.dart';
+import 'app_color_manager.dart';
 
 enum ApiType { get, post, put, patch, delete }
 
@@ -21,7 +22,8 @@ enum Month {
   september,
   october,
   november,
-  december;
+  december
+  ;
 
   String get name {
     return switch (this) {
@@ -43,14 +45,18 @@ enum Month {
 
 enum MediaType {
   media,
-  screen;
+  screen
+  ;
 
   bool get isMedia => this == MediaType.media;
 
   bool get isScreen => this == MediaType.screen;
 
   IconData get icon {
-    return switch (this) { MediaType.media => Icons.videocam, MediaType.screen => Icons.monitor };
+    return switch (this) {
+      MediaType.media => Icons.videocam,
+      MediaType.screen => Icons.monitor,
+    };
   }
 
   TrackSource get videoSourceType {
@@ -72,7 +78,8 @@ enum ManagerActions {
   requestPermission,
   requestToDisconnect,
   message,
-  changeScreen;
+  changeScreen
+  ;
 
   IconData get icon {
     return switch (this) {
@@ -87,7 +94,8 @@ enum ManagerActions {
 enum LkUserType {
   manager,
   sharer,
-  user;
+  user
+  ;
 
   bool get isManager => this == LkUserType.manager;
 
@@ -99,28 +107,29 @@ enum LkUserType {
 enum PermissionType {
   speak,
   listen,
-  both;
+  both
+  ;
 
   Map<String, dynamic> revokePermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
       PermissionType.speak => {
-          "canSubscribe": participant.permissions.canSubscribe,
-          "canPublish": false,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": participant.permissions.canSubscribe,
+        "canPublish": false,
+        //----------
+        "canPublishData": true,
+      },
       PermissionType.listen => {
-          "canSubscribe": false,
-          "canPublish": participant.permissions.canPublish,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": false,
+        "canPublish": participant.permissions.canPublish,
+        //----------
+        "canPublishData": true,
+      },
       PermissionType.both => {
-          "canSubscribe": false,
-          "canPublish": false,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": false,
+        "canPublish": false,
+        //----------
+        "canPublishData": true,
+      },
     };
     return map..addAll({'identity': participant.identity});
   }
@@ -128,24 +137,85 @@ enum PermissionType {
   Map<String, dynamic> grantPermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
       PermissionType.speak => {
-          "canSubscribe": participant.permissions.canSubscribe,
-          "canPublish": true,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": participant.permissions.canSubscribe,
+        "canPublish": true,
+        //----------
+        "canPublishData": true,
+      },
       PermissionType.listen => {
-          "canSubscribe": true,
-          "canPublish": participant.permissions.canPublish,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": true,
+        "canPublish": participant.permissions.canPublish,
+        //----------
+        "canPublishData": true,
+      },
       PermissionType.both => {
-          "canSubscribe": true,
-          "canPublish": true,
-          //----------
-          "canPublishData": true,
-        },
+        "canSubscribe": true,
+        "canPublish": true,
+        //----------
+        "canPublishData": true,
+      },
     };
     return map..addAll({'identity': participant.identity});
   }
+}
+
+enum UserType {
+  student,
+  staff,
+  schoolmaster,
+  ;
+
+  static UserType getByNameOrIndex(String name) {
+    final index = int.tryParse(name);
+
+    if (index != null) {
+      return UserType.values[index];
+    }
+
+    switch (name.toLowerCase()) {
+      case 'student':
+        return student;
+      case 'staff':
+        return staff;
+      case 'schoolmaster':
+        return schoolmaster;
+    }
+    return student;
+  }
+
+  bool get isStudent => this == UserType.student;
+
+  bool get isStaff => this == UserType.staff;
+}
+
+enum SignalRStatus {
+  connected,
+  reconnecting,
+  notConnected
+  ;
+
+  Color get getColor {
+    switch (this) {
+      case SignalRStatus.connected:
+        return AppColorManager.green;
+      case SignalRStatus.reconnecting:
+        return AppColorManager.ampere;
+      case SignalRStatus.notConnected:
+        return AppColorManager.red;
+    }
+  }
+}
+
+enum SignalStudentStatus { nun, add, remove }
+
+enum SignalMessageType {
+  notification,
+  closedExam,
+  startExam;
+
+  bool get isNotification => this == notification;
+
+  bool get isStartExam => this == startExam;
+
+  bool get isClosedExam => this == closedExam;
 }

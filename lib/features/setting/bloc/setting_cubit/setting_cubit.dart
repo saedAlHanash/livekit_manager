@@ -12,12 +12,14 @@ class SettingCubit extends MCubit<SettingInitial> {
   SettingCubit() : super(SettingInitial.initial());
 
   @override
+  get mState => state;
+  @override
   String get nameCache => 'setting';
 
   @override
   String get filter => state.filter;
 
-  Future<void> getData({bool newData = false,  String? settingId}) async {
+  Future<void> getData({bool newData = false, String? settingId}) async {
     emit(state.copyWith(request: settingId));
 
     await getDataAbstract(
@@ -48,4 +50,3 @@ class SettingCubit extends MCubit<SettingInitial> {
     emit(state.copyWith(result: setting));
   }
 }
- 

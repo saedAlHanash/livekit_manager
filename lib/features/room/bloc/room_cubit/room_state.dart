@@ -13,12 +13,14 @@ class RoomInitial extends AbstractState<Room> {
     required this.participant,
     required this.raiseHands,
     required this.selectedUserId,
+    required this.haveNewNote,
   });
 
   final String url;
 
   final String token;
 
+  final bool haveNewNote;
   int get notifyIndex => id ?? 0;
 
   final EventsListener<RoomEvent> listener;
@@ -34,8 +36,8 @@ class RoomInitial extends AbstractState<Room> {
   List<Participant> get participantTracksWithoutManager =>
       participant.where((e) => e.userType.isUser || e.userType.isSharer).toList(growable: false);
 
-  List<Participant> get students =>
-      participant.where((e) => e.userType.isUser && e is! LocalParticipant).toList(growable: false);
+  List<Participant> get participantWithoutMe =>
+      participant.where((e) => e is! LocalParticipant).toList(growable: false);
 
   Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
 
@@ -58,6 +60,7 @@ class RoomInitial extends AbstractState<Room> {
       raiseHands: [],
       participant: const [],
       selectedUserId: '',
+      haveNewNote: false,
     );
   }
 
@@ -75,6 +78,7 @@ class RoomInitial extends AbstractState<Room> {
         participant,
         raiseHands,
         selectedUserId,
+    haveNewNote,
       ];
 
   List<Participant> get speakers => participant.where((e) => e.permissions.canPublish).toList();
@@ -93,6 +97,7 @@ class RoomInitial extends AbstractState<Room> {
     List<Participant>? participant,
     List<SettingMessage>? raiseHands,
     String? selectedUserId,
+    bool? haveNewNote,
   }) {
     return RoomInitial(
       statuses: statuses ?? this.statuses,
@@ -106,6 +111,7 @@ class RoomInitial extends AbstractState<Room> {
       participant: participant ?? this.participant,
       raiseHands: raiseHands ?? this.raiseHands,
       selectedUserId: selectedUserId ?? this.selectedUserId,
+      haveNewNote: haveNewNote ?? this.haveNewNote,
     );
   }
 }

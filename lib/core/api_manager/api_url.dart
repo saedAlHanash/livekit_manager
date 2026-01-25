@@ -3,7 +3,14 @@ class GetUrl {
   static const room = 'Room/Get';
   static const user = 'user/Get';
   static const home = 'home/Get';
-//
+
+  static const loggedUser = 'Auth/GetLoggedUser';
+
+  static const staffDetails = 'Staff/GetStaffDetails';
+
+  static const staffRecord = 'StaffRecord/Get';
+
+  static String activeSessions = 'Lesson/GetTeacherActiveSessions';
 }
 
 class PostUrl {
@@ -39,6 +46,13 @@ class PostUrl {
   static const kick = 'Index/Kick';
 
   static const sendMessage = 'Index/SendData';
+
+  static const loginUrl = 'Auth/login';
+
+  static const logout = 'Auth/Logout';
+
+  static const staffRecords = 'StaffRecord/GetAll';
+  static const createStaffRecord = 'StaffRecord/Add';
 }
 
 class PutUrl {
@@ -46,7 +60,8 @@ class PutUrl {
   static const updateRoom = 'Room/Update';
   static const updateUser = 'user/Update';
   static const updateHome = 'home/Update';
-//
+  static const updateStaffRecord = 'StaffRecord/Update';
+  //
 }
 
 class DeleteUrl {
@@ -54,7 +69,7 @@ class DeleteUrl {
   static const deleteRoom = 'Room/Delete';
   static const deleteUser = 'user/Delete';
   static const deleteHome = 'home/Delete';
-//
+  //
 }
 
 class PatchUrl {
@@ -68,7 +83,7 @@ const wsLiveTest = 'ws://87.106.161.145:7880';
 const wsLiveUrl = 'wss://coretik.coretech-mena.com';
 
 const localUrl = '192.168.1.69:5002';
-const liveUrl = 'coretik-be.coretech-mena.com';
+const liveUrl = 'ims-be.coretech-mena.com';
 
 String get baseUrl {
   // return localUrl;

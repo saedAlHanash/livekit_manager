@@ -243,57 +243,56 @@ extension MaxInt on num {
   String get percentage => '$this%';
 
   Widget get formatPriceWidget => Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          DrawableText(text: oCcy.format(this), size: 12.0.sp),
-          DrawableText(text: ' SAR', fontWeight: FontWeight.bold, size: 9.0.sp),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      DrawableText(text: oCcy.format(this), size: 12.0.sp),
+      DrawableText(text: ' SAR', fontWeight: FontWeight.bold, size: 9.0.sp),
+    ],
+  );
 
   Widget get counterWidget => Container(
-        height: 40.0.r,
-        width: 40.0.r,
-        margin: EdgeInsetsDirectional.only(end: 10),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColorManager.mainColorDark,
-        ),
-        alignment: Alignment.center,
-        child: DrawableText(
-          text: this == 0 ? '' : toInt().toString().padLeft(2, '0'),
-          // color: AppColorManager.mainColor,
-        ),
-      );
+    height: 40.0.r,
+    width: 40.0.r,
+    margin: EdgeInsetsDirectional.only(end: 10),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: AppColorManager.mainColorDark,
+    ),
+    alignment: Alignment.center,
+    child: DrawableText(
+      text: this == 0 ? '' : toInt().toString().padLeft(2, '0'),
+      // color: AppColorManager.mainColor,
+    ),
+  );
 
   Widget get changePercentageUsd => Container(
-        height: 24,
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        alignment: Alignment.center,
-        decoration: ShapeDecoration(
-          color:
-              this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-        ),
-        child: DrawableText(
-          text: '%${toStringAsFixed(3)}',
-          textAlign: TextAlign.center,
-          color: this < 0 ? AppColorManager.redPrice : AppColorManager.green,
-          // fontWeight: FontWeight.bold,
-        ),
-      );
+    height: 24,
+    padding: const EdgeInsets.symmetric(horizontal: 4),
+    margin: const EdgeInsets.symmetric(horizontal: 4),
+    alignment: Alignment.center,
+    decoration: ShapeDecoration(
+      color: this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+    ),
+    child: DrawableText(
+      text: '%${toStringAsFixed(3)}',
+      textAlign: TextAlign.center,
+      color: this < 0 ? AppColorManager.redPrice : AppColorManager.green,
+      // fontWeight: FontWeight.bold,
+    ),
+  );
 
   Widget get changeAmountUsd => DrawableText(
-        textAlign: TextAlign.center,
-        text: '${this < 0 ? '-' : ''}'
-            '\$${abs().toStringAsFixed(3)}',
-        fontWeight: FontWeight.bold,
-        size: 18.0.sp,
-        color:
-            this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
-      );
+    textAlign: TextAlign.center,
+    text:
+        '${this < 0 ? '-' : ''}'
+        '\$${abs().toStringAsFixed(3)}',
+    fontWeight: FontWeight.bold,
+    size: 18.0.sp,
+    color: this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
+  );
 }
 
 extension NeedUpdateEnumH on NeedUpdateEnum {
@@ -690,6 +689,7 @@ extension GlobalKeyH on GlobalKey {
   }
 }
 
+//region live kit
 extension ParticipantH on Participant {
   RemoteParticipant get remoteParticipant => this as RemoteParticipant;
 
@@ -698,22 +698,44 @@ extension ParticipantH on Participant {
   MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
   RemoteTrackPublication<RemoteVideoTrack>? get remoteVideoPublication {
-    return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+    return remoteParticipant.videoTrackPublications
+        .where((e) => (e.source == type.videoSourceType) && (!e.muted))
+        .firstOrNull;
   }
 
   List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublications {
-    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
+    final list = List<RemoteTrackPublication<RemoteVideoTrack>>.from(
+      remoteParticipant.videoTrackPublications,
+    );
+
+    list.sort((a, b) {
+      if (a.isScreenShare == b.isScreenShare) return 0;
+      if (a.isScreenShare) return -1; // a يطلع قبل
+      return 1; // b يطلع قبل
+    });
+
+    return list;
   }
 
-  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
-      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication => remoteParticipant.audioTrackPublications
+      .where((e) => (e.source == type.audioSourceType) && (!e.muted))
+      .firstOrNull;
 
   LocalTrackPublication<LocalVideoTrack>? get localVideoPublication {
-    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+    return localParticipant.videoTrackPublications
+        .where((e) => (e.source == type.videoSourceType) && (!e.muted))
+        .firstOrNull;
   }
 
-  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
-      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  List<LocalTrackPublication<LocalVideoTrack>> get localVideoPublications {
+    return localParticipant.videoTrackPublications
+        .where((e) => (e.source == type.videoSourceType) && (!e.muted))
+        .toList();
+  }
+
+  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication => localParticipant.audioTrackPublications
+      .where((e) => (e.source == type.audioSourceType) && (!e.muted))
+      .firstOrNull;
 
   String get image => attributes['imageUrl'].toString();
 
@@ -731,9 +753,9 @@ extension ParticipantH on Participant {
   AudioTrack? get activeAudioTrack =>
       (this is LocalParticipant) ? localAudioPublication?.track : remoteAudioPublication?.track;
 
-  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
+  bool get isAnyVideoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
 
-  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+  bool get audioActive => activeAudioTrack != null && !(activeAudioTrack!.muted);
 
   LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
 
@@ -743,7 +765,17 @@ extension ParticipantH on Participant {
     return sid;
   }
 
+  String get statusName {
+    if (permissions.isSuspend) return 'معلق';
+    if (permissions.isSilence) return 'مستمع';
+    if (permissions.isAll) return 'متحدث';
+
+    return 'غير معروف';
+  }
+
   bool get isSuspend => permissions.isSuspend;
+
+  bool get haveActiveTrack => videoTrackPublications.any((e) => e.track?.muted == false) || !isMuted;
 }
 
 extension RemoteParticipantH on RemoteParticipant {
@@ -782,14 +814,14 @@ extension ParticipantPermissionsH on ParticipantPermissions {
 
 extension ConnectionQualityH on ConnectionQuality {
   Widget get icon => ImageMultiType(
-        url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
-        color: {
-          ConnectionQuality.excellent: Colors.green,
-          ConnectionQuality.good: Colors.orange,
-          ConnectionQuality.poor: Colors.red,
-        }[this],
-        height: 16.0.dg,
-      );
+    url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
+    color: {
+      ConnectionQuality.excellent: Colors.green,
+      ConnectionQuality.good: Colors.orange,
+      ConnectionQuality.poor: Colors.red,
+    }[this],
+    height: 16.0.dg,
+  );
 }
 
 extension ConnectionStateH on lk.ConnectionState {
@@ -801,6 +833,8 @@ extension ConnectionStateH on lk.ConnectionState {
 
   bool get isConnected => this == lk.ConnectionState.connected;
 }
+
+//endregion
 
 class FormatDateTime {
   final int months;

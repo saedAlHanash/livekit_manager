@@ -12,10 +12,11 @@ import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
 
 class RemoteUser extends StatefulWidget {
-  const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain});
+  const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain, this.onTab});
 
   final Participant participant;
   final VideoViewFit fit;
+  final Function(Participant participant)? onTab;
 
   @override
   State<RemoteUser> createState() => _RemoteUserState();
@@ -51,43 +52,69 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   Widget build(BuildContext ctx) {
-    return widget.participant.videoActive
-        ? Row(
-            children: [
-              for (var o in widget.participant.remoteVideoPublications)
-                if (o.track != null)
-                  Expanded(
-                    child: VideoTrackRenderer(
-                      renderMode: VideoRenderMode.auto,
-                      fit: widget.fit,
-                      o.track!,
-                    ),
-                  ),
-            ],
-          )
-        : const NoVideoWidget();
-  }
-}
-
-class ListRemoteUser extends StatelessWidget {
-  const ListRemoteUser({super.key, required this.participants, required this.fit});
-
-  final List<Participant> participants;
-  final VideoViewFit fit;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: participants
-          .map(
-            (e) => Expanded(
+    bool isHaveScreenSharing = widget.participant.remoteVideoPublications.any((e) => e.isScreenShare);
+    return widget.participant.isAnyVideoActive
+        ? GestureDetector(
+            onDoubleTap: () => widget.onTab?.call(widget.participant),
+            child: Opacity(
+              opacity: widget.participant.userType != LkUserType.user ? 0.4 : 1,
               child: Container(
-                decoration: BoxDecoration(border: Border.all(color: AppColorManager.mainColor)),
-                child: RemoteUser(participant: e),
+                margin: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  color: AppColorManager.mainColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColorManager.secondColor.withValues(alpha: 0.2),
+                      blurRadius: 5.0,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                clipBehavior: .hardEdge,
+                child: Stack(
+                  children:
+                      widget.participant.remoteVideoPublications.map(
+                        (e) {
+                          if (e.track == null || e.track!.muted) return 0.0.verticalSpace;
+
+                          if ((!e.isScreenShare) && isHaveScreenSharing) {
+                            return Align(
+                              alignment: .topLeft,
+                              child: SafeArea(
+                                child: Container(
+                                  height: 45.0.dg,
+                                  width: 45.0.dg,
+                                  decoration: BoxDecoration(
+                                    shape: .circle,
+                                  ),
+                                  clipBehavior: .hardEdge,
+                                  child: VideoTrackRenderer(renderMode: VideoRenderMode.auto, fit: .cover, e.track!),
+                                ),
+                              ),
+                            );
+                          }
+                          return VideoTrackRenderer(renderMode: VideoRenderMode.auto, fit: widget.fit, e.track!);
+                        },
+                      ).toList()..add(
+                        Align(
+                          alignment: .bottomCenter,
+                          child: Container(
+                            width: 1.0.sw,
+                            color: Colors.black38,
+                            padding: EdgeInsets.all(2.0).r,
+                            child: DrawableText(
+                              textAlign: .center,
+                              size: 12.0.sp,
+                              text: widget.participant.name,
+                            ),
+                          ),
+                        ),
+                      ),
+                ),
               ),
             ),
           )
-          .toList(),
-    );
+        : 0.0.verticalSpace;
   }
 }

@@ -12,12 +12,14 @@ class HomeCubit extends MCubit<HomeInitial> {
   HomeCubit() : super(HomeInitial.initial());
 
   @override
+  get mState => state;
+  @override
   String get nameCache => 'home';
 
   @override
   String get filter => state.filter;
 
-  Future<void> getData({bool newData = false,  String? homeId}) async {
+  Future<void> getData({bool newData = false, String? homeId}) async {
     emit(state.copyWith(request: homeId));
 
     await getDataAbstract(
@@ -48,4 +50,3 @@ class HomeCubit extends MCubit<HomeInitial> {
     emit(state.copyWith(result: home));
   }
 }
- 

@@ -9,11 +9,19 @@ import 'package:livekit_manager/features/user/bloc/user_cubit/user_cubit.dart';
 import 'package:livekit_manager/features/user/bloc/users_cubit/users_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/auth/bloc/logged_user_cubit/logged_user_cubit.dart';
+import '../../features/auth/bloc/login_cubit/login_cubit.dart';
+import '../../features/lesson/bloc/active_session_cubit/active_session_cubit.dart';
 import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import '../../features/staff_record/bloc/staff_details_cubit/staff_details_cubit.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  sl.registerFactory(() => LoginCubit());
+  sl.registerFactory(() => LoggedUserCubit());
+  sl.registerFactory(() => ActiveSessionCubit());
+  sl.registerFactory(() => StaffDetailsCubit());
   //region setting
   sl.registerFactory(() => SettingCubit());
   sl.registerFactory(() => SettingsCubit());

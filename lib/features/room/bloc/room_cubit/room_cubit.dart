@@ -22,6 +22,8 @@ class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
 
   @override
+  get mState => state;
+  @override
   String get nameCache => 'roomNotes';
 
   @override
@@ -46,116 +48,85 @@ class RoomCubit extends MCubit<RoomInitial> {
         emit(state.copyWith(id: state.notifyIndex + 1));
       })
       //re sort list users
-
       // 🔹🔹 أحداث عامة للمشاركين (Participant Events)
       // هذا الحدث عام، يُطلق عند حدوث أي تغيير يخص المشاركين (اتصال، نشر، إلغاء نشر...).
       ..on<ParticipantEvent>((e) {
         // loggerObject.d(e.toString());
         _sortParticipants();
       })
-
       // 🔹🔹 عندما ينشر المستخدم المحلي (أنت) مسار جديد مثل الميكروفون أو الكاميرا.
       ..on<LocalTrackPublishedEvent>((e) => _sortParticipants())
-
       // 🔹🔹 عندما يقوم المستخدم المحلي بإلغاء نشر أحد المسارات الخاصة به (مثلاً أوقف الكاميرا).
       ..on<LocalTrackUnpublishedEvent>((e) => _sortParticipants())
-
       //
       // 🔸 أحداث تتعلق بالـ Tracks (المسارات)
       //
-
       // 🔹 عندما ينشر أحد المشاركين (غيرك) مسارًا جديدًا (كاميرا، ميكروفون...).
       ..on<TrackPublishedEvent>((e) async {})
-
       // 🔹 عندما يقوم أحد المشاركين بإلغاء نشر أحد المسارات الخاصة به.
       ..on<TrackUnpublishedEvent>((e) => (e) {})
-
       // 🔹🔹 عندما يشترك تطبيقك في مسار جديد من مشارك آخر (أصبح بإمكانك رؤيته/سماعه).
       ..on<TrackSubscribedEvent>((e) => _sortParticipants())
-
       // 🔹 إذا فشل الاشتراك في مسار معين بسبب خطأ (صلاحيات، شبكة...).
       // ..on<TrackSubscriptionExceptionEvent>((e) => _sortParticipants())
-
       // 🔹🔹 عندما يتم إلغاء الاشتراك في مسار (بسبب مغادرة المشارك أو أمر يدوي).
       ..on<TrackUnsubscribedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما يتم كتم (mute) أحد المسارات سواء كان محلي أو من مشارك آخر.
       ..on<TrackMutedEvent>((e) {})
-
       // 🔹 عندما يتم إلغاء الكتم (unmute) عن المسار.
       ..on<TrackUnmutedEvent>((e) async {
         await SoundService.play(Assets.soundsNote);
       })
-
       // 🔹 عندما تتغير حالة تدفق البيانات لمسار معين (توقف مؤقت أو استئناف).
       // ..on<TrackStreamStateUpdatedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتغير صلاحيات الاشتراك في المسار (هل يمكن الاشتراك به أم لا).
       ..on<TrackSubscriptionPermissionChangedEvent>((e) {})
-
       // 🔹 عندما يتم تحديث معالجة المسار (مثل فلتر الفيديو أو تحسين الجودة).
       // ..on<TrackProcessorUpdateEvent>((e) => _sortParticipants())
-
       //
       // 🔸 أحداث خاصة بالغرفة (Room Events)
       //
-
       // 🔹 عندما يتم الاتصال بالغرفة بنجاح.
       ..on<RoomConnectedEvent>((e) {})
-
       // 🔹 عندما تبدأ عملية إعادة الاتصال بعد انقطاع مفاجئ.
       ..on<RoomReconnectingEvent>((e) {})
-
       // 🔹 عندما تبدأ محاولة إعادة الاتصال فعليًا (محاولة أولى أو لاحقة).
       // ..on<RoomAttemptReconnectEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتم إعادة الاتصال بالغرفة بنجاح بعد انقطاع.
       ..on<RoomReconnectedEvent>((e) {})
-
       // 🔹 عندما يتم فصل الاتصال بالغرفة نهائيًا أو مغادرتها.
       ..on<RoomDisconnectedEvent>((e) {})
-
       // 🔹 عندما تتغير بيانات الغرفة (metadata) مثل الاسم أو الحالة.
       // ..on<RoomMetadataChangedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتغير حالة التسجيل (Recording) للغرفة.
       // ..on<RoomRecordingStatusChanged>((e) => _sortParticipants())
-
       //
       // 🔸 أحداث خاصة بالمشاركين (Participants)
       //
-
       // 🔹 عندما تتغير الخصائص (Attributes) الخاصة بأحد المشاركين.
       // ..on<ParticipantAttributesChanged>((e) => _sortParticipants())
-
       // 🔹 عندما ينضم مشارك جديد إلى الغرفة.
       ..on<ParticipantConnectedEvent>((e) async {
         await SoundService.play(Assets.soundsAcceptRequest);
       })
-
       // 🔹 عندما يغادر أحد المشاركين الغرفة أو يفقد الاتصال.
       ..on<ParticipantDisconnectedEvent>((e) async {
         await SoundService.play(Assets.soundsDisconnectUser);
       })
-
       // 🔹 عندما يتم تحديث البيانات (metadata) الخاصة بأحد المشاركين.
       // ..on<ParticipantMetadataUpdatedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتغير حالة المشارك (مثلاً من joining إلى active).
       // ..on<ParticipantStateUpdatedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتغير جودة الاتصال لأحد المشاركين (ضعيفة، متوسطة، جيدة).
       // ..on<ParticipantConnectionQualityUpdatedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما تتغير صلاحيات المشارك (مثل السماح بالنشر أو لا).
       ..on<ParticipantPermissionsUpdatedEvent>((e) {})
-
       // 🔹🔹 عندما يغيّر المشارك اسمه المعروض (display name).
       // ..on<ParticipantNameUpdatedEvent>((e) => _sortParticipants())
-
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
+          setHaveNewNote(true);
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             if (!message.toUserType.isManager) return;
@@ -214,7 +185,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     // });
 
     final list = [
-      ...screenTracks, /*...userMediaTracks*/
+      ...screenTracks /*...userMediaTracks*/,
     ];
 
     emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
@@ -261,6 +232,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void raiseHand() {}
+
   Future<void> addOrUpdateToCache(SettingMessage item) async {
     final listJson = await addOrUpdateDate([item]);
     if (listJson == null) return;
@@ -274,6 +246,10 @@ class RoomCubit extends MCubit<RoomInitial> {
     loggerObject.w('id: $id, listJson: $listJson');
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
+  }
+
+  void setHaveNewNote(bool b) {
+    emit(state.copyWith(haveNewNote: b, id: state.notifyIndex + 1));
   }
 
   @override

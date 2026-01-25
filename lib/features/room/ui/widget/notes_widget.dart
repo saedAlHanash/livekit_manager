@@ -16,6 +16,8 @@ import '../../../../core/widgets/my_card_widget.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/request/setting_message.dart';
 
+bool haveNewNote = false;
+
 class NotesWidget extends StatelessWidget {
   const NotesWidget({super.key});
 

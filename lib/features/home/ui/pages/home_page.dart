@@ -14,6 +14,7 @@ import 'package:m_cubit/m_cubit.dart';
 import '../../../../core/api_manager/api_service.dart';
 import '../../../../core/api_manager/api_url.dart';
 import '../../../../core/strings/enum_manager.dart';
+import '../../../../core/util/my_style.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/ui/pages/room_page.dart';
 import '../../../room/ui/pages/teacher_page.dart';
@@ -38,11 +39,12 @@ class _HomePageState extends State<HomePage> {
 
   UserControlCubit get ucCubit => context.read<UserControlCubit>();
 
-  var t = '';
-
   @override
   void initState() {
-    t = widget.token;
+    cubit
+      ..setUrl(widget.link)
+      ..setToken(widget.token)
+      ..connect();
     super.initState();
   }
 
@@ -54,44 +56,9 @@ class _HomePageState extends State<HomePage> {
           ucCubit.setLocalParticipant(state.result.localParticipant);
         }
       },
+
       builder: (context, state) {
-        return state.isConnect
-            ? TeacherPage()
-            : Scaffold(
-                body: Container(
-                  alignment: Alignment.center,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 20,
-                      ),
-                      constraints: BoxConstraints(maxWidth: 500),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          DrawableText(text: state.url),
-                          20.0.verticalSpace,
-                          MyTextFormWidget(onChanged: (value) => t = value),
-                          20.0.verticalSpace,
-                          MyButton(
-                            width: 1.0.sw,
-                            loading: state.loading,
-                            onTap: () {
-                              cubit
-                                ..setUrl(widget.link)
-                                ..setToken(t.isBlank ? widget.token : t)
-                                ..connect();
-                            },
-                            text: 'بدأ الجلسة',
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
+        return state.isConnect ? TeacherPage() : MyStyle.loadingWidget();
       },
     );
   }

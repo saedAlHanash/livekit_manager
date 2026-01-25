@@ -6,8 +6,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 
+import '../../features/auth/bloc/logged_user_cubit/logged_user_cubit.dart';
+import '../../features/auth/bloc/login_cubit/login_cubit.dart';
+import '../../features/lesson/bloc/active_session_cubit/active_session_cubit.dart';
 import '../../features/room/bloc/room_cubit/room_cubit.dart';
 import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import '../../features/staff_record/bloc/staff_details_cubit/staff_details_cubit.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
@@ -73,7 +77,7 @@ class MyAppState extends State<MyApp> {
     setState(() {});
   }
 
-//changeThem
+  //changeThem
   Future<void> changeThem(ThemeMode mode) async {
     await AppSharedPreference.setThemeMode(mode);
     setState(() {});
@@ -106,6 +110,10 @@ class MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(create: (context) => sl<UserControlCubit>()),
+                  BlocProvider(create: (context) => sl<LoggedUserCubit>()),
+                  BlocProvider(create: (context) => sl<LoginCubit>()),
+                  BlocProvider(create: (context) => sl<ActiveSessionCubit>()),
+                  BlocProvider(create: (_) => sl<StaffDetailsCubit>()..getData()),
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
                       ..setUrl(wsLink)

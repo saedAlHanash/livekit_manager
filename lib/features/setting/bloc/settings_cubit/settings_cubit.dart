@@ -16,6 +16,7 @@ class SettingsCubit extends MCubit<SettingsInitial> {
   SettingsCubit() : super(SettingsInitial.initial());
 
   @override
+  get mState => state;   @override
   String get nameCache => 'settings';
 
   @override

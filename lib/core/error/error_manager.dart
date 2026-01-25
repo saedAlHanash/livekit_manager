@@ -4,6 +4,7 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:m_cubit/abstraction.dart';
 
 import '../../generated/l10n.dart';
+import '../app/app_provider.dart';
 import '../app/app_widget.dart';
 import '../util/snack_bar_message.dart';
 
@@ -11,6 +12,7 @@ class ErrorManager {
   static String getApiError(Response response) {
     switch (response.statusCode) {
       case 401:
+        AppProvider.logout();
         return '${S().userLogout} ${response.statusCode}';
 
       case 503:
@@ -55,12 +57,12 @@ class ErrorBody {
   }
 
   Map<String, dynamic> toJson() => {
-        "statusCode": statusCode,
-        "handled": handled,
-        "message": message,
-        "detail": detail,
-        "extensions": extensions?.toJson(),
-      };
+    "statusCode": statusCode,
+    "handled": handled,
+    "message": message,
+    "detail": detail,
+    "extensions": extensions?.toJson(),
+  };
 }
 
 class Extensions {

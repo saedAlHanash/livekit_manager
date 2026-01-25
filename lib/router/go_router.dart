@@ -5,21 +5,28 @@ import 'package:go_router/go_router.dart';
 // import 'package:web/web.dart' as web;
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/app/app_provider.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 
 import '../core/api_manager/api_url.dart';
 import '../core/app/app_widget.dart';
 import '../core/injection/injection_container.dart';
+import '../features/auth/bloc/login_cubit/login_cubit.dart';
+import '../features/auth/ui/pages/login_page.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
 import '../features/home/ui/pages/home_page.dart';
+import '../features/home/ui/pages/home_screen.dart';
 import '../features/home/ui/pages/homes_page.dart';
+import '../features/lesson/bloc/active_session_cubit/active_session_cubit.dart';
 import '../features/room/bloc/room_cubit/room_cubit.dart';
+import '../features/room/ui/pages/teacher_page.dart';
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
 import '../features/setting/ui/pages/setting_page.dart';
 import '../features/setting/ui/pages/settings_page.dart';
 import '../features/splash/ui/spalsh_page.dart';
+import '../features/staff_record/bloc/staff_details_cubit/staff_details_cubit.dart';
 import '../features/user/bloc/user_cubit/user_cubit.dart';
 import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
@@ -39,7 +46,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<SettingCubit>()..getData(settingId: settingId),
+              create: (_) => sl<SettingCubit>()..getData(settingId: settingId),
             ),
           ],
           child: SettingPage(),
@@ -55,7 +62,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<SettingsCubit>()..getData(),
+              create: (_) => sl<SettingsCubit>()..getData(),
             ),
           ],
           child: SettingsPage(),
@@ -71,21 +78,19 @@ final goRouter = GoRouter(
       path: RouteName.room,
       name: RouteName.room,
       builder: (_, state) {
-        String roomId = state.uri.queryParameters['id'] ?? '';
-        final extra = state.extra as List<dynamic>;
-        if (state.extra is! List) {
-          // if (kIsWeb) web.window.history.back();
-        }
-        final room = extra[0] as Room;
-        final listener = extra[1] as EventsListener<RoomEvent>;
+        final link = state.uri.queryParameters['link'] ?? '';
+        final token = state.uri.queryParameters['token'] ?? '';
 
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<RoomCubit>(),
+              create: (_) => sl<RoomCubit>()
+                ..setUrl(link)
+                ..setToken(token)
+                ..connect(),
             ),
           ],
-          child: Container(),
+          child: TeacherPage(),
         );
       },
     ),
@@ -103,7 +108,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<UserCubit>()..getData(userId: userId),
+              create: (_) => sl<UserCubit>()..getData(userId: userId),
             ),
           ],
           child: UserPage(),
@@ -119,7 +124,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<UsersCubit>()..getData(),
+              create: (_) => sl<UsersCubit>()..getData(),
             ),
           ],
           child: UsersPage(),
@@ -134,28 +139,28 @@ final goRouter = GoRouter(
     GoRoute(
       path: RouteName.home,
       name: RouteName.home,
-      builder: (context, state) {
+      builder: (c, state) {
         String link = state.uri.queryParameters['url'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
-        loggerObject.w(state.uri.toString());
+
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
-            MyApp.changeTheme(context, ThemeMode.dark);
+            MyApp.changeTheme(c, ThemeMode.dark);
           } else if (theme == 'light') {
             AppSharedPreference.setThemeMode(ThemeMode.light);
-            MyApp.changeTheme(context, ThemeMode.light);
-            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+            MyApp.changeTheme(c, ThemeMode.light);
+            // View.of(_).platformDispatcher.platformBrightness == Brightness.light;
           }
         } else {
           AppSharedPreference.setThemeMode(ThemeMode.system);
           // AppSharedPreference.setThemeMode(ThemeMode.system);
-          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          // View.of(_).platformDispatcher.platformBrightness == Brightness.light;
         }
 
         return MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => sl<HomeCubit>()),
+            BlocProvider(create: (_) => sl<HomeCubit>()),
           ],
           child: HomePage(link: link, token: token),
         );
@@ -170,10 +175,26 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => sl<HomesCubit>()..getData(),
+              create: (_) => sl<HomesCubit>()..getData(),
             ),
           ],
           child: HomesPage(),
+        );
+      },
+    ),
+
+    ///sessions
+    GoRoute(
+      path: RouteName.sessions,
+      name: RouteName.sessions,
+      builder: (_, state) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => sl<ActiveSessionCubit>()..getData(staffId: AppProvider.getStaff.staffRecordId),
+            ),
+          ],
+          child: HomeScreen(),
         );
       },
     ),
@@ -190,10 +211,34 @@ final goRouter = GoRouter(
     ),
 
     //endregion
+
+    //region auth
+
+    ///login
+    GoRoute(
+      path: RouteName.login,
+      name: RouteName.login,
+      builder: (_, state) {
+        final providers = [
+          BlocProvider(
+            create: (_) => sl<LoginCubit>(),
+          ),
+        ];
+        return MultiBlocProvider(
+          providers: providers,
+          child: const LoginPage(),
+        );
+      },
+    ),
+
+    //endregion
   ],
 );
 
 class RouteName {
+  static const teacherPage = '/TeacherPage';
+  static const sessions = '/sessions';
+  static const login = '/login';
   static const setting = '/setting';
   static const settings = '/settings';
 
@@ -203,8 +248,8 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/home';
   static const homes = '/homes';
 
-  static const splash = '/splash';
+  static const splash = '/';
 }

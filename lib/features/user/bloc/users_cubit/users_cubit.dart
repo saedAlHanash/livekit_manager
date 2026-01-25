@@ -16,6 +16,8 @@ class UsersCubit extends MCubit<UsersInitial> {
   UsersCubit() : super(UsersInitial.initial());
 
   @override
+  get mState => state;
+  @override
   String get nameCache => 'users';
 
   @override
@@ -24,12 +26,12 @@ class UsersCubit extends MCubit<UsersInitial> {
   //region getData
 
   void getDataFromCache() => getFromCache(
-        fromJson: User.fromJson,
-        state: state,
-        onSuccess: (data) {
-          emit(state.copyWith(result: data));
-        },
-      );
+    fromJson: User.fromJson,
+    state: state,
+    onSuccess: (data) {
+      emit(state.copyWith(result: data));
+    },
+  );
 
   Future<void> getData({bool newData = false}) async {
     await getDataAbstract(
