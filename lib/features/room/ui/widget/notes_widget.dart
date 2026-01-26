@@ -141,6 +141,7 @@ class NotesWidget extends StatelessWidget {
                         );
 
                       case ManagerActions.changeScreen:
+                      case ManagerActions.achievement:
                         return 0.0.verticalSpace;
                     }
                   },

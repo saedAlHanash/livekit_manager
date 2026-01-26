@@ -73,7 +73,7 @@ class _TeacherPageState extends State<TeacherPage> {
             leading: Builder(
               builder: (context) {
                 return IconButton(
-                  icon: const Icon(Icons.group), // غيرها كما تريد
+                  icon: const Icon(Icons.group),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -109,11 +109,11 @@ class _TeacherPageState extends State<TeacherPage> {
           ),
           drawer: Drawer(
             backgroundColor: AppColorManager.appBarColor,
-            child: const SpeakersWidget(),
+            child: SafeArea(child: const SpeakersWidget()),
           ),
           endDrawer: Drawer(
             backgroundColor: AppColorManager.appBarColor,
-            child: const NotesWidget(),
+            child: SafeArea(child: const NotesWidget()),
           ),
           body: BlocBuilder<UserControlCubit, UserControlInitial>(
             builder: (context, state) {

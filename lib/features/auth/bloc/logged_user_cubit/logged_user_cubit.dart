@@ -36,6 +36,7 @@ class LoggedUserCubit extends MCubit<LoggedUserInitial> {
   Future<Pair<User?, String?>> _getDataApi() async {
     final response = await APIService().callApi(
       type: ApiType.get,
+      hostName: 'ims-be.coretech-mena.com',
       url: GetUrl.loggedUser,
     );
 

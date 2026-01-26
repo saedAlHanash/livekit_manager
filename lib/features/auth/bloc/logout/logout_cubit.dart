@@ -26,6 +26,7 @@ class LogoutCubit extends Cubit<LogoutInitial> {
   Future<Pair<bool?, String?>> _logoutApi() async {
     final response = await APIService().callApi(
       type: ApiType.post,
+      hostName: 'ims-be.coretech-mena.com',
       url: PostUrl.logout,
     );
 

@@ -47,6 +47,7 @@ class LessonsCubit extends MCubit<LessonsInitial> {
     final response = await APIService().callApi(
       type: ApiType.post,
       url: 'PostUrl.lessons',
+      hostName: 'ims-be.coretech-mena.com',
       body: state.filterRequest?.toJson() ?? {},
     );
 

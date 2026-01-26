@@ -21,19 +21,11 @@ class ItemUserSpeaker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final isSelected = participant.identity == state.selectedParticipant?.identity;
         return InkWell(
           onTap: () {
             context.read<RoomCubit>().selectParticipant(participant.identity);
           },
-          child: Container(
-            child: Stack(
-              alignment: AlignmentGeometry.center,
-              children: [
-                UserImageOrName(participant: participant),
-              ],
-            ),
-          ),
+          child: UserImageOrName(participant: participant),
         );
       },
     );

@@ -23,6 +23,7 @@ class LessonCubit extends MCubit<LessonInitial> {
   Future<void> getData({required String id, bool newData = false}) async {
     await getDataAbstract(
       fromJson: Lesson.fromJson,
+
       state: state,
       getDataApi: () => _getData(id),
       newData: newData,
@@ -33,6 +34,7 @@ class LessonCubit extends MCubit<LessonInitial> {
     final response = await APIService().callApi(
       type: ApiType.get,
       url: 'GetUrl.lesson',
+      hostName: 'ims-be.coretech-mena.com',
       query: {'id': id},
     );
 

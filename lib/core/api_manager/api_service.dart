@@ -75,6 +75,7 @@ class APIService {
     try {
       late final http.Response response;
 
+      loggerObject.d(innerHeader);
       switch (type) {
         case ApiType.get:
           response = await http
@@ -146,9 +147,9 @@ class APIService {
     request.fields.addAll(fixFields(fields));
 
     final stream = await request.send().timeout(
-          const Duration(seconds: 40),
-          onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
-        );
+      const Duration(seconds: 40),
+      onTimeout: () => http.StreamedResponse(Stream.value([]), 481),
+    );
 
     final response = await http.Response.fromStream(stream);
 

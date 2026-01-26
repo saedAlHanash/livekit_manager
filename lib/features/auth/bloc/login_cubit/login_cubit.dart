@@ -35,6 +35,7 @@ class LoginCubit extends Cubit<LoginInitial> {
     final response = await APIService().callApi(
       type: ApiType.post,
       url: PostUrl.loginUrl,
+      hostName: 'ims-be.coretech-mena.com',
       body: state.mRequest.toJson(),
     );
 

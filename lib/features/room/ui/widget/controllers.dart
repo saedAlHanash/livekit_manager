@@ -61,13 +61,13 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   },
                 ),
               PopupMenuItemModel(
-                label: S.of(context).makeMainView,
-                icon: ImageMultiType(url: Icons.screenshot_monitor),
+                label: 'تصفيق للطالب',
+                icon: ImageMultiType(url: Icons.waving_hand),
                 onTap: () {
                   final m = SettingMessage(
-                    toIdentity: context.read<RoomCubit>().state.sharerId,
-                    action: ManagerActions.changeScreen,
-                    toUserType: LkUserType.sharer,
+                    toIdentity: '',
+                    action: ManagerActions.achievement,
+                    toUserType: LkUserType.user,
                     metadata: {
                       'name': participant.name,
                       if (participant.image.isNotEmpty) 'image': participant.image,

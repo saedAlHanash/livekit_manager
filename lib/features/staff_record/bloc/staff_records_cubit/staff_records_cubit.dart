@@ -46,6 +46,7 @@ class StaffRecordsCubit extends MCubit<StaffRecordsInitial> {
     final response = await APIService().callApi(
       type: ApiType.post,
       url: PostUrl.staffRecords,
+      hostName: 'ims-be.coretech-mena.com',
       body: state.filterRequest?.toJson() ?? {},
     );
 

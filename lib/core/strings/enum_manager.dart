@@ -78,6 +78,7 @@ enum ManagerActions {
   requestPermission,
   requestToDisconnect,
   message,
+  achievement,
   changeScreen
   ;
 
@@ -86,6 +87,7 @@ enum ManagerActions {
       ManagerActions.requestPermission => Icons.pan_tool_outlined,
       ManagerActions.requestToDisconnect => Icons.exit_to_app,
       ManagerActions.message => Icons.message,
+      ManagerActions.achievement => Icons.star,
       ManagerActions.changeScreen => Icons.screen_share_outlined,
     };
   }
@@ -211,7 +213,8 @@ enum SignalStudentStatus { nun, add, remove }
 enum SignalMessageType {
   notification,
   closedExam,
-  startExam;
+  startExam
+  ;
 
   bool get isNotification => this == notification;
 

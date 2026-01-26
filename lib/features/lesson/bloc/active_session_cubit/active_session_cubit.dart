@@ -33,6 +33,7 @@ class ActiveSessionCubit extends MCubit<ActiveSessionInitial> {
     final response = await APIService().callApi(
       type: ApiType.get,
       url: GetUrl.activeSessions,
+      hostName: 'ims-be.coretech-mena.com',
       query: {'StaffRecordId': staffId},
     );
 

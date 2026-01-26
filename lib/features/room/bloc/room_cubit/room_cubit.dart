@@ -23,6 +23,7 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   @override
   get mState => state;
+
   @override
   String get nameCache => 'roomNotes';
 
@@ -133,6 +134,8 @@ class RoomCubit extends MCubit<RoomInitial> {
 
             SoundService.play(Assets.soundsNote);
             switch (message.action) {
+              case ManagerActions.achievement:
+                return;
               case ManagerActions.requestPermission:
               case ManagerActions.requestToDisconnect:
               case ManagerActions.message:
@@ -221,10 +224,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   void setUrl(String url) => emit(state.copyWith(url: url));
 
   void setToken(String token) {
-    AppSharedPreference.cashToken(token);
-    emit(
-      state.copyWith(token: token),
-    );
+    emit(state.copyWith(token: token));
   }
 
   void selectParticipant(String participantTrackId) {

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/circle_image_widget.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/remote_user.dart';
@@ -78,32 +79,30 @@ class UserImageOrName extends StatelessWidget {
       ),
       trailing: ControllersDynamic(participant: participant, speaker: true),
     );
-    if (participant == null) {
-      return Container(
-        height: size,
-        width: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColorManager.dividerColor),
-        ),
-        alignment: AlignmentGeometry.center,
-        child: image != null
-            ? ImageMultiType(
-                url: participant!.image,
-                fit: BoxFit.cover,
-                height: size,
-                width: size,
-              )
-            : DrawableText(
-                text: name?.firstCharacter ?? '?',
-                size: 24.0.sp,
-              ),
-      );
-    }
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColorManager.dividerColor),
+      ),
+      alignment: AlignmentGeometry.center,
+      child: image != null
+          ? ImageMultiType(
+              url: participant.image,
+              fit: BoxFit.cover,
+              height: size,
+              width: size,
+            )
+          : DrawableText(
+              text: name?.firstCharacter ?? '?',
+              size: 24.0.sp,
+            ),
+    );
 
-    return (!participant!.image.isBlank)
+    return (!participant.image.isBlank)
         ? ImageMultiType(
-            url: participant!.image,
+            url: participant.image,
             fit: BoxFit.cover,
             height: size,
             width: size,
@@ -113,11 +112,11 @@ class UserImageOrName extends StatelessWidget {
             width: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: participant!.identity.colorFromId),
+              border: Border.all(color: participant.identity.colorFromId),
             ),
             alignment: AlignmentGeometry.center,
             child: DrawableText(
-              text: participant!.displayName.firstCharacter.toUpperCase(),
+              text: participant.displayName.firstCharacter.toUpperCase(),
               size: 24.0.sp,
             ),
           );

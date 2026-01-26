@@ -96,11 +96,10 @@ class Assets {
   static const String imagesSilenceIcon = 'assets/images/silence-icon.png';
   static const String imagesSpeak = 'assets/images/speak.png';
   static const String imagesStudentBehavior = 'assets/images/student_behavior.png';
-  static const String lottiesAiSaed = 'assets/lotties/ai_saed.json';
-  static const String lottiesLoader = 'assets/lotties/loader.json';
-  static const String lottiesLottieMainColorDominant = 'assets/lotties/lottie_main_color_dominant.json';
-  static const String lottiesNoSwaps = 'assets/lotties/no_swaps.json';
+  static const String lottiesClapping = 'assets/lotties/clapping.json';
+  static const String lottiesClapping1 = 'assets/lotties/clapping1.json';
   static const String soundsAcceptRequest = 'assets/sounds/accept_request.mp3';
+  static const String soundsClapping = 'assets/sounds/clapping.mp3';
   static const String soundsDisconnectUser = 'assets/sounds/disconnect_user.mp3';
   static const String soundsNewJoin = 'assets/sounds/new_join.mp3';
   static const String soundsNote = 'assets/sounds/note.mp3';

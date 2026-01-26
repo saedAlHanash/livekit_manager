@@ -50,6 +50,7 @@ class StaffDetailsCubit extends MCubit<StaffDetailsInitial> {
     final response = await APIService().callApi(
       type: ApiType.get,
       url: GetUrl.staffDetails,
+      hostName: 'ims-be.coretech-mena.com',
       query: {'id': AppSharedPreference.getMyId},
     );
 
