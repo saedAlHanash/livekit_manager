@@ -41,84 +41,49 @@ class UserImageOrName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleImageWidget(
-        url: participant.image ?? Assets.iconsSyLogo,
-        size: 35.0.r,
-      ),
-      title: DrawableText(text: participant.name ?? '-'),
-      subtitle: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          spacing: 7.0.w,
-          children: [
-            if (!participant.isMuted)
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isMuted ? Icons.mic : Icons.mic_off,
-                ),
-              ),
-            if (participant.isCameraEnabled())
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isCameraEnabled() ? Icons.videocam_off_outlined : Icons.videocam_outlined,
-                  // color: participant.isMuted ? Colors.red : Colors.green,
-                ),
-              ),
-            if (participant.isScreenShareEnabled())
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isScreenShareEnabled()
-                      ? Icons.stop_screen_share_outlined
-                      : Icons.screen_share_outlined,
-                  // color: participant.isMuted ? Colors.red : Colors.green,
-                ),
-              ),
-          ],
-        ),
-      ),
-      trailing: ControllersDynamic(participant: participant, speaker: true),
-    );
     return Container(
-      height: size,
-      width: size,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColorManager.dividerColor),
+        color: participant.permissions.canPublish ? AppColorManager.secondColor.withValues(alpha: 0.5) : null,
+        borderRadius: BorderRadius.circular(12.0).r,
       ),
-      alignment: AlignmentGeometry.center,
-      child: image != null
-          ? ImageMultiType(
-              url: participant.image,
-              fit: BoxFit.cover,
-              height: size,
-              width: size,
-            )
-          : DrawableText(
-              text: name?.firstCharacter ?? '?',
-              size: 24.0.sp,
-            ),
+      child: ListTile(
+        leading: CircleImageWidget(
+          url: participant.image ?? Assets.iconsSyLogo,
+          size: 35.0.r,
+        ),
+        title: DrawableText(text: participant.name ?? '-'),
+        subtitle: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            spacing: 7.0.w,
+            children: [
+              if (!participant.isMuted)
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isMuted ? Icons.mic : Icons.mic_off,
+                  ),
+                ),
+              if (participant.isCameraEnabled())
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isCameraEnabled() ? Icons.videocam_off_outlined : Icons.videocam_outlined,
+                    // color: participant.isMuted ? Colors.red : Colors.green,
+                  ),
+                ),
+              if (participant.isScreenShareEnabled())
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isScreenShareEnabled()
+                        ? Icons.stop_screen_share_outlined
+                        : Icons.screen_share_outlined,
+                    // color: participant.isMuted ? Colors.red : Colors.green,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        trailing: ControllersDynamic(participant: participant, speaker: true),
+      ),
     );
-
-    return (!participant.image.isBlank)
-        ? ImageMultiType(
-            url: participant.image,
-            fit: BoxFit.cover,
-            height: size,
-            width: size,
-          )
-        : Container(
-            height: size,
-            width: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: participant.identity.colorFromId),
-            ),
-            alignment: AlignmentGeometry.center,
-            child: DrawableText(
-              text: participant.displayName.firstCharacter.toUpperCase(),
-              size: 24.0.sp,
-            ),
-          );
   }
 }

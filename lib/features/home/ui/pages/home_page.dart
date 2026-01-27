@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:livekit_client/src/types/other.dart' as lk;
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../../core/util/my_style.dart';
-import '../../../../generated/assets.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/ui/pages/teacher_page.dart';
 
@@ -51,71 +50,87 @@ class _HomePageState extends State<HomePage> {
           ucCubit.setLocalParticipant(state.result.localParticipant);
         }
       },
-
       builder: (context, state) {
-        return state.isConnect
-            ? TeacherPage()
-            : Scaffold(
-                body: Stack(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: .min,
-                          children: [
-                            DrawableText(
-                              text: 'إما ان الجلسة انتهت او يتم معاودة الاتصال ',
-                              drawableEnd: MyStyle.loadingWidget(),
-                            ),
-                            20.0.verticalSpace,
-                            Row(
-                              spacing: 10.0,
-                              children: [
-                                Expanded(
-                                  child: MyButton(
-                                    onTap: () {
-                                      cubit
-                                        ..setUrl(widget.link)
-                                        ..setToken(widget.token)
-                                        ..connect();
-                                    },
-                                    text: 'معاودة الاتصال اجباريا',
-                                    loading: state.loading,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: MyButton(
-                                    onTap: () {
-                                      context.pop();
-                                    },
-                                    color: Colors.red,
-                                    text: 'إنهاء الاتصال والرجوع',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (show)
-                      Positioned(
-                        bottom: 0,
-                        child: IgnorePointer(
-                          child: Lottie.asset(
-                            Assets.lottiesClapping1,
-                            frameRate: .composition,
-                            filterQuality: .medium,
-                            width: 1.0.sw,
-                            alignment: .bottomCenter,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              );
+        return Scaffold(
+          body: Center(
+            child: Builder(
+              builder: (context) {
+                switch (state.result.connectionState) {
+                  case lk.ConnectionState.disconnected:
+                    if (state.loading) {
+                      return _Connecting();
+                    } else {
+                      return _EndSession();
+                    }
+                  case lk.ConnectionState.connecting:
+                    return _Connecting();
+                  case lk.ConnectionState.reconnecting:
+                    return _ReConnecting();
+                  case lk.ConnectionState.connected:
+                    return TeacherPage();
+                }
+              },
+            ),
+          ),
+        );
       },
+    );
+  }
+}
+
+class _EndSession extends StatelessWidget {
+  const _EndSession({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: .min,
+        children: [
+          DrawableText(
+            text: 'انتهت الجلسة شكرا لكم',
+          ),
+          20.0.verticalSpace,
+          Row(
+            spacing: 10.0,
+            children: [
+              Expanded(
+                child: MyButton(
+                  onTap: () => context.pop(),
+                  text: 'العودة',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReConnecting extends StatelessWidget {
+  const _ReConnecting({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DrawableText(
+      padding: const EdgeInsets.all(8.0),
+      text: 'تتم معاودة الاتصال, يرجى التحلي بالصبر',
+      drawableEnd: MyStyle.loadingWidget(),
+    );
+  }
+}
+
+class _Connecting extends StatelessWidget {
+  const _Connecting({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DrawableText(
+      text: 'يتم الآن الاتصال, لحظات فقط ',
+      padding: const EdgeInsets.all(8.0),
+      drawableEnd: MyStyle.loadingWidget(),
     );
   }
 }

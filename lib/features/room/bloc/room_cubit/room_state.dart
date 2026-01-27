@@ -21,6 +21,7 @@ class RoomInitial extends AbstractState<Room> {
   final String token;
 
   final bool haveNewNote;
+
   int get notifyIndex => id ?? 0;
 
   final EventsListener<RoomEvent> listener;
@@ -30,11 +31,12 @@ class RoomInitial extends AbstractState<Room> {
 
   final String selectedUserId;
 
-  List<Participant> get participantTracksWithoutSelected =>
-      participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
-
-  List<Participant> get participantTracksWithoutManager =>
-      participant.where((e) => e.userType.isUser || e.userType.isSharer).toList(growable: false);
+  List<Participant> get participantTracksWithoutManager => participant
+      .where((e) => e.userType.isUser || e.userType.isSharer)
+      .sorted(
+        (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
+      )
+      .toList(growable: false);
 
   List<Participant> get participantWithoutMe =>
       participant.where((e) => e is! LocalParticipant).toList(growable: false);
@@ -66,20 +68,20 @@ class RoomInitial extends AbstractState<Room> {
 
   @override
   List<Object> get props => [
-        statuses,
-        result,
-        error,
-        if (request != null) request,
-        if (id != null) id,
-        if (filterRequest != null) filterRequest!,
-        listener,
-        url,
-        token,
-        participant,
-        raiseHands,
-        selectedUserId,
+    statuses,
+    result,
+    error,
+    if (request != null) request,
+    if (id != null) id,
+    if (filterRequest != null) filterRequest!,
+    listener,
+    url,
+    token,
+    participant,
+    raiseHands,
+    selectedUserId,
     haveNewNote,
-      ];
+  ];
 
   List<Participant> get speakers => participant.where((e) => e.permissions.canPublish).toList();
 

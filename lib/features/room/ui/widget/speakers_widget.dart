@@ -6,6 +6,7 @@ import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
+import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 
 import '../../../../generated/assets.dart';
 import '../../../../generated/l10n.dart';
@@ -20,6 +21,7 @@ class SpeakersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
+        final list = state.participantTracksWithoutManager;
         return Container(
           decoration: BoxDecoration(
             color: AppColorManager.appBarColor,
@@ -38,10 +40,16 @@ class SpeakersWidget extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   separatorBuilder: (context, index) => 10.0.verticalSpace,
-                  itemCount: state.participantTracksWithoutManager.length,
+                  itemCount: list.length,
                   padding: EdgeInsets.all(15.0),
                   itemBuilder: (context, i) {
-                    return ItemUserSpeaker(participant: state.participantTracksWithoutManager[i]);
+                    final participant = list[i];
+                    return InkWell(
+                      onTap: () {
+                        context.read<RoomCubit>().selectParticipant(participant.identity);
+                      },
+                      child: UserImageOrName(participant: participant),
+                    );
                   },
                 ),
               ),

@@ -119,7 +119,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
 
   PopupMenuItemModel silence() {
     return PopupMenuItemModel(
-      label: participant.permissions.isSilence ? S.of(context).speech : S.of(context).silence,
+      label: participant.permissions.isSilence ? 'إعطاء صلاحيات' : 'سحب صلاحيات',
       icon: ImageMultiType(
         url: participant.permissions.isSilence ? Assets.imagesSpeak : Assets.imagesSilenceIcon,
         color: Colors.white,

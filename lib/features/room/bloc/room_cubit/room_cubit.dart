@@ -197,12 +197,13 @@ class RoomCubit extends MCubit<RoomInitial> {
   Future<void> connect() async {
     try {
       emit(state.copyWith(statuses: CubitStatuses.loading));
+      loggerObject.f(state.result.connectionState);
       await state.result.connect(
         state.url,
         state.token,
         fastConnectOptions: FastConnectOptions(),
       );
-      state.result.connectionState;
+      loggerObject.f(state.result.connectionState);
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
     } catch (e) {
