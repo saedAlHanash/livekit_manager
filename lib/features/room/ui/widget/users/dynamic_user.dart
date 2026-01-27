@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/circle_image_widget.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/remote_user.dart';
@@ -40,43 +41,50 @@ class UserImageOrName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleImageWidget(
-        url: participant.image ?? Assets.iconsSyLogo,
-        size: 35.0.r,
+    loggerObject.w(participant.image);
+    return Container(
+      decoration: BoxDecoration(
+        color: participant.permissions.canPublish ? AppColorManager.secondColor.withValues(alpha: 0.5) : null,
+        borderRadius: BorderRadius.circular(12.0).r,
       ),
-      title: DrawableText(text: participant.name ?? '-'),
-      subtitle: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          spacing: 7.0.w,
-          children: [
-            if (!participant.isMuted)
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isMuted ? Icons.mic : Icons.mic_off,
-                ),
-              ),
-            if (participant.isCameraEnabled())
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isCameraEnabled() ? Icons.videocam_off_outlined : Icons.videocam_outlined,
-                  // color: participant.isMuted ? Colors.red : Colors.green,
-                ),
-              ),
-            if (participant.isScreenShareEnabled())
-              InkWell(
-                child: ImageMultiType(
-                  url: !participant.isScreenShareEnabled()
-                      ? Icons.stop_screen_share_outlined
-                      : Icons.screen_share_outlined,
-                  // color: participant.isMuted ? Colors.red : Colors.green,
-                ),
-              ),
-          ],
+      child: ListTile(
+        leading: CircleImageWidget(
+          url: participant.image,
+          size: 35.0.r,
         ),
+        title: DrawableText(text: participant.name ?? '-'),
+        subtitle: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            spacing: 7.0.w,
+            children: [
+              if (!participant.isMuted)
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isMuted ? Icons.mic : Icons.mic_off,
+                  ),
+                ),
+              if (participant.isCameraEnabled())
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isCameraEnabled() ? Icons.videocam_off_outlined : Icons.videocam_outlined,
+                    // color: participant.isMuted ? Colors.red : Colors.green,
+                  ),
+                ),
+              if (participant.isScreenShareEnabled())
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isScreenShareEnabled()
+                        ? Icons.stop_screen_share_outlined
+                        : Icons.screen_share_outlined,
+                    // color: participant.isMuted ? Colors.red : Colors.green,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        trailing: ControllersDynamic(participant: participant, speaker: true),
       ),
-      trailing: ControllersDynamic(participant: participant, speaker: true),
     );
     if (participant == null) {
       return Container(

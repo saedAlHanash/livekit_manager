@@ -30,7 +30,7 @@ class SpeakersWidget extends StatelessWidget {
             children: [
               10.0.verticalSpace,
               DrawableText(
-                text: S.of(context).speakers,
+                text: 'الطلاب',
                 padding: EdgeInsets.symmetric(horizontal: 20.0).r,
                 matchParent: true,
               ),

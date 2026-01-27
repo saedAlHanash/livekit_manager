@@ -108,7 +108,6 @@ class RoomCubit extends MCubit<RoomInitial> {
       // ..on<ParticipantAttributesChanged>((e) => _sortParticipants())
       // 🔹 عندما ينضم مشارك جديد إلى الغرفة.
       ..on<ParticipantConnectedEvent>((e) async {
-        loggerObject.w(e);
         await SoundService.play(Assets.soundsAcceptRequest);
       })
       // 🔹 عندما يغادر أحد المشاركين الغرفة أو يفقد الاتصال.
@@ -128,12 +127,15 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
+          setHaveNewNote(true);
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             if (!message.toUserType.isManager) return;
 
             SoundService.play(Assets.soundsNote);
             switch (message.action) {
+              case ManagerActions.achievement:
+                return;
               case ManagerActions.requestPermission:
               case ManagerActions.requestToDisconnect:
               case ManagerActions.message:
@@ -195,12 +197,13 @@ class RoomCubit extends MCubit<RoomInitial> {
   Future<void> connect() async {
     try {
       emit(state.copyWith(statuses: CubitStatuses.loading));
+      loggerObject.f(state.result.connectionState);
       await state.result.connect(
         state.url,
         state.token,
         fastConnectOptions: FastConnectOptions(),
       );
-      state.result.connectionState;
+      loggerObject.f(state.result.connectionState);
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
     } catch (e) {
@@ -222,10 +225,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   void setUrl(String url) => emit(state.copyWith(url: url));
 
   void setToken(String token) {
-    AppSharedPreference.cashToken(token);
-    emit(
-      state.copyWith(token: token),
-    );
+    emit(state.copyWith(token: token));
   }
 
   void selectParticipant(String participantTrackId) {
@@ -233,6 +233,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void raiseHand() {}
+
   Future<void> addOrUpdateToCache(SettingMessage item) async {
     final listJson = await addOrUpdateDate([item]);
     if (listJson == null) return;
@@ -246,6 +247,10 @@ class RoomCubit extends MCubit<RoomInitial> {
     loggerObject.w('id: $id, listJson: $listJson');
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
+  }
+
+  void setHaveNewNote(bool b) {
+    emit(state.copyWith(haveNewNote: b, id: state.notifyIndex + 1));
   }
 
   @override

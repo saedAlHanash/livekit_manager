@@ -4,12 +4,12 @@ import 'package:m_cubit/m_cubit.dart';
 import '../app/app_widget.dart';
 
 class AppColorManager {
-  static const mainColor = Color(0xFF1B7683);
-  static const secondColor = Color(0xFF8ACFD8);
-  static const mainColorDark = Color(0xFF092629);
-  static const mainColorDark1 = Color(0xFF103E45);
-  static const mainColorDark2 = Color(0xFF144E57);
-  static const mainColorLight = Color(0xFF1B7683);
+  static const mainColor = Color(0xFF002623);
+  static const mainColorDark = Color(0xFF001513);
+  static const mainColorDark2 = Color(0xFF054239);
+  static const secondColor = Color(0xFF988561);
+  static const mainColor2 = Color(0xFF054239);
+  static const mainColorLight = Color(0xFF428177);
   static const selectColor = Color(0xFFBBE5EB);
   static const green = Color(0xFF079455);
 
@@ -19,7 +19,7 @@ class AppColorManager {
   static const darkColor = Color(0xFF151319);
   static const greenPrice = Color(0xFF479D78);
   static const black = Color(0xFF000000);
-  static const tileColor = Color(0xFF1F1C26);
+  static const tileColor = Color(0xFF031E1B);
 
   static const ampere = Color(0xFFFFC107);
   static const grey = Color(0xFF848484);
