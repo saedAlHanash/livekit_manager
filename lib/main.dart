@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:m_cubit/caching_service/caching_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,10 +28,8 @@ void main() async {
     timeInterval: 60,
   );
 
-  // // if (kIsWeb) {
-  // usePathUrlStrategy();
-  // GoRouter.optionURLReflectsImperativeAPIs = true;
-  // // }
+  usePathUrlStrategy();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
 
   // await FirebaseService.initial();
 
