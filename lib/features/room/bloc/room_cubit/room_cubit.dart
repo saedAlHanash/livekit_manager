@@ -244,7 +244,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   Future<void> deleteFromCache(String id) async {
     final listJson = await deleteDate([id]);
     if (listJson == null) return;
-    loggerObject.w('id: $id, listJson: $listJson');
+
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
   }

@@ -138,7 +138,7 @@ final goRouter = GoRouter(
         String link = state.uri.queryParameters['url'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
-        loggerObject.w(state.uri.toString());
+
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
             MyApp.changeTheme(context, ThemeMode.dark);

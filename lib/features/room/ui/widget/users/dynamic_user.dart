@@ -41,7 +41,7 @@ class UserImageOrName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    loggerObject.w(participant.image);
+
     return Container(
       decoration: BoxDecoration(
         color: participant.permissions.canPublish ? AppColorManager.secondColor.withValues(alpha: 0.5) : null,
