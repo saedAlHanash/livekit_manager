@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:m_cubit/caching_service/caching_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +32,7 @@ void main() async {
   if (kIsWeb) {
     GoRouter.optionURLReflectsImperativeAPIs = true;
   }
+  if (kIsWeb) usePathUrlStrategy();
 
   // await FirebaseService.initial();
 
