@@ -38,28 +38,6 @@ class _HomePageState extends State<HomePage> {
   final _codeC = TextEditingController(text: AppSharedPreference.getToken);
   String token = '';
 
-  Future<bool> getToken() async {
-    if (widget.token.isNotEmpty) {
-      token = widget.token;
-      return true;
-    }
-
-    if (_codeC.text.isEmpty) return false;
-    final r = await APIService().callApi(
-      url: 'Index/GetAccessToken',
-      type: ApiType.post,
-      body: {
-        'code': _codeC.text,
-      },
-    );
-
-    setState(() {
-      token = r.jsonBodyPure['token'] ?? 'NON';
-      AppSharedPreference.cashToken(_codeC.text);
-    });
-    return token != 'NON';
-  }
-
   @override
   void initState() {
     if (widget.token.isNotEmpty) {
@@ -117,39 +95,17 @@ class _HomePageState extends State<HomePage> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                if (widget.token.isEmpty) ...[
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 25),
-                                    child: Row(
-                                      spacing: 10.0,
-                                      children: [
-                                        Expanded(
-                                          flex: 5,
-                                          child: MyTextFormWidget(
-                                            label: S.of(context).code,
-                                            controller: _codeC,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  20.0.verticalSpace,
-                                ],
                                 MyButton(
                                   width: 1.0.sw,
                                   loading: state.loading,
                                   onTap: () async {
-                                    if (!await getToken()) return;
-
                                     cubit
-                                      ..setToken(token)
+                                      ..setToken(widget.token)
                                       ..setUrl(widget.link);
 
                                     await cubit.connect();
                                     if (context.mounted) {
-                                      context
-                                          .read<MyStatusCubit>()
-                                          .fetchMyStatus(state.result.localParticipant?.identity ?? '');
+                                      context.read<MyStatusCubit>().fetchMyStatus(state.result.localParticipant?.identity ?? '');
                                     }
                                   },
                                   text: S.of(context).join,

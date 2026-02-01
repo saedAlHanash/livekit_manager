@@ -67,14 +67,14 @@ const additionalConst = '/api/v1/';
 
 const wsLocalUrl = 'ws://192.168.1.69:7880';
 const wsLiveTest = 'ws://87.106.161.145:7880';
-const wsLiveUrl = 'wss://coretik.coretech-mena.com';
+const wsLiveUrl = 'wss://coretest-4xi5uo5z.livekit.cloud';
 
 const localUrl = '192.168.1.69:5002';
 const liveUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
-  // return localUrl;
-  return liveUrl;
+  return localUrl;
+  // return liveUrl;
 }
 
 String get wsLink {

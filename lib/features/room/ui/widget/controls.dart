@@ -8,16 +8,11 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:livekit_client/livekit_client.dart' as client;
 import 'package:livekit_client/livekit_client.dart';
 import 'package:lk_assistant/core/util/exts.dart';
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
+
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart' as client;
 import 'package:livekit_client/livekit_client.dart';
@@ -28,9 +23,7 @@ import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/util/my_style.dart';
 import '../../../../core/widgets/menu_widget.dart';
 import '../../../../core/widgets/my_button.dart';
-import '../../../../main.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
-import '../../data/request/setting_message.dart';
 
 class ControlsWidget extends StatefulWidget {
   //

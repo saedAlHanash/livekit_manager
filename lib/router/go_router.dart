@@ -9,6 +9,7 @@ import '../core/util/shared_preferences.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
 import '../features/home/ui/pages/home_page.dart';
+import '../features/home/ui/pages/home_page1.dart';
 import '../features/home/ui/pages/homes_page.dart';
 import '../features/room/bloc/room_cubit/room_cubit.dart';
 import '../features/room/bloc/rooms_cubit/rooms_cubit.dart';

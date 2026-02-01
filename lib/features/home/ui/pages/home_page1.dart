@@ -19,8 +19,8 @@ import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/bloc/user_control_cubit/user_control_cubit.dart';
 import '../../../room/ui/pages/room.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
+class HomePage1 extends StatefulWidget {
+  const HomePage1({
     super.key,
     required this.link,
     required this.token,
@@ -30,10 +30,10 @@ class HomePage extends StatefulWidget {
   final String token;
 
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<StatefulWidget> createState() => _HomePage1State();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePage1State extends State<HomePage1> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
   final _tokenCtrl = TextEditingController(text: AppSharedPreference.getToken);
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           "canPublish": true,
           "canPublishData": true,
           "canSubscribe": true,
-          "room": "s1",
+          "room": "s2",
           "roomAdmin": false,
           "roomCreate": true,
           "roomJoin": true,
@@ -141,8 +141,8 @@ class _HomePageState extends State<HomePage> {
                                   loading: state.loading,
                                   onTap: () async {
                                     cubit
-                                      ..setToken(widget.token)
-                                      ..setUrl(widget.link);
+                                      ..setToken(_tokenCtrl.text)
+                                      ..setUrl(wsLink);
                                     await cubit.connect();
 
                                     if (context.mounted) {
@@ -211,3 +211,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
