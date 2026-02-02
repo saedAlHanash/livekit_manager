@@ -71,7 +71,8 @@ class RoomInitial extends AbstractState<Room> {
         selectedUserId,
       ];
 
-  List<Participant> get speakers => participant.where((e) => e.permissions.canPublish).toList();
+  List<Participant> get speakers =>
+      participant.where((e) => e.permissions.canPublish && !e.userType.isManager).toList();
 
   String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 

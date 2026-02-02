@@ -16,11 +16,13 @@ class UserControlCubit extends MCubit<UserControlInitial> {
 
   Future<void> suspend(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
+
     final result = await APIService().callApi(
       url: PostUrl.suspend,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
+
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
