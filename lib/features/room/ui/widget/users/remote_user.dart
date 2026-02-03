@@ -83,7 +83,20 @@ class ListRemoteUser extends StatelessWidget {
             (e) => Expanded(
               child: Container(
                 decoration: BoxDecoration(border: Border.all(color: AppColorManager.mainColor)),
-                child: RemoteUser(participant: e),
+                child: Stack(
+                  children: [
+                    RemoteUser(participant: e),
+                    Align(
+                      alignment: .bottomCenter,
+                      child: Container(
+                        height: 30.0,
+                        color: Colors.black54,
+                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        child: Center(child: DrawableText(text: e.displayName)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
