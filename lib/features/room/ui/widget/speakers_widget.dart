@@ -11,44 +11,55 @@ import '../../../../generated/assets.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../services/sounds_service.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../../bloc/user_control_cubit/user_control_cubit.dart';
 import 'item_user.dart';
 
-class SpeakersWidget extends StatelessWidget {
+class SpeakersWidget extends StatefulWidget {
   const SpeakersWidget({super.key});
 
   @override
+  State<SpeakersWidget> createState() => _SpeakersWidgetState();
+}
+
+class _SpeakersWidgetState extends State<SpeakersWidget> {
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
-      builder: (context, state) {
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColorManager.appBarColor,
-            borderRadius: BorderRadius.circular(12.0).r,
-          ),
-          margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0).r,
-          child: Column(
-            children: [
-              10.0.verticalSpace,
-              DrawableText(
-                text: 'الطلاب',
-                padding: EdgeInsets.symmetric(horizontal: 20.0).r,
-                matchParent: true,
-              ),
-              Divider(),
-              Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => 10.0.verticalSpace,
-                  itemCount: state.participantTracksWithoutManager.length,
-                  padding: EdgeInsets.all(15.0),
-                  itemBuilder: (context, i) {
-                    return ItemUserSpeaker(participant: state.participantTracksWithoutManager[i]);
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
+    return BlocListener<UserControlCubit, UserControlInitial>(
+      listener: (context, state) {
+        setState(() {});
       },
+      child: BlocBuilder<RoomCubit, RoomInitial>(
+        builder: (context, state) {
+          return Container(
+            decoration: BoxDecoration(
+              color: AppColorManager.appBarColor,
+              borderRadius: BorderRadius.circular(12.0).r,
+            ),
+            margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0).r,
+            child: Column(
+              children: [
+                10.0.verticalSpace,
+                DrawableText(
+                  text: 'الطلاب',
+                  padding: EdgeInsets.symmetric(horizontal: 20.0).r,
+                  matchParent: true,
+                ),
+                Divider(),
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => 10.0.verticalSpace,
+                    itemCount: state.participantTracksWithoutManager.length,
+                    padding: EdgeInsets.all(15.0),
+                    itemBuilder: (context, i) {
+                      return ItemUserSpeaker(participant: state.participantTracksWithoutManager[i]);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

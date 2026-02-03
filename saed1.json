@@ -5,7 +5,7 @@
     "canPublish": true,
     "canPublishData": true,
     "canSubscribe": true,
-    "room": "call-room",
+    "room": "s1",
     "roomAdmin": true,
     "roomCreate": true,
     "roomJoin": true,

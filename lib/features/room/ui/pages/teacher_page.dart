@@ -76,7 +76,7 @@ class _TeacherPageState extends State<TeacherPage> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -91,4 +91,5 @@ class _TeacherPageState extends State<TeacherPage> {
     );
   }
 }
+
 //audiences
