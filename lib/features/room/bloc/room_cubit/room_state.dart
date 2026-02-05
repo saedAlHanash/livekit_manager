@@ -34,10 +34,10 @@ class RoomInitial extends AbstractState<Room> {
   List<Participant> get participantTracksWithoutSelected =>
       participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
 
-  List<Participant> get participantTracksWithoutManager => participant
-      .where((e) => e.userType.isUser || e.userType.isSharer)
+  List<Participant> get participantTracksWithoutMe => participant
+      .where((e) => e.identity != result.localParticipant?.identity)
       .sorted(
-        (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
+        (a, b) => (b.userType.isUser ? 0 : 1) - (a.userType.isUser ? 0 : 1),
       )
       .toList(growable: false);
 
@@ -47,7 +47,8 @@ class RoomInitial extends AbstractState<Room> {
   Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
 
   Participant? get selectedParticipant =>
-      participant.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participant.firstOrNull;
+      participantTracksWithoutMe.firstWhereOrNull((e) => e.identity == selectedUserId) ??
+      participantTracksWithoutMe.firstOrNull;
 
   ConnectionState get connectionState => result.connectionState;
 

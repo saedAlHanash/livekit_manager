@@ -108,6 +108,7 @@ class NotesWidget extends StatelessWidget {
                               : UserImageOrName(
                                   participant: p,
                                   image: item.image,
+                                  isSelected: false,
                                   name: item.name,
                                   size: 30.0.r,
                                 ),
@@ -127,6 +128,7 @@ class NotesWidget extends StatelessWidget {
                                   image: item.image,
                                   name: item.name,
                                   size: 30.0.r,
+                                  isSelected: false,
                                 ),
                           title: DrawableText(text: item.name),
                           subtitle: DrawableText(text: item.message),

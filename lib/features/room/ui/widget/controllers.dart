@@ -33,70 +33,15 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
       buildWhen: (p, c) => c.id == participant.identity,
       builder: (context, state) {
         return DynamicPopupMenu(
-          icon: widget.speaker ? Icons.more_vert_rounded : Icons.menu,
+          icon: widget.speaker ? Icons.more_vert_rounded : Icons.more_vert_rounded,
           items: [
-            if (widget.speaker) ...[
-              if (!(participant.isMuted))
-                PopupMenuItemModel(
-                  label: S.of(context).mute,
-                  icon: Icons.mic_off,
-                  onTap: () {
-                    context.read<UserControlCubit>().mute(participant.identity);
-                  },
-                ),
-              if (participant.isCameraEnabled())
-                PopupMenuItemModel(
-                  label: S.of(context).stopCamera,
-                  icon: Icons.videocam_off_outlined,
-                  onTap: () {
-                    context.read<UserControlCubit>().stopCamera(participant.identity);
-                  },
-                ),
-              if (participant.isScreenShareEnabled())
-                PopupMenuItemModel(
-                  label: S.of(context).stopShareScreen,
-                  icon: Icons.stop_screen_share_outlined,
-                  onTap: () {
-                    context.read<UserControlCubit>().stopScreenShare(participant.identity);
-                  },
-                ),
-              PopupMenuItemModel(
-                label: 'تصفيق للطالب',
-                icon: ImageMultiType(url: Icons.waving_hand),
-                onTap: () {
-                  final m = SettingMessage(
-                    toIdentity: '',
-                    action: ManagerActions.achievement,
-                    toUserType: LkUserType.user,
-                    metadata: {
-                      'name': participant.name,
-                      if (participant.image.isNotEmpty) 'image': participant.image,
-                      'id': participant.identity,
-                    },
-                  );
-
-                  context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
-                },
-              ),
-              silence(),
-              suspend(),
-            ] else ...[
-              if (!participant.permissions.isSuspend) silence(),
-              PopupMenuItemModel(
-                label: S.of(context).disconnect,
-                icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
-                onTap: () {
-                  context.read<UserControlCubit>().kick(participant.identity);
-                },
-              ),
-              PopupMenuItemModel(
-                onTap: () {
-                  context.read<UserControlCubit>().kick(participant.identity, block: true);
-                },
-                label: S.of(context).disconnectAndBan,
-                icon: ImageMultiType(url: Icons.block, color: Colors.red),
-              ),
-            ],
+            PopupMenuItemModel(
+              label: participant.isAudioEnabled ? 'إيقاف الاستماع' : 'تشغيل الاستماع',
+              icon: ImageMultiType(url: participant.isAudioEnabled ? Icons.volume_off : Icons.volume_up),
+              onTap: () {
+                context.read<UserControlCubit>().toggleRemoteUserAudio([participant]);
+              },
+            ),
           ],
         );
       },

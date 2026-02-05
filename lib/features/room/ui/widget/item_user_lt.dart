@@ -30,6 +30,7 @@ class ItemUserRemoteLT extends StatelessWidget {
             child: UserImageOrName(
               participant: participant,
               size: 40.0.dg,
+              isSelected: false,
             ),
           ),
           title: DrawableText(text: participant.displayName, selectable: true),

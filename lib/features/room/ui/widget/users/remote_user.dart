@@ -104,3 +104,39 @@ class ListRemoteUser extends StatelessWidget {
     );
   }
 }
+
+class SelectedRemoteUser extends StatelessWidget {
+  const SelectedRemoteUser({super.key, required this.participant});
+
+  final Participant<TrackPublication<Track>>? participant;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [participant].map(
+        (e) {
+          if (e == null) return 0.0.verticalSpace;
+          return Expanded(
+            child: Container(
+              decoration: BoxDecoration(border: Border.all(color: AppColorManager.mainColor)),
+              child: Stack(
+                children: [
+                  RemoteUser(participant: e),
+                  Align(
+                    alignment: .bottomCenter,
+                    child: Container(
+                      height: 30.0,
+                      color: Colors.black54,
+                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                      child: Center(child: DrawableText(text: e.displayName)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+}

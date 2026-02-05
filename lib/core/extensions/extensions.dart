@@ -243,57 +243,56 @@ extension MaxInt on num {
   String get percentage => '$this%';
 
   Widget get formatPriceWidget => Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          DrawableText(text: oCcy.format(this), size: 12.0.sp),
-          DrawableText(text: ' SAR', fontWeight: FontWeight.bold, size: 9.0.sp),
-        ],
-      );
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      DrawableText(text: oCcy.format(this), size: 12.0.sp),
+      DrawableText(text: ' SAR', fontWeight: FontWeight.bold, size: 9.0.sp),
+    ],
+  );
 
   Widget get counterWidget => Container(
-        height: 40.0.r,
-        width: 40.0.r,
-        margin: EdgeInsetsDirectional.only(end: 10),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColorManager.mainColorDark,
-        ),
-        alignment: Alignment.center,
-        child: DrawableText(
-          text: this == 0 ? '' : toInt().toString().padLeft(2, '0'),
-          // color: AppColorManager.mainColor,
-        ),
-      );
+    height: 40.0.r,
+    width: 40.0.r,
+    margin: EdgeInsetsDirectional.only(end: 10),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: AppColorManager.mainColorDark,
+    ),
+    alignment: Alignment.center,
+    child: DrawableText(
+      text: this == 0 ? '' : toInt().toString().padLeft(2, '0'),
+      // color: AppColorManager.mainColor,
+    ),
+  );
 
   Widget get changePercentageUsd => Container(
-        height: 24,
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        alignment: Alignment.center,
-        decoration: ShapeDecoration(
-          color:
-              this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-        ),
-        child: DrawableText(
-          text: '%${toStringAsFixed(3)}',
-          textAlign: TextAlign.center,
-          color: this < 0 ? AppColorManager.redPrice : AppColorManager.green,
-          // fontWeight: FontWeight.bold,
-        ),
-      );
+    height: 24,
+    padding: const EdgeInsets.symmetric(horizontal: 4),
+    margin: const EdgeInsets.symmetric(horizontal: 4),
+    alignment: Alignment.center,
+    decoration: ShapeDecoration(
+      color: this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+    ),
+    child: DrawableText(
+      text: '%${toStringAsFixed(3)}',
+      textAlign: TextAlign.center,
+      color: this < 0 ? AppColorManager.redPrice : AppColorManager.green,
+      // fontWeight: FontWeight.bold,
+    ),
+  );
 
   Widget get changeAmountUsd => DrawableText(
-        textAlign: TextAlign.center,
-        text: '${this < 0 ? '-' : ''}'
-            '\$${abs().toStringAsFixed(3)}',
-        fontWeight: FontWeight.bold,
-        size: 18.0.sp,
-        color:
-            this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
-      );
+    textAlign: TextAlign.center,
+    text:
+        '${this < 0 ? '-' : ''}'
+        '\$${abs().toStringAsFixed(3)}',
+    fontWeight: FontWeight.bold,
+    size: 18.0.sp,
+    color: this < 0 ? AppColorManager.redPrice.withValues(alpha: 0.5) : AppColorManager.green.withValues(alpha: 0.5),
+  );
 }
 
 extension NeedUpdateEnumH on NeedUpdateEnum {
@@ -735,7 +734,8 @@ extension ParticipantH on Participant {
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
-  LkUserType get userType => LkUserType.values[(attributes['lkUserType'] ?? 0).toString().tryParseOrZeroInt];
+  LkUserType get userType =>
+      LkUserType.values[(attributes['lkUserType'] ?? attributes['type'] ?? 0).toString().tryParseOrZeroInt];
 
   String get displayName {
     if (name.isNotEmpty) return name;
@@ -744,6 +744,10 @@ extension ParticipantH on Participant {
   }
 
   bool get isSuspend => permissions.isSuspend;
+
+  bool get isAudioEnabled => (this is lk.RemoteParticipant)
+      ? (this as lk.RemoteParticipant).isAudioEnabled
+      : (this as lk.LocalParticipant).isAudioEnabled;
 }
 
 extension RemoteParticipantH on RemoteParticipant {
@@ -752,9 +756,13 @@ extension RemoteParticipantH on RemoteParticipant {
   RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
 
   RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+
+  bool get isAudioEnabled => audioTrackPublications.any((e) => e.enabled);
 }
 
 extension LocalParticipantH on LocalParticipant {
+  bool get isAudioEnabled => audioTrackPublications.any((e) => !e.muted);
+
   LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
 
   LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
@@ -782,14 +790,14 @@ extension ParticipantPermissionsH on ParticipantPermissions {
 
 extension ConnectionQualityH on ConnectionQuality {
   Widget get icon => ImageMultiType(
-        url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
-        color: {
-          ConnectionQuality.excellent: Colors.green,
-          ConnectionQuality.good: Colors.orange,
-          ConnectionQuality.poor: Colors.red,
-        }[this],
-        height: 16.0.dg,
-      );
+    url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
+    color: {
+      ConnectionQuality.excellent: Colors.green,
+      ConnectionQuality.good: Colors.orange,
+      ConnectionQuality.poor: Colors.red,
+    }[this],
+    height: 16.0.dg,
+  );
 }
 
 extension ConnectionStateH on lk.ConnectionState {

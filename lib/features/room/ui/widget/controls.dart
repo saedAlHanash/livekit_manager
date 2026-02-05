@@ -19,26 +19,28 @@ class ControlsWidget extends StatelessWidget {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _Item(
-                  onTap: context.read<UserControlCubit>().toggleLocalCamera,
-                  title: cState.cameraEnabled ? 'إيقاف' : 'كاميرا',
-                  color: cState.cameraEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                  icon: cState.cameraEnabled ? Icons.videocam_off_outlined : Icons.videocam_outlined,
-                ),
-                12.w.horizontalSpace,
-                _Item(
-                  onTap: context.read<UserControlCubit>().toggleLocalMic,
-                  title: cState.micEnabled ? 'إيقاف' : 'مايك',
-                  color: cState.micEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                  icon: cState.micEnabled ? Icons.mic_off : Icons.mic,
-                ),
-                12.w.horizontalSpace,
-                _Item(
-                  onTap: context.read<UserControlCubit>().toggleLocalScreenShare,
-                  title: cState.screenShareEnabled ? 'إيقاف' : 'شاشة',
-                  color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
-                  icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
-                ),
+                if (state.result.localParticipant?.permissions.hidden != true) ...[
+                  _Item(
+                    onTap: context.read<UserControlCubit>().toggleLocalCamera,
+                    title: cState.cameraEnabled ? 'إيقاف' : 'كاميرا',
+                    color: cState.cameraEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                    icon: cState.cameraEnabled ? Icons.videocam_off_outlined : Icons.videocam_outlined,
+                  ),
+                  12.w.horizontalSpace,
+                  _Item(
+                    onTap: context.read<UserControlCubit>().toggleLocalMic,
+                    title: cState.micEnabled ? 'إيقاف' : 'مايك',
+                    color: cState.micEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                    icon: cState.micEnabled ? Icons.mic_off : Icons.mic,
+                  ),
+                  12.w.horizontalSpace,
+                  _Item(
+                    onTap: context.read<UserControlCubit>().toggleLocalScreenShare,
+                    title: cState.screenShareEnabled ? 'إيقاف' : 'شاشة',
+                    color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                    icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
+                  ),
+                ],
                 12.w.horizontalSpace,
                 _Item(
                   onTap: () {

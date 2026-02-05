@@ -46,36 +46,7 @@ class _TeacherPageState extends State<TeacherPage> {
                           Expanded(child: SpeakersWidget()),
                           Expanded(
                             flex: 3,
-                            child: Column(
-                              children: [
-                                if (state.selectedParticipant != null)
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      width: 1.0.sw,
-                                      decoration: BoxDecoration(
-                                        color: AppColorManager.appBarColor,
-                                        borderRadius: BorderRadius.circular(12.0).r,
-                                      ),
-                                      child: ListRemoteUser(participants: state.students, fit: VideoViewFit.cover),
-                                    ),
-                                  ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 10,
-                                        child: NotesWidget(),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: LocalMedia(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: SelectedRemoteUser(participant: state.selectedParticipant),
                           ),
                         ],
                       ),
