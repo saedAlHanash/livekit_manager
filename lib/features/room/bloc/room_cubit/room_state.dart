@@ -34,10 +34,13 @@ class RoomInitial extends AbstractState<Room> {
   List<Participant> get participantTracksWithoutSelected =>
       participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
 
-  List<Participant> get participantTracksWithoutManager => participant
-      .where((e) => e.userType.isUser || e.userType.isSharer)
+  List<Participant> get participantTracksWithoutMe => participant
+      .where((e) => e.identity != result.localParticipant?.identity)
       .sorted(
         (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
+      )
+      .sorted(
+        (a, b) => ((!b.userType.isUser) ? 1 : 0) - ((!b.userType.isUser) ? 1 : 0),
       )
       .toList(growable: false);
 

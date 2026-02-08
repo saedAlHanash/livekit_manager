@@ -292,4 +292,35 @@ class UserControlCubit extends MCubit<UserControlInitial> {
 
     await state.localParticipant?.setScreenShareEnabled(true, captureScreenAudio: true);
   }
+
+  Future<void> unsubscribeRemoteUserAudio(Participant participant) async {
+    if (participant is! RemoteParticipant) return;
+    for (var publication in participant.audioTrackPublications) {
+      await publication.disable();
+    }
+  }
+
+  Future<void> subscribeRemoteUserAudio(Participant participant) async {
+    if (participant is! RemoteParticipant) return;
+    for (var publication in participant.audioTrackPublications) {
+      await publication.enable();
+    }
+  }
+
+  Future<void> toggleRemoteUserAudio(List<Participant> participants) async {
+    if (participants.isEmpty) return;
+
+    final isAudioEnabled = participants.any((element) => element.isAudioEnabled);
+
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+
+    for (var p in participants) {
+      if (isAudioEnabled) {
+        await unsubscribeRemoteUserAudio(p);
+      } else {
+        await subscribeRemoteUserAudio(p);
+      }
+    }
+    emit(state.copyWith(statuses: CubitStatuses.done));
+  }
 }

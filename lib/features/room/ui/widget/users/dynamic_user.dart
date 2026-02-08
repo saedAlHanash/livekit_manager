@@ -32,25 +32,50 @@ class DynamicUser extends StatelessWidget {
 }
 
 class UserImageOrName extends StatelessWidget {
-  const UserImageOrName({super.key, required this.participant, this.size = 60.0, this.image, this.name});
+  const UserImageOrName({
+    super.key,
+    required this.participant,
+    this.size = 60.0,
+    this.image,
+    this.name,
+    this.isSelected = false,
+    this.onTap,
+  });
 
   final Participant participant;
   final String? image;
   final String? name;
   final double size;
+  final bool isSelected;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
-        color: participant.permissions.canPublish ? AppColorManager.secondColor.withValues(alpha: 0.5) : null,
+        color: isSelected ? AppColorManager.secondColor.withValues(alpha: 0.5) : null,
         borderRadius: BorderRadius.circular(12.0).r,
       ),
       child: ListTile(
-        leading: CircleImageWidget(
-          url: participant.image,
-          size: 35.0.r,
+        onTap: onTap,
+        leading: SizedBox(
+          height: 50.0.r,
+          width: 50.0.r,
+          child: Stack(
+            children: [
+              Center(
+                child: CircleImageWidget(
+                  url: participant.image,
+                  size: 35.0.r,
+                ),
+              ),
+              if (!participant.userType.isUser)
+                Align(
+                  alignment: .topRight,
+                  child: ImageMultiType(url: Icons.star, color: AppColorManager.ampere, width: 15.0.r),
+                ),
+            ],
+          ),
         ),
         title: DrawableText(text: participant.name ?? '-'),
         subtitle: Padding(
@@ -80,54 +105,19 @@ class UserImageOrName extends StatelessWidget {
                     // color: participant.isMuted ? Colors.red : Colors.green,
                   ),
                 ),
+              Spacer(),
+              if (!participant.isAudioEnabled)
+                InkWell(
+                  child: ImageMultiType(
+                    url: !participant.isAudioEnabled ? Icons.volume_off : Icons.volume_up,
+                    color: AppColorManager.ampere,
+                  ),
+                ),
             ],
           ),
         ),
         trailing: ControllersDynamic(participant: participant, speaker: true),
       ),
     );
-    if (participant == null) {
-      return Container(
-        height: size,
-        width: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColorManager.dividerColor),
-        ),
-        alignment: AlignmentGeometry.center,
-        child: image != null
-            ? ImageMultiType(
-                url: participant!.image,
-                fit: BoxFit.cover,
-                height: size,
-                width: size,
-              )
-            : DrawableText(
-                text: name?.firstCharacter ?? '?',
-                size: 24.0.sp,
-              ),
-      );
-    }
-
-    return (!participant!.image.isBlank)
-        ? ImageMultiType(
-            url: participant!.image,
-            fit: BoxFit.cover,
-            height: size,
-            width: size,
-          )
-        : Container(
-            height: size,
-            width: size,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: participant!.identity.colorFromId),
-            ),
-            alignment: AlignmentGeometry.center,
-            child: DrawableText(
-              text: participant!.displayName.firstCharacter.toUpperCase(),
-              size: 24.0.sp,
-            ),
-          );
   }
 }
