@@ -57,7 +57,26 @@ class RoomInitial extends AbstractState<Room> {
   bool get isConnect => result.connectionState == ConnectionState.connected;
 
   factory RoomInitial.initial() {
-    final room = Room();
+    final room = Room(
+      roomOptions: RoomOptions(
+        // Enable adaptive streaming for better performance
+        adaptiveStream: true,
+        // Enable dynacast for automatic quality adjustment
+        dynacast: true,
+        // Video publishing options with simulcast
+        defaultVideoPublishOptions: const VideoPublishOptions(
+          simulcast: true,
+          videoEncoding: VideoEncoding(
+            maxBitrate: 1500000, // 1.5 Mbps
+            maxFramerate: 30,
+          ),
+        ),
+        // Audio publishing options
+        defaultAudioPublishOptions: const AudioPublishOptions(
+          audioBitrate: 64000, // 64 kbps
+        ),
+      ),
+    );
     return RoomInitial(
       id: 0,
       result: room,

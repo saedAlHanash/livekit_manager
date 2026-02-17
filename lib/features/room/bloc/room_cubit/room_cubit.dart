@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -20,6 +21,8 @@ part 'room_state.dart';
 
 class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
+
+  Timer? _sortDebounceTimer;
 
   @override
   get mState => state;
@@ -44,7 +47,7 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void setListeners() {
     state.listener
-      //end call
+      // Room disconnection
       ..on<RoomDisconnectedEvent>((e) {
         emit(state.copyWith(id: state.notifyIndex + 1));
       })
@@ -150,48 +153,33 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void _sortParticipants() {
-    // List<Participant> userMediaTracks = [];
-    List<Participant> screenTracks = [];
+    // Cancel previous debounce timer
+    _sortDebounceTimer?.cancel();
 
-    for (var participant in state.result.remoteParticipants.values) {
-      screenTracks.add(participant);
-    }
+    // Debounce for 100ms to prevent excessive rebuilds
+    _sortDebounceTimer = Timer(const Duration(milliseconds: 100), () {
+      List<Participant> screenTracks = [];
 
-    if (state.result.localParticipant != null) {
-      screenTracks.add(state.result.localParticipant!);
-    }
-    screenTracks.sort(
-      (a, b) {
-        if (a.permissions.isSuspend != b.permissions.isSuspend) {
-          return a.permissions.isSuspend ? 1 : -1;
-        }
-        return 0;
-      },
-    );
+      for (var participant in state.result.remoteParticipants.values) {
+        screenTracks.add(participant);
+      }
 
-    // userMediaTracks.sort((a, b) {
-    //   if (a.isSpeaking && b.isSpeaking) {
-    //     return (a.audioLevel > b.audioLevel) ? -1 : 1;
-    //   }
-    //
-    //   // last spoken at
-    //   final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-    //   final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-    //
-    //   if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
-    //
-    //   // video on
-    //   if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
-    //
-    //   // joinedAt
-    //   return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
-    // });
+      if (state.result.localParticipant != null) {
+        screenTracks.add(state.result.localParticipant!);
+      }
 
-    final list = [
-      ...screenTracks /*...userMediaTracks*/,
-    ];
+      screenTracks.sort(
+        (a, b) {
+          if (a.permissions.isSuspend != b.permissions.isSuspend) {
+            return a.permissions.isSuspend ? 1 : -1;
+          }
+          return 0;
+        },
+      );
 
-    emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
+      final list = [...screenTracks];
+      emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
+    });
   }
 
   Future<void> connect() async {
@@ -201,7 +189,11 @@ class RoomCubit extends MCubit<RoomInitial> {
       await state.result.connect(
         state.url,
         state.token,
-        fastConnectOptions: FastConnectOptions(),
+
+        fastConnectOptions: FastConnectOptions(
+          microphone: TrackOption(enabled: false),
+          camera: TrackOption(enabled: false),
+        ),
       );
       loggerObject.f(state.result.connectionState);
       getDataFromCache();
@@ -256,6 +248,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   @override
   Future<void> close() {
     (() async {
+      _sortDebounceTimer?.cancel();
       state.result.removeListener(_sortParticipants);
       await state.listener.dispose();
       await state.result.dispose();

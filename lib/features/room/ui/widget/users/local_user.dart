@@ -33,10 +33,14 @@ class _LocalUserState extends State<LocalUser> {
 
   @override
   void didUpdateWidget(covariant LocalUser oldWidget) {
-    oldWidget.participant?.localParticipant.removeListener(_onParticipantChanged);
-    widget.participant?.addListener(_onParticipantChanged);
-    _onParticipantChanged();
     super.didUpdateWidget(oldWidget);
+
+    // Only update listeners if the participant actually changed
+    if (oldWidget.participant?.sid != widget.participant?.sid) {
+      oldWidget.participant?.removeListener(_onParticipantChanged);
+      widget.participant?.addListener(_onParticipantChanged);
+      _onParticipantChanged();
+    }
   }
 
   void _onParticipantChanged() {
@@ -47,14 +51,19 @@ class _LocalUserState extends State<LocalUser> {
 
   @override
   Widget build(BuildContext ctx) {
-    if (widget.participant == null) return NoVideoWidget();
+    if (widget.participant == null) return const NoVideoWidget();
+
+    // Check if video is active and track is not muted
+    final activeVideoTrack = widget.participant!.activeVideoTrack;
+    final isVideoActive = widget.participant!.videoActive && activeVideoTrack != null && !activeVideoTrack.muted;
+
     return Stack(
       children: [
-        widget.participant!.videoActive
+        isVideoActive
             ? VideoTrackRenderer(
                 renderMode: VideoRenderMode.auto,
                 fit: VideoViewFit.contain,
-                widget.participant!.activeVideoTrack!,
+                activeVideoTrack,
               )
             : const NoVideoWidget(),
         if (widget.participant!.activeAudioTrack != null)
