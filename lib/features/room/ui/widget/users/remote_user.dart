@@ -1,16 +1,14 @@
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:m_cubit/m_cubit.dart';
 import 'package:collection/collection.dart';
 
-import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 class RemoteUser extends StatefulWidget {
   const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain});
@@ -119,8 +117,8 @@ class _ListRemoteUserState extends State<ListRemoteUser> {
     final activeParticipants = widget.participants.where((p) => p.videoActive).toList();
 
     if (activeParticipants.isEmpty) {
-      return const Center(
-        child: DrawableText(text: 'لا يوجد مشاركين بفيديو نشط'),
+      return Center(
+        child: DrawableText(text: S.of(context).noActiveVideoParticipants),
       );
     }
 

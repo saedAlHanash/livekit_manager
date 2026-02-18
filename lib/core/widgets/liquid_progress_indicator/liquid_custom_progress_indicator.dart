@@ -11,20 +11,15 @@ class LiquidCustomProgressIndicator extends ProgressIndicator {
   ///The path used to draw the shape of the progress indicator. The size of the progress indicator is controlled by the bounds of this path.
   final Path shapePath;
 
-  LiquidCustomProgressIndicator({
-    Key? key,
-    double value = 0.5,
-    Color? backgroundColor,
-    Animation<Color>? valueColor,
+  const LiquidCustomProgressIndicator({
+    super.key,
+    double super.value = 0.5,
+    super.backgroundColor,
+    Animation<Color>? super.valueColor,
     this.center,
     required this.direction,
     required this.shapePath,
-  }) : super(
-          key: key,
-          value: value,
-          backgroundColor: backgroundColor,
-          valueColor: valueColor,
-        );
+  });
 
   Color _getBackgroundColor(BuildContext context) => backgroundColor ?? Theme.of(context).scaffoldBackgroundColor;
 

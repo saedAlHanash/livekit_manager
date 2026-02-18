@@ -196,7 +196,7 @@ class NoteMessage {
             mainAxisSize: MainAxisSize.min,
             children: [
               DrawableText(
-                text: 'Oops!',
+                text: S().oops,
                 size: 20.0.spMin,
                 padding: const EdgeInsets.symmetric(vertical: 15.0).h,
                 fontFamily: FontManager.bold.name,
@@ -212,7 +212,7 @@ class NoteMessage {
               Divider(height: 30.0.h, color: Colors.black),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: DrawableText(text: tryAgne ? 'Try Again' : 'OK'),
+                child: DrawableText(text: tryAgne ? S().tryAgain : S().ok),
               ),
             ],
           ),
@@ -240,7 +240,7 @@ class NoteMessage {
             mainAxisSize: MainAxisSize.min,
             children: [
               DrawableText(
-                text: 'Oops!',
+                text: S().oops,
                 size: 20.0.spMin,
                 padding: const EdgeInsets.symmetric(vertical: 15.0).h,
                 fontFamily: FontManager.bold.name,
@@ -256,7 +256,7 @@ class NoteMessage {
               Divider(height: 30.0.h, color: Colors.black),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const DrawableText(text: 'OK'),
+                child: DrawableText(text: S().ok),
               ),
             ],
           ),
@@ -387,7 +387,7 @@ class NoteMessage {
                       Expanded(
                         child: MyButton(
                           onTap: () => context.pop(false),
-                          text: 'No',
+                          text: S().no,
                         ),
                       ),
                     ],

@@ -47,7 +47,7 @@ class ActiveSessionInitial extends AbstractState<ActiveSessionResponse> {
       error: error ?? this.error,
       filterRequest: filterRequest ?? this.filterRequest,
       request: request ?? this.request,
-      createUpdateRequest: cRequest ?? this.createUpdateRequest,
+      createUpdateRequest: cRequest ?? createUpdateRequest,
       id: id ?? this.id,
     );
   }

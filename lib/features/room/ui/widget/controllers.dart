@@ -5,11 +5,12 @@ import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/widgets/menu_widget.dart';
 import '../../../../generated/assets.dart';
-import '../../../../generated/l10n.dart';
+
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
 import '../../data/request/setting_message.dart';
 
@@ -61,7 +62,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   },
                 ),
               PopupMenuItemModel(
-                label: 'تصفيق للطالب',
+                label: S.of(context).applauseForStudent,
                 icon: ImageMultiType(url: Icons.waving_hand),
                 onTap: () {
                   final m = SettingMessage(
@@ -119,7 +120,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
 
   PopupMenuItemModel silence() {
     return PopupMenuItemModel(
-      label: participant.permissions.isSilence ? 'إعطاء صلاحيات' : 'سحب صلاحيات',
+      label: participant.permissions.isSilence ? S.of(context).grantPermissions : S.of(context).revokePermissions,
       icon: ImageMultiType(
         url: participant.permissions.isSilence ? Assets.imagesSpeak : Assets.imagesSilenceIcon,
         color: Colors.white,

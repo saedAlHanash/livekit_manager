@@ -1,5 +1,6 @@
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
@@ -10,7 +11,7 @@ import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
 
 import '../../../../generated/assets.dart';
-import '../../../../generated/l10n.dart';
+
 import '../../../../services/sounds_service.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
@@ -44,7 +45,7 @@ class _SpeakersWidgetState extends State<SpeakersWidget> {
               children: [
                 10.0.verticalSpace,
                 DrawableText(
-                  text: 'أعضاء الصف',
+                  text: S.of(context).classMembers,
                   padding: EdgeInsets.symmetric(horizontal: 20.0).r,
                   matchParent: true,
                   drawableEnd: TextButton(
@@ -52,7 +53,7 @@ class _SpeakersWidgetState extends State<SpeakersWidget> {
                       context.read<UserControlCubit>().toggleRemoteUserAudio(list);
                     },
                     child: DrawableText(
-                      text: isAudioEnabled ? 'كتم الكل' : 'تشغيل الكل',
+                      text: isAudioEnabled ? S.of(context).muteAll : S.of(context).unmuteAll,
                       drawablePadding: 5.0,
                       drawableStart: ImageMultiType(url: isAudioEnabled ? Icons.volume_up : Icons.volume_off),
                     ),

@@ -17,6 +17,7 @@ import '../../../../core/strings/enum_manager.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/ui/pages/room_page.dart';
 import '../../../room/ui/pages/teacher_page.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -84,8 +85,8 @@ class _HomePageState extends State<HomePage> {
                                 ..setToken(t.isBlank ? widget.token : t)
                                 ..connect();
                             },
-                            text: 'بدأ الجلسة',
-                          )
+                            text: S.of(context).startSession,
+                          ),
                         ],
                       ),
                     ),

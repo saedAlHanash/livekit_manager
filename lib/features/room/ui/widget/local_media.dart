@@ -1,5 +1,6 @@
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
@@ -21,7 +22,7 @@ class LocalMedia extends StatelessWidget {
           child: Column(
             children: [
               DrawableText(
-                text: 'المحتوى الذي تتم مشاركته',
+                text: S.of(context).sharedContent,
                 matchParent: true,
                 size: 12.0.sp,
               ),

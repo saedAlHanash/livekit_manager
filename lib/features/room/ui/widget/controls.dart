@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
 
@@ -21,21 +22,21 @@ class ControlsWidget extends StatelessWidget {
               children: [
                 _Item(
                   onTap: context.read<UserControlCubit>().toggleLocalCamera,
-                  title: cState.cameraEnabled ? 'إيقاف' : 'كاميرا',
+                  title: cState.cameraEnabled ? S.of(context).stop : S.of(context).camera,
                   color: cState.cameraEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
                   icon: cState.cameraEnabled ? Icons.videocam_off_outlined : Icons.videocam_outlined,
                 ),
                 12.w.horizontalSpace,
                 _Item(
                   onTap: context.read<UserControlCubit>().toggleLocalMic,
-                  title: cState.micEnabled ? 'إيقاف' : 'مايك',
+                  title: cState.micEnabled ? S.of(context).stop : S.of(context).mic,
                   color: cState.micEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
                   icon: cState.micEnabled ? Icons.mic_off : Icons.mic,
                 ),
                 12.w.horizontalSpace,
                 _Item(
                   onTap: context.read<UserControlCubit>().toggleLocalScreenShare,
-                  title: cState.screenShareEnabled ? 'إيقاف' : 'شاشة',
+                  title: cState.screenShareEnabled ? S.of(context).stop : S.of(context).screen,
                   color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
                   icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
                 ),
@@ -44,7 +45,7 @@ class ControlsWidget extends StatelessWidget {
                   onTap: () {
                     context.read<RoomCubit>().disconnect();
                   },
-                  title: 'إنهاء',
+                  title: S.of(context).end,
                   color: AppColorManager.red,
                   icon: Icons.call_end,
                 ),
@@ -64,13 +65,11 @@ class _Item extends StatelessWidget {
     this.title,
     required this.onTap,
     required this.color,
-    this.iconColor = Colors.white,
   });
 
   final IconData icon;
   final String? title;
   final Color color;
-  final Color iconColor;
   final VoidCallback onTap;
 
   @override
@@ -88,7 +87,6 @@ class _Item extends StatelessWidget {
           ),
           child: Icon(
             icon,
-            color: iconColor,
             size: 26.dg,
           ),
         ),

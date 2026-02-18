@@ -11,7 +11,6 @@ import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
-import '../api_manager/api_service.dart';
 import '../api_manager/api_url.dart';
 import '../app_theme.dart';
 import '../injection/injection_container.dart';

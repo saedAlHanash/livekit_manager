@@ -21,20 +21,15 @@ class LiquidCircularProgressIndicator extends ProgressIndicator {
   final Axis direction;
 
   LiquidCircularProgressIndicator({
-    Key? key,
-    double value = 0.5,
-    Color? backgroundColor,
-    Animation<Color>? valueColor,
+    super.key,
+    double super.value = 0.5,
+    super.backgroundColor,
+    Animation<Color>? super.valueColor,
     this.borderWidth,
     this.borderColor,
     this.center,
     this.direction = Axis.vertical,
-  }) : super(
-          key: key,
-          value: value,
-          backgroundColor: backgroundColor,
-          valueColor: valueColor,
-        ) {
+  }) {
     if (borderWidth != null && borderColor == null || borderColor != null && borderWidth == null) {
       throw ArgumentError("borderWidth and borderColor should both be set.");
     }

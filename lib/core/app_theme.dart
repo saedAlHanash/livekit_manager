@@ -74,7 +74,6 @@ ThemeData get lightTheme => ThemeData(
         primary: primaryColor,
         secondary: AppColorManager.secondColor,
         surface: secondaryColor,
-        background: AppColorManager.lightGray,
         error: AppColorManager.red,
       ),
       switchTheme: SwitchThemeData(
@@ -177,7 +176,6 @@ ThemeData get darkTheme => ThemeData(
         primary: AppColorManager.secondColor,
         secondary: AppColorManager.mainColorLight,
         surface: AppColorManager.tileColor,
-        background: AppColorManager.darkColor,
         error: AppColorManager.red,
       ),
       fontFamily: FontManager.semeBold.name,

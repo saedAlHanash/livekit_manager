@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 
-import '../generated/assets.dart';
 
 // ...
 class SoundService {

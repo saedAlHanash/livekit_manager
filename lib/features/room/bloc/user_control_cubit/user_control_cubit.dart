@@ -20,7 +20,7 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   UserControlCubit() : super(UserControlInitial.initial());
 
   @override
-  get mState => state;
+  UserControlInitial get mState => state;
 
   Future<void> suspend(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
