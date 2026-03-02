@@ -2,22 +2,14 @@ import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
-import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 import 'package:m_cubit/m_cubit.dart';
 
-import '../../../../core/api_manager/api_service.dart';
-import '../../../../core/api_manager/api_url.dart';
-import '../../../../core/strings/enum_manager.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
-import '../../../room/ui/pages/room_page.dart';
 import '../../../room/ui/pages/teacher_page.dart';
-import 'package:livekit_manager/generated/l10n.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
