@@ -743,11 +743,17 @@ extension ParticipantH on Participant {
     return sid;
   }
 
-  bool get isSuspend => permissions.isSuspend;
-
   bool get isAudioEnabled => (this is lk.RemoteParticipant)
       ? (this as lk.RemoteParticipant).isAudioEnabled
       : (this as lk.LocalParticipant).isAudioEnabled;
+
+  bool get isSuspend => permissions.isSuspend;
+
+  List<TrackPublication> get videoPublicationList =>
+      videoTrackPublications.where((e) => e.kind == TrackType.VIDEO && e.track != null).toList();
+
+  List<TrackPublication> get audioPublicationList =>
+      audioTrackPublications.where((e) => e.kind == TrackType.AUDIO && e.track != null).toList();
 }
 
 extension RemoteParticipantH on RemoteParticipant {

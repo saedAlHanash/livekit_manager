@@ -222,3 +222,10 @@ enum SignalMessageType {
 
   bool get isClosedExam => this == closedExam;
 }
+
+enum PageType{
+  manager,
+  sharer,
+  teacher,
+
+}

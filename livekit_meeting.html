@@ -1,0 +1,550 @@
+<html lang="en" data-lt-installed="true">
+<head>
+    <link rel="stylesheet" href="/_next/static/css/b908acceb6d5a05b.css" data-precedence="next">
+    <link rel="stylesheet" href="/_next/static/css/3589b74ac4f7511a.css" data-precedence="next">
+    <script src="/_next/static/chunks/e7327965-85f4b4f888426fe0.js" async=""></script>
+    <script src="/_next/static/chunks/255-41c5eb4f57ec0abc.js" async=""></script>
+    <script src="/_next/static/chunks/main-app-474a1704a37c7a08.js" async=""></script>
+    <script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" nomodule=""></script>
+    <style id="_goober">
+         @keyframes go2264125279{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go3020080000{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}@keyframes go463499852{from{transform:scale(0) rotate(90deg);opacity:0;}to{transform:scale(1) rotate(90deg);opacity:1;}}@keyframes go1268368563{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}@keyframes go1310225428{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go651618207{0%{height:0;width:0;opacity:0;}40%{height:0;width:6px;opacity:1;}100%{opacity:1;height:10px;}}@keyframes go901347462{from{transform:scale(0.6);opacity:0.4;}to{transform:scale(1);opacity:1;}}.go4109123758{z-index:9999;}.go4109123758 > *{pointer-events:auto;}
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#070707">
+    <title>LiveKit Meet | Conference app build with LiveKit open source</title>
+    <meta name="description"
+          content="LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.">
+    <meta property="og:title"
+          content="LiveKit Meet | Conference app build with LiveKit open source">
+    <meta property="og:description"
+          content="LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.">
+    <meta property="og:url" content="https://meet.livekit.io">
+    <meta property="og:site_name" content="LiveKit Meet">
+    <meta property="og:image" content="https://meet.livekit.io/images/livekit-meet-open-graph.png">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1000">
+    <meta property="og:image:type" content="image/png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@livekitted">
+    <meta name="twitter:creator" content="@livekitted">
+    <meta name="twitter:title"
+          content="LiveKit Meet | Conference app build with LiveKit open source">
+    <meta name="twitter:description"
+          content="LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.">
+    <meta name="twitter:image" content="https://meet.livekit.io/images/livekit-meet-open-graph.png">
+    <meta name="twitter:image:width" content="2000">
+    <meta name="twitter:image:height" content="1000">
+    <meta name="twitter:image:type" content="image/png">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/livekit-apple-touch.png" sizes="180x180">
+    <link rel="mask-icon" href="/images/livekit-safari-pinned-tab.svg" color="#070707">
+    <style>@keyframes slide-in-one-tap {
+  from {
+    transform: translateY(80px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
+.trust-hide-gracefully {
+  opacity: 0;
+}
+
+.trust-wallet-one-tap .hidden {
+    display: none;
+  }
+
+.trust-wallet-one-tap .semibold {
+    font-weight: 500;
+  }
+
+.trust-wallet-one-tap .binance-plex {
+    font-family: 'Binance';
+  }
+
+.trust-wallet-one-tap .rounded-full {
+    border-radius: 50%;
+  }
+
+.trust-wallet-one-tap .flex {
+    display: flex;
+  }
+
+.trust-wallet-one-tap .flex-col {
+    flex-direction: column;
+  }
+
+.trust-wallet-one-tap .items-center {
+    align-items: center;
+  }
+
+.trust-wallet-one-tap .space-between {
+    justify-content: space-between;
+  }
+
+.trust-wallet-one-tap .justify-center {
+    justify-content: center;
+  }
+
+.trust-wallet-one-tap .w-full {
+    width: 100%;
+  }
+
+.trust-wallet-one-tap .box {
+    transition: all 0.5s cubic-bezier(0, 0, 0, 1.43);
+    animation: slide-in-one-tap 0.5s cubic-bezier(0, 0, 0, 1.43);
+    width: 384px;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 1020;
+  }
+
+.trust-wallet-one-tap .header {
+    gap: 15px;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 18px;
+  }
+
+.trust-wallet-one-tap .header .left-items {
+      gap: 15px;
+    }
+
+.trust-wallet-one-tap .header .title {
+      color: #1e2329;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+.trust-wallet-one-tap .header .subtitle {
+      color: #474d57;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+.trust-wallet-one-tap .header .close {
+      color: #1e2329;
+      cursor: pointer;
+    }
+
+.trust-wallet-one-tap .body {
+    padding: 9px 18px;
+    gap: 10px;
+  }
+
+.trust-wallet-one-tap .body .right-items {
+      gap: 10px;
+      width: 100%;
+    }
+
+.trust-wallet-one-tap .body .right-items .wallet-title {
+        color: #1e2329;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+      }
+
+.trust-wallet-one-tap .body .right-items .wallet-subtitle {
+        color: #474d57;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+.trust-wallet-one-tap .connect-indicator {
+    gap: 15px;
+    padding: 8px 0;
+  }
+
+.trust-wallet-one-tap .connect-indicator .flow-icon {
+      color: #474d57;
+    }
+
+.trust-wallet-one-tap .loading-color {
+    color: #fff;
+  }
+
+.trust-wallet-one-tap .button {
+    border-radius: 50px;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: rgb(5, 0, 255);
+    border-color: rgb(229, 231, 235);
+    cursor: pointer;
+    text-align: center;
+    height: 45px;
+  }
+
+.trust-wallet-one-tap .button .button-text {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+
+.trust-wallet-one-tap .footer {
+    margin: 20px 30px;
+  }
+
+.trust-wallet-one-tap .check-icon {
+    color: #fff;
+  }
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Regular.otf) format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Medium.otf) format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-SemiBold.otf) format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL2FwcC9zcmMvb25lVGFwL3N0eWxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0lBQ0UsMkJBQTJCO0VBQzdCO0VBQ0E7SUFDRSwwQkFBMEI7RUFDNUI7QUFDRjs7QUFFQTtFQUNFLFVBQVU7QUFDWjs7QUFHRTtJQUNFLGFBQWE7RUFDZjs7QUFFQTtJQUNFLGdCQUFnQjtFQUNsQjs7QUFFQTtJQUNFLHNCQUFzQjtFQUN4Qjs7QUFFQTtJQUNFLGtCQUFrQjtFQUNwQjs7QUFFQTtJQUNFLGFBQWE7RUFDZjs7QUFFQTtJQUNFLHNCQUFzQjtFQUN4Qjs7QUFFQTtJQUNFLG1CQUFtQjtFQUNyQjs7QUFFQTtJQUNFLDhCQUE4QjtFQUNoQzs7QUFFQTtJQUNFLHVCQUF1QjtFQUN6Qjs7QUFFQTtJQUNFLFdBQVc7RUFDYjs7QUFFQTtJQUNFLGdEQUFnRDtJQUNoRCw0REFBNEQ7SUFDNUQsWUFBWTtJQUNaLG1CQUFtQjtJQUNuQixnQkFBZ0I7SUFDaEIsK0NBQStDO0lBQy9DLGVBQWU7SUFDZixXQUFXO0lBQ1gsWUFBWTtJQUNaLGFBQWE7RUFDZjs7QUFFQTtJQUNFLFNBQVM7SUFDVCxnQ0FBZ0M7SUFDaEMsa0JBQWtCO0VBdUJwQjs7QUFyQkU7TUFDRSxTQUFTO0lBQ1g7O0FBRUE7TUFDRSxjQUFjO01BQ2QsZUFBZTtNQUNmLGdCQUFnQjtNQUNoQixpQkFBaUI7SUFDbkI7O0FBRUE7TUFDRSxjQUFjO01BQ2QsZUFBZTtNQUNmLGlCQUFpQjtJQUNuQjs7QUFFQTtNQUNFLGNBQWM7TUFDZCxlQUFlO0lBQ2pCOztBQUdGO0lBQ0UsaUJBQWlCO0lBQ2pCLFNBQVM7RUFtQlg7O0FBakJFO01BQ0UsU0FBUztNQUNULFdBQVc7SUFjYjs7QUFaRTtRQUNFLGNBQWM7UUFDZCxlQUFlO1FBQ2YsZ0JBQWdCO1FBQ2hCLGlCQUFpQjtNQUNuQjs7QUFFQTtRQUNFLGNBQWM7UUFDZCxlQUFlO1FBQ2YsaUJBQWlCO01BQ25COztBQUlKO0lBQ0UsU0FBUztJQUNULGNBQWM7RUFLaEI7O0FBSEU7TUFDRSxjQUFjO0lBQ2hCOztBQUdGO0lBQ0UsV0FBVztFQUNiOztBQUVBO0lBQ0UsbUJBQW1CO0lBQ25CLDhCQUE4QjtJQUM5QixtQkFBbUI7SUFDbkIsZ0NBQWdDO0lBQ2hDLGdDQUFnQztJQUNoQyxlQUFlO0lBQ2Ysa0JBQWtCO0lBQ2xCLFlBQVk7RUFRZDs7QUFORTtNQUNFLFdBQVc7TUFDWCxlQUFlO01BQ2YsZ0JBQWdCO01BQ2hCLGlCQUFpQjtJQUNuQjs7QUFHRjtJQUNFLGlCQUFpQjtFQUNuQjs7QUFFQTtJQUNFLFdBQVc7RUFDYjs7QUFHRjtFQUNFLHNCQUFzQjtFQUN0QiwrREFBMEU7RUFDMUUsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLHNCQUFzQjtFQUN0QiwrREFBeUU7RUFDekUsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQjs7QUFFQTtFQUNFLHNCQUFzQjtFQUN0QiwrREFBMkU7RUFDM0UsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQiIsInNvdXJjZXNDb250ZW50IjpbIkBrZXlmcmFtZXMgc2xpZGUtaW4tb25lLXRhcCB7XG4gIGZyb20ge1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSg4MHB4KTtcbiAgfVxuICB0byB7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDBweCk7XG4gIH1cbn1cblxuLnRydXN0LWhpZGUtZ3JhY2VmdWxseSB7XG4gIG9wYWNpdHk6IDA7XG59XG5cbi50cnVzdC13YWxsZXQtb25lLXRhcCB7XG4gIC5oaWRkZW4ge1xuICAgIGRpc3BsYXk6IG5vbmU7XG4gIH1cblxuICAuc2VtaWJvbGQge1xuICAgIGZvbnQtd2VpZ2h0OiA1MDA7XG4gIH1cblxuICAuYmluYW5jZS1wbGV4IHtcbiAgICBmb250LWZhbWlseTogJ0JpbmFuY2UnO1xuICB9XG5cbiAgLnJvdW5kZWQtZnVsbCB7XG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xuICB9XG5cbiAgLmZsZXgge1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gIH1cblxuICAuZmxleC1jb2wge1xuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIH1cblxuICAuaXRlbXMtY2VudGVyIHtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICB9XG5cbiAgLnNwYWNlLWJldHdlZW4ge1xuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjtcbiAgfVxuXG4gIC5qdXN0aWZ5LWNlbnRlciB7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIH1cblxuICAudy1mdWxsIHtcbiAgICB3aWR0aDogMTAwJTtcbiAgfVxuXG4gIC5ib3gge1xuICAgIHRyYW5zaXRpb246IGFsbCAwLjVzIGN1YmljLWJlemllcigwLCAwLCAwLCAxLjQzKTtcbiAgICBhbmltYXRpb246IHNsaWRlLWluLW9uZS10YXAgMC41cyBjdWJpYy1iZXppZXIoMCwgMCwgMCwgMS40Myk7XG4gICAgd2lkdGg6IDM4NHB4O1xuICAgIGJvcmRlci1yYWRpdXM6IDE1cHg7XG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBib3gtc2hhZG93OiAwcHggMnB4IDRweCAwcHggcmdiYSgwLCAwLCAwLCAwLjI1KTtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgcmlnaHQ6IDMwcHg7XG4gICAgYm90dG9tOiAzMHB4O1xuICAgIHotaW5kZXg6IDEwMjA7XG4gIH1cblxuICAuaGVhZGVyIHtcbiAgICBnYXA6IDE1cHg7XG4gICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNlNmU2ZTY7XG4gICAgcGFkZGluZzogMTBweCAxOHB4O1xuXG4gICAgLmxlZnQtaXRlbXMge1xuICAgICAgZ2FwOiAxNXB4O1xuICAgIH1cblxuICAgIC50aXRsZSB7XG4gICAgICBjb2xvcjogIzFlMjMyOTtcbiAgICAgIGZvbnQtc2l6ZTogMThweDtcbiAgICAgIGZvbnQtd2VpZ2h0OiA2MDA7XG4gICAgICBsaW5lLWhlaWdodDogMjhweDtcbiAgICB9XG5cbiAgICAuc3VidGl0bGUge1xuICAgICAgY29sb3I6ICM0NzRkNTc7XG4gICAgICBmb250LXNpemU6IDE0cHg7XG4gICAgICBsaW5lLWhlaWdodDogMjBweDtcbiAgICB9XG5cbiAgICAuY2xvc2Uge1xuICAgICAgY29sb3I6ICMxZTIzMjk7XG4gICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgfVxuICB9XG5cbiAgLmJvZHkge1xuICAgIHBhZGRpbmc6IDlweCAxOHB4O1xuICAgIGdhcDogMTBweDtcblxuICAgIC5yaWdodC1pdGVtcyB7XG4gICAgICBnYXA6IDEwcHg7XG4gICAgICB3aWR0aDogMTAwJTtcblxuICAgICAgLndhbGxldC10aXRsZSB7XG4gICAgICAgIGNvbG9yOiAjMWUyMzI5O1xuICAgICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgICAgIGZvbnQtd2VpZ2h0OiA2MDA7XG4gICAgICAgIGxpbmUtaGVpZ2h0OiAyMHB4O1xuICAgICAgfVxuXG4gICAgICAud2FsbGV0LXN1YnRpdGxlIHtcbiAgICAgICAgY29sb3I6ICM0NzRkNTc7XG4gICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgICB9XG4gICAgfVxuICB9XG5cbiAgLmNvbm5lY3QtaW5kaWNhdG9yIHtcbiAgICBnYXA6IDE1cHg7XG4gICAgcGFkZGluZzogOHB4IDA7XG5cbiAgICAuZmxvdy1pY29uIHtcbiAgICAgIGNvbG9yOiAjNDc0ZDU3O1xuICAgIH1cbiAgfVxuXG4gIC5sb2FkaW5nLWNvbG9yIHtcbiAgICBjb2xvcjogI2ZmZjtcbiAgfVxuXG4gIC5idXR0b24ge1xuICAgIGJvcmRlci1yYWRpdXM6IDUwcHg7XG4gICAgb3V0bGluZTogMnB4IHNvbGlkIHRyYW5zcGFyZW50O1xuICAgIG91dGxpbmUtb2Zmc2V0OiAycHg7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogcmdiKDUsIDAsIDI1NSk7XG4gICAgYm9yZGVyLWNvbG9yOiByZ2IoMjI5LCAyMzEsIDIzNSk7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBoZWlnaHQ6IDQ1cHg7XG5cbiAgICAuYnV0dG9uLXRleHQge1xuICAgICAgY29sb3I6ICNmZmY7XG4gICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgICBmb250LXdlaWdodDogNjAwO1xuICAgICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgfVxuICB9XG5cbiAgLmZvb3RlciB7XG4gICAgbWFyZ2luOiAyMHB4IDMwcHg7XG4gIH1cblxuICAuY2hlY2staWNvbiB7XG4gICAgY29sb3I6ICNmZmY7XG4gIH1cbn1cblxuQGZvbnQtZmFjZSB7XG4gIGZvbnQtZmFtaWx5OiAnQmluYW5jZSc7XG4gIHNyYzogdXJsKCcuL2ZvbnRzL2JpbmFuY2VQbGV4L0JpbmFuY2VQbGV4LVJlZ3VsYXIub3RmJykgZm9ybWF0KCdvcGVudHlwZScpO1xuICBmb250LXdlaWdodDogNDAwO1xuICBmb250LXN0eWxlOiBub3JtYWw7XG59XG5cbkBmb250LWZhY2Uge1xuICBmb250LWZhbWlseTogJ0JpbmFuY2UnO1xuICBzcmM6IHVybCgnLi9mb250cy9iaW5hbmNlUGxleC9CaW5hbmNlUGxleC1NZWRpdW0ub3RmJykgZm9ybWF0KCdvcGVudHlwZScpO1xuICBmb250LXdlaWdodDogNTAwO1xuICBmb250LXN0eWxlOiBub3JtYWw7XG59XG5cbkBmb250LWZhY2Uge1xuICBmb250LWZhbWlseTogJ0JpbmFuY2UnO1xuICBzcmM6IHVybCgnLi9mb250cy9iaW5hbmNlUGxleC9CaW5hbmNlUGxleC1TZW1pQm9sZC5vdGYnKSBmb3JtYXQoJ29wZW50eXBlJyk7XG4gIGZvbnQtd2VpZ2h0OiA2MDA7XG4gIGZvbnQtc3R5bGU6IG5vcm1hbDtcbn1cbiJdLCJzb3VyY2VSb290IjoiIn0= */
+    </style>
+</head>
+<body data-lk-theme="default">
+<script src="/_next/static/chunks/webpack-3683e60e2a4e8d59.js" async=""></script>
+<script>(self.__next_f=self.__next_f||[]).push([0])</script>
+<script>
+    self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[1572,[\"572\",\"static/chunks/572-5040728e297f554f.js\",\"177\",\"static/chunks/app/layout-1f06d2f4a52a433e.js\"],\"Toaster\"]\n3:I[7293,[],\"\"]\n4:I[4409,[],\"\"]\n6:I[1427,[],\"MetadataBoundary\"]\n8:I[1427,[],\"OutletBoundary\"]\nb:I[678,[],\"AsyncMetadataOutlet\"]\nd:I[1427,[],\"ViewportBoundary\"]\nf:I[9972,[],\"\"]\n10:\"$Sreact.suspense\"\n11:I[678,[],\"AsyncMetadata\"]\n13:I[2560,[\"549\",\"static/chunks/04be2645-620b35fb3307c2b4.js\",\"175\",\"static/chunks/175-ec7e45f874a47b70.js\",\"513\",\"static/chunks/513-9b22ce2fcdc7b881.js\",\"228\",\"static/chunks/app/custom/page-89aa706548974fab.js\"],\"VideoConferenceClientImpl\"]\n:HL[\"/_next/static/css/b908acceb6d5a05b.css\",\"style\"]\n:HL[\"/_next/static/css/3589b74ac4f7511a.css\",\"style\"]\n"])
+</script>
+<script>
+    self.__next_f.push([1,"0:{\"P\":null,\"b\":\"cnrA0CLSxIGnjBQe1x5I9\",\"p\":\"\",\"c\":[\"\",\"custom?liveKitUrl=wss%3A%2F%2Fcoretik.coretech-mena.com\u0026token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYTFlZCIsImp0aSI6InNhMWVkIiwiaXNzIjoiZGV2a2V5IiwibmJmIjoxNzcyNDUyOTM3LCJpYXQiOjE3NzI0NTI5MzcsImV4cCI6MTc3NzYzNjkzNywidmlkZW8iOnsiYWdlbnQiOmZhbHNlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6InMxIiwicm9vbUFkbWluIjpmYWxzZSwicm9vbUNyZWF0ZSI6ZmFsc2UsInJvb21Kb2luIjp0cnVlLCJyb29tTGlzdCI6dHJ1ZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJzYTFlZCIsIm1ldGFkYXRhIjoiIiwic2hhMjU2IjoiIiwia2luZCI6IiIsImF0dHJpYnV0ZXMiOnsidHlwZSI6IjIiLCJpbWFnZVVybCI6IiJ9LCJyb29tQ29uZmlnIjp7fX0.0RnodxJ1gwa3YCNyzhAUNp75Mum_H_DJfZDEuvv4dWw\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"custom\",{\"children\":[\"__PAGE__?{\\\"liveKitUrl\\\":\\\"wss://coretik.coretech-mena.com\\\",\\\"token\\\":\\\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYTFlZCIsImp0aSI6InNhMWVkIiwiaXNzIjoiZGV2a2V5IiwibmJmIjoxNzcyNDUyOTM3LCJpYXQiOjE3NzI0NTI5MzcsImV4cCI6MTc3NzYzNjkzNywidmlkZW8iOnsiYWdlbnQiOmZhbHNlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6InMxIiwicm9vbUFkbWluIjpmYWxzZSwicm9vbUNyZWF0ZSI6ZmFsc2UsInJvb21Kb2luIjp0cnVlLCJyb29tTGlzdCI6dHJ1ZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJzYTFlZCIsIm1ldGFkYXRhIjoiIiwic2hhMjU2IjoiIiwia2luZCI6IiIsImF0dHJpYnV0ZXMiOnsidHlwZSI6IjIiLCJpbWFnZVVybCI6IiJ9LCJyb29tQ29uZmlnIjp7fX0.0RnodxJ1gwa3YCNyzhAUNp75Mum_H_DJfZDEuvv4dWw\\\"}\",{}]}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/b908acceb6d5a05b.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"children\":[\"$\",\"body\",null,{\"data-lk-theme\":\"default\",\"children\":[[\"$\",\"$L2\",null,{}],[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}]}]]}],{\"children\":[\"custom\",[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[\"__PAGE__\",[\"$\",\"$1\",\"c\",{\"children\":[\"$L5\",[\"$\",\"$L6\",null,{\"children\":\"$L7\"}],[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/3589b74ac4f7511a.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"$L8\",null,{\"children\":[\"$L9\",\"$La\",[\"$\",\"$Lb\",null,{\"promise\":\"$@c\"}]]}]]}],{},null,false]},null,false]},null,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$1\",\"_EkDFADb5GUXejvYc_6yW\",{\"children\":[[\"$\",\"$Ld\",null,{\"children\":\"$Le\"}],null]}],null]}],false]],\"m\":\"$undefined\",\"G\":[\"$f\",\"$undefined\"],\"s\":false,\"S\":false}\n"])
+</script>
+<script>
+    self.__next_f.push([1,"7:[\"$\",\"$10\",null,{\"fallback\":null,\"children\":[\"$\",\"$L11\",null,{\"promise\":\"$@12\"}]}]\n5:[\"$\",\"main\",null,{\"data-lk-theme\":\"default\",\"style\":{\"height\":\"100%\"},\"children\":[\"$\",\"$L13\",null,{\"liveKitUrl\":\"wss://coretik.coretech-mena.com\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzYTFlZCIsImp0aSI6InNhMWVkIiwiaXNzIjoiZGV2a2V5IiwibmJmIjoxNzcyNDUyOTM3LCJpYXQiOjE3NzI0NTI5MzcsImV4cCI6MTc3NzYzNjkzNywidmlkZW8iOnsiYWdlbnQiOmZhbHNlLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6InMxIiwicm9vbUFkbWluIjpmYWxzZSwicm9vbUNyZWF0ZSI6ZmFsc2UsInJvb21Kb2luIjp0cnVlLCJyb29tTGlzdCI6dHJ1ZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJzYTFlZCIsIm1ldGFkYXRhIjoiIiwic2hhMjU2IjoiIiwia2luZCI6IiIsImF0dHJpYnV0ZXMiOnsidHlwZSI6IjIiLCJpbWFnZVVybCI6IiJ9LCJyb29tQ29uZmlnIjp7fX0.0RnodxJ1gwa3YCNyzhAUNp75Mum_H_DJfZDEuvv4dWw\",\"codec\":\"$undefined\"}]}]\na:null\n"])
+</script>
+<script>
+    self.__next_f.push([1,"12:{\"metadata\":[[\"$\",\"title\",\"0\",{\"children\":\"LiveKit Meet | Conference app build with LiveKit open source\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.\"}],[\"$\",\"meta\",\"2\",{\"property\":\"og:title\",\"content\":\"LiveKit Meet | Conference app build with LiveKit open source\"}],[\"$\",\"meta\",\"3\",{\"property\":\"og:description\",\"content\":\"LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.\"}],[\"$\",\"meta\",\"4\",{\"property\":\"og:url\",\"content\":\"https://meet.livekit.io\"}],[\"$\",\"meta\",\"5\",{\"property\":\"og:site_name\",\"content\":\"LiveKit Meet\"}],[\"$\",\"meta\",\"6\",{\"property\":\"og:image\",\"content\":\"https://meet.livekit.io/images/livekit-meet-open-graph.png\"}],[\"$\",\"meta\",\"7\",{\"property\":\"og:image:width\",\"content\":\"2000\"}],[\"$\",\"meta\",\"8\",{\"property\":\"og:image:height\",\"content\":\"1000\"}],[\"$\",\"meta\",\"9\",{\"property\":\"og:image:type\",\"content\":\"image/png\"}],[\"$\",\"meta\",\"10\",{\"name\":\"twitter:card\",\"content\":\"summary_large_image\"}],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:site\",\"content\":\"@livekitted\"}],[\"$\",\"meta\",\"12\",{\"name\":\"twitter:creator\",\"content\":\"@livekitted\"}],[\"$\",\"meta\",\"13\",{\"name\":\"twitter:title\",\"content\":\"LiveKit Meet | Conference app build with LiveKit open source\"}],[\"$\",\"meta\",\"14\",{\"name\":\"twitter:description\",\"content\":\"LiveKit is an open source WebRTC project that gives you everything needed to build scalable and real-time audio and/or video experiences in your applications.\"}],[\"$\",\"meta\",\"15\",{\"name\":\"twitter:image\",\"content\":\"https://meet.livekit.io/images/livekit-meet-open-graph.png\"}],[\"$\",\"meta\",\"16\",{\"name\":\"twitter:image:width\",\"content\":\"2000\"}],[\"$\",\"meta\",\"17\",{\"name\":\"twitter:image:height\",\"content\":\"1000\"}],[\"$\",\"meta\",\"18\",{\"name\":\"twitter:image:type\",\"content\":\"image/png\"}],[\"$\",\"link\",\"19\",{\"rel\":\"icon\",\"href\":\"/favicon.ico\"}],[\"$\",\"link\",\"20\",{\"rel\":\"apple-touch-icon\",\"href\":\"/images/livekit-apple-touch.png\",\"sizes\":\"180x180\"}],[\"$\",\"link\",\"21\",{\"rel\":\"mask-icon\",\"href\":\"/images/livekit-safari-pinned-tab.svg\",\"color\":\"#070707\"}]],\"error\":null,\"digest\":\"$undefined\"}\n"])
+</script>
+<script>
+    self.__next_f.push([1,"c:{\"metadata\":\"$12:metadata\",\"error\":null,\"digest\":\"$undefined\"}\ne:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}],[\"$\",\"meta\",\"2\",{\"name\":\"theme-color\",\"content\":\"#070707\"}]]\n9:null\n"])
+</script>
+<script>
+    (function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d604084ccb6756d',t:'MTc3MjQ1Mjk0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();
+</script>
+<script defer=""
+        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon="{&quot;rayId&quot;:&quot;9d604084ccb6756d&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;9980d69bfe9d4ae3b69c4e5b9169884a&quot;}"
+        crossorigin="anonymous"></script>
+<div id="_rht_toaster"
+     style="position: fixed; z-index: 9999; inset: 16px; pointer-events: none;"></div>
+<main data-lk-theme="default" style="height: 100%;">
+    <div class="lk-room-container">
+        <div class="lk-video-conference">
+            <div class="lk-video-conference-inner">
+                <div class="lk-focus-layout-wrapper">
+                    <div class="lk-focus-layout">
+                        <aside class="lk-carousel" data-lk-orientation="vertical"
+                               style="--lk-max-visible-tiles: 5;">
+                            <div data-lk-audio-muted="true" data-lk-video-muted="false"
+                                 data-lk-speaking="false" data-lk-local-participant="true"
+                                 data-lk-source="camera" data-lk-facing-mode="user"
+                                 class="lk-participant-tile" style="position: relative;">
+                                <video class="lk-participant-media-video"
+                                       data-lk-local-participant="true" data-lk-source="camera"
+                                       data-lk-orientation="landscape" autoplay=""
+                                       playsinline=""></video>
+                                <div class="lk-participant-placeholder">
+                                    <svg width="320" height="320" viewBox="0 0 320 320"
+                                         preserveAspectRatio="xMidYMid meet" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M160 180C204.182 180 240 144.183 240 100C240 55.8172 204.182 20 160 20C115.817 20 79.9997 55.8172 79.9997 100C79.9997 144.183 115.817 180 160 180Z"
+                                              fill="white" fill-opacity="0.25"></path>
+                                        <path d="M97.6542 194.614C103.267 191.818 109.841 192.481 115.519 195.141C129.025 201.466 144.1 205 159.999 205C175.899 205 190.973 201.466 204.48 195.141C210.158 192.481 216.732 191.818 222.345 194.614C262.703 214.719 291.985 253.736 298.591 300.062C300.15 310.997 291.045 320 280 320H39.9997C28.954 320 19.8495 310.997 21.4087 300.062C28.014 253.736 57.2966 214.72 97.6542 194.614Z"
+                                              fill="white" fill-opacity="0.25"></path>
+                                    </svg>
+                                </div>
+                                <div class="lk-participant-metadata">
+                                    <div class="lk-participant-metadata-item">
+                                        <div class="lk-track-muted-indicator-microphone"
+                                             data-lk-muted="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                 height="16" fill="currentColor">
+                                                <path d="M12.227 11.52a5.477 5.477 0 0 0 1.246-2.97.5.5 0 0 0-.995-.1 4.478 4.478 0 0 1-.962 2.359l-1.07-1.07C10.794 9.247 11 8.647 11 8V3a3 3 0 0 0-6 0v1.293L1.354.646a.5.5 0 1 0-.708.708l14 14a.5.5 0 0 0 .708-.708zM8 12.5c.683 0 1.33-.152 1.911-.425l.743.743c-.649.359-1.378.59-2.154.66V15h2a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h2v-1.522a5.502 5.502 0 0 1-4.973-4.929.5.5 0 0 1 .995-.098A4.5 4.5 0 0 0 8 12.5z"></path>
+                                                <path d="M8.743 10.907 5 7.164V8a3 3 0 0 0 3.743 2.907z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="lk-participant-name"
+                                              data-lk-participant-name="sa1ed">sa1ed</span></div>
+                                    <div class="lk-participant-metadata-item lk-connection-quality"
+                                         data-lk-quality="poor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                             height="16" fill="currentcolor">
+                                            <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            <g opacity="0.25">
+                                                <path d="M6 6.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                                <path d="M6 6.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-6a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                                <path d="M12 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <button class="lk-button lk-focus-toggle-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="none">
+                                        <g stroke="currentColor" stroke-linecap="round"
+                                           stroke-linejoin="round" stroke-width="1.5">
+                                            <path d="M10 1.75h4.25m0 0V6m0-4.25L9 7M6 14.25H1.75m0 0V10m0 4.25L7 9"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div data-lk-audio-muted="true" data-lk-video-muted="true"
+                                 data-lk-speaking="false" data-lk-local-participant="false"
+                                 data-lk-source="camera" data-lk-facing-mode="undefined"
+                                 class="lk-participant-tile" style="position: relative;">
+                                <video class="lk-participant-media-video"
+                                       data-lk-local-participant="false" data-lk-source="camera"
+                                       data-lk-orientation="landscape" autoplay=""
+                                       playsinline=""></video>
+                                <div class="lk-participant-placeholder">
+                                    <svg width="320" height="320" viewBox="0 0 320 320"
+                                         preserveAspectRatio="xMidYMid meet" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M160 180C204.182 180 240 144.183 240 100C240 55.8172 204.182 20 160 20C115.817 20 79.9997 55.8172 79.9997 100C79.9997 144.183 115.817 180 160 180Z"
+                                              fill="white" fill-opacity="0.25"></path>
+                                        <path d="M97.6542 194.614C103.267 191.818 109.841 192.481 115.519 195.141C129.025 201.466 144.1 205 159.999 205C175.899 205 190.973 201.466 204.48 195.141C210.158 192.481 216.732 191.818 222.345 194.614C262.703 214.719 291.985 253.736 298.591 300.062C300.15 310.997 291.045 320 280 320H39.9997C28.954 320 19.8495 310.997 21.4087 300.062C28.014 253.736 57.2966 214.72 97.6542 194.614Z"
+                                              fill="white" fill-opacity="0.25"></path>
+                                    </svg>
+                                </div>
+                                <div class="lk-participant-metadata">
+                                    <div class="lk-participant-metadata-item">
+                                        <div class="lk-track-muted-indicator-microphone"
+                                             data-lk-muted="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                 height="16" fill="currentColor">
+                                                <path d="M12.227 11.52a5.477 5.477 0 0 0 1.246-2.97.5.5 0 0 0-.995-.1 4.478 4.478 0 0 1-.962 2.359l-1.07-1.07C10.794 9.247 11 8.647 11 8V3a3 3 0 0 0-6 0v1.293L1.354.646a.5.5 0 1 0-.708.708l14 14a.5.5 0 0 0 .708-.708zM8 12.5c.683 0 1.33-.152 1.911-.425l.743.743c-.649.359-1.378.59-2.154.66V15h2a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h2v-1.522a5.502 5.502 0 0 1-4.973-4.929.5.5 0 0 1 .995-.098A4.5 4.5 0 0 0 8 12.5z"></path>
+                                                <path d="M8.743 10.907 5 7.164V8a3 3 0 0 0 3.743 2.907z"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="lk-participant-name"
+                                              data-lk-participant-name="saed">saed</span></div>
+                                    <div class="lk-participant-metadata-item lk-connection-quality"
+                                         data-lk-quality="excellent">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                             height="16" fill="currentcolor">
+                                            <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-6a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-6a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <button class="lk-button lk-focus-toggle-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="none">
+                                        <g stroke="currentColor" stroke-linecap="round"
+                                           stroke-linejoin="round" stroke-width="1.5">
+                                            <path d="M10 1.75h4.25m0 0V6m0-4.25L9 7M6 14.25H1.75m0 0V10m0 4.25L7 9"></path>
+                                        </g>
+                                    </svg>
+                                </button>
+                            </div>
+                        </aside>
+                        <div data-lk-audio-muted="true" data-lk-video-muted="false"
+                             data-lk-speaking="false" data-lk-local-participant="true"
+                             data-lk-source="screen_share" data-lk-facing-mode="user"
+                             class="lk-participant-tile" style="position: relative;">
+                            <video class="lk-participant-media-video"
+                                   data-lk-local-participant="true" data-lk-source="screen_share"
+                                   data-lk-orientation="landscape" autoplay=""
+                                   playsinline=""></video>
+                            <div class="lk-participant-placeholder">
+                                <svg width="320" height="320" viewBox="0 0 320 320"
+                                     preserveAspectRatio="xMidYMid meet" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M160 180C204.182 180 240 144.183 240 100C240 55.8172 204.182 20 160 20C115.817 20 79.9997 55.8172 79.9997 100C79.9997 144.183 115.817 180 160 180Z"
+                                          fill="white" fill-opacity="0.25"></path>
+                                    <path d="M97.6542 194.614C103.267 191.818 109.841 192.481 115.519 195.141C129.025 201.466 144.1 205 159.999 205C175.899 205 190.973 201.466 204.48 195.141C210.158 192.481 216.732 191.818 222.345 194.614C262.703 214.719 291.985 253.736 298.591 300.062C300.15 310.997 291.045 320 280 320H39.9997C28.954 320 19.8495 310.997 21.4087 300.062C28.014 253.736 57.2966 214.72 97.6542 194.614Z"
+                                          fill="white" fill-opacity="0.25"></path>
+                                </svg>
+                            </div>
+                            <div class="lk-participant-metadata">
+                                <div class="lk-participant-metadata-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16"
+                                         fill="none" style="margin-right: 0.25rem;">
+                                        <path fill="currentColor" fill-rule="evenodd"
+                                              d="M0 2.75A2.75 2.75 0 0 1 2.75 0h14.5A2.75 2.75 0 0 1 20 2.75v10.5A2.75 2.75 0 0 1 17.25 16H2.75A2.75 2.75 0 0 1 0 13.25V2.75ZM2.75 1.5c-.69 0-1.25.56-1.25 1.25v10.5c0 .69.56 1.25 1.25 1.25h14.5c.69 0 1.25-.56 1.25-1.25V2.75c0-.69-.56-1.25-1.25-1.25H2.75Z"
+                                              clip-rule="evenodd"></path>
+                                        <path fill="currentColor" fill-rule="evenodd"
+                                              d="M9.47 4.22a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v4.69a.75.75 0 0 1-1.5 0V6.56l-.97.97a.75.75 0 0 1-1.06-1.06l2.25-2.25Z"
+                                              clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="lk-participant-name"
+                                          data-lk-participant-name="sa1ed">sa1ed's screen</span>
+                                </div>
+                                <div class="lk-participant-metadata-item lk-connection-quality"
+                                     data-lk-quality="poor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentcolor">
+                                        <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                        <path d="M0 11.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                        <g opacity="0.25">
+                                            <path d="M6 6.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            <path d="M6 6.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm6-6a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                            <path d="M12 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5z"></path>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                            <button class="lk-button lk-focus-toggle-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="none">
+                                    <g stroke="currentColor" stroke-linecap="round"
+                                       stroke-linejoin="round" stroke-width="1.5">
+                                        <path d="M13.25 7H9m0 0V2.75M9 7l5.25-5.25M2.75 9H7m0 0v4.25M7 9l-5.25 5.25"></path>
+                                    </g>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lk-control-bar">
+                    <div class="lk-button-group">
+                        <button class="lk-button" aria-pressed="false" data-lk-source="microphone"
+                                data-lk-enabled="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor">
+                                <path d="M12.227 11.52a5.477 5.477 0 0 0 1.246-2.97.5.5 0 0 0-.995-.1 4.478 4.478 0 0 1-.962 2.359l-1.07-1.07C10.794 9.247 11 8.647 11 8V3a3 3 0 0 0-6 0v1.293L1.354.646a.5.5 0 1 0-.708.708l14 14a.5.5 0 0 0 .708-.708zM8 12.5c.683 0 1.33-.152 1.911-.425l.743.743c-.649.359-1.378.59-2.154.66V15h2a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h2v-1.522a5.502 5.502 0 0 1-4.973-4.929.5.5 0 0 1 .995-.098A4.5 4.5 0 0 0 8 12.5z"></path>
+                                <path d="M8.743 10.907 5 7.164V8a3 3 0 0 0 3.743 2.907z"></path>
+                            </svg>
+                            Microphone
+                        </button>
+                        <div class="lk-button-group-menu">
+                            <button class="lk-button lk-button-menu" aria-pressed="false"></button>
+                            <div class="lk-device-menu"
+                                 style="visibility: hidden; left: -151.362px; top: -195.6px;">
+                                <ul class="lk-media-device-select lk-list">
+                                    <li id="8043161cadaa9d311c7320ab2b5b0b66645e7e9dde3f890df198739f7f2a08f3"
+                                        data-lk-active="true" aria-selected="true" role="option">
+                                        <button class="lk-button">Microphone (Realtek(R) Audio)
+                                        </button>
+                                    </li>
+                                    <li id="a6630efabdb7ac28ece40daa14bf08247555e8590607f31baed18e3e900282c7"
+                                        data-lk-active="false" aria-selected="false" role="option">
+                                        <button class="lk-button">Microphone Array (Realtek(R)
+                                            Audio)
+                                        </button>
+                                    </li>
+                                    <li id="default" data-lk-active="false" aria-selected="false"
+                                        role="option">
+                                        <button class="lk-button">التلقائي - Microphone (Realtek(R)
+                                            Audio)
+                                        </button>
+                                    </li>
+                                    <li id="communications" data-lk-active="false"
+                                        aria-selected="false" role="option">
+                                        <button class="lk-button">الاتصالات - Microphone (Realtek(R)
+                                            Audio)
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lk-button-group">
+                        <button class="lk-button" aria-pressed="true" data-lk-source="camera"
+                                data-lk-enabled="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor">
+                                <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h8A1.5 1.5 0 0 1 11 4.5v7A1.5 1.5 0 0 1 9.5 13h-8A1.5 1.5 0 0 1 0 11.5zM15.2 3.6l-2.8 2.1a1 1 0 0 0-.4.8v3a1 1 0 0 0 .4.8l2.8 2.1a.5.5 0 0 0 .8-.4V4a.5.5 0 0 0-.8-.4z"></path>
+                            </svg>
+                            Camera
+                        </button>
+                        <div class="lk-button-group-menu">
+                            <button class="lk-button lk-button-menu" aria-pressed="false"></button>
+                            <div class="lk-device-menu"
+                                 style="visibility: hidden; left: -113.118px; top: -63.6px;">
+                                <ul class="lk-media-device-select lk-list">
+                                    <li id="3b0d40f6e4edd48c93786404a6811bcbf82ba06621106f2d05a6e0cd641e0685"
+                                        data-lk-active="true" aria-selected="true" role="option">
+                                        <button class="lk-button">Integrated Camera (5986:2160)
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="lk-button" aria-pressed="true" data-lk-source="screen_share"
+                            data-lk-enabled="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" fill="none">
+                            <g fill="currentColor">
+                                <path d="M7.28 4.22a.75.75 0 0 0-1.06 1.06L8.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L10 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L11.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L10 6.94z"></path>
+                                <path fill-rule="evenodd"
+                                      d="M2.75 0A2.75 2.75 0 0 0 0 2.75v10.5A2.75 2.75 0 0 0 2.75 16h14.5A2.75 2.75 0 0 0 20 13.25V2.75A2.75 2.75 0 0 0 17.25 0zM1.5 2.75c0-.69.56-1.25 1.25-1.25h14.5c.69 0 1.25.56 1.25 1.25v10.5c0 .69-.56 1.25-1.25 1.25H2.75c-.69 0-1.25-.56-1.25-1.25z"
+                                      clip-rule="evenodd"></path>
+                            </g>
+                        </svg>
+                        Stop screen share
+                    </button>
+                    <button class="lk-button lk-chat-toggle" aria-pressed="false"
+                            data-lk-unread-msgs="0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="none">
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M0 2.75A2.75 2.75 0 0 1 2.75 0h10.5A2.75 2.75 0 0 1 16 2.75v13.594a.75.75 0 0 1-1.234.572l-3.691-3.12a1.25 1.25 0 0 0-.807-.296H2.75A2.75 2.75 0 0 1 0 10.75v-8ZM2.75 1.5c-.69 0-1.25.56-1.25 1.25v8c0 .69.56 1.25 1.25 1.25h7.518c.65 0 1.279.23 1.775.65l2.457 2.077V2.75c0-.69-.56-1.25-1.25-1.25H2.75Z"
+                                  clip-rule="evenodd"></path>
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M3 4.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5Z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                        Chat
+                    </button>
+                    <button class="lk-disconnect-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M2 2.75A2.75 2.75 0 0 1 4.75 0h6.5A2.75 2.75 0 0 1 14 2.75v10.5A2.75 2.75 0 0 1 11.25 16h-6.5A2.75 2.75 0 0 1 2 13.25v-.5a.75.75 0 0 1 1.5 0v.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V2.75c0-.69-.56-1.25-1.25-1.25h-6.5c-.69 0-1.25.56-1.25 1.25v.5a.75.75 0 0 1-1.5 0v-.5Z"
+                                  clip-rule="evenodd"></path>
+                            <path fill="currentColor" fill-rule="evenodd"
+                                  d="M8.78 7.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 1 1-1.06-1.06l.97-.97H1.75a.75.75 0 0 1 0-1.5h4.69l-.97-.97a.75.75 0 0 1 1.06-1.06l2.25 2.25Z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                        Leave
+                    </button>
+                    <button class="lk-start-audio-button lk-start-audio-button"
+                            style="display: none;">Start Video
+                    </button>
+                </div>
+            </div>
+            <div class="lk-chat" style="display: none;">
+                <div class="lk-chat-header">Messages
+                    <button class="lk-close-button lk-button lk-chat-toggle" aria-pressed="false"
+                            data-lk-unread-msgs="0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             viewBox="0 0 24 24">
+                            <path fill="#FFF"
+                                  d="M4.99 3.99a1 1 0 0 0-.697 1.717L10.586 12l-6.293 6.293a1 1 0 1 0 1.414 1.414L12 13.414l6.293 6.293a1 1 0 1 0 1.414-1.414L13.414 12l6.293-6.293a1 1 0 0 0-.727-1.717 1 1 0 0 0-.687.303L12 10.586 5.707 4.293a1 1 0 0 0-.717-.303z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <ul class="lk-list lk-chat-messages"></ul>
+                <form class="lk-chat-form"><input class="lk-form-control lk-chat-form-input"
+                                                  placeholder="Enter a message..." type="text">
+                    <button type="submit" class="lk-button lk-chat-form-button">Send</button>
+                </form>
+            </div>
+            <div style="display: none;"></div>
+        </div>
+    </div>
+</main>
+<next-route-announcer style="position: absolute;"></next-route-announcer>
+<protonpass-root-9c3b data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-9c3b>
+</body>
+</html>

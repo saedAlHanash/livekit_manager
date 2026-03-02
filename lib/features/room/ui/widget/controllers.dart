@@ -79,6 +79,13 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
                 },
               ),
+              PopupMenuItemModel(
+                label: participant.isAudioEnabled ? 'إيقاف الاستماع' : 'تشغيل الاستماع',
+                icon: ImageMultiType(url: participant.isAudioEnabled ? Icons.volume_off : Icons.volume_up),
+                onTap: () {
+                  context.read<UserControlCubit>().toggleRemoteUserAudio([participant]);
+                },
+              ),
               silence(),
               suspend(),
             ] else ...[

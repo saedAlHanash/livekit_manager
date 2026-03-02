@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-// import 'package:web/web.dart' as web;
-import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
+import 'package:livekit_manager/features/room/ui/pages/teacher_page.dart';
 
 import '../core/api_manager/api_url.dart';
 import '../core/app/app_widget.dart';
@@ -67,24 +65,16 @@ final goRouter = GoRouter(
 
     ///room
     GoRoute(
-      path: RouteName.room,
-      name: RouteName.room,
+      path: RouteName.teacher,
+      name: RouteName.teacher,
       builder: (_, state) {
-        String roomId = state.uri.queryParameters['id'] ?? '';
-        final extra = state.extra as List<dynamic>;
-        if (state.extra is! List) {
-          // if (kIsWeb) web.window.history.back();
-        }
-        final room = extra[0] as Room;
-        final listener = extra[1] as EventsListener<RoomEvent>;
-
         return MultiBlocProvider(
           providers: [
             BlocProvider(
               create: (context) => sl<RoomCubit>(),
             ),
           ],
-          child: Container(),
+          child: TeacherPage(),
         );
       },
     ),
@@ -156,7 +146,11 @@ final goRouter = GoRouter(
           providers: [
             BlocProvider(create: (context) => sl<HomeCubit>()),
           ],
-          child: HomePage(link: link, token: token),
+          child: HomePage(
+            link: link,
+            token: token,
+            page: .teacher,
+          ),
         );
       },
     ),
@@ -196,7 +190,7 @@ class RouteName {
   static const setting = '/setting';
   static const settings = '/settings';
 
-  static const room = '/room';
+  static const teacher = '/teacher';
   static const rooms = '/rooms';
 
   static const user = '/user';
