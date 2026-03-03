@@ -10,6 +10,7 @@ import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../widget/users/participants_layout.dart';
 import '../widget/users/remote_user.dart';
 
 class TeacherPage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _TeacherPageState extends State<TeacherPage> {
                                         color: AppColorManager.appBarColor,
                                         borderRadius: BorderRadius.circular(12.0).r,
                                       ),
-                                      child: ListRemoteUser(participants: state.students, fit: VideoViewFit.cover),
+                                      child: ParticipantsLayout(fit: VideoViewFit.cover),
                                     ),
                                   ),
                                 Expanded(

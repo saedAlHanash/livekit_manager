@@ -8,12 +8,12 @@ class NoVideoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        alignment: Alignment.center,
-        child: LayoutBuilder(
-          builder: (ctx, constraints) => Icon(
-            Icons.videocam_off_outlined,
-            size: math.min(constraints.maxHeight, constraints.maxWidth) * 0.3,
-          ),
-        ),
-      );
+    alignment: Alignment.center,
+    child: LayoutBuilder(
+      builder: (ctx, constraints) => Icon(
+        Icons.person,
+        size: math.min(constraints.maxHeight, constraints.maxWidth) * 0.3,
+      ),
+    ),
+  );
 }

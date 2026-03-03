@@ -10,7 +10,7 @@ class RoomInitial extends AbstractState<Room> {
     required this.url,
     required this.token,
     required this.listener,
-    required this.participant,
+    required this.participants,
     required this.raiseHands,
     required this.selectedUserId,
     required this.haveNewNote,
@@ -27,14 +27,14 @@ class RoomInitial extends AbstractState<Room> {
   final EventsListener<RoomEvent> listener;
 
   final List<SettingMessage> raiseHands;
-  final List<Participant> participant;
+  final List<Participant> participants;
 
   final String selectedUserId;
 
   List<Participant> get participantTracksWithoutSelected =>
-      participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
+      participants.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
 
-  List<Participant> get participantTracksWithoutMe => participant
+  List<Participant> get participantTracksWithoutMe => participants
       .where((e) => e.identity != result.localParticipant?.identity)
       .sorted(
         (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
@@ -45,12 +45,12 @@ class RoomInitial extends AbstractState<Room> {
       .toList(growable: false);
 
   List<Participant> get students =>
-      participant.where((e) => e.userType.isUser && e is! LocalParticipant).toList(growable: false);
+      participants.where((e) => e.userType.isUser && e is! LocalParticipant).toList(growable: false);
 
-  Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
+  Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
 
   Participant? get selectedParticipant =>
-      participant.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participant.firstOrNull;
+      participants.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participants.firstOrNull;
 
   ConnectionState get connectionState => result.connectionState;
 
@@ -85,7 +85,7 @@ class RoomInitial extends AbstractState<Room> {
       token: '',
       listener: room.createListener(),
       raiseHands: [],
-      participant: const [],
+      participants: const [],
       selectedUserId: '',
       haveNewNote: false,
     );
@@ -102,15 +102,15 @@ class RoomInitial extends AbstractState<Room> {
     listener,
     url,
     token,
-    participant,
+    participants,
     raiseHands,
     selectedUserId,
     haveNewNote,
   ];
 
-  List<Participant> get speakers => participant.where((e) => e.permissions.canPublish).toList();
+  List<Participant> get speakers => participants.where((e) => e.permissions.canPublish).toList();
 
-  String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
+  String get sharerId => participants.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 
   RoomInitial copyWith({
     CubitStatuses? statuses,
@@ -135,7 +135,7 @@ class RoomInitial extends AbstractState<Room> {
       url: url ?? this.url,
       token: token ?? this.token,
       listener: listener ?? this.listener,
-      participant: participant ?? this.participant,
+      participants: participant ?? this.participants,
       raiseHands: raiseHands ?? this.raiseHands,
       selectedUserId: selectedUserId ?? this.selectedUserId,
       haveNewNote: haveNewNote ?? this.haveNewNote,

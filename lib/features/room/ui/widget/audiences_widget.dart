@@ -16,7 +16,7 @@ class AudiencesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final l = state.participant.where((e) => e.userType.isUser && !e.permissions.canPublish).toList();
+        final l = state.participants.where((e) => e.userType.isUser && !e.permissions.canPublish).toList();
 
         return Container(
           decoration: BoxDecoration(

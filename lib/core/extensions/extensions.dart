@@ -689,48 +689,45 @@ extension GlobalKeyH on GlobalKey {
   }
 }
 
-extension ParticipantH on Participant {
+extension ParticipantLocal on Participant {
   RemoteParticipant get remoteParticipant => this as RemoteParticipant;
 
   LocalParticipant get localParticipant => this as LocalParticipant;
 
-  MediaType get type => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
+  MediaType get mediaType => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
 
-  RemoteTrackPublication<RemoteVideoTrack>? get remoteVideoPublication {
-    return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
+  RemoteTrackPublication<RemoteVideoTrack>? get _remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
   }
 
-  List<RemoteTrackPublication<RemoteVideoTrack>> get remoteVideoPublications {
-    return remoteParticipant.videoTrackPublications /*.where((e) => e.source == type.videoSourceType).toList()*/;
+  RemoteTrackPublication<RemoteAudioTrack>? get _remoteAudioPublication =>
+      remoteParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
+
+  LocalTrackPublication<LocalVideoTrack>? get _localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
   }
 
-  RemoteTrackPublication<RemoteAudioTrack>? get remoteAudioPublication =>
-      remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  LocalTrackPublication<LocalAudioTrack>? get _localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
 
-  LocalTrackPublication<LocalVideoTrack>? get localVideoPublication {
-    return localParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
-  }
+  VideoTrack? get screenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track as VideoTrack?;
 
-  LocalTrackPublication<LocalAudioTrack>? get localAudioPublication =>
-      localParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
+  VideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track as VideoTrack?;
 
+  bool get haveActiveVideoTrack => videoTrackPublications.any((e) => e.track?.muted == false) || !isMuted;
+}
+
+extension ParticipantH on Participant {
   String get image => attributes['imageUrl'].toString();
 
-  //
-  // LocalTrackPublication<LocalVideoTrack>? get videoPublication {
-  //   return remoteParticipant.videoTrackPublications.where((e) => e.source == type.videoSourceType).firstOrNull;
-  // }
-  //
-  // LocalTrackPublication<LocalAudioTrack>? get audioPublication =>
-  //     remoteParticipant.audioTrackPublications.where((e) => e.source == type.audioSourceType).firstOrNull;
-
-  VideoTrack? get activeVideoTrack =>
-      (this is LocalParticipant) ? localVideoPublication?.track : remoteVideoPublication?.track;
+  VideoTrack? get activeVideoTrack => (!haveActiveVideoTrack)
+      ? null
+      : (this is LocalParticipant)
+      ? _localVideoPublication?.track
+      : _remoteVideoPublication?.track;
 
   AudioTrack? get activeAudioTrack =>
-      (this is LocalParticipant) ? localAudioPublication?.track : remoteAudioPublication?.track;
-
-  bool get videoActive => activeVideoTrack != null && !activeVideoTrack!.muted;
+      (this is LocalParticipant) ? _localAudioPublication?.track : _remoteAudioPublication?.track;
 
   bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
 
@@ -754,6 +751,18 @@ extension ParticipantH on Participant {
 
   List<TrackPublication> get audioPublicationList =>
       audioTrackPublications.where((e) => e.kind == TrackType.AUDIO && e.track != null).toList();
+
+  VideoTrack? get primaryTrack {
+    if (!haveActiveVideoTrack) return null;
+    if (videoTrackPublications.length == 1) return videoTrackPublications.first.track as VideoTrack?;
+    return screenTrack;
+  }
+
+  VideoTrack? get secondaryTrack {
+    if (!haveActiveVideoTrack) return null;
+    if (videoTrackPublications.length != 2) return null;
+    return cameraTrack;
+  }
 }
 
 extension RemoteParticipantH on RemoteParticipant {
@@ -796,13 +805,15 @@ extension ParticipantPermissionsH on ParticipantPermissions {
 
 extension ConnectionQualityH on ConnectionQuality {
   Widget get icon => ImageMultiType(
-    url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
-    color: {
-      ConnectionQuality.excellent: Colors.green,
-      ConnectionQuality.good: Colors.orange,
-      ConnectionQuality.poor: Colors.red,
+    url: {
+      ConnectionQuality.excellent: Icons.wifi,
+      ConnectionQuality.good: Icons.wifi_2_bar,
+      ConnectionQuality.poor: Icons.wifi_1_bar,
+      ConnectionQuality.lost: Icons.wifi_off,
+      ConnectionQuality.unknown: Icons.perm_scan_wifi_outlined,
     }[this],
-    height: 16.0.dg,
+
+    height: 18.0.dg,
   );
 }
 

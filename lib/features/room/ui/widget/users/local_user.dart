@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 
@@ -51,13 +52,10 @@ class _LocalUserState extends State<LocalUser> {
   Widget build(BuildContext ctx) {
     if (widget.participant == null) return const NoVideoWidget();
 
-    // Check if video is active and track is not muted
     final activeVideoTrack = widget.participant!.activeVideoTrack;
-    final isVideoActive = widget.participant!.videoActive && activeVideoTrack != null && !activeVideoTrack.muted;
-
     return Stack(
       children: [
-        isVideoActive
+        activeVideoTrack != null
             ? VideoTrackRenderer(
                 renderMode: VideoRenderMode.auto,
                 fit: VideoViewFit.contain,

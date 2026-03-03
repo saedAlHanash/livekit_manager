@@ -18,7 +18,6 @@ class _VideoWidgetState extends State<VideoWidget> {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
         return ParticipantsLayout(
-          participants: state.participant,
           selectedIdentity: state.selectedParticipant?.identity,
           onTap: (participant) {
             cubit.selectParticipant(participant.identity);
