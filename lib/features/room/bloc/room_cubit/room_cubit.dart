@@ -34,7 +34,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   String get filter => state.result.name ?? '';
 
   Future<void> getDataFromCache() async {
-    final data = await getListCached(fromJson: SettingMessage.fromJson);
+    final data = await getListCached(fromJson: LkMessage.fromJson);
     emit(state.copyWith(raiseHands: data, id: state.notifyIndex + 1));
   }
 
@@ -130,24 +130,21 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
-          setHaveNewNote(true);
-          try {
-            final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-            if (!message.toUserType.isManager) return;
-
-            SoundService.play(Assets.soundsNote);
-            switch (message.action) {
-              case ManagerActions.achievement:
-                return;
-              case ManagerActions.requestPermission:
-              case ManagerActions.requestToDisconnect:
-              case ManagerActions.message:
-              case ManagerActions.changeScreen:
-                await addOrUpdateToCache(message);
-            }
-          } catch (err) {
-            loggerObject.e('Failed to decode: $err');
-          }
+          // setHaveNewNote(true);
+          // try {
+          //   final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+          //   SoundService.play(Assets.soundsNote);
+          //   switch (message.action) {
+          //     case ManagerActions.achievement:
+          //       return;
+          //     case ManagerActions.requestPermission:
+          //     case ManagerActions.chosen:
+          //     case ManagerActions.message:
+          //       await addOrUpdateToCache(message);
+          //   }
+          // } catch (err) {
+          //   loggerObject.e('Failed to decode: $err');
+          // }
         },
       );
   }
@@ -224,12 +221,10 @@ class RoomCubit extends MCubit<RoomInitial> {
     emit(state.copyWith(selectedUserId: participantTrackId));
   }
 
-  void raiseHand() {}
-
-  Future<void> addOrUpdateToCache(SettingMessage item) async {
+  Future<void> addOrUpdateToCache(LkMessage item) async {
     final listJson = await addOrUpdateDate([item]);
     if (listJson == null) return;
-    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
+    final list = listJson.map((e) => LkMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
   }
 
@@ -237,12 +232,38 @@ class RoomCubit extends MCubit<RoomInitial> {
     final listJson = await deleteDate([id]);
     if (listJson == null) return;
 
-    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
+    final list = listJson.map((e) => LkMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
   }
 
   void setHaveNewNote(bool b) {
     emit(state.copyWith(haveNewNote: b, id: state.notifyIndex + 1));
+  }
+
+  Future<void> choseUser(String destinationIdentity) async {
+    final message = utf8.encode(
+      jsonEncode(
+        LkMessage(
+          action: ManagerActions.chosen,
+          metadata: {},
+        ),
+      ),
+    );
+    await state.result.localParticipant?.publishData(
+      message,
+      destinationIdentities: [destinationIdentity],
+      reliable: true,
+    );
+
+    await Future.delayed(Duration(seconds: 1));
+  }
+
+  void changeLayoutMode(ParticipantsLayoutMode mode) {
+    emit(state.copyWith(layoutMode: mode));
+  }
+
+  void toggleChat() {
+    emit(state.copyWith(showChat: !state.showChat));
   }
 
   @override

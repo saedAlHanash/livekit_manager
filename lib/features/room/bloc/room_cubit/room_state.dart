@@ -12,8 +12,10 @@ class RoomInitial extends AbstractState<Room> {
     required this.listener,
     required this.participants,
     required this.raiseHands,
-    required this.selectedUserId,
+    required this.selectedParticipantId,
     required this.haveNewNote,
+    this.layoutMode = ParticipantsLayoutMode.grid,
+    this.showChat = false,
   });
 
   final String url;
@@ -26,35 +28,14 @@ class RoomInitial extends AbstractState<Room> {
 
   final EventsListener<RoomEvent> listener;
 
-  final List<SettingMessage> raiseHands;
+  final List<LkMessage> raiseHands;
   final List<Participant> participants;
 
-  final String selectedUserId;
-
-  List<Participant> get participantTracksWithoutSelected =>
-      participants.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
-
-  List<Participant> get participantTracksWithoutMe => participants
-      .where((e) => e.identity != result.localParticipant?.identity)
-      .sorted(
-        (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
-      )
-      .sorted(
-        (a, b) => ((!b.userType.isUser) ? 1 : 0) - ((!b.userType.isUser) ? 1 : 0),
-      )
-      .toList(growable: false);
-
-  List<Participant> get students =>
-      participants.where((e) => e.userType.isUser && e is! LocalParticipant).toList(growable: false);
+  final String selectedParticipantId;
+  final ParticipantsLayoutMode layoutMode;
+  final bool showChat;
 
   Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
-
-  Participant? get selectedParticipant =>
-      participants.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participants.firstOrNull;
-
-  ConnectionState get connectionState => result.connectionState;
-
-  bool get isConnect => result.connectionState == ConnectionState.connected;
 
   factory RoomInitial.initial() {
     final room = Room(
@@ -86,7 +67,7 @@ class RoomInitial extends AbstractState<Room> {
       listener: room.createListener(),
       raiseHands: [],
       participants: const [],
-      selectedUserId: '',
+      selectedParticipantId: '',
       haveNewNote: false,
     );
   }
@@ -104,8 +85,10 @@ class RoomInitial extends AbstractState<Room> {
     token,
     participants,
     raiseHands,
-    selectedUserId,
+    selectedParticipantId,
     haveNewNote,
+    layoutMode,
+    showChat,
   ];
 
   List<Participant> get speakers => participants.where((e) => e.permissions.canPublish).toList();
@@ -122,9 +105,11 @@ class RoomInitial extends AbstractState<Room> {
     String? token,
     EventsListener<RoomEvent>? listener,
     List<Participant>? participant,
-    List<SettingMessage>? raiseHands,
+    List<LkMessage>? raiseHands,
     String? selectedUserId,
     bool? haveNewNote,
+    ParticipantsLayoutMode? layoutMode,
+    bool? showChat,
   }) {
     return RoomInitial(
       statuses: statuses ?? this.statuses,
@@ -137,8 +122,10 @@ class RoomInitial extends AbstractState<Room> {
       listener: listener ?? this.listener,
       participants: participant ?? this.participants,
       raiseHands: raiseHands ?? this.raiseHands,
-      selectedUserId: selectedUserId ?? this.selectedUserId,
+      selectedParticipantId: selectedUserId ?? this.selectedParticipantId,
       haveNewNote: haveNewNote ?? this.haveNewNote,
+      layoutMode: layoutMode ?? this.layoutMode,
+      showChat: showChat ?? this.showChat,
     );
   }
 }

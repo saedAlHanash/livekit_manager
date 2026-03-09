@@ -19,7 +19,7 @@ class DynamicUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (participant is LocalParticipant) {
+    if (participant.isLocalUser) {
       return LocalUser(participant: participant);
     } else if (participant is RemoteParticipant) {
       return RemoteUser(participant: participant);

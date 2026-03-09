@@ -114,6 +114,20 @@ class MyStyle {
     );
   }
 
+  static Widget loadingW({Color? color}) {
+    return SizedBox(
+      height: 24.0.dg,
+      width: 24.0.dg,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0).r,
+        child: CircularProgressIndicator.adaptive(
+          backgroundColor: color,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      ),
+    );
+  }
+
   static var outlineBorder = BoxDecoration(
     border: Border.all(color: Colors.green),
     borderRadius: BorderRadius.circular(12.0.r),

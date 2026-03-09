@@ -77,6 +77,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "october": MessageLookupByLibrary.simpleMessage("october"),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "oops": MessageLookupByLibrary.simpleMessage("Oops!"),
+    "pleaseWaitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
+      "Please wait for content broadcast",
+    ),
     "requestedPermission": MessageLookupByLibrary.simpleMessage(
       "requested permission",
     ),

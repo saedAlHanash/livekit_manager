@@ -1,8 +1,8 @@
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/generated/l10n.dart';
 
@@ -39,6 +39,48 @@ class ControlsWidget extends StatelessWidget {
                   title: cState.screenShareEnabled ? S.of(context).stop : S.of(context).screen,
                   color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
                   icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
+                ),
+                12.w.horizontalSpace,
+                PopupMenuButton<ParticipantsLayoutMode>(
+                  initialValue: state.layoutMode,
+                  onSelected: (mode) {
+                    context.read<RoomCubit>().changeLayoutMode(mode);
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: ParticipantsLayoutMode.grid,
+                      child: ListTile(
+                        leading: const Icon(Icons.grid_view),
+                        title: const Text('Adaptive Grid'),
+                        selected: state.layoutMode == ParticipantsLayoutMode.grid,
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: ParticipantsLayoutMode.focus,
+                      child: ListTile(
+                        leading: const Icon(Icons.person_search),
+                        title: const Text('Speaker Focus'),
+                        selected: state.layoutMode == ParticipantsLayoutMode.focus,
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: ParticipantsLayoutMode.scroll,
+                      child: ListTile(
+                        leading: const Icon(Icons.chat_bubble_outline),
+                        title: const Text('Sidebar with Chat'),
+                        selected: state.layoutMode == ParticipantsLayoutMode.scroll,
+                      ),
+                    ),
+                  ],
+                  child: Container(
+                    width: 45.dg,
+                    height: 45.dg,
+                    decoration: BoxDecoration(
+                      color: AppColorManager.appBarColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.layers_outlined, size: 26),
+                  ),
                 ),
                 12.w.horizontalSpace,
                 _Item(

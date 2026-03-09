@@ -16,6 +16,7 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
+import '../../features/room/bloc/room_cubit/room_cubit.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
@@ -689,144 +690,6 @@ extension GlobalKeyH on GlobalKey {
   }
 }
 
-extension ParticipantLocal on Participant {
-  RemoteParticipant get remoteParticipant => this as RemoteParticipant;
-
-  LocalParticipant get localParticipant => this as LocalParticipant;
-
-  MediaType get mediaType => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
-
-  RemoteTrackPublication<RemoteVideoTrack>? get _remoteVideoPublication {
-    return remoteParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
-  }
-
-  RemoteTrackPublication<RemoteAudioTrack>? get _remoteAudioPublication =>
-      remoteParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
-
-  LocalTrackPublication<LocalVideoTrack>? get _localVideoPublication {
-    return localParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
-  }
-
-  LocalTrackPublication<LocalAudioTrack>? get _localAudioPublication =>
-      localParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
-
-  VideoTrack? get screenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track as VideoTrack?;
-
-  VideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track as VideoTrack?;
-
-  bool get haveActiveVideoTrack => videoTrackPublications.any((e) => e.track?.muted == false) || !isMuted;
-}
-
-extension ParticipantH on Participant {
-  String get image => attributes['imageUrl'].toString();
-
-  VideoTrack? get activeVideoTrack => (!haveActiveVideoTrack)
-      ? null
-      : (this is LocalParticipant)
-      ? _localVideoPublication?.track
-      : _remoteVideoPublication?.track;
-
-  AudioTrack? get activeAudioTrack =>
-      (this is LocalParticipant) ? _localAudioPublication?.track : _remoteAudioPublication?.track;
-
-  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
-
-  LkUserType get userType =>
-      LkUserType.values[(attributes['lkUserType'] ?? attributes['type'] ?? 0).toString().tryParseOrZeroInt];
-
-  String get displayName {
-    if (name.isNotEmpty) return name;
-    if (identity.isNotEmpty) return identity;
-    return sid;
-  }
-
-  bool get isAudioEnabled => (this is lk.RemoteParticipant)
-      ? (this as lk.RemoteParticipant).isAudioEnabled
-      : (this as lk.LocalParticipant).isAudioEnabled;
-
-  bool get isSuspend => permissions.isSuspend;
-
-  List<TrackPublication> get videoPublicationList =>
-      videoTrackPublications.where((e) => e.kind == TrackType.VIDEO && e.track != null).toList();
-
-  List<TrackPublication> get audioPublicationList =>
-      audioTrackPublications.where((e) => e.kind == TrackType.AUDIO && e.track != null).toList();
-
-  VideoTrack? get primaryTrack {
-    if (!haveActiveVideoTrack) return null;
-    if (videoTrackPublications.length == 1) return videoTrackPublications.first.track as VideoTrack?;
-    return screenTrack;
-  }
-
-  VideoTrack? get secondaryTrack {
-    if (!haveActiveVideoTrack) return null;
-    if (videoTrackPublications.length != 2) return null;
-    return cameraTrack;
-  }
-}
-
-extension RemoteParticipantH on RemoteParticipant {
-  RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
-
-  RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
-
-  RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
-
-  bool get isAudioEnabled => audioTrackPublications.any((e) => e.enabled);
-}
-
-extension LocalParticipantH on LocalParticipant {
-  bool get isAudioEnabled => audioTrackPublications.any((e) => !e.muted);
-
-  LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
-
-  LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
-
-  LocalVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
-}
-
-extension ParticipantPermissionsH on ParticipantPermissions {
-  bool get isSuspend => !canSubscribe && !canPublish;
-
-  bool get isSilence => !canPublish && canSubscribe;
-
-  bool get isAll => canSubscribe && canPublish;
-
-  bool get isDeafblind => canSubscribe == false;
-
-  String get printFun {
-    return 'canSubscribe: $canSubscribe\n'
-        'canPublish: $canPublish\n'
-        'canPublishData: $canPublishData\n'
-        'canUpdateMetadata: $canUpdateMetadata\n'
-        'hidden: $hidden';
-  }
-}
-
-extension ConnectionQualityH on ConnectionQuality {
-  Widget get icon => ImageMultiType(
-    url: {
-      ConnectionQuality.excellent: Icons.wifi,
-      ConnectionQuality.good: Icons.wifi_2_bar,
-      ConnectionQuality.poor: Icons.wifi_1_bar,
-      ConnectionQuality.lost: Icons.wifi_off,
-      ConnectionQuality.unknown: Icons.perm_scan_wifi_outlined,
-    }[this],
-
-    height: 18.0.dg,
-  );
-}
-
-extension ConnectionStateH on lk.ConnectionState {
-  bool get isDisconnected => this == lk.ConnectionState.disconnected;
-
-  bool get isConnecting => this == lk.ConnectionState.connecting;
-
-  bool get isReconnecting => this == lk.ConnectionState.reconnecting;
-
-  bool get isConnected => this == lk.ConnectionState.connected;
-}
-
 class FormatDateTime {
   final int months;
   final int days;
@@ -853,3 +716,177 @@ class FormatDateTime {
         '$seconds\n';
   }
 }
+
+//region live kit
+extension ParticipantLocal on Participant {
+  RemoteParticipant get remoteParticipant => this as RemoteParticipant;
+
+  LocalParticipant get localParticipant => this as LocalParticipant;
+
+  MediaType get mediaType => videoTrackPublications.any((e) => e.isScreenShare) ? MediaType.screen : MediaType.media;
+
+  RemoteTrackPublication<RemoteVideoTrack>? get _remoteVideoPublication {
+    return remoteParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
+  }
+
+  RemoteTrackPublication<RemoteAudioTrack>? get _remoteAudioPublication =>
+      remoteParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
+
+  LocalTrackPublication<LocalVideoTrack>? get _localVideoPublication {
+    return localParticipant.videoTrackPublications.where((e) => e.source == mediaType.videoSourceType).firstOrNull;
+  }
+
+  LocalTrackPublication<LocalAudioTrack>? get _localAudioPublication =>
+      localParticipant.audioTrackPublications.where((e) => e.source == mediaType.audioSourceType).firstOrNull;
+
+  VideoTrack? get screenTrack =>
+      videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare && e.track?.muted == false)?.track as VideoTrack?;
+
+  VideoTrack? get cameraTrack =>
+      videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare && e.track?.muted == false)?.track as VideoTrack?;
+
+  bool get haveActiveVideoTrack => videoTrackPublications.any((e) => e.track?.muted == false) || !isMuted;
+
+  bool get haveActiveAudioTrack => audioTrackPublications.any((e) => e.track?.muted == false) || !isMuted;
+
+  bool get isLocalUser => this is LocalParticipant;
+
+  bool get isRemoteUser => !isLocalUser;
+}
+
+extension ParticipantH on Participant {
+  String get image => attributes['imageUrl'].toString();
+
+  VideoTrack? get activeVideoTrack => (!haveActiveVideoTrack)
+      ? null
+      : (isLocalUser)
+      ? _localVideoPublication?.track
+      : _remoteVideoPublication?.track;
+
+  AudioTrack? get activeAudioTrack => (isLocalUser) ? _localAudioPublication?.track : _remoteAudioPublication?.track;
+
+  bool get audioActive => activeAudioTrack != null && !activeAudioTrack!.muted;
+
+  LkUserType get userType =>
+      LkUserType.values[(attributes['lkUserType'] ?? attributes['type'] ?? 0).toString().tryParseOrZeroInt];
+
+  String get displayName {
+    if (name.isNotEmpty) return name;
+    if (identity.isNotEmpty) return identity;
+    return sid;
+  }
+
+  bool get isAudioEnabled => (this is lk.RemoteParticipant)
+      ? (this as lk.RemoteParticipant).isAudioEnabled
+      : (this as lk.LocalParticipant).isAudioEnabled;
+
+  bool get isSuspend => permissions.isSuspend;
+
+  bool get isChosen => haveActiveAudioTrack && isRemoteUser;
+
+  List<TrackPublication> get videoPublicationList =>
+      videoTrackPublications.where((e) => e.kind == TrackType.VIDEO && e.track != null).toList();
+
+  List<TrackPublication> get audioPublicationList =>
+      audioTrackPublications.where((e) => e.kind == TrackType.AUDIO && e.track != null).toList();
+
+  VideoTrack? get primaryTrack {
+    if (!haveActiveVideoTrack) return null;
+    if (videoTrackPublications.length == 1) return videoTrackPublications.first.track as VideoTrack?;
+    return screenTrack;
+  }
+
+  VideoTrack? get secondaryTrack {
+    if (!haveActiveVideoTrack) return null;
+    if (videoTrackPublications.length != 2) return null;
+    return cameraTrack;
+  }
+}
+
+extension RemoteParticipantH on RemoteParticipant {
+  RemoteAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => e.enabled)?.track;
+
+  RemoteVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
+
+  RemoteVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+}
+
+extension LocalParticipantH on LocalParticipant {
+  LocalAudioTrack? get activeAudioTrack => audioTrackPublications.firstWhereOrNull((e) => !e.muted)?.track;
+
+  LocalVideoTrack? get shareScreenTrack => videoTrackPublications.firstWhereOrNull((e) => e.isScreenShare)?.track;
+
+  LocalVideoTrack? get cameraTrack => videoTrackPublications.firstWhereOrNull((e) => !e.isScreenShare)?.track;
+}
+
+extension ParticipantPermissionsH on ParticipantPermissions {
+  bool get isSuspend => !canSubscribe && !canPublish;
+
+  bool get isSilence => !canPublish && canSubscribe;
+
+  bool get isAll => canSubscribe && canPublish;
+
+  String get printFun {
+    return 'canSubscribe: $canSubscribe\n'
+        'canPublish: $canPublish\n'
+        'canPublishData: $canPublishData\n'
+        'canUpdateMetadata: $canUpdateMetadata\n'
+        'hidden: $hidden';
+  }
+}
+
+extension ConnectionQualityH on ConnectionQuality {
+  Widget get icon => ImageMultiType(
+    url: this == ConnectionQuality.poor ? Icons.wifi_off_outlined : Icons.wifi,
+    color: {
+      ConnectionQuality.excellent: Colors.green,
+      ConnectionQuality.good: Colors.orange,
+      ConnectionQuality.poor: Colors.red,
+    }[this],
+    height: 16.0.dg,
+  );
+}
+
+extension ConnectionStateH on lk.ConnectionState {
+  bool get isDisconnected => this == lk.ConnectionState.disconnected;
+
+  bool get isConnecting => this == lk.ConnectionState.connecting;
+
+  bool get isReconnecting => this == lk.ConnectionState.reconnecting;
+
+  bool get isConnected => this == lk.ConnectionState.connected;
+}
+
+extension RoomInitialH on RoomInitial {
+  List<Participant> get otherParticipants => participants
+      .where(
+        (e) => (e.identity != (selectedParticipant?.identity ?? '')) && e.haveActiveVideoTrack && e.isRemoteUser,
+      )
+      .toList();
+
+  List<Participant> get participantTracksWithoutMe => participants
+      .where((e) => e.isRemoteUser)
+      // .sorted(
+      //   (a, b) => (b.permissions.canPublish ? 1 : 0) - (a.permissions.canPublish ? 1 : 0),
+      // )
+      // .sorted(
+      //   (a, b) => ((!b.userType.isUser) ? 1 : 0) - ((!b.userType.isUser) ? 1 : 0),
+      // )
+      .toList();
+
+  List<Participant> get usersAndChosenParticipants => participants
+      .where(
+        (e) => e.haveActiveVideoTrack && e.haveActiveAudioTrack && e.isRemoteUser,
+      )
+      .toList();
+
+  Participant? get selectedParticipant => participants.firstWhereOrNull((e) => e.identity == selectedParticipantId);
+
+  lk.ConnectionState get connectionState => result.connectionState;
+
+  bool get isConnect => result.connectionState == lk.ConnectionState.connected;
+
+  bool get havePermission => result.localParticipant?.permissions.canPublish ?? false;
+}
+
+//endregion

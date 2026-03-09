@@ -72,7 +72,7 @@ class MyAppState extends State<MyApp> {
     setState(() {});
   }
 
-//changeThem
+  //changeThem
   Future<void> changeThem(ThemeMode mode) async {
     await AppSharedPreference.setThemeMode(mode);
     setState(() {});
@@ -88,7 +88,7 @@ class MyAppState extends State<MyApp> {
         return GestureDetector(
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
-            darkTheme: darkTheme,
+            darkTheme: lightTheme,
             theme: lightTheme,
             themeMode: AppSharedPreference.getThemeMode,
             routerConfig: goRouter,

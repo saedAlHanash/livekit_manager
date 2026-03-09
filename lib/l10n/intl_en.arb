@@ -63,5 +63,6 @@
   "connectionTimeOut": "Connection timed out",
   "userLogout": "User logged out",
   "serverSideError": "Server side error",
-  "noInternet": "Please check your internet connection"
+  "noInternet": "Please check your internet connection",
+  "pleaseWaitForContentBroadcast": "Please wait for content broadcast"
 }

@@ -76,19 +76,17 @@ enum MediaType {
 
 enum ManagerActions {
   requestPermission,
-  requestToDisconnect,
-  message,
   achievement,
-  changeScreen
+  message,
+  chosen,
   ;
 
   IconData get icon {
     return switch (this) {
       ManagerActions.requestPermission => Icons.pan_tool_outlined,
-      ManagerActions.requestToDisconnect => Icons.exit_to_app,
-      ManagerActions.message => Icons.message,
       ManagerActions.achievement => Icons.star,
-      ManagerActions.changeScreen => Icons.screen_share_outlined,
+      ManagerActions.chosen => Icons.select_all,
+      ManagerActions.message => Icons.message,
     };
   }
 }
@@ -223,9 +221,10 @@ enum SignalMessageType {
   bool get isClosedExam => this == closedExam;
 }
 
-enum PageType{
+enum PageType {
   manager,
   sharer,
   teacher,
-
 }
+
+enum ParticipantsLayoutMode { grid, focus, scroll }

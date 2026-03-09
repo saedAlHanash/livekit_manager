@@ -70,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "october": MessageLookupByLibrary.simpleMessage("تشرين الأول"),
     "ok": MessageLookupByLibrary.simpleMessage("حسناً"),
     "oops": MessageLookupByLibrary.simpleMessage("حدث خطأ ما!"),
+    "pleaseWaitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
+      "Please wait for content broadcast",
+    ),
     "requestedPermission": MessageLookupByLibrary.simpleMessage("طلب إذن"),
     "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
       "طلب مغادرة الجلسة",

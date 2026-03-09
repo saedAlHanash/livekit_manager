@@ -54,10 +54,8 @@ class NotesWidget extends StatelessWidget {
                                   state.result.localParticipant?.publishData(
                                     utf8.encode(
                                       jsonEncode(
-                                        SettingMessage(
+                                        LkMessage(
                                           id: item.id,
-                                          toUserType: LkUserType.user,
-                                          toIdentity: item.id,
                                           action: ManagerActions.message,
                                           metadata: {
                                             'name': '',
@@ -79,10 +77,9 @@ class NotesWidget extends StatelessWidget {
                                   state.result.localParticipant?.publishData(
                                     utf8.encode(
                                       jsonEncode(
-                                        SettingMessage(
+                                        LkMessage(
                                           id: item.id,
-                                          toUserType: LkUserType.user,
-                                          toIdentity: item.id,
+
                                           action: ManagerActions.message,
                                           metadata: {
                                             'name': '',
@@ -99,24 +96,6 @@ class NotesWidget extends StatelessWidget {
                             ],
                           ),
                         );
-
-                      case ManagerActions.requestToDisconnect:
-                        return ListTile(
-                          leading: p == null
-                              ? 0.0.verticalSpace
-                              : UserImageOrName(
-                                  participant: p,
-                                  image: item.image,
-                                  name: item.name,
-                                  size: 30.0.r,
-                                ),
-                          title: DrawableText(text: '${item.name} ${S.of(context).requestedToLeaveTheSession}'),
-                          trailing: ElevatedButton(
-                            onPressed: () {},
-                            child: DrawableText(text: S.of(context).confirm),
-                          ),
-                        );
-
                       case ManagerActions.message:
                         return ListTile(
                           leading: p == null
@@ -136,9 +115,8 @@ class NotesWidget extends StatelessWidget {
                             icon: ImageMultiType(url: Icons.delete_outline_rounded),
                           ),
                         );
-
-                      case ManagerActions.changeScreen:
                       case ManagerActions.achievement:
+                      case ManagerActions.chosen:
                         return 0.0.verticalSpace;
                     }
                   },

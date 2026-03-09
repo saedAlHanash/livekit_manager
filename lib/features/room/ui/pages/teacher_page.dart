@@ -8,7 +8,9 @@ import 'package:livekit_manager/features/room/ui/widget/controls.dart';
 import 'package:livekit_manager/features/room/ui/widget/local_media.dart';
 import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
+import 'package:livekit_manager/features/room/ui/widget/video_widget.dart';
 
+import '../../../../core/extensions/extensions.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../widget/users/participants_layout.dart';
 import '../widget/users/remote_user.dart';
@@ -37,44 +39,7 @@ class _TeacherPageState extends State<TeacherPage> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(child: SpeakersWidget()),
-                          Expanded(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                if (state.selectedParticipant != null)
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      width: 1.0.sw,
-                                      decoration: BoxDecoration(
-                                        color: AppColorManager.appBarColor,
-                                        borderRadius: BorderRadius.circular(12.0).r,
-                                      ),
-                                      child: ParticipantsLayout(fit: VideoViewFit.cover),
-                                    ),
-                                  ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 10,
-                                        child: NotesWidget(),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: LocalMedia(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: VideoWidget(),
                     ),
                     ControlsWidget(),
                   ],

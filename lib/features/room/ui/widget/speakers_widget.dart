@@ -68,7 +68,7 @@ class _SpeakersWidgetState extends State<SpeakersWidget> {
                     itemBuilder: (context, i) {
                       return UserImageOrName(
                         participant: list[i],
-                        isSelected: list[i].identity == state.selectedUserId,
+                        isSelected: list[i].identity == state.selectedParticipantId,
                         onTap: () {
                           context.read<RoomCubit>().selectParticipant(list[i].identity);
                         },

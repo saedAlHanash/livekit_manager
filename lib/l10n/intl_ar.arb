@@ -62,5 +62,6 @@
   "connectionTimeOut": "انتهت مهلة الاتصال",
   "userLogout": "تسجيل خروج المستخدم",
   "serverSideError": "خطأ من جانب الخادم",
-  "noInternet": "يرجى التحقق من الاتصال بالإنترنت"
+  "noInternet": "يرجى التحقق من الاتصال بالإنترنت",
+  "pleaseWaitForContentBroadcast": "Please wait for content broadcast"
 }

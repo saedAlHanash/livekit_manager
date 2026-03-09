@@ -483,6 +483,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Please wait for content broadcast`
+  String get pleaseWaitForContentBroadcast {
+    return Intl.message(
+      'Please wait for content broadcast',
+      name: 'pleaseWaitForContentBroadcast',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

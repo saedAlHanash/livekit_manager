@@ -1,13 +1,12 @@
 import 'package:livekit_client/livekit_client.dart';
 
 class ParticipantTrackSource {
-  final Participant participant;
-  final TrackPublication? videoPublication;
-
   ParticipantTrackSource({
     required this.participant,
     this.videoPublication,
   });
+  final Participant participant;
+  final TrackPublication? videoPublication;
 
   /// Unique ID for this track source.
   /// If it's a specific track, use track SID. Otherwise, use participant SID.

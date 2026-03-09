@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/participants_layout.dart';
 
 import '../../../room/bloc/room_cubit/room_cubit.dart';
@@ -15,14 +17,9 @@ class _VideoWidgetState extends State<VideoWidget> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<RoomCubit>();
-    return BlocBuilder<RoomCubit, RoomInitial>(
-      builder: (context, state) {
-        return ParticipantsLayout(
-          selectedIdentity: state.selectedParticipant?.identity,
-          onTap: (participant) {
-            cubit.selectParticipant(participant.identity);
-          },
-        );
+    return ParticipantsLayout(
+      onTap: (participant) {
+        cubit.selectParticipant(participant.identity);
       },
     );
   }

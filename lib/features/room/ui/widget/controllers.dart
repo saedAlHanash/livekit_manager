@@ -65,10 +65,8 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                 label: S.of(context).applauseForStudent,
                 icon: ImageMultiType(url: Icons.waving_hand),
                 onTap: () {
-                  final m = SettingMessage(
-                    toIdentity: '',
+                  final m = LkMessage(
                     action: ManagerActions.achievement,
-                    toUserType: LkUserType.user,
                     metadata: {
                       'name': participant.name,
                       if (participant.image.isNotEmpty) 'image': participant.image,
@@ -76,7 +74,9 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                     },
                   );
 
-                  context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
+                  context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                    m.toBytes,
+                  );
                 },
               ),
               PopupMenuItemModel(
@@ -144,22 +144,22 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
     );
   }
 
-  PopupMenuItemModel deafblind() {
-    return PopupMenuItemModel(
-      label: participant.permissions.isDeafblind ? S.of(context).seeAndHear : S.of(context).deafblinding,
-      icon: ImageMultiType(
-        url: participant.permissions.isDeafblind ? Assets.imagesLookIcon : Assets.imagesDeafblind,
-        color: Colors.white,
-        width: 30.0,
-        height: 30.0,
-      ),
-      onTap: () {
-        if (participant.permissions.isDeafblind) {
-          context.read<UserControlCubit>().grant(participant, PermissionType.listen);
-        } else {
-          context.read<UserControlCubit>().revoke(participant, PermissionType.listen);
-        }
-      },
-    );
-  }
+  // PopupMenuItemModel deafblind() {
+  //   return PopupMenuItemModel(
+  //     label: participant.permissions.isDeafblind ? S.of(context).seeAndHear : S.of(context).deafblinding,
+  //     icon: ImageMultiType(
+  //       url: participant.permissions.isDeafblind ? Assets.imagesLookIcon : Assets.imagesDeafblind,
+  //       color: Colors.white,
+  //       width: 30.0,
+  //       height: 30.0,
+  //     ),
+  //     onTap: () {
+  //       if (participant.permissions.isDeafblind) {
+  //         context.read<UserControlCubit>().grant(participant, PermissionType.listen);
+  //       } else {
+  //         context.read<UserControlCubit>().revoke(participant, PermissionType.listen);
+  //       }
+  //     },
+  //   );
+  // }
 }

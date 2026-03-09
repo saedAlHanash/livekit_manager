@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   case .reconnecting:
                     return _ReConnecting();
                   case .connected:
-                    switch (PageType.sharer) {
+                    switch (PageType.teacher) {
                       case PageType.manager:
                         // TODO: Handle this case.
                         throw UnimplementedError();
