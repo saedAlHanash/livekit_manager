@@ -38,9 +38,7 @@ class _TeacherPageState extends State<TeacherPage> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    Expanded(
-                      child: VideoWidget(),
-                    ),
+                    Expanded(child: VideoWidget()),
                     ControlsWidget(),
                   ],
                 ),

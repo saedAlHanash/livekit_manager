@@ -31,7 +31,6 @@ class ParticipantsLayout extends StatelessWidget {
           builder: (context, constraints) {
             return Stack(
               children: [
-                // 1. Base Participant Layout
                 Positioned.fill(
                   child: Builder(
                     builder: (context) {
@@ -47,7 +46,6 @@ class ParticipantsLayout extends StatelessWidget {
                   ),
                 ),
 
-                // 2. Floating local user always on top
                 FloatingLocalUser(
                   constraints: constraints,
                   localParticipant: state.result.localParticipant,

@@ -34,7 +34,8 @@ class UsersCubit extends MCubit<UsersInitial> {
     },
   );
 
-  Future<void> getData({bool newData = false}) async {
+  Future<void> getData({bool newData = false, String? groupTermId}) async {
+    emit(state.copyWith(id: groupTermId, statuses: .loading));
     await getDataAbstract(
       fromJson: User.fromJson,
       state: state,
@@ -45,9 +46,9 @@ class UsersCubit extends MCubit<UsersInitial> {
 
   Future<Pair<List<User>?, String?>> _getData() async {
     final response = await APIService().callApi(
-      type: ApiType.post,
+      type: ApiType.get,
       url: PostUrl.users,
-      body: state.filterRequest?.toJson() ?? {},
+      query: {'groupTermId': state.mId},
     );
 
     if (response.statusCode.success) {

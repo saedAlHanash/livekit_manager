@@ -1,22 +1,31 @@
 class User {
   User({
     required this.id,
+    required this.studentName,
+    required this.studentImage,
+    required this.studentRecordId,
   });
 
   final String id;
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-    };
-  }
+  final String studentName;
+  final String studentImage;
+  final String studentRecordId;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["id"] ?? "",
+      id: json["studentRecordId"] ?? "",
+      studentName: json["studentName"] ?? "",
+      studentImage: json["studentImage"] ?? "",
+      studentRecordId: json["studentRecordId"] ?? "",
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "studentName": studentName,
+    "studentImage": studentImage,
+    "studentRecordId": studentRecordId,
+  };
 }
 
 class Users {
@@ -38,4 +47,3 @@ class Users {
     );
   }
 }
-
