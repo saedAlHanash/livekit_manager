@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/floating_local_user.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/grid_participants_layout.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/focus_participants_layout.dart';
+import 'package:livekit_manager/features/room/ui/widget/users/grid_participants_layout.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/scrollable_participants_layout.dart';
 
 import '../../../bloc/room_cubit/room_cubit.dart';
@@ -46,10 +44,10 @@ class ParticipantsLayout extends StatelessWidget {
                   ),
                 ),
 
-                FloatingLocalUser(
-                  constraints: constraints,
-                  localParticipant: state.result.localParticipant,
-                ),
+                // FloatingLocalUser(
+                //   constraints: constraints,
+                //   localParticipant: state.result.localParticipant,
+                // ),
               ],
             );
           },

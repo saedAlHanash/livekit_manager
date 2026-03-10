@@ -5,6 +5,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/participant_card.dart';
+import 'package:collection/collection.dart';
 
 class FocusParticipantsLayoutView extends StatelessWidget {
   const FocusParticipantsLayoutView({
@@ -20,13 +21,19 @@ class FocusParticipantsLayoutView extends StatelessWidget {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
         final participants = state.participantTracksWithoutMe;
+        final allMembers = state.allRoomMembers;
 
-        if (participants.isEmpty) return Container();
+        if (allMembers.isEmpty) return Container();
 
         final speaker = state.selectedParticipant ?? (participants.isNotEmpty ? participants.first : null);
-        if (speaker == null) return Container();
+        
+        final speakerMember = speaker != null 
+             ? allMembers.firstWhereOrNull((m) => m.identity == speaker.identity) 
+             : allMembers.first;
 
-        final sidebarParticipants = participants.where((p) => p.identity != speaker.identity).toList();
+        if (speakerMember == null) return Container();
+
+        final sidebarParticipants = allMembers.where((p) => p.identity != speakerMember.identity).toList();
         return Row(
           children: [
             // Master View (75%)
@@ -35,10 +42,11 @@ class FocusParticipantsLayoutView extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(8.r),
                 child: ParticipantCard(
-                  participant: speaker,
+                  participant: speakerMember.participant,
+                  user: speakerMember.user,
                   fit: .contain,
                   isMaster: true,
-                  onTap: () => onTap?.call(speaker),
+                  onTap: () => speakerMember.participant != null ? onTap?.call(speakerMember.participant!) : null,
                 ),
               ),
             ),
@@ -55,9 +63,10 @@ class FocusParticipantsLayoutView extends StatelessWidget {
                       height: 120.h,
                       margin: EdgeInsets.only(bottom: 8.h, right: 8.w),
                       child: ParticipantCard(
-                        participant: p,
+                        participant: p.participant,
+                        user: p.user,
                         fit: .contain,
-                        onTap: () => onTap?.call(p),
+                        onTap: () => p.participant != null ? onTap?.call(p.participant!) : null,
                         small: true,
                       ),
                     );

@@ -124,9 +124,10 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        String link = state.uri.queryParameters['url'] ?? wsLink;
-        String token = state.uri.queryParameters['token'] ?? '';
-        String theme = state.uri.queryParameters['theme'] ?? '';
+        final link = state.uri.queryParameters['url'] ?? wsLink;
+        final token = state.uri.queryParameters['token'] ?? '';
+        final groupTermId = state.uri.queryParameters['groupTermId'];
+        final theme = state.uri.queryParameters['theme'] ?? '';
 
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
@@ -145,7 +146,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => sl<HomeCubit>()),
-            BlocProvider(create: (context) => sl<UsersCubit>()..getData()),
+            BlocProvider(create: (context) => sl<UsersCubit>()..getData(groupTermId: groupTermId)),
           ],
           child: HomePage(
             link: link,

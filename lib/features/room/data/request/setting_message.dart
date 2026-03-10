@@ -8,11 +8,13 @@ class LkMessage {
     this.id = '',
     required this.action,
     required this.metadata,
+    this.createdAt,
   });
 
-  final String id;
+  String id;
   final ManagerActions action;
   final Map<String, dynamic> metadata;
+  final DateTime? createdAt;
 
   String get name => metadata['name'] ?? '';
 
@@ -27,13 +29,15 @@ class LkMessage {
       id: (json['id'] ?? '').toString(),
       action: ManagerActions.values[json['action'] ?? 0],
       metadata: json['metadata'] ?? {},
+      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'] ?? '') : DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id.isNotEmpty ? id : DateTime.now().millisecondsSinceEpoch.toString(),
+    'id': id,
     'metadata': metadata,
     'action': action.index,
+    'created_at': createdAt?.toIso8601String(),
   };
 
   Uint8List get toBytes {

@@ -17,6 +17,7 @@ import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
 import '../../features/room/bloc/room_cubit/room_cubit.dart';
+import '../../features/room/data/response/room_member.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
@@ -455,7 +456,7 @@ extension DateUtcHelper on DateTime {
   String get formatDateName => DateFormat('dd/$monthName/yyyy').format(this);
 
   String get formatDateTime1 {
-    return DateFormat('dd MMM yyyy  h:mm a').format(this);
+    return DateFormat('h:mm a').format(this);
   }
 
   String get formatDateToRequest => DateFormat('yyyy-MM-dd', 'en').format(this);
@@ -873,6 +874,24 @@ extension RoomInitialH on RoomInitial {
       //   (a, b) => ((!b.userType.isUser) ? 1 : 0) - ((!b.userType.isUser) ? 1 : 0),
       // )
       .toList();
+
+  List<RoomMember> get allRoomMembers {
+    final members = <RoomMember>[];
+    final connectedIdentities = <String>{};
+    for (final p in participantTracksWithoutMe) {
+      connectedIdentities.add(p.identity);
+      final user = expectedUsers.firstWhereOrNull((u) => u.studentRecordId == p.identity);
+      members.add(RoomMember(participant: p, user: user));
+    }
+
+    for (final u in expectedUsers) {
+      if (!connectedIdentities.contains(u.studentRecordId)) {
+        members.add(RoomMember(user: u));
+      }
+    }
+
+    return members;
+  }
 
   List<Participant> get usersAndChosenParticipants => participants
       .where(

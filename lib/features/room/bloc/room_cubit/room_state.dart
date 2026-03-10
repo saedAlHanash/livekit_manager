@@ -16,6 +16,7 @@ class RoomInitial extends AbstractState<Room> {
     required this.haveNewNote,
     this.layoutMode = ParticipantsLayoutMode.grid,
     this.showChat = false,
+    required this.expectedUsers,
   });
 
   final String url;
@@ -34,6 +35,7 @@ class RoomInitial extends AbstractState<Room> {
   final String selectedParticipantId;
   final ParticipantsLayoutMode layoutMode;
   final bool showChat;
+  final List<User> expectedUsers;
 
   Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
 
@@ -69,6 +71,7 @@ class RoomInitial extends AbstractState<Room> {
       participants: const [],
       selectedParticipantId: '',
       haveNewNote: false,
+      expectedUsers: const [],
     );
   }
 
@@ -89,6 +92,7 @@ class RoomInitial extends AbstractState<Room> {
     haveNewNote,
     layoutMode,
     showChat,
+    expectedUsers,
   ];
 
   List<Participant> get speakers => participants.where((e) => e.permissions.canPublish).toList();
@@ -104,12 +108,13 @@ class RoomInitial extends AbstractState<Room> {
     String? url,
     String? token,
     EventsListener<RoomEvent>? listener,
-    List<Participant>? participant,
+    List<Participant>? participants,
     List<LkMessage>? raiseHands,
-    String? selectedUserId,
+    String? selectedParticipantId,
     bool? haveNewNote,
     ParticipantsLayoutMode? layoutMode,
     bool? showChat,
+    List<User>? expectedUsers,
   }) {
     return RoomInitial(
       statuses: statuses ?? this.statuses,
@@ -120,12 +125,13 @@ class RoomInitial extends AbstractState<Room> {
       url: url ?? this.url,
       token: token ?? this.token,
       listener: listener ?? this.listener,
-      participants: participant ?? this.participants,
+      participants: participants ?? this.participants,
       raiseHands: raiseHands ?? this.raiseHands,
-      selectedParticipantId: selectedUserId ?? this.selectedParticipantId,
+      selectedParticipantId: selectedParticipantId ?? this.selectedParticipantId,
       haveNewNote: haveNewNote ?? this.haveNewNote,
       layoutMode: layoutMode ?? this.layoutMode,
       showChat: showChat ?? this.showChat,
+      expectedUsers: expectedUsers ?? this.expectedUsers,
     );
   }
 }

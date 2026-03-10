@@ -68,7 +68,7 @@ const wsLiveTest = 'ws://87.106.161.145:7880';
 const wsLiveUrl = 'wss://coretik.coretech-mena.com';
 
 const localUrl = '192.168.1.69:5002';
-const liveUrl = 'coretik-be.coretech-mena.com';
+const liveUrl = 'ims-be.coretech-mena.com';
 
 String get baseUrl {
   // return localUrl;

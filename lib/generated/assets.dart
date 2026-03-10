@@ -43,6 +43,7 @@ class Assets {
   static const String iconsFollowUpF = 'assets/icons/follow_up_f.svg';
   static const String iconsHome = 'assets/icons/home.svg';
   static const String iconsHomeF = 'assets/icons/home_f.svg';
+  static const String iconsIslamicBack = 'assets/icons/islamic_back.svg';
   static const String iconsLanguage = 'assets/icons/language.svg';
   static const String iconsLine1 = 'assets/icons/line_1.svg';
   static const String iconsLinks = 'assets/icons/links.svg';
@@ -87,6 +88,7 @@ class Assets {
   static const String imagesDotedLine = 'assets/images/doted_line.png';
   static const String imagesEducation = 'assets/images/education.png';
   static const String imagesExamFinal = 'assets/images/exam_final.png';
+  static const String imagesIslamicBack = 'assets/images/islamic_back.png';
   static const String imagesLookIcon = 'assets/images/look-icon.png';
   static const String imagesMedia = 'assets/images/media.png';
   static const String imagesPatternLines = 'assets/images/pattern_lines.png';

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/participant_card.dart';
-import 'package:livekit_manager/features/room/ui/widget/users/floating_local_user.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/features/room/ui/widget/users/participant_card.dart';
 
 import '../../../bloc/room_cubit/room_cubit.dart';
 
@@ -33,38 +32,34 @@ class _ScrollableParticipantsLayoutState extends State<ScrollableParticipantsLay
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participants = state.participantTracksWithoutMe;
+        final members = state.allRoomMembers;
 
         return LayoutBuilder(
           builder: (context, constraints) {
+            final double spacing = 8.r;
+            final double maxExtent = 180.0.dg;
 
-            const int crossAxisCount = 5;
-            final spacing = 8.r;
-            final double itemWidth = (constraints.maxWidth - (crossAxisCount + 1) * spacing) / crossAxisCount;
-
-            final double itemHeight = itemWidth * 0.8;
-
-            return participants.isEmpty
-                ? Container()
-                : SingleChildScrollView(
+            return members.isEmpty
+                ? const SizedBox.shrink()
+                : GridView.builder(
                     padding: EdgeInsets.all(spacing),
-                    child: Wrap(
-                      spacing: spacing,
-                      runSpacing: spacing,
-                      alignment: WrapAlignment.start,
-                      children: participants.map((p) {
-                        return SizedBox(
-                          width: itemWidth,
-                          height: itemHeight,
-                          child: ParticipantCard(
-                            participant: p,
-                            fit: widget.fit,
-                            onTap: () => _handleTap(p),
-                            small: true, // Use the small property added by the user
-                          ),
-                        );
-                      }).toList(),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: maxExtent,
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
+                      childAspectRatio: 1.0,
                     ),
+                    itemCount: members.length,
+                    itemBuilder: (context, index) {
+                      final m = members[index];
+                      return ParticipantCard(
+                        participant: m.participant,
+                        user: m.user,
+                        fit: widget.fit,
+                        onTap: () => m.participant != null ? _handleTap(m.participant!) : null,
+                        small: true,
+                      );
+                    },
                   );
           },
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/participant_card.dart';
 
@@ -19,13 +20,13 @@ class GridParticipantsLayoutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participants = state.participantTracksWithoutMe;
+        final members = state.allRoomMembers;
 
-        if (participants.isEmpty) return Container();
+        if (members.isEmpty) return Container();
         return LayoutBuilder(
           builder: (context, constraints) {
-            final count = participants.length;
-            final crossAxisCount = count <= 1 ? 1 : (count <= 4 ? 2 : 3);
+            final count = members.length;
+            final crossAxisCount = count <= 1 ? 1 : (count <= 4 ? 4 : 5);
             final rows = (count / crossAxisCount).ceil();
 
             final spacing = 8.r;
@@ -37,14 +38,18 @@ class GridParticipantsLayoutView extends StatelessWidget {
               child: Wrap(
                 spacing: spacing,
                 runSpacing: spacing,
-                children: participants.map((p) {
+                children: members.map((m) {
+                  if (m.participant != null) {
+                    loggerObject.f(m.user?.studentName);
+                  }
                   return SizedBox(
                     width: itemWidth,
                     height: itemHeight,
                     child: ParticipantCard(
-                      participant: p,
+                      participant: m.participant,
+                      user: m.user,
                       fit: .contain,
-                      onTap: () => onTap?.call(p),
+                      onTap: m.participant != null ? () => onTap?.call(m.participant!) : null,
                     ),
                   );
                 }).toList(),

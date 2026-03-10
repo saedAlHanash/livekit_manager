@@ -13,27 +13,28 @@ class UsersInitial extends AbstractState<List<User>> {
   });
 
   factory UsersInitial.initial() {
-    return  UsersInitial(
+    return UsersInitial(
       result: [],
       createUpdateRequest: CreateUserRequest.fromJson({}),
+      id: kDebugMode ? 'f6a8ac35-293f-4204-96b9-14bbe164bd4e' : '',
     );
   }
 
   CreateUserRequest get cRequest => createUpdateRequest;
 
-  String get mId => id;
+  String get mId => id.toString();
 
   @override
   List<Object> get props => [
-        statuses,
-        result,
-        error,
-        cubitCrud,
-        if (id != null) id,
-        if (request != null) request,
-        if (filterRequest != null) filterRequest!,
-        if (createUpdateRequest != null) createUpdateRequest!,
-      ];
+    statuses,
+    result,
+    error,
+    cubitCrud,
+    if (id != null) id,
+    if (request != null) request,
+    if (filterRequest != null) filterRequest!,
+    if (createUpdateRequest != null) createUpdateRequest!,
+  ];
 
   UsersInitial copyWith({
     CubitStatuses? statuses,
@@ -57,4 +58,3 @@ class UsersInitial extends AbstractState<List<User>> {
     );
   }
 }
-

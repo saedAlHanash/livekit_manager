@@ -6,7 +6,6 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
-import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -15,6 +14,7 @@ import '../../../../core/app/app_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
+import '../../../user/data/response/user_response.dart';
 import '../../data/request/setting_message.dart';
 
 part 'room_state.dart';
@@ -79,7 +79,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       ..on<TrackMutedEvent>((e) {})
       // 🔹 عندما يتم إلغاء الكتم (unmute) عن المسار.
       ..on<TrackUnmutedEvent>((e) async {
-        await SoundService.play(Assets.soundsNote);
+        // await SoundService.play(Assets.soundsNote);
       })
       // 🔹 عندما تتغير حالة تدفق البيانات لمسار معين (توقف مؤقت أو استئناف).
       // ..on<TrackStreamStateUpdatedEvent>((e) => _sortParticipants())
@@ -130,21 +130,28 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
-          // setHaveNewNote(true);
-          // try {
-          //   final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-          //   SoundService.play(Assets.soundsNote);
-          //   switch (message.action) {
-          //     case ManagerActions.achievement:
-          //       return;
-          //     case ManagerActions.requestPermission:
-          //     case ManagerActions.chosen:
-          //     case ManagerActions.message:
-          //       await addOrUpdateToCache(message);
-          //   }
-          // } catch (err) {
-          //   loggerObject.e('Failed to decode: $err');
-          // }
+          try {
+            final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+            loggerObject.w(e.participant?.identity);
+            message.id = e.participant?.identity ?? '';
+            message.metadata.addAll({
+              'id': e.participant?.identity,
+              'name': e.participant?.name,
+              'image': e.participant?.image,
+            });
+
+            SoundService.play(Assets.soundsNote);
+            switch (message.action) {
+              case ManagerActions.achievement:
+                return;
+              case ManagerActions.requestPermission:
+              case ManagerActions.chosen:
+              case ManagerActions.message:
+                await addOrUpdateToCache(message);
+            }
+          } catch (err) {
+            loggerObject.e('Failed to decode: $err');
+          }
         },
       );
   }
@@ -175,7 +182,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       );
 
       final list = [...screenTracks];
-      emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
+      emit(state.copyWith(participants: list, id: state.notifyIndex + 1));
     });
   }
 
@@ -218,7 +225,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void selectParticipant(String participantTrackId) {
-    emit(state.copyWith(selectedUserId: participantTrackId));
+    emit(state.copyWith(selectedParticipantId: participantTrackId));
   }
 
   Future<void> addOrUpdateToCache(LkMessage item) async {
@@ -228,8 +235,12 @@ class RoomCubit extends MCubit<RoomInitial> {
     emit(state.copyWith(raiseHands: list));
   }
 
-  Future<void> deleteFromCache(String id) async {
-    final listJson = await deleteDate([id]);
+  Future<void> clearNotes() async {
+    await deleteFromCache(state.raiseHands.map((e) => e.id).toList());
+  }
+
+  Future<void> deleteFromCache(List<String> ids) async {
+    final listJson = await deleteDate(ids);
     if (listJson == null) return;
 
     final list = listJson.map((e) => LkMessage.fromJson(e)).toList();
@@ -264,6 +275,10 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void toggleChat() {
     emit(state.copyWith(showChat: !state.showChat));
+  }
+
+  void setExpectedUsers(List<User> expectedUsers) {
+    emit(state.copyWith(expectedUsers: expectedUsers));
   }
 
   @override

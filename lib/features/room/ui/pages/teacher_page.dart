@@ -11,6 +11,7 @@ import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
 import 'package:livekit_manager/features/room/ui/widget/video_widget.dart';
 
 import '../../../../core/extensions/extensions.dart';
+import '../../../user/bloc/users_cubit/users_cubit.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../widget/users/participants_layout.dart';
 import '../widget/users/remote_user.dart';
@@ -29,23 +30,25 @@ class _TeacherPageState extends State<TeacherPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<UserControlCubit, UserControlInitial>(
-        builder: (context, state) {
-          return BlocBuilder<RoomCubit, RoomInitial>(
-            builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Expanded(child: VideoWidget()),
-                    ControlsWidget(),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+    return BlocListener<UsersCubit, UsersInitial>(
+      listenWhen: (p, c) => c.done,
+      listener: (context, state) {
+        context.read<RoomCubit>().setExpectedUsers(state.result);
+      },
+      child: Scaffold(
+        body: BlocBuilder<RoomCubit, RoomInitial>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Expanded(child: VideoWidget()),
+                  ControlsWidget(),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

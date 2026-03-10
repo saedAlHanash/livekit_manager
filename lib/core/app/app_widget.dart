@@ -14,6 +14,7 @@ import '../../router/go_router.dart';
 import '../api_manager/api_url.dart';
 import '../app_theme.dart';
 import '../injection/injection_container.dart';
+import '../strings/app_color_manager.dart';
 import '../util/shared_preferences.dart';
 import 'app_provider.dart';
 
@@ -88,8 +89,8 @@ class MyAppState extends State<MyApp> {
         return GestureDetector(
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
-            darkTheme: lightTheme,
-            theme: lightTheme,
+            darkTheme: darkTheme,
+            theme: darkTheme,
             themeMode: AppSharedPreference.getThemeMode,
             routerConfig: goRouter,
             debugShowCheckedModeBanner: false,
@@ -113,7 +114,23 @@ class MyAppState extends State<MyApp> {
                 ],
                 child: MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-                  child: SafeArea(bottom: true, left: false, right: false, top: false, child: child!),
+                  child: SafeArea(
+                    bottom: true,
+                    left: false,
+                    right: false,
+                    top: false,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: true ? AppColorManager.mainColor : Colors.white,
+                        image: DecorationImage(
+                          image: AssetImage(Assets.imagesIslamicBack),
+                          repeat: ImageRepeat.repeat,
+                          opacity: 0.1,
+                        ),
+                      ),
+                      child: child!,
+                    ),
+                  ),
                 ),
               );
             },

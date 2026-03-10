@@ -35,15 +35,13 @@ class Users {
     required this.items,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'items': items,
-    };
-  }
-
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
-      items: json['items'] as List<User>,
+      items: json["items"] == null ? [] : List<User>.from(json["items"]!.map((x) => User.fromJson(x))),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "items": items.map((x) => x.toJson()).toList(),
+  };
 }

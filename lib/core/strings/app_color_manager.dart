@@ -14,12 +14,15 @@ class AppColorManager {
   static const green = Color(0xFF079455);
 
   static Color get textColor => Theme.of(ctx!).textTheme.bodyMedium!.color!;
+
   static Color get scaffoldColor => Theme.of(ctx!).scaffoldBackgroundColor;
+
+  static Color get tileColor =>
+      ctx == null ? Color(0xFF031E1B) : (Theme.of(ctx!).listTileTheme.tileColor) ?? Color(0xFF031E1B);
 
   static const darkColor = Color(0xFF151319);
   static const greenPrice = Color(0xFF479D78);
   static const black = Color(0xFF000000);
-  static const tileColor = Color(0xFF031E1B);
 
   static const ampere = Color(0xFFFFC107);
   static const grey = Color(0xFF848484);
