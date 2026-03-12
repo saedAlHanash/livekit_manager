@@ -6,6 +6,7 @@ import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
+import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/dynamic_user.dart';
@@ -43,38 +44,60 @@ class NotesWidget extends StatelessWidget {
                   switch (item.action) {
                     case ManagerActions.requestPermission:
                       return ListTile(
-                        title: DrawableText(text: item.name),
+                        title: DrawableText(
+                          text: item.name,
+                          drawableAlin: .between,
+                          matchParent: true,
+                          drawableEnd: DrawableText(
+                            text: '${item.createdAt?.formatDateTime1}',
+                            size: 8.0.sp,
+                          ),
+                        ),
                         subtitle: Column(
                           spacing: 5.0,
                           children: [
-                            DrawableText(text: S.of(context).wantsToJoinOrGetPermission, size: 10.0.sp),
-
                             DrawableText(
-                              text: '${item.createdAt?.formatDateTime1}',
-                              matchParent: true,
-                              textAlign: .end,
+                              text: S.of(context).wantsToJoinOrGetPermission,
                               size: 10.0.sp,
+                              matchParent: true,
+                            ),
+
+                            Row(
+                              spacing: 5.0.w,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Expanded(
+                                  child: MyButton(
+                                    height: 30.0.h,
+                                    icon: Icon(Icons.check_circle),
+                                    onTap: () {
+                                      context.read<RoomCubit>().choseUser(item.userId);
+                                      context.read<RoomCubit>().deleteFromCache([item.id]);
+                                    },
+                                    text: 'قبول',
+                                  ),
+                                ),
+                                Expanded(
+                                  child: MyButton(
+                                    height: 30.0.h,
+                                    icon: Icon(Icons.cancel),
+                                    color: AppColorManager.red,
+                                    onTap: () {
+                                      context.read<RoomCubit>().deleteFromCache([item.id]);
+                                    },
+                                    text: 'رفض',
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
 
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            InkWell(
-                              child: const Icon(Icons.check_circle, color: Colors.green),
-                              onTap: () {
-                                context.read<RoomCubit>().choseUser(item.userId);
-                                context.read<RoomCubit>().deleteFromCache([item.id]);
-                              },
-                            ),
-                          ],
-                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           side: BorderSide(color: AppColorManager.secondColor),
                         ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 3.0),
                       );
                     case ManagerActions.message:
                       return ListTile(

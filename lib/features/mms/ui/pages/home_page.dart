@@ -1,0 +1,71 @@
+import 'package:drawable_text/drawable_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/widgets/my_button.dart';
+import 'package:livekit_manager/features/mms/ui/pages/room_page.dart';
+
+import '../../../room/bloc/room_cubit/room_cubit.dart';
+
+class MMSPage extends StatefulWidget {
+  const MMSPage({
+    super.key,
+    required this.link,
+    required this.token,
+  });
+
+  final String link;
+
+  final String token;
+
+  @override
+  State<StatefulWidget> createState() => _MMSPageState();
+}
+
+class _MMSPageState extends State<MMSPage> {
+  RoomCubit get cubit => context.read<RoomCubit>();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RoomCubit, RoomInitial>(
+      builder: (context, state) {
+        return state.isConnect
+            ? RoomPage()
+            : Scaffold(
+                body: Container(
+                  alignment: Alignment.center,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      constraints: BoxConstraints(maxWidth: 500),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          DrawableText(text: state.url),
+                          20.0.verticalSpace,
+                          MyButton(
+                            width: 1.0.sw,
+                            loading: state.loading,
+                            onTap: () {
+                              cubit
+                                ..setUrl(widget.link)
+                                ..setToken(widget.token)
+                                ..connect();
+                            },
+                            text: 'Join',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+      },
+    );
+  }
+}

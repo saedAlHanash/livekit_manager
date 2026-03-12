@@ -1,0 +1,106 @@
+part of 'room_cubit.dart';
+
+class RoomInitial extends AbstractState<Room> {
+  const RoomInitial({
+    required super.result,
+    super.error,
+    required super.request,
+    super.statuses,
+    super.id,
+    required this.url,
+    required this.token,
+    required this.listener,
+    required this.participant,
+    required this.raiseHands,
+    required this.selectedUserId,
+  });
+
+  final String url;
+
+  final String token;
+
+  int get notifyIndex => id ?? 0;
+
+  final EventsListener<RoomEvent> listener;
+
+  final List<SettingMessage> raiseHands;
+  final List<Participant> participant;
+
+  final String selectedUserId;
+
+  List<Participant> get participantTracksWithoutSelected =>
+      participant.where((e) => e.identity != selectedParticipant?.identity).toList(growable: false);
+
+  Participant? getParticipantById(String id) => participant.firstWhereOrNull((e) => e.identity == id);
+
+  Participant? get selectedParticipant =>
+      participant.firstWhereOrNull((e) => e.identity == selectedUserId) ?? participant.firstOrNull;
+
+  ConnectionState get connectionState => result.connectionState;
+
+  bool get isConnect => result.connectionState == ConnectionState.connected;
+
+  factory RoomInitial.initial() {
+    final room = Room();
+    return RoomInitial(
+      id: 0,
+      result: room,
+      request: '',
+      url: '',
+      token: '',
+      listener: room.createListener(),
+      raiseHands: [],
+      participant: const [],
+      selectedUserId: '',
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        statuses,
+        result,
+        error,
+        if (request != null) request,
+        if (id != null) id,
+        if (filterRequest != null) filterRequest!,
+        listener,
+        url,
+        token,
+        participant,
+        raiseHands,
+        selectedUserId,
+      ];
+
+  List<Participant> get speakers =>
+      participant.where((e) => e.permissions.canPublish && !e.userType.isManager).toList();
+
+  String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
+
+  RoomInitial copyWith({
+    CubitStatuses? statuses,
+    Room? result,
+    String? error,
+    int? id,
+    String? request,
+    String? url,
+    String? token,
+    EventsListener<RoomEvent>? listener,
+    List<Participant>? participant,
+    List<SettingMessage>? raiseHands,
+    String? selectedUserId,
+  }) {
+    return RoomInitial(
+      statuses: statuses ?? this.statuses,
+      result: result ?? this.result,
+      error: error ?? this.error,
+      id: id ?? this.id,
+      request: request ?? this.request,
+      url: url ?? this.url,
+      token: token ?? this.token,
+      listener: listener ?? this.listener,
+      participant: participant ?? this.participant,
+      raiseHands: raiseHands ?? this.raiseHands,
+      selectedUserId: selectedUserId ?? this.selectedUserId,
+    );
+  }
+}

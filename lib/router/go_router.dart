@@ -11,6 +11,7 @@ import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
 import '../features/home/ui/pages/home_page.dart';
 import '../features/home/ui/pages/homes_page.dart';
+import '../features/mms/ui/pages/home_page.dart';
 import '../features/room/bloc/room_cubit/room_cubit.dart';
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
@@ -157,6 +158,43 @@ final goRouter = GoRouter(
       },
     ),
 
+    ///mms
+    GoRoute(
+      path: RouteName.mms,
+      name: RouteName.mms,
+      builder: (context, state) {
+        final link = state.uri.queryParameters['url'] ?? wsLink;
+        final token = state.uri.queryParameters['token'] ?? '';
+        final groupTermId = state.uri.queryParameters['groupTermId'];
+        final theme = state.uri.queryParameters['theme'] ?? '';
+
+        if (theme.isNotEmpty) {
+          if (theme == 'dark') {
+            MyApp.changeTheme(context, ThemeMode.dark);
+          } else if (theme == 'light') {
+            AppSharedPreference.setThemeMode(ThemeMode.light);
+            MyApp.changeTheme(context, ThemeMode.light);
+            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          }
+        } else {
+          AppSharedPreference.setThemeMode(ThemeMode.system);
+          // AppSharedPreference.setThemeMode(ThemeMode.system);
+          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+        }
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<HomeCubit>()),
+            BlocProvider(create: (context) => sl<UsersCubit>()..getData(groupTermId: groupTermId)),
+          ],
+          child: MMSPage(
+            link: link,
+            token: token,
+          ),
+        );
+      },
+    ),
+
     ///homes
     GoRoute(
       path: RouteName.homes,
@@ -202,4 +240,5 @@ class RouteName {
   static const homes = '/homes';
 
   static const splash = '/splash';
+  static const mms = '/mms';
 }

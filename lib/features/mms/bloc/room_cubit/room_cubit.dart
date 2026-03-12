@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -6,6 +5,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -14,18 +14,12 @@ import '../../../../core/app/app_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
-import '../../../user/data/response/user_response.dart';
 import '../../data/request/setting_message.dart';
 
 part 'room_state.dart';
 
 class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
-
-  Timer? _sortDebounceTimer;
-
-  @override
-  get mState => state;
 
   @override
   String get nameCache => 'roomNotes';
@@ -34,7 +28,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   String get filter => state.result.name ?? '';
 
   Future<void> getDataFromCache() async {
-    final data = await getListCached(fromJson: LkMessage.fromJson);
+    final data = await getListCached(fromJson: SettingMessage.fromJson);
     emit(state.copyWith(raiseHands: data, id: state.notifyIndex + 1));
   }
 
@@ -47,9 +41,8 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void setListeners() {
     state.listener
-      // Room disconnection
+      //end call
       ..on<RoomDisconnectedEvent>((e) {
-        loggerObject.e(e.reason?.name);
         emit(state.copyWith(id: state.notifyIndex + 1));
       })
       //re sort list users
@@ -80,7 +73,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       ..on<TrackMutedEvent>((e) {})
       // 🔹 عندما يتم إلغاء الكتم (unmute) عن المسار.
       ..on<TrackUnmutedEvent>((e) async {
-        // await SoundService.play(Assets.soundsNote);
+        await SoundService.play(Assets.soundsNote);
       })
       // 🔹 عندما تتغير حالة تدفق البيانات لمسار معين (توقف مؤقت أو استئناف).
       // ..on<TrackStreamStateUpdatedEvent>((e) => _sortParticipants())
@@ -94,16 +87,11 @@ class RoomCubit extends MCubit<RoomInitial> {
       // 🔹 عندما يتم الاتصال بالغرفة بنجاح.
       ..on<RoomConnectedEvent>((e) {})
       // 🔹 عندما تبدأ عملية إعادة الاتصال بعد انقطاع مفاجئ.
-      ..on<RoomReconnectingEvent>((e) {
-        emit(state.copyWith(statuses: CubitStatuses.loading));
-      })
+      ..on<RoomReconnectingEvent>((e) {})
       // 🔹 عندما تبدأ محاولة إعادة الاتصال فعليًا (محاولة أولى أو لاحقة).
       // ..on<RoomAttemptReconnectEvent>((e) => _sortParticipants())
       // 🔹 عندما تتم إعادة الاتصال بالغرفة بنجاح بعد انقطاع.
-      ..on<RoomReconnectedEvent>((e) {
-        getDataFromCache();
-        emit(state.copyWith(statuses: CubitStatuses.done, id: state.notifyIndex + 1));
-      })
+      ..on<RoomReconnectedEvent>((e) {})
       // 🔹 عندما يتم فصل الاتصال بالغرفة نهائيًا أو مغادرتها.
       ..on<RoomDisconnectedEvent>((e) {})
       // 🔹 عندما تتغير بيانات الغرفة (metadata) مثل الاسم أو الحالة.
@@ -137,22 +125,15 @@ class RoomCubit extends MCubit<RoomInitial> {
       ..on<DataReceivedEvent>(
         (e) async {
           try {
-            final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-            loggerObject.w(e.participant?.identity);
-            message.id = e.participant?.identity ?? '';
-            message.metadata.addAll({
-              'id': e.participant?.identity,
-              'name': e.participant?.name,
-              'image': e.participant?.image,
-            });
+            final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
+            if (!message.toUserType.isManager) return;
 
             SoundService.play(Assets.soundsNote);
             switch (message.action) {
-              case ManagerActions.achievement:
-                return;
               case ManagerActions.requestPermission:
-              case ManagerActions.chosen:
               case ManagerActions.message:
+              case ManagerActions.achievement:
+              case ManagerActions.chosen:
                 await addOrUpdateToCache(message);
             }
           } catch (err) {
@@ -163,33 +144,48 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   void _sortParticipants() {
-    // Cancel previous debounce timer
-    _sortDebounceTimer?.cancel();
+    // List<Participant> userMediaTracks = [];
+    List<Participant> screenTracks = [];
 
-    // Debounce for 100ms to prevent excessive rebuilds
-    _sortDebounceTimer = Timer(const Duration(milliseconds: 100), () {
-      List<Participant> screenTracks = [];
+    for (var participant in state.result.remoteParticipants.values) {
+      screenTracks.add(participant);
+    }
 
-      for (var participant in state.result.remoteParticipants.values) {
-        screenTracks.add(participant);
-      }
+    if (state.result.localParticipant != null) {
+      screenTracks.add(state.result.localParticipant!);
+    }
+    screenTracks.sort(
+      (a, b) {
+        if (a.permissions.isSuspend != b.permissions.isSuspend) {
+          return a.permissions.isSuspend ? 1 : -1;
+        }
+        return 0;
+      },
+    );
 
-      if (state.result.localParticipant != null) {
-        screenTracks.add(state.result.localParticipant!);
-      }
+    // userMediaTracks.sort((a, b) {
+    //   if (a.isSpeaking && b.isSpeaking) {
+    //     return (a.audioLevel > b.audioLevel) ? -1 : 1;
+    //   }
+    //
+    //   // last spoken at
+    //   final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+    //   final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
+    //
+    //   if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
+    //
+    //   // video on
+    //   if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
+    //
+    //   // joinedAt
+    //   return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
+    // });
 
-      screenTracks.sort(
-        (a, b) {
-          if (a.permissions.isSuspend != b.permissions.isSuspend) {
-            return a.permissions.isSuspend ? 1 : -1;
-          }
-          return 0;
-        },
-      );
+    final list = [
+      ...screenTracks /*...userMediaTracks*/,
+    ];
 
-      final list = [...screenTracks];
-      emit(state.copyWith(participants: list, id: state.notifyIndex + 1));
-    });
+    emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
   }
 
   Future<void> connect() async {
@@ -198,12 +194,15 @@ class RoomCubit extends MCubit<RoomInitial> {
       await state.result.connect(
         state.url,
         state.token,
+        fastConnectOptions: FastConnectOptions(),
       );
+      state.result.connectionState;
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
       showErrorFromApi(state);
+      loggerObject.e(e);
     }
   }
 
@@ -219,70 +218,35 @@ class RoomCubit extends MCubit<RoomInitial> {
   void setUrl(String url) => emit(state.copyWith(url: url));
 
   void setToken(String token) {
-    emit(state.copyWith(token: token));
+    AppSharedPreference.cashToken(token);
+    emit(
+      state.copyWith(token: token),
+    );
   }
 
   void selectParticipant(String participantTrackId) {
-    emit(state.copyWith(selectedParticipantId: participantTrackId));
+    emit(state.copyWith(selectedUserId: participantTrackId));
   }
 
-  Future<void> addOrUpdateToCache(LkMessage item) async {
+  void raiseHand() {}
+  Future<void> addOrUpdateToCache(SettingMessage item) async {
     final listJson = await addOrUpdateDate([item]);
     if (listJson == null) return;
-    final list = listJson.map((e) => LkMessage.fromJson(e)).toList();
+    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
   }
 
-  Future<void> clearNotes() async {
-    await deleteFromCache(state.raiseHands.map((e) => e.id).toList());
-  }
-
-  Future<void> deleteFromCache(List<String> ids) async {
-    final listJson = await deleteDate(ids);
+  Future<void> deleteFromCache(String id) async {
+    final listJson = await deleteDate([id]);
     if (listJson == null) return;
-
-    final list = listJson.map((e) => LkMessage.fromJson(e)).toList();
+    loggerObject.w('id: $id, listJson: $listJson');
+    final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
-  }
-
-  void setHaveNewNote(bool b) {
-    emit(state.copyWith(haveNewNote: b, id: state.notifyIndex + 1));
-  }
-
-  Future<void> choseUser(String destinationIdentity) async {
-    final message = utf8.encode(
-      jsonEncode(
-        LkMessage(
-          action: ManagerActions.chosen,
-          metadata: {},
-        ),
-      ),
-    );
-    await state.result.localParticipant?.publishData(
-      message,
-      destinationIdentities: [destinationIdentity],
-      reliable: true,
-    );
-
-    await Future.delayed(Duration(seconds: 1));
-  }
-
-  void changeLayoutMode(ParticipantsLayoutMode mode) {
-    emit(state.copyWith(layoutMode: mode));
-  }
-
-  void toggleChat() {
-    emit(state.copyWith(showChat: !state.showChat));
-  }
-
-  void setExpectedUsers(List<User> expectedUsers) {
-    emit(state.copyWith(expectedUsers: expectedUsers));
   }
 
   @override
   Future<void> close() {
     (() async {
-      _sortDebounceTimer?.cancel();
       state.result.removeListener(_sortParticipants);
       await state.listener.dispose();
       await state.result.dispose();

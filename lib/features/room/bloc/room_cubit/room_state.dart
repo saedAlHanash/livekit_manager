@@ -51,7 +51,7 @@ class RoomInitial extends AbstractState<Room> {
           simulcast: true,
           videoEncoding: VideoEncoding(
             maxBitrate: 1500000, // 1.5 Mbps
-            maxFramerate: 30,
+            maxFramerate: 23,
           ),
         ),
         // Audio publishing options
