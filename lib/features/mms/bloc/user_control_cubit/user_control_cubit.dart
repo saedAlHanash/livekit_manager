@@ -20,6 +20,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.suspend,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
 
@@ -31,6 +33,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.resume,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -41,6 +45,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.suspendAll,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson(),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -51,6 +57,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.resumeAll,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson(),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -61,6 +69,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.allowScreenShare,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -71,6 +81,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.stopScreenShare,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -81,6 +93,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.allowCamera,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -91,6 +105,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.stopCamera,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -101,6 +117,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.allowAudio,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -111,6 +129,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.stopAudio,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
     );
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
@@ -121,6 +141,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()
         ..addAll(
           type.revokePermissions(participant),
@@ -134,6 +156,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()
         ..addAll(
           type.grantPermissions(participant),
@@ -147,6 +171,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     final result = await APIService().callApi(
       url: PostUrl.kick,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: state.updateRequest.toJson()
         ..addAll(
           {
@@ -162,6 +188,8 @@ class MMSUserControlCubit extends MCubit<UserControlInitial> {
     await APIService().callApi(
       url: PostUrl.sendMessage,
       type: ApiType.post,
+      hostName: 'coretik-be.coretech-mena.com',
+      additional: '/api/v1/',
       body: request.toJson(),
     );
   }
