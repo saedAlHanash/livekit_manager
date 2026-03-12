@@ -18,8 +18,8 @@ import '../../data/request/setting_message.dart';
 
 part 'room_state.dart';
 
-class RoomCubit extends MCubit<RoomInitial> {
-  RoomCubit() : super(RoomInitial.initial());
+class MMSRoomCubit extends MCubit<RoomInitial> {
+  MMSRoomCubit() : super(RoomInitial.initial());
 
   @override
   String get nameCache => 'roomNotes';

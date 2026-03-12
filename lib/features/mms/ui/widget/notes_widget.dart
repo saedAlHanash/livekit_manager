@@ -20,7 +20,7 @@ class NotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, RoomInitial>(
       builder: (context, state) {
         return MyCardWidget(
           cardColor: AppColorManager.appBarColor,
@@ -75,8 +75,8 @@ class NotesWidget extends StatelessWidget {
                                     ),
                                   );
 
-                                  context.read<RoomCubit>().deleteFromCache(item.id);
-                                  context.read<UserControlCubit>().allowToSpeak(item.id);
+                                  context.read<MMSRoomCubit>().deleteFromCache(item.id);
+                                  context.read<MMSUserControlCubit>().allowToSpeak(item.id);
                                 },
                               ),
                               IconButton(
@@ -99,7 +99,7 @@ class NotesWidget extends StatelessWidget {
                                       ),
                                     ),
                                   );
-                                  context.read<RoomCubit>().deleteFromCache(item.id);
+                                  context.read<MMSRoomCubit>().deleteFromCache(item.id);
                                 },
                               ),
                             ],
@@ -118,7 +118,7 @@ class NotesWidget extends StatelessWidget {
                           subtitle: DrawableText(text: item.message),
                           trailing: IconButton(
                             onPressed: () {
-                              context.read<RoomCubit>().deleteFromCache(item.id);
+                              context.read<MMSRoomCubit>().deleteFromCache(item.id);
                             },
                             icon: ImageMultiType(url: Icons.delete_outline_rounded),
                           ),

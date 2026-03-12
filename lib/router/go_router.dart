@@ -11,6 +11,7 @@ import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
 import '../features/home/ui/pages/home_page.dart';
 import '../features/home/ui/pages/homes_page.dart';
+import '../features/mms/bloc/room_cubit/room_cubit.dart';
 import '../features/mms/ui/pages/home_page.dart';
 import '../features/room/bloc/room_cubit/room_cubit.dart';
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
@@ -125,7 +126,7 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        final link = state.uri.queryParameters['url'] ?? wsLink;
+        final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
         final token = state.uri.queryParameters['token'] ?? '';
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
@@ -163,7 +164,7 @@ final goRouter = GoRouter(
       path: RouteName.mms,
       name: RouteName.mms,
       builder: (context, state) {
-        final link = state.uri.queryParameters['url'] ?? wsLink;
+        final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
         final token = state.uri.queryParameters['token'] ?? '';
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
@@ -185,7 +186,8 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => sl<HomeCubit>()),
-            BlocProvider(create: (context) => sl<UsersCubit>()..getData(groupTermId: groupTermId)),
+            BlocProvider(create: (context) => sl<MMSRoomCubit>()),
+            BlocProvider(create: (context) => sl<UsersCubit>()),
           ],
           child: MMSPage(
             link: link,
@@ -236,9 +238,13 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/home';
   static const homes = '/homes';
 
   static const splash = '/splash';
-  static const mms = '/mms';
+  static const mms = '/';
 }
+
+//link=https://coretik.coretech-mena.com
+// token=
+// theme=dark

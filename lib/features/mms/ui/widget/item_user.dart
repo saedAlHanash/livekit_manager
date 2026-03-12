@@ -18,7 +18,7 @@ class ItemUserRemote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, RoomInitial>(
       builder: (context, state) {
         final participant = state.participant[i];
         // final audio = state.participantTracks[i].activeAudioTrack;
@@ -80,13 +80,13 @@ class ItemUserSpeaker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, RoomInitial>(
       builder: (context, state) {
         final participant = state.speakers[i];
         final isSelected = participant.identity == state.selectedParticipant?.identity;
         return InkWell(
           onTap: () {
-            context.read<RoomCubit>().selectParticipant(participant.identity);
+            context.read<MMSRoomCubit>().selectParticipant(participant.identity);
           },
           child: Container(
             height: 120.0.h,

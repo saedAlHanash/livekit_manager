@@ -18,7 +18,7 @@ class SpeakersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, RoomInitial>(
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(

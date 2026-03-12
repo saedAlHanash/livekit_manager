@@ -22,9 +22,9 @@ class ControlsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserControlCubit, UserControlInitial>(
+    return BlocBuilder<MMSUserControlCubit, UserControlInitial>(
       builder: (context, cState) {
-        return BlocBuilder<RoomCubit, RoomInitial>(
+        return BlocBuilder<MMSRoomCubit, RoomInitial>(
           builder: (context, state) {
             return Row(
               spacing: 12.0,
@@ -33,8 +33,9 @@ class ControlsWidget extends StatelessWidget {
                 MyButton(
                   loading: cState.loading,
                   onTap: () {
-                    context.read<UserControlCubit>().suspendAll();
+                    context.read<MMSUserControlCubit>().suspendAll();
                   },
+                  width: 150.0.w,
                   text: 'تعليق الكل',
                   color: AppColorManager.appBarColor,
                   icon: ImageMultiType(
@@ -44,22 +45,10 @@ class ControlsWidget extends StatelessWidget {
                     color: AppColorManager.textColor,
                   ),
                 ),
-                // MyButton(
-                //   onTap: () {
-                //     NoteMessage.showMyDialog(child: SendMessageDialog());
-                //   },
-                //   text: S.of(context).groupMessage,
-                //   color: AppColorManager.appBarColor,
-                //   icon: ImageMultiType(
-                //     height: 24.0.dg,
-                //     width: 24.0.dg,
-                //     url: Icons.message,
-                //     color: AppColorManager.textColor,
-                //   ),
-                // ),
+
                 IconButton(
                   onPressed: () {
-                    context.read<RoomCubit>().disconnect();
+                    context.read<MMSRoomCubit>().disconnect();
                   },
                   icon: const Icon(
                     Icons.call_end,

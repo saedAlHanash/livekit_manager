@@ -27,7 +27,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserControlCubit, UserControlInitial>(
+    return BlocBuilder<MMSUserControlCubit, UserControlInitial>(
       buildWhen: (p, c) => c.id == participant.identity,
       builder: (context, state) {
         return DynamicPopupMenu(
@@ -39,7 +39,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   label: S.of(context).mute,
                   icon: Icons.mic_off,
                   onTap: () {
-                    context.read<UserControlCubit>().mute(participant.identity);
+                    context.read<MMSUserControlCubit>().mute(participant.identity);
                   },
                 ),
               if (participant.isCameraEnabled())
@@ -47,7 +47,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   label: S.of(context).stopCamera,
                   icon: Icons.videocam_off_outlined,
                   onTap: () {
-                    context.read<UserControlCubit>().stopCamera(participant.identity);
+                    context.read<MMSUserControlCubit>().stopCamera(participant.identity);
                   },
                 ),
               if (participant.isScreenShareEnabled())
@@ -55,7 +55,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                   label: S.of(context).stopShareScreen,
                   icon: Icons.stop_screen_share_outlined,
                   onTap: () {
-                    context.read<UserControlCubit>().stopScreenShare(participant.identity);
+                    context.read<MMSUserControlCubit>().stopScreenShare(participant.identity);
                   },
                 ),
               // PopupMenuItemModel(
@@ -84,12 +84,12 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
                 label: S.of(context).disconnect,
                 icon: ImageMultiType(url: Icons.call_end, color: Colors.red),
                 onTap: () {
-                  context.read<UserControlCubit>().kick(participant.identity);
+                  context.read<MMSUserControlCubit>().kick(participant.identity);
                 },
               ),
               PopupMenuItemModel(
                 onTap: () {
-                  context.read<UserControlCubit>().kick(participant.identity, block: true);
+                  context.read<MMSUserControlCubit>().kick(participant.identity, block: true);
                 },
                 label: S.of(context).disconnectAndBan,
                 icon: ImageMultiType(url: Icons.block, color: Colors.red),
@@ -107,9 +107,9 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
       icon: participant.isSuspend ? Icons.play_arrow : Icons.pause,
       onTap: () {
         if (participant.isSuspend) {
-          context.read<UserControlCubit>().resume(participant.identity);
+          context.read<MMSUserControlCubit>().resume(participant.identity);
         } else {
-          context.read<UserControlCubit>().suspend(participant.identity);
+          context.read<MMSUserControlCubit>().suspend(participant.identity);
         }
       },
     );
@@ -126,9 +126,9 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
       ),
       onTap: () {
         if (participant.permissions.isSilence) {
-          context.read<UserControlCubit>().grant(participant, PermissionType.speak);
+          context.read<MMSUserControlCubit>().grant(participant, PermissionType.speak);
         } else {
-          context.read<UserControlCubit>().revoke(participant, PermissionType.speak);
+          context.read<MMSUserControlCubit>().revoke(participant, PermissionType.speak);
         }
       },
     );

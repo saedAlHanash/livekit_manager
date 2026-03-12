@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 
+import '../../features/mms/bloc/user_control_cubit/user_control_cubit.dart';
 import '../../features/room/bloc/room_cubit/room_cubit.dart';
 import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import '../../generated/assets.dart';
@@ -106,6 +107,7 @@ class MyAppState extends State<MyApp> {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(create: (context) => sl<UserControlCubit>()),
+                  BlocProvider(create: (context) => sl<MMSUserControlCubit>()),
                   BlocProvider(
                     create: (context) => sl<RoomCubit>()
                       ..setUrl(wsLink)

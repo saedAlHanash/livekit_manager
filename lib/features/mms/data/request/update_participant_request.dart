@@ -23,11 +23,11 @@ class UpdateParticipantRequest {
   }
 
   Map<String, dynamic> toJson() => {
-        "room": ctx?.read<RoomCubit>().state.result.name ?? '',
-        "identity": identity,
-        "metadata": metadata,
-        // "permission": permission?.toJson(),
-      };
+    "room": ctx?.read<MMSRoomCubit>().state.result.name ?? '',
+    "identity": identity,
+    "metadata": metadata,
+    // "permission": permission?.toJson(),
+  };
 }
 
 class Permission {
@@ -50,8 +50,8 @@ class Permission {
   }
 
   Map<String, dynamic> toJson() => {
-        "can_subscribe": canSubscribe,
-        "can_publish": canPublish,
-        "can_publish_data": canPublishData,
-      };
+    "can_subscribe": canSubscribe,
+    "can_publish": canPublish,
+    "can_publish_data": canPublishData,
+  };
 }

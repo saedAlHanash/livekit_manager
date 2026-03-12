@@ -25,9 +25,9 @@ class SendMessageDialog extends StatefulWidget {
 }
 
 class _SendMessageDialogState extends State<SendMessageDialog> {
-  RoomCubit get roomC => context.read<RoomCubit>();
+  MMSRoomCubit get roomC => context.read<MMSRoomCubit>();
 
-  UserControlCubit get controlC => context.read<UserControlCubit>();
+  MMSUserControlCubit get controlC => context.read<MMSUserControlCubit>();
 
   final message = SettingMessage(action: ManagerActions.message, toUserType: LkUserType.user);
 
@@ -59,7 +59,7 @@ class _SendMessageDialogState extends State<SendMessageDialog> {
                   child: MyButton(
                     onTap: () {
                       context
-                        ..read<UserControlCubit>().sendMessage(
+                        ..read<MMSUserControlCubit>().sendMessage(
                           MessageRequest(
                             roomName: roomC.state.result.name ?? '',
                             identities: [],

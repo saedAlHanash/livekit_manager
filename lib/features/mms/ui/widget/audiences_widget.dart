@@ -14,7 +14,7 @@ class AudiencesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, RoomInitial>(
       builder: (context, state) {
         final l = state.participant.where((e) => e.userType.isUser && !e.permissions.canPublish).toList();
 

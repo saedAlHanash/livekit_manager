@@ -20,9 +20,9 @@ class ChangeTrackRequest {
   }
 
   Map<String, dynamic> toJson() => {
-        "room": ctx?.read<RoomCubit>().state.result.name ?? '',
-        "identity": identity,
-        "track_sid": trackSid,
-        "muted": true,
-      };
+    "room": ctx?.read<MMSRoomCubit>().state.result.name ?? '',
+    "identity": identity,
+    "track_sid": trackSid,
+    "muted": true,
+  };
 }
