@@ -24,7 +24,7 @@ class ControlsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MMSUserControlCubit, UserControlInitial>(
       builder: (context, cState) {
-        return BlocBuilder<MMSRoomCubit, RoomInitial>(
+        return BlocBuilder<MMSRoomCubit, MMSRoomInitial>(
           builder: (context, state) {
             return Row(
               spacing: 12.0,

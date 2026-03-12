@@ -1,7 +1,7 @@
 part of 'room_cubit.dart';
 
-class RoomInitial extends AbstractState<Room> {
-  const RoomInitial({
+class MMSRoomInitial extends AbstractState<Room> {
+  const MMSRoomInitial({
     required super.result,
     super.error,
     required super.request,
@@ -40,9 +40,9 @@ class RoomInitial extends AbstractState<Room> {
 
   bool get isConnect => result.connectionState == ConnectionState.connected;
 
-  factory RoomInitial.initial() {
+  factory MMSRoomInitial.initial() {
     final room = Room();
-    return RoomInitial(
+    return MMSRoomInitial(
       id: 0,
       result: room,
       request: '',
@@ -57,26 +57,26 @@ class RoomInitial extends AbstractState<Room> {
 
   @override
   List<Object> get props => [
-        statuses,
-        result,
-        error,
-        if (request != null) request,
-        if (id != null) id,
-        if (filterRequest != null) filterRequest!,
-        listener,
-        url,
-        token,
-        participant,
-        raiseHands,
-        selectedUserId,
-      ];
+    statuses,
+    result,
+    error,
+    if (request != null) request,
+    if (id != null) id,
+    if (filterRequest != null) filterRequest!,
+    listener,
+    url,
+    token,
+    participant,
+    raiseHands,
+    selectedUserId,
+  ];
 
   List<Participant> get speakers =>
       participant.where((e) => e.permissions.canPublish && !e.userType.isManager).toList();
 
   String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 
-  RoomInitial copyWith({
+  MMSRoomInitial copyWith({
     CubitStatuses? statuses,
     Room? result,
     String? error,
@@ -89,7 +89,7 @@ class RoomInitial extends AbstractState<Room> {
     List<SettingMessage>? raiseHands,
     String? selectedUserId,
   }) {
-    return RoomInitial(
+    return MMSRoomInitial(
       statuses: statuses ?? this.statuses,
       result: result ?? this.result,
       error: error ?? this.error,

@@ -16,7 +16,7 @@ class ManagersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MMSRoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, MMSRoomInitial>(
       builder: (context, state) {
         final l = state.participant.where((e) => !e.userType.isUser).toList();
         return Container(

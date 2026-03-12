@@ -28,7 +28,7 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MMSRoomCubit, RoomInitial>(
+      body: BlocBuilder<MMSRoomCubit, MMSRoomInitial>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(20.0),
