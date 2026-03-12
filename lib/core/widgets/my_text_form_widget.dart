@@ -45,8 +45,8 @@ class MyTextFormWidget extends StatefulWidget {
   final bool? obscureText;
   final bool isRequired;
   final TextAlign? textAlign;
-  final Function(String)? onChanged;
-  final Function(bool)? onChangedFocus;
+  final Function(String p0)? onChanged;
+  final Function(bool b)? onChangedFocus;
   final Function()? onTap;
 
   final List<String>? autofillHints;
@@ -84,7 +84,7 @@ class _MyTextFormWidgetState extends State<MyTextFormWidget> {
       ? IconButton(
           splashRadius: 0.01,
           onPressed: () => setState(() => obscureText = !obscureText),
-              icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
+          icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
         )
       : widget.iconWidgetLift == null
           ? null

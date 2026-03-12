@@ -35,8 +35,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   RoomCubit get cubit => context.read<RoomCubit>();
 
-  final _codeC = TextEditingController(text: AppSharedPreference.getToken);
+  final _codeC = TextEditingController();
   String token = '';
+
+  var loading = false;
 
   @override
   void initState() {
@@ -95,17 +97,45 @@ class _HomePageState extends State<HomePage> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
+                                if (widget.token.isEmpty)
+                                  MyTextFormWidget(
+                                    controller: _codeC,
+                                    helperText: 'يرجى إدخال رمز الجلسة',
+                                  ),
+                                20.0.verticalSpace,
                                 MyButton(
                                   width: 1.0.sw,
-                                  loading: state.loading,
+                                  loading: state.loading || loading,
                                   onTap: () async {
+                                    var token = widget.token;
+                                    var url = widget.link;
+
+                                    if (token.isEmpty) {
+                                      setState(() => loading = true);
+                                      var code = _codeC.text;
+                                      var response = await APIService().callApi(
+                                        type: ApiType.get,
+                                        url: 'Meeting/GetSharingToken',
+                                        query: {'code': code},
+                                        additional: '/api/v1/',
+                                        hostName: 'mmsv2-be.coretech-mena.com',
+                                      );
+                                      setState(() => loading = false);
+                                      final json = response.jsonBody;
+
+                                      token = json['token'];
+                                      url = json['url'];
+                                    }
+
                                     cubit
-                                      ..setToken(widget.token)
-                                      ..setUrl(widget.link);
+                                      ..setToken(token)
+                                      ..setUrl(url);
 
                                     await cubit.connect();
                                     if (context.mounted) {
-                                      context.read<MyStatusCubit>().fetchMyStatus(state.result.localParticipant?.identity ?? '');
+                                      context
+                                          .read<MyStatusCubit>()
+                                          .fetchMyStatus(state.result.localParticipant?.identity ?? '');
                                     }
                                   },
                                   text: S.of(context).join,

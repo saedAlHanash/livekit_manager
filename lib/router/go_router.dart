@@ -145,7 +145,7 @@ final goRouter = GoRouter(
       path: RouteName.home,
       name: RouteName.home,
       builder: (context, state) {
-        String link = state.uri.queryParameters['link'] ?? wsLink;
+        String link = state.uri.queryParameters['link'] ?? state.uri.queryParameters['url'] ?? wsLink;
         String token = state.uri.queryParameters['token'] ?? '';
         String theme = state.uri.queryParameters['theme'] ?? '';
 
