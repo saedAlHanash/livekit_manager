@@ -47,10 +47,12 @@ class MMSRoomInitial extends AbstractState<Room> {
       result: room,
       request: '',
       url: '',
+      // url: 'wss://coretik.coretech-mena.com',
       token: '',
       listener: room.createListener(),
       raiseHands: [],
       participant: const [],
+
       selectedUserId: '',
     );
   }
@@ -71,8 +73,7 @@ class MMSRoomInitial extends AbstractState<Room> {
     selectedUserId,
   ];
 
-  List<Participant> get speakers =>
-      participant.where((e) => e.permissions.canPublish && !e.userType.isManager).toList();
+  List<Participant> get speakers => participant.where((e) => e.permissions.canPublish).toList();
 
   String get sharerId => participant.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 

@@ -184,7 +184,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
     final list = [
       ...screenTracks /*...userMediaTracks*/,
     ];
-
+    loggerObject.f(list.length);
     emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
   }
 
@@ -202,7 +202,6 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
       showErrorFromApi(state);
-      loggerObject.e(e);
     }
   }
 

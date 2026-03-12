@@ -6,6 +6,7 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/features/mms/ui/pages/room_page.dart';
 
+import '../../../../core/widgets/my_text_form_widget.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 
 class MMSPage extends StatefulWidget {
@@ -25,6 +26,8 @@ class MMSPage extends StatefulWidget {
 
 class _MMSPageState extends State<MMSPage> {
   RoomCubit get cubit => context.read<RoomCubit>();
+
+  var token = '';
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,12 @@ class _MMSPageState extends State<MMSPage> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          DrawableText(text: state.url),
+                          if (widget.token.isEmpty)
+                            MyTextFormWidget(
+                              onChanged: (value) => token = value,
+                              helperText: 'يرجى إدخال رمز الجلسة',
+                            ),
+                          20.0.verticalSpace,
                           20.0.verticalSpace,
                           MyButton(
                             width: 1.0.sw,
@@ -54,7 +62,7 @@ class _MMSPageState extends State<MMSPage> {
                             onTap: () {
                               cubit
                                 ..setUrl(widget.link)
-                                ..setToken(widget.token)
+                                ..setToken(widget.token.isEmpty ? token : widget.token)
                                 ..connect();
                             },
                             text: 'انضمام',

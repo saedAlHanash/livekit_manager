@@ -108,11 +108,7 @@ class MyAppState extends State<MyApp> {
                 providers: [
                   BlocProvider(create: (context) => sl<UserControlCubit>()),
                   BlocProvider(create: (context) => sl<MMSUserControlCubit>()),
-                  BlocProvider(
-                    create: (context) => sl<RoomCubit>()
-                      ..setUrl(wsLink)
-                      ..initial(),
-                  ),
+                  BlocProvider(create: (context) => sl<RoomCubit>()..initial()),
                 ],
                 child: MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),

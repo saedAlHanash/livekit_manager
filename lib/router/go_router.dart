@@ -186,7 +186,11 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => sl<HomeCubit>()),
-            BlocProvider(create: (context) => sl<MMSRoomCubit>()),
+            BlocProvider(
+              create: (context) => sl<MMSRoomCubit>()
+                ..setUrl(link)
+                ..initial(),
+            ),
             BlocProvider(create: (context) => sl<UsersCubit>()),
           ],
           child: MMSPage(
@@ -238,11 +242,11 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/home';
+  static const home = '/';
   static const homes = '/homes';
 
   static const splash = '/splash';
-  static const mms = '/';
+  static const mms = '/mms';
 }
 
 //link=https://coretik.coretech-mena.com
