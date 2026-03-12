@@ -63,7 +63,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               //   icon: ImageMultiType(url: Icons.screenshot_monitor),
               //   onTap: () {
               //     final m = SettingMessage(
-              //       toIdentity: context.read<RoomCubit>().state.sharerId,
+              //       toIdentity: context.read<MMSRoomCubit>().state.sharerId,
               //       action: ManagerActions.changeScreen,
               //       toUserType: LkUserType.sharer,
               //       metadata: {
@@ -73,7 +73,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               //       },
               //     );
               //
-              //     context.read<RoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
+              //     context.read<MMSRoomCubit>().state.result.localParticipant?.publishData(m.toBytes);
               //   },
               // ),
               silence(),

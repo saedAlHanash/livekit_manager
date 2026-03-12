@@ -138,7 +138,6 @@ class RoomCubit extends MCubit<RoomInitial> {
         (e) async {
           try {
             final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
-            loggerObject.w(e.participant?.identity);
             message.id = e.participant?.identity ?? '';
             message.metadata.addAll({
               'id': e.participant?.identity,

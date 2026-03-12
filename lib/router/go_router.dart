@@ -242,11 +242,11 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/home';
   static const homes = '/homes';
 
   static const splash = '/splash';
-  static const mms = '/mms';
+  static const mms = '/';
 }
 
 //link=https://coretik.coretech-mena.com

@@ -105,10 +105,12 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
       // ..on<ParticipantAttributesChanged>((e) => _sortParticipants())
       // 🔹 عندما ينضم مشارك جديد إلى الغرفة.
       ..on<ParticipantConnectedEvent>((e) async {
+        _sortParticipants();
         await SoundService.play(Assets.soundsAcceptRequest);
       })
       // 🔹 عندما يغادر أحد المشاركين الغرفة أو يفقد الاتصال.
       ..on<ParticipantDisconnectedEvent>((e) async {
+        _sortParticipants();
         await SoundService.play(Assets.soundsDisconnectUser);
       })
       // 🔹 عندما يتم تحديث البيانات (metadata) الخاصة بأحد المشاركين.
@@ -147,6 +149,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
     // List<Participant> userMediaTracks = [];
     List<Participant> screenTracks = [];
 
+    loggerObject.f(state.result.remoteParticipants.length);
     for (var participant in state.result.remoteParticipants.values) {
       screenTracks.add(participant);
     }
@@ -238,7 +241,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   Future<void> deleteFromCache(String id) async {
     final listJson = await deleteDate([id]);
     if (listJson == null) return;
-    loggerObject.w('id: $id, listJson: $listJson');
+
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
     emit(state.copyWith(raiseHands: list));
   }

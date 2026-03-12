@@ -8,6 +8,7 @@ import 'package:livekit_manager/features/mms/ui/pages/room_page.dart';
 
 import '../../../../core/widgets/my_text_form_widget.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
+import '../../bloc/room_cubit/room_cubit.dart';
 
 class MMSPage extends StatefulWidget {
   const MMSPage({
@@ -25,13 +26,13 @@ class MMSPage extends StatefulWidget {
 }
 
 class _MMSPageState extends State<MMSPage> {
-  RoomCubit get cubit => context.read<RoomCubit>();
+  MMSRoomCubit get cubit => context.read<MMSRoomCubit>();
 
   var token = '';
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RoomCubit, RoomInitial>(
+    return BlocBuilder<MMSRoomCubit, MMSRoomInitial>(
       builder: (context, state) {
         return state.isConnect
             ? RoomPage()
