@@ -200,6 +200,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       );
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
+      startRecording();
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
       showErrorFromApi(state);
@@ -276,6 +277,16 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   void setExpectedUsers(List<User> expectedUsers) {
     emit(state.copyWith(expectedUsers: expectedUsers));
+  }
+
+  Future<void> startRecording() async {
+    await APIService().callApi(
+      url: '/api/v1/Lesson/StartLessonRecording',
+      type: ApiType.post,
+      additional: '',
+      hostName: 'ims-be.coretech-mena.com',
+      body: {"roomId": state.result.name},
+    );
   }
 
   @override
