@@ -67,25 +67,21 @@ class NotesWidget extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Expanded(
-                                  child: MyButton(
-                                    height: 30.0.h,
+                                  child: IconButton(
                                     icon: Icon(Icons.check_circle),
-                                    onTap: () {
+                                    onPressed: () {
                                       context.read<RoomCubit>().choseUser(item.userId);
                                       context.read<RoomCubit>().deleteFromCache([item.id]);
                                     },
-                                    text: 'قبول',
                                   ),
                                 ),
                                 Expanded(
-                                  child: MyButton(
-                                    height: 30.0.h,
+                                  child: IconButton(
                                     icon: Icon(Icons.cancel),
                                     color: AppColorManager.red,
-                                    onTap: () {
+                                    onPressed: () {
                                       context.read<RoomCubit>().deleteFromCache([item.id]);
                                     },
-                                    text: 'رفض',
                                   ),
                                 ),
                               ],
