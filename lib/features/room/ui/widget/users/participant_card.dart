@@ -188,26 +188,27 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
                     ),
                   ),
 
-                Align(
-                  alignment: .topRight,
-                  child: IconButton(
-                    icon: ImageMultiType(url: Icons.waving_hand),
-                    onPressed: () {
-                      final m = LkMessage(
-                        action: ManagerActions.achievement,
-                        metadata: {
-                          'name': participant.name,
-                          if (participant.image.isNotEmpty) 'image': participant.image,
-                          'id': participant.identity,
-                        },
-                      );
+                if (participant.isRemoteUser)
+                  Align(
+                    alignment: .topRight,
+                    child: IconButton(
+                      icon: ImageMultiType(url: Icons.waving_hand),
+                      onPressed: () {
+                        final m = LkMessage(
+                          action: ManagerActions.achievement,
+                          metadata: {
+                            'name': participant.name,
+                            if (participant.image.isNotEmpty) 'image': participant.image,
+                            'id': participant.identity,
+                          },
+                        );
 
-                      context.read<RoomCubit>().state.result.localParticipant?.publishData(
-                        m.toBytes,
-                      );
-                    },
+                        context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                          m.toBytes,
+                        );
+                      },
+                    ),
                   ),
-                ),
               ],
             ),
           ),
