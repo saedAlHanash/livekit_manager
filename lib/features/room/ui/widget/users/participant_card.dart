@@ -11,6 +11,11 @@ import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:livekit_manager/features/user/data/response/user_response.dart';
 import 'package:m_cubit/m_cubit.dart';
 
+import '../../../../../core/strings/enum_manager.dart';
+import '../../../../../core/widgets/menu_widget.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../mms/ui/widget/controllers.dart';
+import '../../../data/request/setting_message.dart';
 import 'no_video.dart';
 
 class ParticipantCard extends StatefulWidget {
@@ -182,6 +187,27 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
                           : ImageMultiType(url: chosen ? Icons.check_box : Icons.check_box_outline_blank),
                     ),
                   ),
+
+                Align(
+                  alignment: .topRight,
+                  child: IconButton(
+                    icon: ImageMultiType(url: Icons.waving_hand),
+                    onPressed: () {
+                      final m = LkMessage(
+                        action: ManagerActions.achievement,
+                        metadata: {
+                          'name': participant.name,
+                          if (participant.image.isNotEmpty) 'image': participant.image,
+                          'id': participant.identity,
+                        },
+                      );
+
+                      context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                        m.toBytes,
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -199,7 +225,7 @@ class UserWider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: 0.5,
+      opacity: 0.3,
       child: Container(
         decoration: BoxDecoration(
           color: AppColorManager.appBarColor,
@@ -237,3 +263,5 @@ class UserWider extends StatelessWidget {
     );
   }
 }
+
+//https://lk-m.codemagic.app/?token=&url=wss://coretik.coretech-mena.com&theme=dark&groupTermId=f6a8ac35-293f-4204-96b9-14bbe164bd4e
