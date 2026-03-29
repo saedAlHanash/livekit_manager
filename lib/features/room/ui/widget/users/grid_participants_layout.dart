@@ -12,8 +12,10 @@ class GridParticipantsLayoutView extends StatelessWidget {
   const GridParticipantsLayoutView({
     super.key,
     this.onTap,
+    this.justShow = false,
   });
 
+  final bool justShow;
   final Function(Participant)? onTap;
 
   @override

@@ -24,7 +24,7 @@ class ParticipantCard extends StatefulWidget {
     required this.participant,
     this.user,
     required this.fit,
-    this.isMaster = false,
+    this.justShow = false,
     this.onTap,
     this.small = false,
   });
@@ -32,7 +32,7 @@ class ParticipantCard extends StatefulWidget {
   final Participant? participant;
   final User? user;
   final VideoViewFit fit;
-  final bool isMaster;
+  final bool justShow;
   final VoidCallback? onTap;
   final bool small;
 
@@ -95,7 +95,7 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
       onTap: widget.onTap,
       child: Stack(
         children: [
-          if (chosen)
+          if (chosen && !widget.justShow)
             AnimatedBuilder(
               animation: _animation,
               builder: (context, child) {
@@ -126,10 +126,12 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
             decoration: BoxDecoration(
               color: AppColorManager.appBarColor,
               borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: chosen ? AppColorManager.ampere : Colors.transparent,
-                width: chosen ? 4.r : 0,
-              ),
+              border: widget.justShow
+                  ? null
+                  : Border.all(
+                      color: chosen ? AppColorManager.ampere : Colors.transparent,
+                      width: chosen ? 4.r : 0,
+                    ),
             ),
             clipBehavior: Clip.hardEdge,
             child: Stack(
@@ -173,42 +175,44 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
                     ),
                   ),
                 ),
-                if (participant.isRemoteUser)
-                  Align(
-                    alignment: .topLeft,
-                    child: IconButton(
-                      onPressed: () async {
-                        setState(() => loadingChoseUser = true);
-                        await context.read<RoomCubit>().choseUser(participant.identity);
-                        setState(() => loadingChoseUser = false);
-                      },
-                      icon: loadingChoseUser
-                          ? MyStyle.loadingW()
-                          : ImageMultiType(url: chosen ? Icons.check_box : Icons.check_box_outline_blank),
+                if (!widget.justShow) ...[
+                  if (participant.isRemoteUser)
+                    Align(
+                      alignment: .topLeft,
+                      child: IconButton(
+                        onPressed: () async {
+                          setState(() => loadingChoseUser = true);
+                          await context.read<RoomCubit>().choseUser(participant.identity);
+                          setState(() => loadingChoseUser = false);
+                        },
+                        icon: loadingChoseUser
+                            ? MyStyle.loadingW()
+                            : ImageMultiType(url: chosen ? Icons.check_box : Icons.check_box_outline_blank),
+                      ),
                     ),
-                  ),
 
-                if (participant.isRemoteUser)
-                  Align(
-                    alignment: .topRight,
-                    child: IconButton(
-                      icon: ImageMultiType(url: Icons.waving_hand),
-                      onPressed: () {
-                        final m = LkMessage(
-                          action: ManagerActions.achievement,
-                          metadata: {
-                            'name': participant.name,
-                            if (participant.image.isNotEmpty) 'image': participant.image,
-                            'id': participant.identity,
-                          },
-                        );
+                  if (participant.isRemoteUser)
+                    Align(
+                      alignment: .topRight,
+                      child: IconButton(
+                        icon: ImageMultiType(url: Icons.waving_hand),
+                        onPressed: () {
+                          final m = LkMessage(
+                            action: ManagerActions.achievement,
+                            metadata: {
+                              'name': participant.name,
+                              if (participant.image.isNotEmpty) 'image': participant.image,
+                              'id': participant.identity,
+                            },
+                          );
 
-                        context.read<RoomCubit>().state.result.localParticipant?.publishData(
-                          m.toBytes,
-                        );
-                      },
+                          context.read<RoomCubit>().state.result.localParticipant?.publishData(
+                            m.toBytes,
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                ],
               ],
             ),
           ),

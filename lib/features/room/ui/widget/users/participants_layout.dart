@@ -23,8 +23,6 @@ class ParticipantsLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
-        final participants = state.participantTracksWithoutMe;
-
         return LayoutBuilder(
           builder: (context, constraints) {
             return Stack(

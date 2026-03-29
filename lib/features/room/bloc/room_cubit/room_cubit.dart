@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
@@ -50,6 +50,21 @@ class RoomCubit extends MCubit<RoomInitial> {
       // Room disconnection
       ..on<RoomDisconnectedEvent>((e) {
         loggerObject.e(e.reason?.name);
+        if (ctx != null) {
+          showDialog(
+            context: ctx!,
+            builder: (context) => AlertDialog(
+              title: const Text('Disconnected'),
+              content: Text('Reason: ${e.reason?.name ?? 'Unknown'}'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
         emit(state.copyWith(id: state.notifyIndex + 1));
       })
       //re sort list users
@@ -166,7 +181,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     _sortDebounceTimer?.cancel();
 
     // Debounce for 100ms to prevent excessive rebuilds
-    _sortDebounceTimer = Timer(const Duration(milliseconds: 100), () {
+    _sortDebounceTimer = Timer(const Duration(milliseconds: 300), () {
       List<Participant> screenTracks = [];
 
       for (var participant in state.result.remoteParticipants.values) {

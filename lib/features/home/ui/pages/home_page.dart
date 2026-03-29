@@ -9,6 +9,7 @@ import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:livekit_manager/features/room/ui/pages/group_page.dart';
 import 'package:livekit_manager/features/room/ui/pages/sharer_page.dart';
 import 'package:livekit_manager/generated/l10n.dart';
 import 'package:m_cubit/m_cubit.dart';
@@ -16,6 +17,7 @@ import 'package:m_cubit/m_cubit.dart';
 import '../../../../core/util/my_style.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/ui/pages/teacher_page.dart';
+import 'package:web/web.dart' as web;
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -122,9 +124,10 @@ class _HomePageState extends State<HomePage> {
                   case .reconnecting:
                     return _ReConnecting();
                   case .connected:
-                    switch (PageType.teacher) {
+                    switch (widget.page) {
+                      case PageType.group:
+                        return GroupPage();
                       case PageType.manager:
-                        // TODO: Handle this case.
                         throw UnimplementedError();
                       case PageType.sharer:
                         return SharerPage();
@@ -160,8 +163,10 @@ class _EndSession extends StatelessWidget {
             children: [
               Expanded(
                 child: MyButton(
-                  onTap: () => context.pop(),
-                  text: S.of(context).back,
+                  onTap: () {
+                    web.window.location.reload();
+                  },
+                  text: 'Re-conecct',
                 ),
               ),
             ],
@@ -197,3 +202,5 @@ class _Connecting extends StatelessWidget {
     );
   }
 }
+
+//https://lk-m.codemagic.app/?token=&url=wss%3A%2F%2Fcoretik.coretech-mena.com&theme=dark&groupTermId=f6a8ac35-293f-4204-96b9-14bbe164bd4e

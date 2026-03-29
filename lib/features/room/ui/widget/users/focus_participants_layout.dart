@@ -26,10 +26,10 @@ class FocusParticipantsLayoutView extends StatelessWidget {
         if (allMembers.isEmpty) return Container();
 
         final speaker = state.selectedParticipant ?? (participants.isNotEmpty ? participants.first : null);
-        
-        final speakerMember = speaker != null 
-             ? allMembers.firstWhereOrNull((m) => m.identity == speaker.identity) 
-             : allMembers.first;
+
+        final speakerMember = speaker != null
+            ? allMembers.firstWhereOrNull((m) => m.identity == speaker.identity)
+            : allMembers.first;
 
         if (speakerMember == null) return Container();
 
@@ -45,7 +45,7 @@ class FocusParticipantsLayoutView extends StatelessWidget {
                   participant: speakerMember.participant,
                   user: speakerMember.user,
                   fit: .contain,
-                  isMaster: true,
+
                   onTap: () => speakerMember.participant != null ? onTap?.call(speakerMember.participant!) : null,
                 ),
               ),

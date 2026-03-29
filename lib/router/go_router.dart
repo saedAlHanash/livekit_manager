@@ -159,6 +159,43 @@ final goRouter = GoRouter(
       },
     ),
 
+    ///group
+    GoRoute(
+      path: RouteName.group,
+      name: RouteName.group,
+      builder: (context, state) {
+        final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
+        final token = state.uri.queryParameters['token'] ?? '';
+        final theme = state.uri.queryParameters['theme'] ?? '';
+
+        if (theme.isNotEmpty) {
+          if (theme == 'dark') {
+            MyApp.changeTheme(context, ThemeMode.dark);
+          } else if (theme == 'light') {
+            AppSharedPreference.setThemeMode(ThemeMode.light);
+            MyApp.changeTheme(context, ThemeMode.light);
+            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+          }
+        } else {
+          AppSharedPreference.setThemeMode(ThemeMode.system);
+          // AppSharedPreference.setThemeMode(ThemeMode.system);
+          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
+        }
+
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => sl<HomeCubit>()),
+            BlocProvider(create: (context) => sl<UsersCubit>()),
+          ],
+          child: HomePage(
+            link: link,
+            token: token,
+            page: .group,
+          ),
+        );
+      },
+    ),
+
     ///mms
     GoRoute(
       path: RouteName.mms,
@@ -247,6 +284,7 @@ class RouteName {
 
   static const splash = '/splash';
   static const mms = '/mms';
+  static const group = '/group';
 }
 
 //link=https://coretik.coretech-mena.com

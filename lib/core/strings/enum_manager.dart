@@ -225,6 +225,7 @@ enum PageType {
   manager,
   sharer,
   teacher,
+  group,
 }
 
 enum ParticipantsLayoutMode { grid, focus, scroll }
