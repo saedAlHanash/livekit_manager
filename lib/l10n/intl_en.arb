@@ -64,5 +64,18 @@
   "userLogout": "User logged out",
   "serverSideError": "Server side error",
   "noInternet": "Please check your internet connection",
-  "pleaseWaitForContentBroadcast": "Please wait for content broadcast"
+  "pleaseWaitForContentBroadcast": "Please wait for content broadcast",
+  "enterMarks": "Enter Marks",
+  "enterAttendance": "Enter Attendance",
+  "courseRegistrationDetails": "Course Registration Details",
+  "sessionEndedThankYou": "Session ended, thank you",
+  "reconnectingPleaseWait": "Reconnecting, please be patient",
+  "connectingJustAMoment": "Connecting now, just a moment",
+  "waitForContentBroadcast": "Please wait for content broadcast",
+  "suspended": "Suspended",
+  "listener": "Listener",
+  "speaker": "Speaker",
+  "unknown": "Unknown",
+  "showCorrectionScale": "Show correction scale",
+  "noParticipantsWithActiveVideo": "No participants with active video"
 }

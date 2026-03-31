@@ -40,26 +40,7 @@ class RoomInitial extends AbstractState<Room> {
   Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
 
   factory RoomInitial.initial() {
-    final room = Room(
-      roomOptions: RoomOptions(
-        // Enable adaptive streaming for better performance
-        adaptiveStream: true,
-        // Enable dynacast for automatic quality adjustment
-        dynacast: true,
-        // Video publishing options with simulcast
-        defaultVideoPublishOptions: const VideoPublishOptions(
-          simulcast: true,
-          videoEncoding: VideoEncoding(
-            maxBitrate: 1500000, // 1.5 Mbps
-            maxFramerate: 23,
-          ),
-        ),
-        // Audio publishing options
-        defaultAudioPublishOptions: const AudioPublishOptions(
-          audioBitrate: 64000, // 64 kbps
-        ),
-      ),
-    );
+    final room = Room(roomOptions: RoomConfig.instance.roomOptions);
     return RoomInitial(
       id: 0,
       result: room,

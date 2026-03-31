@@ -35,8 +35,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "classMembers": MessageLookupByLibrary.simpleMessage("أعضاء الصف"),
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
+    "connectingJustAMoment": MessageLookupByLibrary.simpleMessage(
+      "يتم الآن الاتصال, لحظات فقط ",
+    ),
     "connectionTimeOut": MessageLookupByLibrary.simpleMessage(
       "انتهت مهلة الاتصال",
+    ),
+    "courseRegistrationDetails": MessageLookupByLibrary.simpleMessage(
+      "تفاصيل التسجيل في المقررات",
     ),
     "day": MessageLookupByLibrary.simpleMessage("يوم"),
     "deafblinding": MessageLookupByLibrary.simpleMessage("صم وعمى"),
@@ -44,6 +50,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "disconnect": MessageLookupByLibrary.simpleMessage("قطع الاتصال"),
     "done": MessageLookupByLibrary.simpleMessage("تم"),
     "end": MessageLookupByLibrary.simpleMessage("إنهاء"),
+    "enterAttendance": MessageLookupByLibrary.simpleMessage("إدخال الحضور"),
+    "enterMarks": MessageLookupByLibrary.simpleMessage("إدخال العلامات"),
     "february": MessageLookupByLibrary.simpleMessage("شباط"),
     "grantPermissions": MessageLookupByLibrary.simpleMessage("إعطاء صلاحيات"),
     "hour": MessageLookupByLibrary.simpleMessage("ساعة"),
@@ -51,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "january": MessageLookupByLibrary.simpleMessage("كانون الثاني"),
     "july": MessageLookupByLibrary.simpleMessage("تموز"),
     "june": MessageLookupByLibrary.simpleMessage("حزيران"),
+    "listener": MessageLookupByLibrary.simpleMessage("مستمع"),
     "march": MessageLookupByLibrary.simpleMessage("آذار"),
     "may": MessageLookupByLibrary.simpleMessage("أيار"),
     "mic": MessageLookupByLibrary.simpleMessage("مايك"),
@@ -65,6 +74,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "يرجى التحقق من الاتصال بالإنترنت",
     ),
+    "noParticipantsWithActiveVideo": MessageLookupByLibrary.simpleMessage(
+      "No participants with active video",
+    ),
     "notes": MessageLookupByLibrary.simpleMessage("ملاحظات"),
     "november": MessageLookupByLibrary.simpleMessage("تشرين الثاني"),
     "october": MessageLookupByLibrary.simpleMessage("تشرين الأول"),
@@ -72,6 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "oops": MessageLookupByLibrary.simpleMessage("حدث خطأ ما!"),
     "pleaseWaitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
       "Please wait for content broadcast",
+    ),
+    "reconnectingPleaseWait": MessageLookupByLibrary.simpleMessage(
+      "تتم معاودة الاتصال, يرجى التحلي بالصبر",
     ),
     "requestedPermission": MessageLookupByLibrary.simpleMessage("طلب إذن"),
     "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
@@ -89,9 +104,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "serverSideError": MessageLookupByLibrary.simpleMessage(
       "خطأ من جانب الخادم",
     ),
+    "sessionEndedThankYou": MessageLookupByLibrary.simpleMessage(
+      "انتهت الجلسة شكرا لكم",
+    ),
     "sharedContent": MessageLookupByLibrary.simpleMessage(
       "المحتوى الذي تتم مشاركته",
     ),
+    "showCorrectionScale": MessageLookupByLibrary.simpleMessage(
+      "Show correction scale",
+    ),
+    "speaker": MessageLookupByLibrary.simpleMessage("متحدث"),
     "startSession": MessageLookupByLibrary.simpleMessage("بدأ الجلسة"),
     "stop": MessageLookupByLibrary.simpleMessage("إيقاف"),
     "stopCamera": MessageLookupByLibrary.simpleMessage("إيقاف الكاميرا"),
@@ -99,12 +121,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "إيقاف مشاركة الشاشة",
     ),
     "suspendUser": MessageLookupByLibrary.simpleMessage("إيقاف مؤقت"),
+    "suspended": MessageLookupByLibrary.simpleMessage("معلق"),
     "textCopiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "تم نسخ النص إلى الحافظة",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("حاول مرة أخرى"),
+    "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "unmuteAll": MessageLookupByLibrary.simpleMessage("تشغيل الكل"),
     "userLogout": MessageLookupByLibrary.simpleMessage("تسجيل خروج المستخدم"),
+    "waitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
+      "يرجى انتظار بث المحتوى",
+    ),
     "wantsToJoinOrGetPermission": MessageLookupByLibrary.simpleMessage(
       "يريد الانضمام أو الحصول على إذن",
     ),

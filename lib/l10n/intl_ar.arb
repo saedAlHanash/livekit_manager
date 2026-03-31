@@ -63,5 +63,18 @@
   "userLogout": "تسجيل خروج المستخدم",
   "serverSideError": "خطأ من جانب الخادم",
   "noInternet": "يرجى التحقق من الاتصال بالإنترنت",
-  "pleaseWaitForContentBroadcast": "Please wait for content broadcast"
+  "pleaseWaitForContentBroadcast": "Please wait for content broadcast",
+  "enterMarks": "إدخال العلامات",
+  "enterAttendance": "إدخال الحضور",
+  "courseRegistrationDetails": "تفاصيل التسجيل في المقررات",
+  "sessionEndedThankYou": "انتهت الجلسة شكرا لكم",
+  "reconnectingPleaseWait": "تتم معاودة الاتصال, يرجى التحلي بالصبر",
+  "connectingJustAMoment": "يتم الآن الاتصال, لحظات فقط ",
+  "waitForContentBroadcast": "يرجى انتظار بث المحتوى",
+  "suspended": "معلق",
+  "listener": "مستمع",
+  "speaker": "متحدث",
+  "unknown": "غير معروف",
+  "showCorrectionScale": "Show correction scale",
+  "noParticipantsWithActiveVideo": "No participants with active video"
 }

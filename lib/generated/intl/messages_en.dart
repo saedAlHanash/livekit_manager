@@ -37,8 +37,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "classMembers": MessageLookupByLibrary.simpleMessage("Class members"),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "connectingJustAMoment": MessageLookupByLibrary.simpleMessage(
+      "Connecting now, just a moment",
+    ),
     "connectionTimeOut": MessageLookupByLibrary.simpleMessage(
       "Connection timed out",
+    ),
+    "courseRegistrationDetails": MessageLookupByLibrary.simpleMessage(
+      "Course Registration Details",
     ),
     "day": MessageLookupByLibrary.simpleMessage("day"),
     "deafblinding": MessageLookupByLibrary.simpleMessage("Deaf-blinding"),
@@ -49,6 +55,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "done": MessageLookupByLibrary.simpleMessage("Done"),
     "end": MessageLookupByLibrary.simpleMessage("End"),
+    "enterAttendance": MessageLookupByLibrary.simpleMessage("Enter Attendance"),
+    "enterMarks": MessageLookupByLibrary.simpleMessage("Enter Marks"),
     "february": MessageLookupByLibrary.simpleMessage("february"),
     "grantPermissions": MessageLookupByLibrary.simpleMessage(
       "Grant permissions",
@@ -58,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "january": MessageLookupByLibrary.simpleMessage("january"),
     "july": MessageLookupByLibrary.simpleMessage("july"),
     "june": MessageLookupByLibrary.simpleMessage("june"),
+    "listener": MessageLookupByLibrary.simpleMessage("Listener"),
     "march": MessageLookupByLibrary.simpleMessage("march"),
     "may": MessageLookupByLibrary.simpleMessage("may"),
     "mic": MessageLookupByLibrary.simpleMessage("Mic"),
@@ -72,6 +81,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "noInternet": MessageLookupByLibrary.simpleMessage(
       "Please check your internet connection",
     ),
+    "noParticipantsWithActiveVideo": MessageLookupByLibrary.simpleMessage(
+      "No participants with active video",
+    ),
     "notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "november": MessageLookupByLibrary.simpleMessage("november"),
     "october": MessageLookupByLibrary.simpleMessage("october"),
@@ -79,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "oops": MessageLookupByLibrary.simpleMessage("Oops!"),
     "pleaseWaitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
       "Please wait for content broadcast",
+    ),
+    "reconnectingPleaseWait": MessageLookupByLibrary.simpleMessage(
+      "Reconnecting, please be patient",
     ),
     "requestedPermission": MessageLookupByLibrary.simpleMessage(
       "requested permission",
@@ -100,7 +115,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "serverSideError": MessageLookupByLibrary.simpleMessage(
       "Server side error",
     ),
+    "sessionEndedThankYou": MessageLookupByLibrary.simpleMessage(
+      "Session ended, thank you",
+    ),
     "sharedContent": MessageLookupByLibrary.simpleMessage("Shared content"),
+    "showCorrectionScale": MessageLookupByLibrary.simpleMessage(
+      "Show correction scale",
+    ),
+    "speaker": MessageLookupByLibrary.simpleMessage("Speaker"),
     "startSession": MessageLookupByLibrary.simpleMessage("Start Session"),
     "stop": MessageLookupByLibrary.simpleMessage("Stop"),
     "stopCamera": MessageLookupByLibrary.simpleMessage("Stop camera"),
@@ -108,12 +130,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Stop share screen",
     ),
     "suspendUser": MessageLookupByLibrary.simpleMessage("Suspend User"),
+    "suspended": MessageLookupByLibrary.simpleMessage("Suspended"),
     "textCopiedToClipboard": MessageLookupByLibrary.simpleMessage(
       "Text copied to clipboard",
     ),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
+    "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "unmuteAll": MessageLookupByLibrary.simpleMessage("Unmute all"),
     "userLogout": MessageLookupByLibrary.simpleMessage("User logged out"),
+    "waitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
+      "Please wait for content broadcast",
+    ),
     "wantsToJoinOrGetPermission": MessageLookupByLibrary.simpleMessage(
       "Wants to join or get permission",
     ),

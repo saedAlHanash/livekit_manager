@@ -2,22 +2,18 @@ import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
 import 'package:livekit_manager/core/widgets/my_text_form_widget.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/pages/group_page.dart';
 import 'package:livekit_manager/features/room/ui/pages/sharer_page.dart';
-import 'package:livekit_manager/generated/l10n.dart';
-import 'package:m_cubit/m_cubit.dart';
+import 'package:livekit_manager/features/room/ui/room_status.dart';
 
 import '../../../../core/util/my_style.dart';
 import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../../room/ui/pages/teacher_page.dart';
-import 'package:web/web.dart' as web;
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -110,32 +106,21 @@ class _HomePageState extends State<HomePage> {
             );
           }
           return Center(
-            child: Builder(
-              builder: (context) {
-                switch (state.result.connectionState) {
-                  case .disconnected:
-                    if (state.loading) {
-                      return _Connecting();
-                    } else {
-                      return _EndSession();
-                    }
-                  case .connecting:
-                    return _Connecting();
-                  case .reconnecting:
-                    return _ReConnecting();
-                  case .connected:
-                    switch (widget.page) {
-                      case PageType.group:
-                        return GroupPage();
-                      case PageType.manager:
-                        throw UnimplementedError();
-                      case PageType.sharer:
-                        return SharerPage();
-                      case PageType.teacher:
-                        return TeacherPage();
-                    }
-                }
-              },
+            child: RoomStatus(
+              videoCall: Builder(
+                builder: (context) {
+                  switch (widget.page) {
+                    case PageType.group:
+                      return GroupPage();
+                    case PageType.manager:
+                      throw UnimplementedError();
+                    case PageType.sharer:
+                      return SharerPage();
+                    case PageType.teacher:
+                      return TeacherPage();
+                  }
+                },
+              ),
             ),
           );
         },
@@ -143,64 +128,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-class _EndSession extends StatelessWidget {
-  const _EndSession();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          DrawableText(
-            text: 'Session ended, thank you',
-          ),
-          20.0.verticalSpace,
-          Row(
-            spacing: 10.0,
-            children: [
-              Expanded(
-                child: MyButton(
-                  onTap: () {
-                    web.window.location.reload();
-                  },
-                  text: 'Re-conecct',
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReConnecting extends StatelessWidget {
-  const _ReConnecting();
-
-  @override
-  Widget build(BuildContext context) {
-    return DrawableText(
-      padding: const EdgeInsets.all(8.0),
-      text: 'Reconnecting, please be patient',
-      drawableEnd: MyStyle.loadingWidget(),
-    );
-  }
-}
-
-class _Connecting extends StatelessWidget {
-  const _Connecting();
-
-  @override
-  Widget build(BuildContext context) {
-    return DrawableText(
-      text: 'Connecting now, just a moment',
-      padding: const EdgeInsets.all(8.0),
-      drawableEnd: MyStyle.loadingWidget(),
-    );
-  }
-}
-
-//https://lk-m.codemagic.app/?token=&url=wss%3A%2F%2Fcoretik.coretech-mena.com&theme=dark&groupTermId=f6a8ac35-293f-4204-96b9-14bbe164bd4e

@@ -6,6 +6,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_manager/features/room/room_config.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -39,7 +40,6 @@ class RoomCubit extends MCubit<RoomInitial> {
   }
 
   Future<void> initial() async {
-    await Permission.microphone.request();
     await state.result.prepareConnection(state.url, state.token);
     state.result.addListener(_sortParticipants);
     setListeners();
@@ -113,7 +113,10 @@ class RoomCubit extends MCubit<RoomInitial> {
         emit(state.copyWith(statuses: CubitStatuses.loading));
       })
       // 🔹 عندما تبدأ محاولة إعادة الاتصال فعليًا (محاولة أولى أو لاحقة).
-      // ..on<RoomAttemptReconnectEvent>((e) => _sortParticipants())
+      ..on<RoomAttemptReconnectEvent>((e) {
+        emit(state.copyWith(statuses: .loading, id: state.notifyIndex + 1));
+        loggerObject.w("محاولة إعادة اتصال رقم ${e.attempt} من أصل ${e.maxAttemptsRetry}");
+      })
       // 🔹 عندما تتم إعادة الاتصال بالغرفة بنجاح بعد انقطاع.
       ..on<RoomReconnectedEvent>((e) {
         getDataFromCache();
@@ -206,12 +209,22 @@ class RoomCubit extends MCubit<RoomInitial> {
     });
   }
 
-  Future<void> connect() async {
+  Future<void> connect({
+    bool enableCamera = true,
+    bool enableMic = true,
+    bool enableScreen = false,
+  }) async {
     try {
       emit(state.copyWith(statuses: CubitStatuses.loading));
       await state.result.connect(
         state.url,
         state.token,
+        fastConnectOptions: FastConnectOptions(
+          camera: TrackOption(enabled: enableCamera),
+          microphone: TrackOption(enabled: enableMic),
+          screen: TrackOption(enabled: enableScreen),
+        ),
+        connectOptions: RoomConfig.instance.connectionOption,
       );
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));

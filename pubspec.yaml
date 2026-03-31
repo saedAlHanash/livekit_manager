@@ -17,44 +17,40 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
 
-  image_multi_type:
-    git:
-      url: https://github.com/saedAlHanash/image_multi_type
-
+  image_multi_type: ^1.0.2
 
   m_cubit:
     git:
       url: https://github.com/saedAlHanash/m_cubit
 
-  #  fl_chart: ^1.0.0
-  flutter_bloc:
-  logger: ^2.6.2
+  flutter_bloc: ^9.1.1
+  logger: ^2.7.0
 #  package_info_plus: ^9.0.0
   #  permission_handler: ^12.0.0+1
   #  persistent_bottom_nav_bar_v2: ^5.4.0
   pull_to_refresh: ^2.0.0
-  intl_utils: ^2.8.13
+  intl_utils: ^2.8.14
 #  flutter_local_notifications: ^19.4.2
-  shared_preferences: ^2.5.4
+  shared_preferences: ^2.5.5
   collection: ^1.19.1
   flutter_screenutil: ^5.9.3
   dropdown_button2: ^2.3.9
-  awesome_dialog: ^3.2.1
-  carousel_slider: ^5.1.1
-  http: ^1.5.0
+  awesome_dialog: ^3.3.0
+  carousel_slider: ^5.1.2
+  http: ^1.6.0
   intl: ^0.20.2
-  go_router: ^16.2.5
-  get_it: ^9.2.0
+  go_router: ^17.1.0
+  get_it: ^9.2.1
   group_button: ^5.3.4
-  livekit_client: ^2.6.1
+  livekit_client: ^2.7.0
   permission_handler: ^12.0.1
 
   drawable_text: ^1.0.0
-  flutter_background: ^1.3.0+1
+  flutter_background: ^1.3.1
   top_snackbar_flutter: ^3.3.0
-  audioplayers: ^6.5.1
+  audioplayers: ^6.6.0
   signalr_core_new: ^1.0.3
   lottie: ^3.3.2
 

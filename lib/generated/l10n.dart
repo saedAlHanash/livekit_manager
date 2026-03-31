@@ -1,7 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -490,6 +489,111 @@ class S {
     return Intl.message(
       'Please wait for content broadcast',
       name: 'pleaseWaitForContentBroadcast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Marks`
+  String get enterMarks {
+    return Intl.message('Enter Marks', name: 'enterMarks', desc: '', args: []);
+  }
+
+  /// `Enter Attendance`
+  String get enterAttendance {
+    return Intl.message(
+      'Enter Attendance',
+      name: 'enterAttendance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Course Registration Details`
+  String get courseRegistrationDetails {
+    return Intl.message(
+      'Course Registration Details',
+      name: 'courseRegistrationDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session ended, thank you`
+  String get sessionEndedThankYou {
+    return Intl.message(
+      'Session ended, thank you',
+      name: 'sessionEndedThankYou',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reconnecting, please be patient`
+  String get reconnectingPleaseWait {
+    return Intl.message(
+      'Reconnecting, please be patient',
+      name: 'reconnectingPleaseWait',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connecting now, just a moment`
+  String get connectingJustAMoment {
+    return Intl.message(
+      'Connecting now, just a moment',
+      name: 'connectingJustAMoment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please wait for content broadcast`
+  String get waitForContentBroadcast {
+    return Intl.message(
+      'Please wait for content broadcast',
+      name: 'waitForContentBroadcast',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suspended`
+  String get suspended {
+    return Intl.message('Suspended', name: 'suspended', desc: '', args: []);
+  }
+
+  /// `Listener`
+  String get listener {
+    return Intl.message('Listener', name: 'listener', desc: '', args: []);
+  }
+
+  /// `Speaker`
+  String get speaker {
+    return Intl.message('Speaker', name: 'speaker', desc: '', args: []);
+  }
+
+  /// `Unknown`
+  String get unknown {
+    return Intl.message('Unknown', name: 'unknown', desc: '', args: []);
+  }
+
+  /// `Show correction scale`
+  String get showCorrectionScale {
+    return Intl.message(
+      'Show correction scale',
+      name: 'showCorrectionScale',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No participants with active video`
+  String get noParticipantsWithActiveVideo {
+    return Intl.message(
+      'No participants with active video',
+      name: 'noParticipantsWithActiveVideo',
       desc: '',
       args: [],
     );
