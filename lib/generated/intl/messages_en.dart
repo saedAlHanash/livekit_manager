@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "back": MessageLookupByLibrary.simpleMessage("Back"),
     "camera": MessageLookupByLibrary.simpleMessage("Camera"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "choral": MessageLookupByLibrary.simpleMessage("Choral"),
     "classMembers": MessageLookupByLibrary.simpleMessage("Class members"),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "connectingJustAMoment": MessageLookupByLibrary.simpleMessage(

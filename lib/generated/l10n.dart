@@ -598,6 +598,11 @@ class S {
       args: [],
     );
   }
+
+  /// `Choral`
+  String get choral {
+    return Intl.message('Choral', name: 'choral', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

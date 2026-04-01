@@ -31,13 +31,10 @@ class RoomInitial extends AbstractState<Room> {
 
   final List<LkMessage> raiseHands;
   final List<Participant> participants;
-
   final String selectedParticipantId;
   final ParticipantsLayoutMode layoutMode;
   final bool showChat;
   final List<User> expectedUsers;
-
-  Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
 
   factory RoomInitial.initial() {
     final room = Room(roomOptions: RoomConfig.instance.roomOptions);
@@ -75,10 +72,6 @@ class RoomInitial extends AbstractState<Room> {
     showChat,
     expectedUsers,
   ];
-
-  List<Participant> get speakers => participants.where((e) => e.permissions.canPublish).toList();
-
-  String get sharerId => participants.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
 
   RoomInitial copyWith({
     CubitStatuses? statuses,

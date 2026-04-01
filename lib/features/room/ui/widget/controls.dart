@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
+import 'package:livekit_manager/features/room/data/request/room_meta.dart';
 import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
@@ -39,6 +41,16 @@ class ControlsWidget extends StatelessWidget {
                   title: cState.screenShareEnabled ? S.of(context).stop : S.of(context).screen,
                   color: cState.screenShareEnabled ? AppColorManager.secondColor : AppColorManager.appBarColor,
                   icon: cState.screenShareEnabled ? Icons.stop_screen_share_outlined : Icons.screen_share_outlined,
+                ),
+                12.w.horizontalSpace,
+                _Item(
+                  onTap: () => context.read<UserControlCubit>().updateRoomMetaData(
+                    RoomMeta(type: state.result.isCoralMode ? .non : .choral).toJson(),
+                    state.result.name ?? '',
+                  ),
+                  title: state.result.isCoralMode ? S.of(context).stop : S.of(context).choral,
+                  color: state.result.isCoralMode ? AppColorManager.secondColor : AppColorManager.appBarColor,
+                  icon: state.result.isCoralMode ? Icons.voice_over_off_outlined : Icons.record_voice_over_outlined,
                 ),
                 12.w.horizontalSpace,
                 PopupMenuButton<ParticipantsLayoutMode>(

@@ -39,6 +39,8 @@ class PostUrl {
   static const kick = 'Index/Kick';
 
   static const sendMessage = 'Index/SendData';
+
+  static const updateRoomMeta = 'Index/UpdateRoomMetaData';
 }
 
 class PutUrl {
@@ -62,10 +64,12 @@ class PatchUrl {
 }
 
 const additionalConst = '/api/v1/';
+const lkAdditional = '/api/v1/';
 
 const wsLocalUrl = 'ws://192.168.1.69:7880';
 const wsLiveTest = 'ws://87.106.161.145:7880';
 const wsLiveUrl = 'wss://coretik.coretech-mena.com';
+const lkUrl = 'coretik-be.coretech-mena.com';
 
 const localUrl = '192.168.1.69:5002';
 const liveUrl = 'ims-be.coretech-mena.com';

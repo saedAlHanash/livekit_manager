@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:livekit_client/livekit_client.dart';
@@ -24,6 +26,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> suspend(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.suspend,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -34,6 +38,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> resume(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.resume,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -44,6 +50,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> suspendAll() async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: ''));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.suspendAll,
       type: ApiType.post,
       body: state.updateRequest.toJson(),
@@ -54,6 +62,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> resumeAll() async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: ''));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.resumeAll,
       type: ApiType.post,
       body: state.updateRequest.toJson(),
@@ -64,6 +74,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> allowScreenShare(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.allowScreenShare,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -74,6 +86,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> stopScreenShare(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.stopScreenShare,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -84,6 +98,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> allowCamera(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.allowCamera,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -94,6 +110,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> stopCamera(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.stopCamera,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -104,6 +122,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> allowToSpeak(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.allowAudio,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -114,6 +134,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> mute(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.stopAudio,
       type: ApiType.post,
       body: state.updateRequest.toJson()..addAll({'identity': participant}),
@@ -121,9 +143,23 @@ class UserControlCubit extends MCubit<UserControlInitial> {
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
+  Future<void> updateRoomMetaData(Map<String, dynamic> metaData, String roomId) async {
+    emit(state.copyWith(statuses: CubitStatuses.loading));
+    final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
+      url: PostUrl.updateRoomMeta,
+      type: ApiType.post,
+      body: {"name": roomId, "metadata": jsonEncode(metaData)},
+    );
+    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+  }
+
   Future<void> revoke(Participant participant, PermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
       body: state.updateRequest.toJson()
@@ -137,6 +173,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> grant(Participant participant, PermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: 'Index/UpdateParticipant',
       type: ApiType.post,
       body: state.updateRequest.toJson()
@@ -150,6 +188,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
   Future<void> kick(String participant, {bool block = false}) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.kick,
       type: ApiType.post,
       body: state.updateRequest.toJson()
@@ -165,6 +205,8 @@ class UserControlCubit extends MCubit<UserControlInitial> {
 
   Future<void> sendMessage(MessageRequest request) async {
     await APIService().callApi(
+      hostName: lkUrl,
+      additional: lkAdditional,
       url: PostUrl.sendMessage,
       type: ApiType.post,
       body: request.toJson(),

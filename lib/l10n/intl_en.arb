@@ -77,5 +77,6 @@
   "speaker": "Speaker",
   "unknown": "Unknown",
   "showCorrectionScale": "Show correction scale",
-  "noParticipantsWithActiveVideo": "No participants with active video"
+  "noParticipantsWithActiveVideo": "No participants with active video",
+  "choral": "Choral"
 }

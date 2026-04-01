@@ -76,5 +76,6 @@
   "speaker": "متحدث",
   "unknown": "غير معروف",
   "showCorrectionScale": "Show correction scale",
-  "noParticipantsWithActiveVideo": "No participants with active video"
+  "noParticipantsWithActiveVideo": "No participants with active video",
+  "choral": "Choral"
 }

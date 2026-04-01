@@ -17,6 +17,7 @@ import 'package:m_cubit/abstraction.dart';
 import 'package:m_cubit/util.dart';
 
 import '../../features/room/bloc/room_cubit/room_cubit.dart';
+import '../../features/room/data/request/room_meta.dart';
 import '../../features/room/data/response/room_member.dart';
 import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
@@ -906,6 +907,25 @@ extension RoomInitialH on RoomInitial {
   bool get isConnect => result.connectionState == lk.ConnectionState.connected;
 
   bool get havePermission => result.localParticipant?.permissions.canPublish ?? false;
+
+  Participant? getParticipantById(String id) => participants.firstWhereOrNull((e) => e.identity == id);
+
+  List<Participant> get speakers => participants.where((e) => e.permissions.canPublish).toList();
+
+  String get sharerId => participants.firstWhereOrNull((e) => e.userType.isSharer)?.identity ?? '';
+}
+
+extension RoomH on Room {
+  RoomMeta get getMeta {
+    try {
+      return RoomMeta.fromJson(jsonDecode(metadata.isBlank ? '{}' : metadata!));
+    } catch (e) {
+      loggerObject.e(e);
+      return RoomMeta.fromJson({});
+    }
+  }
+
+  bool get isCoralMode => getMeta.type == .choral;
 }
 
 //endregion

@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "back": MessageLookupByLibrary.simpleMessage("عودة"),
     "camera": MessageLookupByLibrary.simpleMessage("كاميرا"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "choral": MessageLookupByLibrary.simpleMessage("Choral"),
     "classMembers": MessageLookupByLibrary.simpleMessage("أعضاء الصف"),
     "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
     "connectingJustAMoment": MessageLookupByLibrary.simpleMessage(

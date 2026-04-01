@@ -228,4 +228,9 @@ enum PageType {
   group,
 }
 
+enum RoomType {
+  non,
+  choral,
+}
+
 enum ParticipantsLayoutMode { grid, focus, scroll }
