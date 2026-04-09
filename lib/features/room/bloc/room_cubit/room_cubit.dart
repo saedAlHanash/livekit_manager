@@ -167,7 +167,10 @@ class RoomCubit extends MCubit<RoomInitial> {
             switch (message.action) {
               case ManagerActions.achievement:
                 return;
-              case ManagerActions.requestPermission:
+              case ManagerActions.lowerHand:
+                await deleteFromCache([e.participant?.identity ?? '']);
+                break;
+              case ManagerActions.raiseHand:
               case ManagerActions.chosen:
               case ManagerActions.message:
                 await addOrUpdateToCache(message);

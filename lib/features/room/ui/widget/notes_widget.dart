@@ -42,7 +42,7 @@ class NotesWidget extends StatelessWidget {
 
                   final p = state.getParticipantById(item.id);
                   switch (item.action) {
-                    case ManagerActions.requestPermission:
+                    case ManagerActions.raiseHand:
                       return ListTile(
                         title: DrawableText(
                           text: item.name,
@@ -116,6 +116,7 @@ class NotesWidget extends StatelessWidget {
                       );
                     case ManagerActions.achievement:
                     case ManagerActions.chosen:
+                    case ManagerActions.lowerHand:
                       return 0.0.verticalSpace;
                   }
                 },

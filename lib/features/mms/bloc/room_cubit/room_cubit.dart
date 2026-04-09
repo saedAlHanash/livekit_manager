@@ -132,9 +132,12 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
 
             SoundService.play(Assets.soundsNote);
             switch (message.action) {
-              case ManagerActions.requestPermission:
+              case ManagerActions.raiseHand:
               case ManagerActions.message:
               case ManagerActions.achievement:
+              case ManagerActions.lowerHand:
+                await deleteFromCache(e.participant?.identity ?? '');
+                break;
               case ManagerActions.chosen:
                 await addOrUpdateToCache(message);
             }

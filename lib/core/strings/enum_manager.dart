@@ -75,7 +75,8 @@ enum MediaType {
 }
 
 enum ManagerActions {
-  requestPermission,
+  raiseHand,
+  lowerHand,
   achievement,
   message,
   chosen,
@@ -83,7 +84,8 @@ enum ManagerActions {
 
   IconData get icon {
     return switch (this) {
-      ManagerActions.requestPermission => Icons.pan_tool_outlined,
+      ManagerActions.raiseHand => Icons.pan_tool_outlined,
+      ManagerActions.lowerHand => Icons.pan_tool_outlined,
       ManagerActions.achievement => Icons.star,
       ManagerActions.chosen => Icons.select_all,
       ManagerActions.message => Icons.message,

@@ -41,7 +41,8 @@ class NotesWidget extends StatelessWidget {
 
                     final p = state.getParticipantById(item.id);
                     switch (item.action) {
-                      case ManagerActions.requestPermission:
+                      case ManagerActions.lowerHand:
+                      case ManagerActions.raiseHand:
                         return ListTile(
                           leading: UserImageOrName(
                             participant: p,
@@ -124,6 +125,7 @@ class NotesWidget extends StatelessWidget {
                           ),
                         );
 
+                      case ManagerActions.lowerHand:
                       case ManagerActions.chosen:
                       case ManagerActions.achievement:
                         return 0.0.verticalSpace;
