@@ -1,3 +1,4 @@
+import 'dart:async' as asy;
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
@@ -5,7 +6,6 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
-import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:m_cubit/abstraction.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -21,6 +21,8 @@ part 'room_state.dart';
 
 class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   MMSRoomCubit() : super(MMSRoomInitial.initial());
+
+  asy.Timer? _sortDebounceTimer;
 
   @override
   String get nameCache => 'roomNotes';
@@ -42,7 +44,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
 
   void setListeners() {
     state.listener
-      //end call
+      // Room disconnection
       ..on<RoomDisconnectedEvent>((e) {
         emit(state.copyWith(id: state.notifyIndex + 1));
       })
@@ -74,7 +76,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
       ..on<TrackMutedEvent>((e) {})
       // 🔹 عندما يتم إلغاء الكتم (unmute) عن المسار.
       ..on<TrackUnmutedEvent>((e) async {
-        await SoundService.play(Assets.soundsNote);
+        // await SoundService.play(Assets.soundsNote);
       })
       // 🔹 عندما تتغير حالة تدفق البيانات لمسار معين (توقف مؤقت أو استئناف).
       // ..on<TrackStreamStateUpdatedEvent>((e) => _sortParticipants())
@@ -88,11 +90,19 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
       // 🔹 عندما يتم الاتصال بالغرفة بنجاح.
       ..on<RoomConnectedEvent>((e) {})
       // 🔹 عندما تبدأ عملية إعادة الاتصال بعد انقطاع مفاجئ.
-      ..on<RoomReconnectingEvent>((e) {})
+      ..on<RoomReconnectingEvent>((e) {
+        emit(state.copyWith(statuses: CubitStatuses.loading));
+      })
       // 🔹 عندما تبدأ محاولة إعادة الاتصال فعليًا (محاولة أولى أو لاحقة).
-      // ..on<RoomAttemptReconnectEvent>((e) => _sortParticipants())
+      ..on<RoomAttemptReconnectEvent>((e) {
+        emit(state.copyWith(statuses: .loading, id: state.notifyIndex + 1));
+        loggerObject.w("محاولة إعادة اتصال رقم ${e.attempt} من أصل ${e.maxAttemptsRetry}");
+      })
       // 🔹 عندما تتم إعادة الاتصال بالغرفة بنجاح بعد انقطاع.
-      ..on<RoomReconnectedEvent>((e) {})
+      ..on<RoomReconnectedEvent>((e) {
+        getDataFromCache();
+        emit(state.copyWith(statuses: CubitStatuses.done, id: state.notifyIndex + 1));
+      })
       // 🔹 عندما يتم فصل الاتصال بالغرفة نهائيًا أو مغادرتها.
       ..on<RoomDisconnectedEvent>((e) {})
       // 🔹 عندما تتغير بيانات الغرفة (metadata) مثل الاسم أو الحالة.
@@ -146,48 +156,33 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   }
 
   void _sortParticipants() {
-    // List<Participant> userMediaTracks = [];
-    List<Participant> screenTracks = [];
+    // Cancel previous debounce timer
+    _sortDebounceTimer?.cancel();
 
-    for (var participant in state.result.remoteParticipants.values) {
-      screenTracks.add(participant);
-    }
+    // Debounce for 100ms to prevent excessive rebuilds
+    _sortDebounceTimer = asy.Timer(const Duration(milliseconds: 300), () {
+      List<Participant> screenTracks = [];
 
-    if (state.result.localParticipant != null) {
-      screenTracks.add(state.result.localParticipant!);
-    }
-    screenTracks.sort(
-      (a, b) {
-        if (a.permissions.isSuspend != b.permissions.isSuspend) {
-          return a.permissions.isSuspend ? 1 : -1;
-        }
-        return 0;
-      },
-    );
+      for (var participant in state.result.remoteParticipants.values) {
+        screenTracks.add(participant);
+      }
 
-    // userMediaTracks.sort((a, b) {
-    //   if (a.isSpeaking && b.isSpeaking) {
-    //     return (a.audioLevel > b.audioLevel) ? -1 : 1;
-    //   }
-    //
-    //   // last spoken at
-    //   final aSpokeAt = a.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-    //   final bSpokeAt = b.lastSpokeAt?.millisecondsSinceEpoch ?? 0;
-    //
-    //   if (aSpokeAt != bSpokeAt) return aSpokeAt > bSpokeAt ? -1 : 1;
-    //
-    //   // video on
-    //   if (a.hasVideo != b.hasVideo) return a.hasVideo ? -1 : 1;
-    //
-    //   // joinedAt
-    //   return a.joinedAt.millisecondsSinceEpoch - b.joinedAt.millisecondsSinceEpoch;
-    // });
+      if (state.result.localParticipant != null) {
+        screenTracks.add(state.result.localParticipant!);
+      }
 
-    final list = [
-      ...screenTracks /*...userMediaTracks*/,
-    ];
+      screenTracks.sort(
+        (a, b) {
+          if (a.permissions.isSuspend != b.permissions.isSuspend) {
+            return a.permissions.isSuspend ? 1 : -1;
+          }
+          return 0;
+        },
+      );
 
-    emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
+      final list = [...screenTracks];
+      emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
+    });
   }
 
   Future<void> connect({
@@ -259,6 +254,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   @override
   Future<void> close() {
     (() async {
+      _sortDebounceTimer?.cancel();
       state.result.removeListener(_sortParticipants);
       await state.listener.dispose();
       await state.result.dispose();
