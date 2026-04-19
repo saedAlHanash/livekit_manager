@@ -73,6 +73,8 @@ const lkUrl = 'coretik-be.coretech-mena.com';
 
 const localUrl = '192.168.1.69:5002';
 const liveUrl = 'ims-be.coretech-mena.com';
+var mmsLkManageUrl = 'coretik-be.coretech-mena.com';
+const imsLkManageUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
   // return localUrl;

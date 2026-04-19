@@ -202,6 +202,7 @@ final goRouter = GoRouter(
       name: RouteName.mms,
       builder: (context, state) {
         final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
+        mmsLkManageUrl = state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? '';
         final token = state.uri.queryParameters['token'] ?? '';
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
