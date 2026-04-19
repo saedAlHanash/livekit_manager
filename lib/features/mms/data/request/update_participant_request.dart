@@ -22,8 +22,8 @@ class UpdateParticipantRequest {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    "room": ctx?.read<MMSRoomCubit>().state.result.name ?? '',
+  Map<String, dynamic> toJson(String? roomName) => {
+    "room": roomName,
     "identity": identity,
     "metadata": metadata,
     // "permission": permission?.toJson(),

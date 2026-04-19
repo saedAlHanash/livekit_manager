@@ -36,6 +36,7 @@ class RoomConfig {
       iceRestart: Duration(seconds: 10),
     ),
   );
+
   final roomOptions = RoomOptions(
     adaptiveStream: true,
     // يقوم السيرفر بإرسال الجودة التي تناسب حجم الـ Widget فقط

@@ -14,6 +14,7 @@ import '../../../../core/app/app_widget.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
+import '../../../room/room_config.dart';
 import '../../data/request/setting_message.dart';
 
 part 'room_state.dart';
@@ -29,7 +30,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
 
   Future<void> getDataFromCache() async {
     final data = await getListCached(fromJson: SettingMessage.fromJson);
-    emit(state.copyWith(raiseHands: data, id: state.notifyIndex + 1));
+    emit(state.copyWith(requestPermissions: data, id: state.notifyIndex + 1));
   }
 
   Future<void> initial() async {
@@ -105,12 +106,10 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
       // ..on<ParticipantAttributesChanged>((e) => _sortParticipants())
       // 🔹 عندما ينضم مشارك جديد إلى الغرفة.
       ..on<ParticipantConnectedEvent>((e) async {
-        _sortParticipants();
         await SoundService.play(Assets.soundsAcceptRequest);
       })
       // 🔹 عندما يغادر أحد المشاركين الغرفة أو يفقد الاتصال.
       ..on<ParticipantDisconnectedEvent>((e) async {
-        _sortParticipants();
         await SoundService.play(Assets.soundsDisconnectUser);
       })
       // 🔹 عندما يتم تحديث البيانات (metadata) الخاصة بأحد المشاركين.
@@ -126,19 +125,17 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
       // 🔹 عندما يتم استقبال بيانات (DataPacket) من أحد المشاركين (مثل رسالة أو إشارة تحكم).
       ..on<DataReceivedEvent>(
         (e) async {
+          setHaveNewNote(true);
           try {
             final message = SettingMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             if (!message.toUserType.isManager) return;
 
             SoundService.play(Assets.soundsNote);
             switch (message.action) {
-              case ManagerActions.raiseHand:
-              case ManagerActions.message:
-              case ManagerActions.achievement:
-              case ManagerActions.lowerHand:
-                await deleteFromCache(e.participant?.identity ?? '');
-                break;
-              case ManagerActions.chosen:
+              case MMSManagerActions.requestPermission:
+              case MMSManagerActions.requestToDisconnect:
+              case MMSManagerActions.message:
+              case MMSManagerActions.changeScreen:
                 await addOrUpdateToCache(message);
             }
           } catch (err) {
@@ -152,7 +149,6 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
     // List<Participant> userMediaTracks = [];
     List<Participant> screenTracks = [];
 
-    loggerObject.f(state.result.remoteParticipants.length);
     for (var participant in state.result.remoteParticipants.values) {
       screenTracks.add(participant);
     }
@@ -190,21 +186,30 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
     final list = [
       ...screenTracks /*...userMediaTracks*/,
     ];
-    loggerObject.f(list.length);
+
     emit(state.copyWith(participant: list, id: state.notifyIndex + 1));
   }
 
-  Future<void> connect() async {
+  Future<void> connect({
+    bool enableCamera = false,
+    bool enableMic = false,
+    bool enableScreen = false,
+  }) async {
     try {
       emit(state.copyWith(statuses: CubitStatuses.loading));
       await state.result.connect(
         state.url,
         state.token,
-        fastConnectOptions: FastConnectOptions(),
+        fastConnectOptions: FastConnectOptions(
+          camera: TrackOption(enabled: enableCamera),
+          microphone: TrackOption(enabled: enableMic),
+          screen: TrackOption(enabled: enableScreen),
+        ),
+        connectOptions: RoomConfig.instance.connectionOption,
       );
-      state.result.connectionState;
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
+      // startRecording();
     } catch (e) {
       emit(state.copyWith(statuses: CubitStatuses.error, error: e.toString()));
       showErrorFromApi(state);
@@ -223,10 +228,7 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   void setUrl(String url) => emit(state.copyWith(url: url));
 
   void setToken(String token) {
-    AppSharedPreference.cashToken(token);
-    emit(
-      state.copyWith(token: token),
-    );
+    emit(state.copyWith(token: token));
   }
 
   void selectParticipant(String participantTrackId) {
@@ -234,19 +236,24 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   }
 
   void raiseHand() {}
+
   Future<void> addOrUpdateToCache(SettingMessage item) async {
     final listJson = await addOrUpdateDate([item]);
     if (listJson == null) return;
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
-    emit(state.copyWith(raiseHands: list));
+    emit(state.copyWith(requestPermissions: list));
   }
 
   Future<void> deleteFromCache(String id) async {
     final listJson = await deleteDate([id]);
     if (listJson == null) return;
-
+    loggerObject.w('id: $id, listJson: $listJson');
     final list = listJson.map((e) => SettingMessage.fromJson(e)).toList();
-    emit(state.copyWith(raiseHands: list));
+    emit(state.copyWith(requestPermissions: list));
+  }
+
+  void setHaveNewNote(bool b) {
+    emit(state.copyWith(/*haveNewNote: b,*/ id: state.notifyIndex + 1));
   }
 
   @override

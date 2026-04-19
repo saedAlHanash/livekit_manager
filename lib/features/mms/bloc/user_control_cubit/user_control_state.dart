@@ -4,41 +4,48 @@ class UserControlInitial extends AbstractState<String> {
   const UserControlInitial({
     required super.result,
     super.error,
-    required super.request,
+    super.request,
     super.statuses,
     super.createUpdateRequest,
     super.id,
   });
 
-  ChangeTrackRequest get mRequest => request;
+  Room? get room => request as Room?;
+
+  LocalParticipant? get localParticipant => room?.localParticipant;
 
   UpdateParticipantRequest get updateRequest => createUpdateRequest;
+
+  bool get micEnabled => localParticipant?.isMicrophoneEnabled() == true;
+
+  bool get cameraEnabled => localParticipant?.isCameraEnabled() == true;
+
+  bool get screenShareEnabled => localParticipant?.isScreenShareEnabled() == true;
 
   factory UserControlInitial.initial() {
     return UserControlInitial(
       result: '',
-      request: ChangeTrackRequest.fromJson({}),
       createUpdateRequest: UpdateParticipantRequest.fromJson({}),
     );
   }
 
   @override
   List<Object> get props => [
-        statuses,
-        result,
-        error,
-        if (request != null) request,
-        if (createUpdateRequest != null) createUpdateRequest,
-        if (id != null) id,
-        if (filterRequest != null) filterRequest!,
-      ];
+    statuses,
+    result,
+    error,
+    ?request,
+    ?createUpdateRequest,
+    ?id,
+    ?filterRequest,
+  ];
 
   UserControlInitial copyWith({
     CubitStatuses? statuses,
     String? result,
     String? error,
     dynamic id,
-    ChangeTrackRequest? request,
+    Room? request,
     UpdateParticipantRequest? updateRequest,
   }) {
     return UserControlInitial(

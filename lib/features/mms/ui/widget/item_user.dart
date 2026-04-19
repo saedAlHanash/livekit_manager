@@ -53,7 +53,7 @@ class ItemUserRemote extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (state.raiseHands.contains(participant.identity))
+                if (state.requestPermissions.contains(participant.identity))
                   Align(
                     alignment: AlignmentGeometry.bottomLeft,
                     child: Padding(

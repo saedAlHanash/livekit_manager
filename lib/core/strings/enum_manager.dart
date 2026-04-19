@@ -74,6 +74,23 @@ enum MediaType {
   }
 }
 
+enum MMSManagerActions {
+  requestPermission,
+  requestToDisconnect,
+  message,
+  changeScreen
+  ;
+
+  IconData get icon {
+    return switch (this) {
+      MMSManagerActions.requestPermission => Icons.pan_tool_outlined,
+      MMSManagerActions.requestToDisconnect => Icons.exit_to_app,
+      MMSManagerActions.message => Icons.message,
+      MMSManagerActions.changeScreen => Icons.screen_share_outlined,
+    };
+  }
+}
+
 enum ManagerActions {
   raiseHand,
   lowerHand,

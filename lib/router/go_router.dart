@@ -202,8 +202,9 @@ final goRouter = GoRouter(
       name: RouteName.mms,
       builder: (context, state) {
         final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
-        mmsLkManageUrl = state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? '';
-        final token = state.uri.queryParameters['token'] ?? '';
+        mmsLkManageUrl =
+            state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? manager_url;
+        final token = state.uri.queryParameters['token'] ?? tempToken;
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
 
@@ -280,14 +281,15 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/mms';
   static const homes = '/homes';
 
   static const splash = '/splash';
-  static const mms = '/mms';
+  static const mms = '/';
   static const group = '/group';
 }
 
-//link=https://coretik.coretech-mena.com
-// token=
-// theme=dark
+//https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com
+var tempToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJqdGkiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJpc3MiOiJkZXZrZXkiLCJuYmYiOjE3NzY1ODgzMzAsImlhdCI6MTc3NjU4ODMzMCwiZXhwIjoxNzgxNzcyMzMwLCJ2aWRlbyI6eyJhZ2VudCI6ZmFsc2UsImNhblB1Ymxpc2giOmZhbHNlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6ImY5NmMyYTk1LTkyMmMtNDcxYy0zZjM0LTA4ZGU5NjQzZjAyMSIsInJvb21BZG1pbiI6dHJ1ZSwicm9vbUNyZWF0ZSI6dHJ1ZSwicm9vbUpvaW4iOnRydWUsInJvb21MaXN0IjpmYWxzZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJtYWlzc2FtIGJhbGF3bnkiLCJtZXRhZGF0YSI6IiIsInNoYTI1NiI6IiIsImtpbmQiOiIiLCJhdHRyaWJ1dGVzIjp7ImltYWdlVXJsIjpudWxsLCJsa1VzZXJUeXBlIjoiMCJ9LCJyb29tQ29uZmlnIjp7fX0.Ep0qCJgL0YJnHl7PZkATmt4gugjGUF5oU-vSM4iTgGo";
+var manager_url = "coretik-be.coretech-mena.com";

@@ -29,14 +29,14 @@ class UserControlInitial extends AbstractState<String> {
 
   @override
   List<Object> get props => [
-        statuses,
-        result,
-        error,
-        if (request != null) request,
-        if (createUpdateRequest != null) createUpdateRequest,
-        if (id != null) id,
-        if (filterRequest != null) filterRequest!,
-      ];
+    statuses,
+    result,
+    error,
+    ?request,
+    ?createUpdateRequest,
+    ?id,
+    ?filterRequest,
+  ];
 
   UserControlInitial copyWith({
     CubitStatuses? statuses,

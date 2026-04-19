@@ -29,7 +29,7 @@ class _SendMessageDialogState extends State<SendMessageDialog> {
 
   MMSUserControlCubit get controlC => context.read<MMSUserControlCubit>();
 
-  final message = SettingMessage(action: ManagerActions.message, toUserType: LkUserType.user);
+  final message = SettingMessage(action: MMSManagerActions.message, toUserType: LkUserType.user);
 
   @override
   Widget build(BuildContext context) {

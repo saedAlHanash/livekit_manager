@@ -11,7 +11,7 @@ class MMSRoomInitial extends AbstractState<Room> {
     required this.token,
     required this.listener,
     required this.participant,
-    required this.raiseHands,
+    required this.requestPermissions,
     required this.selectedUserId,
   });
 
@@ -23,7 +23,7 @@ class MMSRoomInitial extends AbstractState<Room> {
 
   final EventsListener<RoomEvent> listener;
 
-  final List<SettingMessage> raiseHands;
+  final List<SettingMessage> requestPermissions;
   final List<Participant> participant;
 
   final String selectedUserId;
@@ -41,7 +41,7 @@ class MMSRoomInitial extends AbstractState<Room> {
   bool get isConnect => result.connectionState == ConnectionState.connected;
 
   factory MMSRoomInitial.initial() {
-    final room = Room();
+    final room = Room(roomOptions: RoomConfig.instance.roomOptions);
     return MMSRoomInitial(
       id: 0,
       result: room,
@@ -50,7 +50,7 @@ class MMSRoomInitial extends AbstractState<Room> {
       // url: 'wss://coretik.coretech-mena.com',
       token: '',
       listener: room.createListener(),
-      raiseHands: [],
+      requestPermissions: [],
       participant: const [],
 
       selectedUserId: '',
@@ -69,7 +69,7 @@ class MMSRoomInitial extends AbstractState<Room> {
     url,
     token,
     participant,
-    raiseHands,
+    requestPermissions,
     selectedUserId,
   ];
 
@@ -87,7 +87,7 @@ class MMSRoomInitial extends AbstractState<Room> {
     String? token,
     EventsListener<RoomEvent>? listener,
     List<Participant>? participant,
-    List<SettingMessage>? raiseHands,
+    List<SettingMessage>? requestPermissions,
     String? selectedUserId,
   }) {
     return MMSRoomInitial(
@@ -100,7 +100,7 @@ class MMSRoomInitial extends AbstractState<Room> {
       token: token ?? this.token,
       listener: listener ?? this.listener,
       participant: participant ?? this.participant,
-      raiseHands: raiseHands ?? this.raiseHands,
+      requestPermissions: requestPermissions ?? this.requestPermissions,
       selectedUserId: selectedUserId ?? this.selectedUserId,
     );
   }

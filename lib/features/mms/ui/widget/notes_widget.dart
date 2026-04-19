@@ -34,15 +34,14 @@ class NotesWidget extends StatelessWidget {
               Expanded(
                 child: ListView.separated(
                   padding: EdgeInsets.all(15.0).r,
-                  itemCount: state.raiseHands.length,
+                  itemCount: state.requestPermissions.length,
                   separatorBuilder: (context, i) => 10.0.verticalSpace,
                   itemBuilder: (context, i) {
-                    final item = state.raiseHands[i];
+                    final item = state.requestPermissions[i];
 
                     final p = state.getParticipantById(item.id);
                     switch (item.action) {
-                      case ManagerActions.lowerHand:
-                      case ManagerActions.raiseHand:
+                      case MMSManagerActions.requestPermission:
                         return ListTile(
                           leading: UserImageOrName(
                             participant: p,
@@ -65,7 +64,7 @@ class NotesWidget extends StatelessWidget {
                                           id: item.id,
                                           toUserType: LkUserType.user,
                                           toIdentity: item.id,
-                                          action: ManagerActions.message,
+                                          action: MMSManagerActions.message,
                                           metadata: {
                                             'name': '',
                                             'message': 'Accept your permission request',
@@ -90,7 +89,7 @@ class NotesWidget extends StatelessWidget {
                                           id: item.id,
                                           toUserType: LkUserType.user,
                                           toIdentity: item.id,
-                                          action: ManagerActions.message,
+                                          action: MMSManagerActions.message,
                                           metadata: {
                                             'name': '',
                                             'message': 'rejected your permission request',
@@ -107,7 +106,7 @@ class NotesWidget extends StatelessWidget {
                           ),
                         );
 
-                      case ManagerActions.message:
+                      case MMSManagerActions.message:
                         return ListTile(
                           leading: UserImageOrName(
                             participant: p,
@@ -125,9 +124,8 @@ class NotesWidget extends StatelessWidget {
                           ),
                         );
 
-                      case ManagerActions.lowerHand:
-                      case ManagerActions.chosen:
-                      case ManagerActions.achievement:
+                      case MMSManagerActions.requestToDisconnect:
+                      case MMSManagerActions.changeScreen:
                         return 0.0.verticalSpace;
                     }
                   },

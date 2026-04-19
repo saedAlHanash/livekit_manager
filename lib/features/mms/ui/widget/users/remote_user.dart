@@ -50,14 +50,14 @@ class _RemoteUserState extends State<RemoteUser> {
 
   @override
   Widget build(BuildContext ctx) {
-    return widget.participant.haveActiveVideoTrack
+    return widget.participant.primaryTrack != null
         ? Row(
             children: [
               Expanded(
                 child: VideoTrackRenderer(
                   renderMode: VideoRenderMode.auto,
                   fit: widget.fit,
-                  widget.participant.activeVideoTrack!,
+                  widget.participant.primaryTrack!,
                 ),
               ),
             ],

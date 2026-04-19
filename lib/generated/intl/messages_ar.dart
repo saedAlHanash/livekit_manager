@@ -93,7 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "requestedToLeaveTheSession": MessageLookupByLibrary.simpleMessage(
       "طلب مغادرة الجلسة",
     ),
-    "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف الطالب"),
+    "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف"),
     "revokePermissions": MessageLookupByLibrary.simpleMessage("سحب صلاحيات"),
     "screen": MessageLookupByLibrary.simpleMessage("شاشة"),
     "search": MessageLookupByLibrary.simpleMessage("بحث"),

@@ -64,7 +64,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
               //   onTap: () {
               //     final m = SettingMessage(
               //       toIdentity: context.read<MMSRoomCubit>().state.sharerId,
-              //       action: ManagerActions.changeScreen,
+              //       action: MMSManagerActions.changeScreen,
               //       toUserType: LkUserType.sharer,
               //       metadata: {
               //         'name': participant.name,
