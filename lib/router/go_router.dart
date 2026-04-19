@@ -202,9 +202,8 @@ final goRouter = GoRouter(
       name: RouteName.mms,
       builder: (context, state) {
         final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
-        mmsLkManageUrl =
-            state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? manager_url;
-        final token = state.uri.queryParameters['token'] ?? tempToken;
+        mmsLkManageUrl = state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? '';
+        final token = state.uri.queryParameters['token'] ?? '';
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
 
@@ -281,11 +280,11 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/mms';
+  static const home = '/';
   static const homes = '/homes';
 
   static const splash = '/splash';
-  static const mms = '/';
+  static const mms = '/mms';
   static const group = '/group';
 }
 
