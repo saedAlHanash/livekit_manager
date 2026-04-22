@@ -35,7 +35,7 @@ class ActiveSessionCubit extends MCubit<ActiveSessionInitial> {
       type: ApiType.get,
       url: 'Lesson/GetTeacherActiveSessions',
 
-      hostName: 'ims-be.coretech-mena.com',
+      hostName: 'ims.moed.gov.sy',
       query: {'StaffRecordId': staffId},
     );
 

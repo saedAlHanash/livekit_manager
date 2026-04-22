@@ -315,7 +315,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       url: '/api/v1/Lesson/StartLessonRecording',
       type: ApiType.post,
       additional: '',
-      hostName: 'ims-be.coretech-mena.com',
+      hostName: 'ims.moed.gov.sy',
       body: {"roomId": state.result.name},
     );
   }
