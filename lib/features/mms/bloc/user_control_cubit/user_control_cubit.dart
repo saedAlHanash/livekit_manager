@@ -17,11 +17,11 @@ import '../../data/request/update_participant_request.dart';
 
 part 'user_control_state.dart';
 
-class MMSUserControlCubit extends MCubit<UserControlInitial> {
-  MMSUserControlCubit() : super(UserControlInitial.initial());
+class MMSUserControlCubit extends MCubit<MMSUserControlInitial> {
+  MMSUserControlCubit() : super(MMSUserControlInitial.initial());
 
   @override
-  UserControlInitial get mState => state;
+  MMSUserControlInitial get mState => state;
 
   Future<void> suspend(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));

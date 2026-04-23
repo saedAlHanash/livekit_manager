@@ -603,6 +603,41 @@ class S {
   String get choral {
     return Intl.message('Choral', name: 'choral', desc: '', args: []);
   }
+
+  /// `Adaptive Grid`
+  String get adaptiveGrid {
+    return Intl.message(
+      'Adaptive Grid',
+      name: 'adaptiveGrid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speaker Focus`
+  String get speakerFocus {
+    return Intl.message(
+      'Speaker Focus',
+      name: 'speakerFocus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scrollable grid`
+  String get scrollableGrid {
+    return Intl.message(
+      'Scrollable grid',
+      name: 'scrollableGrid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View types`
+  String get viewTypes {
+    return Intl.message('View types', name: 'viewTypes', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

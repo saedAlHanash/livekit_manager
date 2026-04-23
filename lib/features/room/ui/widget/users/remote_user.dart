@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'participants_layout.dart';
 
 class RemoteUser extends StatelessWidget {
   const RemoteUser({super.key, required this.participant, this.fit = VideoViewFit.contain});

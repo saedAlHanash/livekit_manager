@@ -12,7 +12,6 @@ class LocalMedia extends StatelessWidget {
       builder: (context, state) {
         return ParticipantCard(
           participant: state.result.localParticipant,
-          fit: .contain,
         );
       },
     );

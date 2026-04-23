@@ -1,36 +1,36 @@
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/features/mms/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/mms/ui/widget/audiences_widget.dart';
 import 'package:livekit_manager/features/mms/ui/widget/controls.dart';
 import 'package:livekit_manager/features/mms/ui/widget/notes_widget.dart';
 import 'package:livekit_manager/features/mms/ui/widget/speakers_widget.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../../bloc/user_control_cubit/user_control_cubit.dart';
 import '../widget/managers_widget.dart';
 import '../widget/users/dynamic_user.dart';
 
-class RoomPage extends StatefulWidget {
-  const RoomPage({
+class MMsManager extends StatefulWidget {
+  const MMsManager({
     super.key,
   });
 
   @override
-  State<StatefulWidget> createState() => _RoomPageState();
+  State<StatefulWidget> createState() => _MMsManagerState();
 }
 
-class _RoomPageState extends State<RoomPage> {
-  MMSRoomCubit get cubit => context.read<MMSRoomCubit>();
+class _MMsManagerState extends State<MMsManager> {
+  RoomCubit get cubit => context.read<RoomCubit>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MMSRoomCubit, MMSRoomInitial>(
+      body: BlocBuilder<RoomCubit, RoomInitial>(
         builder: (context, state) {
-          return BlocBuilder<MMSUserControlCubit, UserControlInitial>(
+          return BlocBuilder<UserControlCubit, UserControlInitial>(
             builder: (context, uState) {
               return Padding(
                 padding: const EdgeInsets.all(20.0),

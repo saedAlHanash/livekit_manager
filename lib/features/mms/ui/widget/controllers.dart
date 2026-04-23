@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:livekit_manager/features/mms/bloc/room_cubit/room_cubit.dart';
 
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/widgets/menu_widget.dart';
 import '../../../../generated/assets.dart';
 import '../../../../generated/l10n.dart';
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
-import '../../data/request/setting_message.dart';
 
 class ControllersDynamic extends StatefulWidget {
   const ControllersDynamic({super.key, this.speaker = false, required this.participant});
@@ -27,7 +25,7 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MMSUserControlCubit, UserControlInitial>(
+    return BlocBuilder<MMSUserControlCubit, MMSUserControlInitial>(
       buildWhen: (p, c) => c.id == participant.identity,
       builder: (context, state) {
         return DynamicPopupMenu(

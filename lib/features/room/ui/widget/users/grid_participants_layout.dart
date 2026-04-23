@@ -23,15 +23,13 @@ class GridParticipantsLayoutView extends StatelessWidget {
     return BlocBuilder<RoomCubit, RoomInitial>(
       builder: (context, state) {
         final members = state.allRoomMembers;
-
         if (members.isEmpty) return Container();
         return LayoutBuilder(
           builder: (context, constraints) {
+            final spacing = 8.r;
             final count = members.length;
             final crossAxisCount = count <= 1 ? 1 : (count <= 4 ? 4 : 5);
             final rows = (count / crossAxisCount).ceil();
-
-            final spacing = 8.r;
             final itemWidth = (constraints.maxWidth - (crossAxisCount + 1) * spacing) / crossAxisCount;
             final itemHeight = (constraints.maxHeight - (rows + 1) * spacing) / rows;
 
@@ -41,16 +39,13 @@ class GridParticipantsLayoutView extends StatelessWidget {
                 spacing: spacing,
                 runSpacing: spacing,
                 children: members.map((m) {
-                  if (m.participant != null) {
-                    loggerObject.f(m.user?.studentName);
-                  }
                   return SizedBox(
                     width: itemWidth,
                     height: itemHeight,
                     child: ParticipantCard(
                       participant: m.participant,
                       user: m.user,
-                      fit: .contain,
+
                       onTap: m.participant != null ? () => onTap?.call(m.participant!) : null,
                     ),
                   );

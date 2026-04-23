@@ -2,14 +2,8 @@ import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/core/widgets/my_button.dart';
 
-import '../../../../generated/assets.dart';
-import '../../../../generated/l10n.dart';
-import '../../../../services/sounds_service.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import 'item_user.dart';
 

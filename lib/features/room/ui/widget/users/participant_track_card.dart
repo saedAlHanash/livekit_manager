@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 
-import '../no_video.dart';
+import '../../../../../core/widgets/no_video.dart';
 import 'participant_track_source.dart';
 
 class ParticipantTrackCard extends StatefulWidget {

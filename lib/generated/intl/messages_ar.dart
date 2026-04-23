@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "adaptiveGrid": MessageLookupByLibrary.simpleMessage("Adaptive Grid"),
     "anErrorWithYourNetwork": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ في الشبكة",
     ),
@@ -96,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف"),
     "revokePermissions": MessageLookupByLibrary.simpleMessage("سحب صلاحيات"),
     "screen": MessageLookupByLibrary.simpleMessage("شاشة"),
+    "scrollableGrid": MessageLookupByLibrary.simpleMessage("Scrollable grid"),
     "search": MessageLookupByLibrary.simpleMessage("بحث"),
     "second": MessageLookupByLibrary.simpleMessage("ثواني"),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
@@ -115,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Show correction scale",
     ),
     "speaker": MessageLookupByLibrary.simpleMessage("متحدث"),
+    "speakerFocus": MessageLookupByLibrary.simpleMessage("Speaker Focus"),
     "startSession": MessageLookupByLibrary.simpleMessage("بدأ الجلسة"),
     "stop": MessageLookupByLibrary.simpleMessage("إيقاف"),
     "stopCamera": MessageLookupByLibrary.simpleMessage("إيقاف الكاميرا"),
@@ -130,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "unmuteAll": MessageLookupByLibrary.simpleMessage("تشغيل الكل"),
     "userLogout": MessageLookupByLibrary.simpleMessage("تسجيل خروج المستخدم"),
+    "viewTypes": MessageLookupByLibrary.simpleMessage("View types"),
     "waitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
       "يرجى انتظار بث المحتوى",
     ),

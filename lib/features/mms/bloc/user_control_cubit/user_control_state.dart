@@ -1,7 +1,7 @@
 part of 'user_control_cubit.dart';
 
-class UserControlInitial extends AbstractState<String> {
-  const UserControlInitial({
+class MMSUserControlInitial extends AbstractState<String> {
+  const MMSUserControlInitial({
     required super.result,
     super.error,
     super.request,
@@ -22,8 +22,8 @@ class UserControlInitial extends AbstractState<String> {
 
   bool get screenShareEnabled => localParticipant?.isScreenShareEnabled() == true;
 
-  factory UserControlInitial.initial() {
-    return UserControlInitial(
+  factory MMSUserControlInitial.initial() {
+    return MMSUserControlInitial(
       result: '',
       createUpdateRequest: UpdateParticipantRequest.fromJson({}),
     );
@@ -40,7 +40,7 @@ class UserControlInitial extends AbstractState<String> {
     ?filterRequest,
   ];
 
-  UserControlInitial copyWith({
+  MMSUserControlInitial copyWith({
     CubitStatuses? statuses,
     String? result,
     String? error,
@@ -48,7 +48,7 @@ class UserControlInitial extends AbstractState<String> {
     Room? request,
     UpdateParticipantRequest? updateRequest,
   }) {
-    return UserControlInitial(
+    return MMSUserControlInitial(
       statuses: statuses ?? this.statuses,
       result: result ?? this.result,
       error: error ?? this.error,

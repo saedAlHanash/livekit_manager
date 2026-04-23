@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:intl/intl.dart';
+import 'package:livekit_client/livekit_client.dart' as lk;
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
@@ -28,7 +29,6 @@ import '../error/error_manager.dart';
 import '../util/pair_class.dart';
 import '../util/snack_bar_message.dart';
 import '../widgets/spinner_widget.dart';
-import 'package:livekit_client/livekit_client.dart' as lk;
 
 extension SplitByLength on String {
   String get splitLongString {
@@ -900,7 +900,11 @@ extension RoomInitialH on RoomInitial {
       )
       .toList();
 
-  Participant? get selectedParticipant => participants.firstWhereOrNull((e) => e.identity == selectedParticipantId);
+  Participant? get selectedParticipant {
+    return selectedParticipantId.isEmpty
+        ? null
+        : participants.firstWhereOrNull((e) => e.identity == selectedParticipantId);
+  }
 
   lk.ConnectionState get connectionState => result.connectionState;
 

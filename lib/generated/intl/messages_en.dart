@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "adaptiveGrid": MessageLookupByLibrary.simpleMessage("Adaptive Grid"),
     "anErrorWithYourNetwork": MessageLookupByLibrary.simpleMessage(
       "Network error occurred",
     ),
@@ -107,6 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Revoke permissions",
     ),
     "screen": MessageLookupByLibrary.simpleMessage("Screen"),
+    "scrollableGrid": MessageLookupByLibrary.simpleMessage("Scrollable grid"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "second": MessageLookupByLibrary.simpleMessage("seconds"),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
@@ -124,6 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Show correction scale",
     ),
     "speaker": MessageLookupByLibrary.simpleMessage("Speaker"),
+    "speakerFocus": MessageLookupByLibrary.simpleMessage("Speaker Focus"),
     "startSession": MessageLookupByLibrary.simpleMessage("Start Session"),
     "stop": MessageLookupByLibrary.simpleMessage("Stop"),
     "stopCamera": MessageLookupByLibrary.simpleMessage("Stop camera"),
@@ -139,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
     "unmuteAll": MessageLookupByLibrary.simpleMessage("Unmute all"),
     "userLogout": MessageLookupByLibrary.simpleMessage("User logged out"),
+    "viewTypes": MessageLookupByLibrary.simpleMessage("View types"),
     "waitForContentBroadcast": MessageLookupByLibrary.simpleMessage(
       "Please wait for content broadcast",
     ),

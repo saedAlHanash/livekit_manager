@@ -1,13 +1,7 @@
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:m_cubit/m_cubit.dart';
 
-import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
 
 class RemoteUser extends StatefulWidget {

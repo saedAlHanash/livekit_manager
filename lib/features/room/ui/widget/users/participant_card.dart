@@ -12,9 +12,6 @@ import 'package:livekit_manager/features/user/data/response/user_response.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
-import '../../../../../core/widgets/menu_widget.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../mms/ui/widget/controllers.dart';
 import '../../../data/request/setting_message.dart';
 import 'no_video.dart';
 
@@ -23,7 +20,7 @@ class ParticipantCard extends StatefulWidget {
     super.key,
     required this.participant,
     this.user,
-    required this.fit,
+     this.fit = .contain,
     this.justShow = false,
     this.onTap,
     this.small = false,

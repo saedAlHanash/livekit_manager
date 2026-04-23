@@ -58,12 +58,13 @@ class ControlsWidget extends StatelessWidget {
                   onSelected: (mode) {
                     context.read<RoomCubit>().changeLayoutMode(mode);
                   },
+                  tooltip: S.of(context).viewTypes,
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       value: ParticipantsLayoutMode.grid,
                       child: ListTile(
                         leading: const Icon(Icons.grid_view),
-                        title: const Text('Adaptive Grid'),
+                        title: Text(S.of(context).adaptiveGrid),
                         selected: state.layoutMode == ParticipantsLayoutMode.grid,
                       ),
                     ),
@@ -71,7 +72,7 @@ class ControlsWidget extends StatelessWidget {
                       value: ParticipantsLayoutMode.focus,
                       child: ListTile(
                         leading: const Icon(Icons.person_search),
-                        title: const Text('Speaker Focus'),
+                        title: Text(S.of(context).speakerFocus),
                         selected: state.layoutMode == ParticipantsLayoutMode.focus,
                       ),
                     ),
@@ -79,7 +80,7 @@ class ControlsWidget extends StatelessWidget {
                       value: ParticipantsLayoutMode.scroll,
                       child: ListTile(
                         leading: const Icon(Icons.chat_bubble_outline),
-                        title: const Text('Sidebar with Chat'),
+                        title: Text(S.of(context).scrollableGrid),
                         selected: state.layoutMode == ParticipantsLayoutMode.scroll,
                       ),
                     ),

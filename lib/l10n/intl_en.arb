@@ -78,5 +78,9 @@
   "unknown": "Unknown",
   "showCorrectionScale": "Show correction scale",
   "noParticipantsWithActiveVideo": "No participants with active video",
-  "choral": "Choral"
+  "choral": "Choral",
+  "adaptiveGrid": "Adaptive Grid",
+  "speakerFocus": "Speaker Focus",
+  "scrollableGrid": "Scrollable grid",
+  "viewTypes": "View types"
 }

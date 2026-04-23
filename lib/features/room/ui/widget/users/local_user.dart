@@ -4,7 +4,7 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/features/room/ui/widget/sound_waveform.dart';
 
-import '../no_video.dart';
+import '../../../../../core/widgets/no_video.dart';
 
 class LocalUser extends StatefulWidget {
   const LocalUser({super.key, required this.participant});

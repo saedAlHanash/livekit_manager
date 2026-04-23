@@ -1,9 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
 

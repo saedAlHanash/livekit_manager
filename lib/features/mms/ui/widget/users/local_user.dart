@@ -5,7 +5,6 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/my_card_widget.dart';
 import 'package:livekit_manager/features/mms/ui/widget/sound_waveform.dart';
 
-import '../../../../../core/strings/enum_manager.dart';
 import '../no_video.dart';
 
 class LocalUser extends StatefulWidget {

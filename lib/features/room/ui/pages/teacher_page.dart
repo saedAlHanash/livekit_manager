@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
-import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/ui/widget/controls.dart';
-import 'package:livekit_manager/features/room/ui/widget/local_media.dart';
-import 'package:livekit_manager/features/room/ui/widget/notes_widget.dart';
-import 'package:livekit_manager/features/room/ui/widget/speakers_widget.dart';
-import 'package:livekit_manager/features/room/ui/widget/video_widget.dart';
 
-import '../../../../core/extensions/extensions.dart';
+import '../../../../core/strings/app_color_manager.dart';
+import '../../../../core/widgets/my_card_widget.dart';
+import '../../ui/widget/notes_widget.dart';
 import '../../../user/bloc/users_cubit/users_cubit.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../widget/local_media.dart';
 import '../widget/users/participants_layout.dart';
-import '../widget/users/remote_user.dart';
 
 class TeacherPage extends StatefulWidget {
   const TeacherPage({
@@ -36,22 +31,45 @@ class _TeacherPageState extends State<TeacherPage> {
         context.read<RoomCubit>().setExpectedUsers(state.result);
       },
       child: Scaffold(
-        body: BlocBuilder<RoomCubit, RoomInitial>(
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Expanded(child: VideoWidget()),
-                  ControlsWidget(),
-                ],
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(flex: 5, child: ParticipantsLayout()),
+                    Expanded(
+                      flex: 1,
+                      child: MyCardWidget(
+                        cardColor: AppColorManager.tileColor,
+                        padding: EdgeInsets.all(7.0).r,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: constraints.maxWidth - 50.0.w,
+                                  child: LocalMedia(),
+                                ),
+                                10.0.verticalSpace,
+                                Expanded(
+                                  child: NotesWidget(),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          },
+              ControlsWidget(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-//audiences

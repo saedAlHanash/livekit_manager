@@ -10,7 +10,6 @@ import 'package:livekit_manager/generated/l10n.dart';
 import '../../../../core/strings/enum_manager.dart';
 import '../../../../core/widgets/menu_widget.dart';
 import '../../../../generated/assets.dart';
-
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
 import '../../data/request/setting_message.dart';
 
@@ -143,23 +142,4 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
       },
     );
   }
-
-  // PopupMenuItemModel deafblind() {
-  //   return PopupMenuItemModel(
-  //     label: participant.permissions.isDeafblind ? S.of(context).seeAndHear : S.of(context).deafblinding,
-  //     icon: ImageMultiType(
-  //       url: participant.permissions.isDeafblind ? Assets.imagesLookIcon : Assets.imagesDeafblind,
-  //       color: Colors.white,
-  //       width: 30.0,
-  //       height: 30.0,
-  //     ),
-  //     onTap: () {
-  //       if (participant.permissions.isDeafblind) {
-  //         context.read<UserControlCubit>().grant(participant, PermissionType.listen);
-  //       } else {
-  //         context.read<UserControlCubit>().revoke(participant, PermissionType.listen);
-  //       }
-  //     },
-  //   );
-  // }
 }

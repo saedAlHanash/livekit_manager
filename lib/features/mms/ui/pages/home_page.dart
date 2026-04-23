@@ -1,13 +1,10 @@
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/widgets/my_button.dart';
-import 'package:livekit_manager/features/mms/ui/pages/room_page.dart';
+import 'package:livekit_manager/features/mms/ui/pages/mms_manager_page.dart';
 
 import '../../../../core/widgets/my_text_form_widget.dart';
-import '../../../room/bloc/room_cubit/room_cubit.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
 import '../../bloc/user_control_cubit/user_control_cubit.dart';
 
@@ -40,7 +37,7 @@ class _MMSPageState extends State<MMSPage> {
       },
       builder: (context, state) {
         return state.isConnect
-            ? RoomPage()
+            ? MMsManager()
             : Scaffold(
                 body: Container(
                   alignment: Alignment.center,
