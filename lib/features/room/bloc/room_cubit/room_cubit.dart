@@ -224,8 +224,24 @@ class RoomCubit extends MCubit<RoomInitial> {
       bool realEnableCamera = enableCamera;
       bool realEnableMic = enableMic;
 
-      if (!kIsWeb) {
-        if (enableCamera) {
+      // 1. Check hardware availability (works on all platforms, including Windows/Web)
+      try {
+        final devices = await Hardware.instance.enumerateDevices();
+        final hasCamera = devices.any((d) => d.kind.toLowerCase().contains('video'));
+        if (!hasCamera) {
+          realEnableCamera = false;
+        }
+        final hasMic = devices.any((d) => d.kind.toLowerCase().contains('audio') && d.kind.toLowerCase().contains('input'));
+        if (!hasMic) {
+          realEnableMic = false;
+        }
+      } catch (e) {
+        loggerObject.w('Error enumerating devices: $e');
+      }
+
+      // 2. Check platform permissions (only on mobile where permission_handler is supported)
+      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)) {
+        if (realEnableCamera) {
           try {
             var status = await Permission.camera.status;
             if (!status.isGranted) {
@@ -233,19 +249,13 @@ class RoomCubit extends MCubit<RoomInitial> {
             }
             if (!status.isGranted) {
               realEnableCamera = false;
-            } else {
-              final devices = await Hardware.instance.enumerateDevices();
-              final hasCamera = devices.any((d) => d.kind.toLowerCase().contains('video'));
-              if (!hasCamera) {
-                realEnableCamera = false;
-              }
             }
           } catch (e) {
-            loggerObject.w('Error checking camera permissions/hardware: $e');
+            loggerObject.w('Error checking camera permissions: $e');
           }
         }
 
-        if (enableMic) {
+        if (realEnableMic) {
           try {
             var status = await Permission.microphone.status;
             if (!status.isGranted) {
@@ -253,15 +263,9 @@ class RoomCubit extends MCubit<RoomInitial> {
             }
             if (!status.isGranted) {
               realEnableMic = false;
-            } else {
-              final devices = await Hardware.instance.enumerateDevices();
-              final hasMic = devices.any((d) => d.kind.toLowerCase().contains('audio') && d.kind.toLowerCase().contains('input'));
-              if (!hasMic) {
-                realEnableMic = false;
-              }
             }
           } catch (e) {
-            loggerObject.w('Error checking microphone permissions/hardware: $e');
+            loggerObject.w('Error checking microphone permissions: $e');
           }
         }
       }
@@ -279,13 +283,26 @@ class RoomCubit extends MCubit<RoomInitial> {
         );
       } catch (connectError) {
         loggerObject.e('Initial connect failed: $connectError. Retrying with fallback...');
-        try {
-          await state.result.disconnect();
-        } catch (_) {}
+        
+        Future<Room> recreateRoomAndListener() async {
+          try {
+            state.result.removeListener(_sortParticipants);
+            await state.listener.dispose();
+            await state.result.dispose();
+          } catch (_) {}
+          
+          final newRoom = Room(roomOptions: RoomConfig.instance.roomOptions);
+          final newListener = newRoom.createListener();
+          emit(state.copyWith(result: newRoom, listener: newListener));
+          newRoom.addListener(_sortParticipants);
+          setListeners();
+          return newRoom;
+        }
 
         if (realEnableCamera) {
           try {
-            await state.result.connect(
+            final fallbackRoom = await recreateRoomAndListener();
+            await fallbackRoom.connect(
               state.url,
               state.token,
               fastConnectOptions: FastConnectOptions(
@@ -301,14 +318,12 @@ class RoomCubit extends MCubit<RoomInitial> {
             return;
           } catch (retryError) {
             loggerObject.e('Retry with camera disabled failed: $retryError');
-            try {
-              await state.result.disconnect();
-            } catch (_) {}
           }
         }
 
         // Final fallback: both camera and microphone disabled
-        await state.result.connect(
+        final finalRoom = await recreateRoomAndListener();
+        await finalRoom.connect(
           state.url,
           state.token,
           fastConnectOptions: FastConnectOptions(
