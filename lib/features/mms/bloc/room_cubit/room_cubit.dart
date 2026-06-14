@@ -2,6 +2,7 @@ import 'dart:async' as asy;
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
@@ -192,16 +193,106 @@ class MMSRoomCubit extends MCubit<MMSRoomInitial> {
   }) async {
     try {
       emit(state.copyWith(statuses: CubitStatuses.loading));
-      await state.result.connect(
-        state.url,
-        state.token,
-        fastConnectOptions: FastConnectOptions(
-          camera: TrackOption(enabled: enableCamera),
-          microphone: TrackOption(enabled: enableMic),
-          screen: TrackOption(enabled: enableScreen),
-        ),
-        connectOptions: RoomConfig.instance.connectionOption,
-      );
+
+      bool realEnableCamera = enableCamera;
+      bool realEnableMic = enableMic;
+
+      if (!kIsWeb) {
+        if (enableCamera) {
+          try {
+            var status = await Permission.camera.status;
+            if (!status.isGranted) {
+              status = await Permission.camera.request();
+            }
+            if (!status.isGranted) {
+              realEnableCamera = false;
+            } else {
+              final devices = await Hardware.instance.enumerateDevices();
+              final hasCamera = devices.any((d) => d.kind.toLowerCase().contains('video'));
+              if (!hasCamera) {
+                realEnableCamera = false;
+              }
+            }
+          } catch (e) {
+            loggerObject.w('Error checking camera permissions/hardware: $e');
+          }
+        }
+
+        if (enableMic) {
+          try {
+            var status = await Permission.microphone.status;
+            if (!status.isGranted) {
+              status = await Permission.microphone.request();
+            }
+            if (!status.isGranted) {
+              realEnableMic = false;
+            } else {
+              final devices = await Hardware.instance.enumerateDevices();
+              final hasMic = devices.any((d) => d.kind.toLowerCase().contains('audio') && d.kind.toLowerCase().contains('input'));
+              if (!hasMic) {
+                realEnableMic = false;
+              }
+            }
+          } catch (e) {
+            loggerObject.w('Error checking microphone permissions/hardware: $e');
+          }
+        }
+      }
+
+      try {
+        await state.result.connect(
+          state.url,
+          state.token,
+          fastConnectOptions: FastConnectOptions(
+            camera: TrackOption(enabled: realEnableCamera),
+            microphone: TrackOption(enabled: realEnableMic),
+            screen: TrackOption(enabled: enableScreen),
+          ),
+          connectOptions: RoomConfig.instance.connectionOption,
+        );
+      } catch (connectError) {
+        loggerObject.e('Initial connect failed: $connectError. Retrying with fallback...');
+        try {
+          await state.result.disconnect();
+        } catch (_) {}
+
+        if (realEnableCamera) {
+          try {
+            await state.result.connect(
+              state.url,
+              state.token,
+              fastConnectOptions: FastConnectOptions(
+                camera: const TrackOption(enabled: false),
+                microphone: TrackOption(enabled: realEnableMic),
+                screen: TrackOption(enabled: enableScreen),
+              ),
+              connectOptions: RoomConfig.instance.connectionOption,
+            );
+            getDataFromCache();
+            emit(state.copyWith(statuses: CubitStatuses.done));
+            // startRecording();
+            return;
+          } catch (retryError) {
+            loggerObject.e('Retry with camera disabled failed: $retryError');
+            try {
+              await state.result.disconnect();
+            } catch (_) {}
+          }
+        }
+
+        // Final fallback: both camera and microphone disabled
+        await state.result.connect(
+          state.url,
+          state.token,
+          fastConnectOptions: FastConnectOptions(
+            camera: const TrackOption(enabled: false),
+            microphone: const TrackOption(enabled: false),
+            screen: TrackOption(enabled: enableScreen),
+          ),
+          connectOptions: RoomConfig.instance.connectionOption,
+        );
+      }
+
       getDataFromCache();
       emit(state.copyWith(statuses: CubitStatuses.done));
       // startRecording();
