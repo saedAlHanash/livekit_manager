@@ -50,12 +50,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "deafblinding": MessageLookupByLibrary.simpleMessage("صم وعمى"),
     "december": MessageLookupByLibrary.simpleMessage("كانون الأول"),
     "disconnect": MessageLookupByLibrary.simpleMessage("قطع الاتصال"),
+    "disconnectAndBan": MessageLookupByLibrary.simpleMessage(
+      "قطع الاتصال والحظر",
+    ),
     "done": MessageLookupByLibrary.simpleMessage("تم"),
     "end": MessageLookupByLibrary.simpleMessage("إنهاء"),
     "enterAttendance": MessageLookupByLibrary.simpleMessage("إدخال الحضور"),
     "enterMarks": MessageLookupByLibrary.simpleMessage("إدخال العلامات"),
     "february": MessageLookupByLibrary.simpleMessage("شباط"),
     "grantPermissions": MessageLookupByLibrary.simpleMessage("إعطاء صلاحيات"),
+    "grantWhiteboard": MessageLookupByLibrary.simpleMessage(
+      "منح صلاحية السبورة",
+    ),
     "hour": MessageLookupByLibrary.simpleMessage("ساعة"),
     "is_required": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "january": MessageLookupByLibrary.simpleMessage("كانون الثاني"),
@@ -96,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف"),
     "revokePermissions": MessageLookupByLibrary.simpleMessage("سحب صلاحيات"),
+    "revokeWhiteboard": MessageLookupByLibrary.simpleMessage(
+      "سحب صلاحية السبورة",
+    ),
     "screen": MessageLookupByLibrary.simpleMessage("شاشة"),
     "scrollableGrid": MessageLookupByLibrary.simpleMessage("Scrollable grid"),
     "search": MessageLookupByLibrary.simpleMessage("بحث"),
@@ -116,6 +125,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "showCorrectionScale": MessageLookupByLibrary.simpleMessage(
       "Show correction scale",
     ),
+    "showParticipants": MessageLookupByLibrary.simpleMessage(
+      "عرض كامل للمشاركين",
+    ),
+    "showWhiteboard": MessageLookupByLibrary.simpleMessage("عرض السبورة"),
     "speaker": MessageLookupByLibrary.simpleMessage("متحدث"),
     "speakerFocus": MessageLookupByLibrary.simpleMessage("Speaker Focus"),
     "startSession": MessageLookupByLibrary.simpleMessage("بدأ الجلسة"),

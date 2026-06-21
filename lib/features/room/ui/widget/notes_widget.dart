@@ -115,6 +115,7 @@ class NotesWidget extends StatelessWidget {
                     case ManagerActions.achievement:
                     case ManagerActions.chosen:
                     case ManagerActions.lowerHand:
+                    default:
                       return 0.0.verticalSpace;
                   }
                 },

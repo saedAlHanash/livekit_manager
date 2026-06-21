@@ -97,6 +97,13 @@ enum ManagerActions {
   achievement,
   message,
   chosen,
+  drawPoint,
+  undoStroke,
+  finalizeStroke,
+  requestState,
+  sendState,
+  grantWhiteboard,
+  revokeWhiteboard,
   ;
 
   IconData get icon {
@@ -106,6 +113,13 @@ enum ManagerActions {
       ManagerActions.achievement => Icons.star,
       ManagerActions.chosen => Icons.select_all,
       ManagerActions.message => Icons.message,
+      ManagerActions.drawPoint => Icons.brush,
+      ManagerActions.undoStroke => Icons.undo,
+      ManagerActions.finalizeStroke => Icons.check,
+      ManagerActions.requestState => Icons.download,
+      ManagerActions.sendState => Icons.upload,
+      ManagerActions.grantWhiteboard => Icons.gesture,
+      ManagerActions.revokeWhiteboard => Icons.block,
     };
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
@@ -206,6 +207,30 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
 
                           context.read<RoomCubit>().state.result.localParticipant?.publishData(
                             m.toBytes,
+                          );
+                        },
+                      ),
+                    ),
+
+                  if (participant.isRemoteUser)
+                    Align(
+                      alignment: .bottomLeft,
+                      child: BlocBuilder<RoomCubit, RoomInitial>(
+                        builder: (context, roomState) {
+                          final allowed = roomState.whiteboardAllowedUsers.contains(participant.identity);
+                          return IconButton(
+                            icon: Icon(
+                              allowed ? Icons.gesture : Icons.gesture_outlined,
+                              color: allowed ? AppColorManager.green : Colors.white60,
+                              size: widget.small ? 16.r : 24.r,
+                            ),
+                            tooltip: allowed ? S.of(context).revokeWhiteboard : S.of(context).grantWhiteboard,
+                            onPressed: () {
+                              context.read<RoomCubit>().toggleWhiteboardPermission(
+                                    participant.identity,
+                                    !allowed,
+                                  );
+                            },
                           );
                         },
                       ),

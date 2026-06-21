@@ -63,6 +63,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "grantPermissions": MessageLookupByLibrary.simpleMessage(
       "Grant permissions",
     ),
+    "grantWhiteboard": MessageLookupByLibrary.simpleMessage(
+      "Grant Whiteboard Permission",
+    ),
     "hour": MessageLookupByLibrary.simpleMessage("hour"),
     "is_required": MessageLookupByLibrary.simpleMessage("Required"),
     "january": MessageLookupByLibrary.simpleMessage("january"),
@@ -107,6 +110,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "revokePermissions": MessageLookupByLibrary.simpleMessage(
       "Revoke permissions",
     ),
+    "revokeWhiteboard": MessageLookupByLibrary.simpleMessage(
+      "Revoke Whiteboard Permission",
+    ),
     "screen": MessageLookupByLibrary.simpleMessage("Screen"),
     "scrollableGrid": MessageLookupByLibrary.simpleMessage("Scrollable grid"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -125,6 +131,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "showCorrectionScale": MessageLookupByLibrary.simpleMessage(
       "Show correction scale",
     ),
+    "showParticipants": MessageLookupByLibrary.simpleMessage(
+      "Show Full Participants",
+    ),
+    "showWhiteboard": MessageLookupByLibrary.simpleMessage("Show Whiteboard"),
     "speaker": MessageLookupByLibrary.simpleMessage("Speaker"),
     "speakerFocus": MessageLookupByLibrary.simpleMessage("Speaker Focus"),
     "startSession": MessageLookupByLibrary.simpleMessage("Start Session"),

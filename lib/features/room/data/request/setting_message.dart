@@ -24,6 +24,14 @@ class LkMessage {
 
   String get userId => metadata['id'] ?? '';
 
+  String get strokeId => metadata['strokeId'] ?? '';
+  String get ownerId => metadata['ownerId'] ?? '';
+  String get strokeColor => metadata['color'] ?? '';
+  double get x => (metadata['x'] as num?)?.toDouble() ?? 0.0;
+  double get y => (metadata['y'] as num?)?.toDouble() ?? 0.0;
+  int get t => metadata['t'] ?? 0;
+  List<dynamic> get strokesData => metadata['strokes'] as List? ?? [];
+
   factory LkMessage.fromJson(Map<String, dynamic> json) {
     return LkMessage(
       id: (json['id'] ?? '').toString(),

@@ -17,6 +17,7 @@ class RoomInitial extends AbstractState<Room> {
     this.layoutMode = ParticipantsLayoutMode.grid,
     this.showChat = false,
     required this.expectedUsers,
+    this.whiteboardAllowedUsers = const {},
   });
 
   final String url;
@@ -35,6 +36,7 @@ class RoomInitial extends AbstractState<Room> {
   final ParticipantsLayoutMode layoutMode;
   final bool showChat;
   final List<User> expectedUsers;
+  final Set<String> whiteboardAllowedUsers;
 
   factory RoomInitial.initial() {
     final room = Room(roomOptions: RoomConfig.instance.roomOptions);
@@ -50,6 +52,7 @@ class RoomInitial extends AbstractState<Room> {
       selectedParticipantId: '',
       haveNewNote: false,
       expectedUsers: const [],
+      whiteboardAllowedUsers: const {},
     );
   }
 
@@ -71,6 +74,7 @@ class RoomInitial extends AbstractState<Room> {
     layoutMode,
     showChat,
     expectedUsers,
+    whiteboardAllowedUsers,
   ];
 
   RoomInitial copyWith({
@@ -89,6 +93,7 @@ class RoomInitial extends AbstractState<Room> {
     ParticipantsLayoutMode? layoutMode,
     bool? showChat,
     List<User>? expectedUsers,
+    Set<String>? whiteboardAllowedUsers,
   }) {
     return RoomInitial(
       statuses: statuses ?? this.statuses,
@@ -106,6 +111,7 @@ class RoomInitial extends AbstractState<Room> {
       layoutMode: layoutMode ?? this.layoutMode,
       showChat: showChat ?? this.showChat,
       expectedUsers: expectedUsers ?? this.expectedUsers,
+      whiteboardAllowedUsers: whiteboardAllowedUsers ?? this.whiteboardAllowedUsers,
     );
   }
 }

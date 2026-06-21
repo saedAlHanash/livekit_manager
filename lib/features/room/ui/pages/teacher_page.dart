@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/features/room/ui/widget/controls.dart';
+import 'package:livekit_manager/features/whiteboard/logic/whiteboard_cubit.dart';
+import 'package:livekit_manager/features/whiteboard/presentation/widgets/whiteboard_widget.dart';
+import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../../../core/strings/app_color_manager.dart';
 import '../../../../core/widgets/my_card_widget.dart';
@@ -22,6 +25,7 @@ class TeacherPage extends StatefulWidget {
 
 class _TeacherPageState extends State<TeacherPage> {
   RoomCubit get cubit => context.read<RoomCubit>();
+  bool _showWhiteboard = true;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,34 @@ class _TeacherPageState extends State<TeacherPage> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(flex: 5, child: ParticipantsLayout()),
+                    Expanded(
+                      flex: 5,
+                      child: Row(
+                        children: [
+                          if (!_showWhiteboard)
+                            Expanded(child: ParticipantsLayout())
+                          else ...[
+                            Expanded(flex: 2, child: ParticipantsLayout()),
+                            10.0.horizontalSpace,
+                            Expanded(
+                              flex: 3,
+                              child: BlocProvider(
+                                create: (context) => WhiteboardCubit(
+                                  sessionId: cubit.state.result.name ?? '',
+                                  userId: cubit.state.result.localParticipant?.identity ?? 'teacher',
+                                  roomCubit: cubit,
+                                ),
+                                child: WhiteboardWidget(
+                                  sessionId: cubit.state.result.name ?? '',
+                                  userId: cubit.state.result.localParticipant?.identity ?? 'teacher',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    10.0.horizontalSpace,
                     Expanded(
                       flex: 1,
                       child: MyCardWidget(
@@ -65,7 +96,30 @@ class _TeacherPageState extends State<TeacherPage> {
                   ],
                 ),
               ),
-              ControlsWidget(),
+              10.0.verticalSpace,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      _showWhiteboard ? Icons.dashboard : Icons.gesture,
+                      color: Colors.white,
+                    ),
+                    tooltip: _showWhiteboard ? S.of(context).showParticipants : S.of(context).showWhiteboard,
+                    onPressed: () {
+                      setState(() {
+                        _showWhiteboard = !_showWhiteboard;
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: ControlsWidget(),
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
+              ),
             ],
           ),
         ),

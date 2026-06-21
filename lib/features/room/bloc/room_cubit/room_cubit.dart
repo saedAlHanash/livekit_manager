@@ -24,6 +24,9 @@ part 'room_state.dart';
 class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
 
+  final _messageController = StreamController<LkMessage>.broadcast();
+  Stream<LkMessage> get messageStream => _messageController.stream;
+
   Timer? _sortDebounceTimer;
 
   @override
@@ -164,17 +167,24 @@ class RoomCubit extends MCubit<RoomInitial> {
               'image': e.participant?.image,
             });
 
-            SoundService.play(Assets.soundsNote);
+            _messageController.add(message);
+
             switch (message.action) {
               case ManagerActions.achievement:
+                SoundService.play(Assets.soundsNote);
                 return;
               case ManagerActions.lowerHand:
+                SoundService.play(Assets.soundsNote);
                 await deleteFromCache([e.participant?.identity ?? '']);
                 break;
               case ManagerActions.raiseHand:
               case ManagerActions.chosen:
               case ManagerActions.message:
+                SoundService.play(Assets.soundsNote);
                 await addOrUpdateToCache(message);
+                break;
+              default:
+                break;
             }
           } catch (err) {
             loggerObject.e('Failed to decode: $err');
@@ -404,6 +414,27 @@ class RoomCubit extends MCubit<RoomInitial> {
     await Future.delayed(Duration(seconds: 1));
   }
 
+  Future<void> toggleWhiteboardPermission(String studentId, bool allowed) async {
+    final updatedAllowed = Set<String>.from(state.whiteboardAllowedUsers);
+    if (allowed) {
+      updatedAllowed.add(studentId);
+    } else {
+      updatedAllowed.remove(studentId);
+    }
+    emit(state.copyWith(whiteboardAllowedUsers: updatedAllowed, id: state.notifyIndex + 1));
+
+    final lkMsg = LkMessage(
+      action: allowed ? ManagerActions.grantWhiteboard : ManagerActions.revokeWhiteboard,
+      metadata: {
+        'studentId': studentId,
+      },
+    );
+    await state.result.localParticipant?.publishData(
+      lkMsg.toBytes,
+      reliable: true,
+    );
+  }
+
   void changeLayoutMode(ParticipantsLayoutMode mode) {
     emit(state.copyWith(layoutMode: mode));
   }
@@ -433,6 +464,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       state.result.removeListener(_sortParticipants);
       await state.listener.dispose();
       await state.result.dispose();
+      await _messageController.close();
     })();
     return super.close();
   }
