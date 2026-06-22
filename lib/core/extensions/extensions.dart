@@ -220,6 +220,15 @@ extension StringHelper on String? {
     return link;
   }
 
+  String get fixUrl {
+    if (isBlank) return '';
+    if (this == imagePath) return '';
+    if (this!.startsWith('http')) return this!;
+
+    final String link = "https://$baseUrl/documents/$this";
+    return link;
+  }
+
   num get tryParseOrZero => num.tryParse(this ?? '0') ?? 0;
 
   int get tryParseOrZeroInt => int.tryParse(this ?? '0') ?? 0;

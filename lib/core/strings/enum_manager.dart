@@ -104,6 +104,8 @@ enum ManagerActions {
   sendState,
   grantWhiteboard,
   revokeWhiteboard,
+  setWhiteboardBackground,
+  clearBoard,
   ;
 
   IconData get icon {
@@ -120,6 +122,8 @@ enum ManagerActions {
       ManagerActions.sendState => Icons.upload,
       ManagerActions.grantWhiteboard => Icons.gesture,
       ManagerActions.revokeWhiteboard => Icons.block,
+      ManagerActions.setWhiteboardBackground => Icons.image,
+      ManagerActions.clearBoard => Icons.layers_clear,
     };
   }
 }
@@ -267,3 +271,38 @@ enum RoomType {
 }
 
 enum ParticipantsLayoutMode { grid, focus, scroll }
+
+enum SocketEvents {
+  activeActivityChanged,
+  quizStarted,
+  quizEnded,
+  clapping,
+  studentJoinedQuizGroup,
+  groupResponsibleAction,
+  studentRequest,
+  studentLeftActivityGroup,
+  giveGroupPermission,
+  studentSubmittedQuiz,
+  whiteboardAction,
+  ;
+
+  bool get isActiveActivityChanged => this == activeActivityChanged;
+
+  bool get isQuizStarted => this == quizStarted;
+
+  bool get isQuizEnded => this == quizEnded;
+
+  bool get isClapping => this == clapping;
+
+  bool get isStudentJoinedQuizGroup => this == studentJoinedQuizGroup;
+
+  bool get isGroupResponsibleAction => this == groupResponsibleAction;
+
+  bool get isStudentRequest => this == studentRequest;
+
+  bool get isStudentLeftActivityGroup => this == studentLeftActivityGroup;
+
+  bool get isGiveGroupPermission => this == giveGroupPermission;
+
+  bool get isWhiteboardAction => this == whiteboardAction;
+}

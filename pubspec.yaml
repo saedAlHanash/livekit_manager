@@ -46,6 +46,7 @@ dependencies:
   permission_handler: ^12.0.1
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
+  file_picker: ^8.0.0
 
   drawable_text: ^1.0.0
   flutter_background: ^1.3.1

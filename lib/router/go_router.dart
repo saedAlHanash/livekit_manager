@@ -24,9 +24,39 @@ import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
 import '../features/user/ui/pages/users_page.dart';
 
+import '../features/whiteboard_standalone/logic/whiteboard_standalone_cubit.dart';
+import '../features/whiteboard_standalone/presentation/pages/whiteboard_standalone_page.dart';
+
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
   routes: [
+    //region whiteboard standalone
+    GoRoute(
+      path: RouteName.whiteboardStandalone,
+      name: RouteName.whiteboardStandalone,
+      builder: (context, state) {
+        final lessonId = state.uri.queryParameters['lessonId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
+        final userId = state.uri.queryParameters['userId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
+        final userName = state.uri.queryParameters['userName'] ?? 'راكان';
+        final userType = state.uri.queryParameters['userType'] ?? 'teacher';
+        final token = state.uri.queryParameters['token'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
+
+        if (token.isNotEmpty) {
+          AppSharedPreference.cashToken(token);
+        }
+
+        return BlocProvider(
+          create: (context) => WhiteboardStandaloneCubit(
+            lessonId: lessonId,
+            userId: userId,
+            userName: userName,
+            userType: userType,
+          ),
+          child: const WhiteboardStandalonePage(),
+        );
+      },
+    ),
+    //endregion
     //region setting
 
     ///setting
@@ -280,12 +310,13 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/whiteboard_standalone';
   static const homes = '/homes';
 
   static const splash = '/splash';
   static const mms = '/mms';
   static const group = '/group';
+  static const whiteboardStandalone = '/';
 }
 
 //https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com
