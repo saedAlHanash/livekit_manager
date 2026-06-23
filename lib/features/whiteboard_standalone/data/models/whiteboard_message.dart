@@ -1,16 +1,8 @@
-import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_ce/hive_ce.dart';
+
 import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/data/models/whiteboard_message.dart';
-import 'package:livekit_manager/services/signal_r/signal_message.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
+
 
 class WhiteboardMessage {
   final WhiteboardAction action;
@@ -43,6 +35,20 @@ class WhiteboardMessage {
   }
 
   factory WhiteboardMessage.fromBytes(Uint8List rawBytes) {
+    if (rawBytes.isEmpty) {
+      return WhiteboardMessage(
+        action: WhiteboardAction.clearBoard,
+        metadata: {},
+      );
+    }
+    if (rawBytes[0] == 123) {
+      try {
+        final decoded = jsonDecode(utf8.decode(rawBytes));
+        return WhiteboardMessage.fromJson(Map<String, dynamic>.from(decoded));
+      } catch (_) {
+        // Fallback to binary
+      }
+    }
     final json = _deserializeWhiteboardBinary(rawBytes);
     return WhiteboardMessage(
       action: WhiteboardAction.values[json['action'] ?? 0],

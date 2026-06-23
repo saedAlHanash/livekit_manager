@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
-import 'package:m_cubit/util.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/whiteboard_message.dart';
-import 'package:livekit_manager/services/signal_r/signal_message.dart';
 import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:m_cubit/m_cubit.dart';
 
@@ -55,13 +51,12 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
       emit(state.copyWith(connectionState: signalState.connectionState));
     });
 
-    _signalSubscription = _signalRCubit.messageStream.listen((signalMsg) {
-      if (signalMsg.event != .whiteboardAction) return;
+    _signalSubscription = _signalRCubit.whiteboardStream.listen((bytes) {
       try {
-        final msg = WhiteboardMessage.fromBytes(signalMsg.rawBytes!);
+        final msg = WhiteboardMessage.fromBytes(bytes);
         _processWhiteboardMessage(msg);
       } catch (e) {
-        loggerObject.e('Failed to parse incoming SignalR binary message: $e');
+        loggerObject.e('Failed to parse incoming SignalR whiteboard message: $e');
       }
     });
   }
@@ -127,7 +122,8 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   Future<void> _sendWhiteboardMessage(WhiteboardMessage lkMsg) async {
     if (state.connectionState != .connected) return;
 
-    if (lkMsg.action == .drawPoint || lkMsg.action == .finalizeStroke) {
+    Uint8List binaryBytes;
+    if (lkMsg.action == WhiteboardAction.drawPoint || lkMsg.action == WhiteboardAction.finalizeStroke) {
       final points = lkMsg.metadata['points'] as List? ?? [];
       final ptsList = points.map((e) => Map<String, dynamic>.from(e)).toList();
       if (ptsList.isEmpty && lkMsg.action == WhiteboardAction.drawPoint) {
@@ -143,7 +139,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
       final color = lkMsg.strokeColor;
       final createdAt = lkMsg.metadata['createdAt'] ?? DateTime.now().millisecondsSinceEpoch;
 
-      final binaryBytes = serializeWhiteboardBinary(
+      binaryBytes = serializeWhiteboardBinary(
         actionIndex: lkMsg.action.index,
         strokeId: strokeId,
         ownerId: ownerId,
@@ -152,28 +148,14 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
         createdAt: createdAt,
         points: ptsList,
       );
-
-      try {
-        await _signalRCubit.sendMessageToTopic(binaryBytes, messageType: 1);
-      } catch (e) {
-        loggerObject.e('Failed to send SignalR whiteboard binary message: $e');
-      }
-      return;
+    } else {
+      binaryBytes = Uint8List.fromList(utf8.encode(jsonEncode(lkMsg.toJson())));
     }
-    final signalMsg = SignalMessage(
-      event: SocketEvents.whiteboardAction,
-      data: Data(
-        groupId: '',
-        name: 'whiteboard',
-        image: jsonEncode(lkMsg.toJson()),
-        tokens: [],
-      ),
-    );
 
     try {
-      await _signalRCubit.sendMessageToTopic(signalMsg, messageType: 0);
+      await _signalRCubit.sendMessageToTopic(binaryBytes, messageType: MessageTypeEnum.bytes.index);
     } catch (e) {
-      loggerObject.e('Failed to send SignalR whiteboard JSON message: $e');
+      loggerObject.e('Failed to send SignalR whiteboard binary message: $e');
     }
   }
 

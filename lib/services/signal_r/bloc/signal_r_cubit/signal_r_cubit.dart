@@ -17,8 +17,10 @@ class SignalRCubit extends Cubit<SignalRInitial> {
   final List<String> joinedTopics = [];
 
   final _messageController = StreamController<SignalMessage>.broadcast();
+  final _whiteboardController = StreamController<Uint8List>.broadcast();
 
   Stream<SignalMessage> get messageStream => _messageController.stream;
+  Stream<Uint8List> get whiteboardStream => _whiteboardController.stream;
 
   Future<void> deConnect() async {
     await state.result?.stop();
@@ -88,8 +90,14 @@ class SignalRCubit extends Cubit<SignalRInitial> {
   void _receiveMessage(List<dynamic>? arguments) {
     print('__ $arguments');
     try {
-      final lastArg = MessageTypeEnum.values[arguments?.last??0];
-      if (lastArg == 1 || (lastArg is int && lastArg == 1)) {
+      final typeIndex = arguments?.last is int
+          ? arguments!.last as int
+          : int.tryParse(arguments?.last.toString() ?? '0') ?? 0;
+      final messageType = typeIndex < MessageTypeEnum.values.length
+          ? MessageTypeEnum.values[typeIndex]
+          : MessageTypeEnum.string;
+
+      if (messageType == MessageTypeEnum.bytes) {
         final firstArg = arguments?.first;
         Uint8List bytes;
         if (firstArg is Uint8List) {
@@ -99,20 +107,11 @@ class SignalRCubit extends Cubit<SignalRInitial> {
         } else {
           bytes = base64Decode(firstArg.toString());
         }
-        _messageController.add(SignalMessage.fromBytes(bytes));
+        _whiteboardController.add(bytes);
       } else {
         final x = jsonDecode(arguments?.firstOrNull.toString() ?? "{}") as Map<String, dynamic>;
         loggerObject.f(x);
         _messageController.add(SignalMessage.fromJson(x));
-      }
-      switch(lastArg){
-
-        case MessageTypeEnum.string:
-          // TODO: Handle this case.
-          throw UnimplementedError();
-        case MessageTypeEnum.bytes:
-          // TODO: Handle this case.
-          throw UnimplementedError();
       }
     } catch (e) {
       loggerObject.e('ReceiveMessage,error:$e');
@@ -173,6 +172,7 @@ class SignalRCubit extends Cubit<SignalRInitial> {
   Future<void> close() {
     deConnect();
     _messageController.close();
+    _whiteboardController.close();
     return super.close();
   }
 }
