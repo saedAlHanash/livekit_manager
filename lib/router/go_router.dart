@@ -24,8 +24,9 @@ import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
 import '../features/user/ui/pages/users_page.dart';
 
-import '../features/whiteboard_standalone/logic/whiteboard_standalone_cubit.dart';
+import '../features/whiteboard_standalone/bloc/whiteboard_standalone_cubit.dart';
 import '../features/whiteboard_standalone/presentation/pages/whiteboard_standalone_page.dart';
+import '../services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
@@ -35,8 +36,8 @@ final goRouter = GoRouter(
       path: RouteName.whiteboardStandalone,
       name: RouteName.whiteboardStandalone,
       builder: (context, state) {
-        final lessonId = state.uri.queryParameters['lessonId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
-        final userId = state.uri.queryParameters['userId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
+        final lessonId = state.uri.queryParameters['lessonId'] ?? '00f69850-251c-4c5a-a243-08decabeb6b6';
+        final userId = state.uri.queryParameters['userId'] ?? '00f69850-251c-4c5a-a243-08decabeb6b6';
         final userName = state.uri.queryParameters['userName'] ?? 'راكان';
         final userType = state.uri.queryParameters['userType'] ?? 'teacher';
         final token = state.uri.queryParameters['token'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
@@ -45,13 +46,22 @@ final goRouter = GoRouter(
           AppSharedPreference.cashToken(token);
         }
 
-        return BlocProvider(
-          create: (context) => WhiteboardStandaloneCubit(
-            lessonId: lessonId,
-            userId: userId,
-            userName: userName,
-            userType: userType,
-          ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => SignalRCubit()
+                ..initialSignalR(lessonId, userId),
+            ),
+            BlocProvider(
+              create: (context) => WhiteboardStandaloneCubit(
+                lessonId: lessonId,
+                userId: userId,
+                userName: userName,
+                userType: userType,
+                signalRCubit: context.read<SignalRCubit>(),
+              ),
+            ),
+          ],
           child: const WhiteboardStandalonePage(),
         );
       },

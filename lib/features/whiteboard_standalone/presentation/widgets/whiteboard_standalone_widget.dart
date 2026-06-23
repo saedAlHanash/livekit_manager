@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/logic/whiteboard_standalone_cubit.dart';
+import 'package:livekit_manager/features/whiteboard_standalone/bloc/whiteboard_standalone_cubit.dart';
 
 Color parseColor(String colorStr) {
   if (colorStr.isEmpty) return Colors.black;
@@ -88,11 +88,15 @@ class WhiteboardStandaloneWidget extends StatefulWidget {
 class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget> {
   String? _currentStrokeId;
   String _activeTool = 'pen'; // 'pen' or 'eraser', 'move'
-  double _penWidth = 3.0;     // 3.0, 6.0, 12.0
+  double _penWidth = 3.0; // 3.0, 6.0, 12.0
 
   double _startScale = 1.0;
   Offset _startOffset = Offset.zero;
   Offset _initialFocalPoint = Offset.zero;
+
+  // Configurable parameters for drawing smoothness and performance
+  static const int batchSize = 4; // Number of points to aggregate before broadcasting
+  final List<Map<String, dynamic>> _pendingPoints = [];
 
   void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, WhiteboardStandaloneCubit cubit) {
     const double threshold = 0.03; // normalized distance threshold
@@ -149,18 +153,24 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                   child: IgnorePointer(
                     ignoring: !state.hasWritePermission && _activeTool != 'move',
                     child: GestureDetector(
-                      onScaleStart: _activeTool == 'move' ? (details) {
-                        _startScale = state.backgroundScale;
-                        _startOffset = Offset(state.backgroundX, state.backgroundY);
-                        _initialFocalPoint = details.localFocalPoint;
-                      } : null,
-                      onScaleUpdate: _activeTool == 'move' ? (details) {
-                        final focalPoint = details.localFocalPoint;
-                        final newScale = (_startScale * details.scale).clamp(0.5, 8.0);
-                        final newX = focalPoint.dx - (_initialFocalPoint.dx - _startOffset.dx) * (newScale / _startScale);
-                        final newY = focalPoint.dy - (_initialFocalPoint.dy - _startOffset.dy) * (newScale / _startScale);
-                        cubit.updateBackgroundTransform(newScale, newX, newY);
-                      } : null,
+                      onScaleStart: _activeTool == 'move'
+                          ? (details) {
+                              _startScale = state.backgroundScale;
+                              _startOffset = Offset(state.backgroundX, state.backgroundY);
+                              _initialFocalPoint = details.localFocalPoint;
+                            }
+                          : null,
+                      onScaleUpdate: _activeTool == 'move'
+                          ? (details) {
+                              final focalPoint = details.localFocalPoint;
+                              final newScale = (_startScale * details.scale).clamp(0.5, 8.0);
+                              final newX =
+                                  focalPoint.dx - (_initialFocalPoint.dx - _startOffset.dx) * (newScale / _startScale);
+                              final newY =
+                                  focalPoint.dy - (_initialFocalPoint.dy - _startOffset.dy) * (newScale / _startScale);
+                              cubit.updateBackgroundTransform(newScale, newX, newY);
+                            }
+                          : null,
                       child: Listener(
                         onPointerDown: (event) {
                           if (_activeTool == 'move') return;
@@ -175,7 +185,9 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                           } else {
                             final strokeId = _generateUuid();
                             _currentStrokeId = strokeId;
+                            _pendingPoints.clear();
 
+                            // Send first point immediately so it starts drawing instantly on students' screens
                             cubit.addLocalPoint(
                               strokeId,
                               state.userColor,
@@ -200,23 +212,54 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                             final strokeId = _currentStrokeId;
                             if (strokeId == null) return;
 
-                            cubit.addLocalPoint(
+                            final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+                            // 1. Add locally first so teacher UI updates instantly
+                            cubit.addPointLocally(
                               strokeId,
                               state.userColor,
                               normX,
                               normY,
-                              DateTime.now().millisecondsSinceEpoch,
+                              timestamp,
                               style: 'width:$_penWidth',
                             );
+
+                            // 2. Accumulate in batch list
+                            _pendingPoints.add({
+                              'x': normX,
+                              'y': normY,
+                              't': timestamp,
+                            });
+
+                            // 3. Send if batch size is reached
+                            if (_pendingPoints.length >= batchSize) {
+                              cubit.broadcastPointsBatch(
+                                strokeId,
+                                state.userColor,
+                                List<Map<String, dynamic>>.from(_pendingPoints),
+                                style: 'width:$_penWidth',
+                              );
+                              _pendingPoints.clear();
+                            }
                           }
                         },
                         onPointerUp: (event) {
                           if (_activeTool == 'move') return;
-                          if (_activeTool != 'eraser') {
-                            final strokeId = _currentStrokeId;
-                            if (strokeId == null) return;
-
-                            cubit.finalizeLocalStroke(strokeId);
+                          final strokeId = _currentStrokeId;
+                          if (strokeId != null) {
+                            if (_activeTool != 'eraser') {
+                              // Send any remaining buffered points
+                              if (_pendingPoints.isNotEmpty) {
+                                cubit.broadcastPointsBatch(
+                                  strokeId,
+                                  state.userColor,
+                                  List<Map<String, dynamic>>.from(_pendingPoints),
+                                  style: 'width:$_penWidth',
+                                );
+                                _pendingPoints.clear();
+                              }
+                              cubit.finalizeLocalStroke(strokeId);
+                            }
                           }
                           _currentStrokeId = null;
                         },
@@ -227,7 +270,8 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                           child: Stack(
                             children: [
                               Transform(
-                                transform: Matrix4.translationValues(state.backgroundX, state.backgroundY, 0.0) *
+                                transform:
+                                    Matrix4.translationValues(state.backgroundX, state.backgroundY, 0.0) *
                                     Matrix4.diagonal3Values(state.backgroundScale, state.backgroundScale, 1.0),
                                 alignment: Alignment.topLeft,
                                 child: Stack(
@@ -382,7 +426,8 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                               const SizedBox(width: 8),
                             ],
                             // Only show background and clear actions for managers/teachers
-                            if (cubit.userType.toLowerCase() == 'teacher' || cubit.userType.toLowerCase() == 'manager') ...[
+                            if (cubit.userType.toLowerCase() == 'teacher' ||
+                                cubit.userType.toLowerCase() == 'manager') ...[
                               IconButton(
                                 icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
                                 tooltip: 'إضافة خلفية',
@@ -416,8 +461,7 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                     ),
                   ),
                 ),
-                if (state.isLoading)
-                  const Center(child: CircularProgressIndicator()),
+                if (state.isLoading) const Center(child: CircularProgressIndicator()),
               ],
             );
           },

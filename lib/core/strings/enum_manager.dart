@@ -97,15 +97,9 @@ enum ManagerActions {
   achievement,
   message,
   chosen,
-  drawPoint,
-  undoStroke,
-  finalizeStroke,
-  requestState,
-  sendState,
   grantWhiteboard,
   revokeWhiteboard,
-  setWhiteboardBackground,
-  clearBoard,
+
   ;
 
   IconData get icon {
@@ -115,15 +109,8 @@ enum ManagerActions {
       ManagerActions.achievement => Icons.star,
       ManagerActions.chosen => Icons.select_all,
       ManagerActions.message => Icons.message,
-      ManagerActions.drawPoint => Icons.brush,
-      ManagerActions.undoStroke => Icons.undo,
-      ManagerActions.finalizeStroke => Icons.check,
-      ManagerActions.requestState => Icons.download,
-      ManagerActions.sendState => Icons.upload,
       ManagerActions.grantWhiteboard => Icons.gesture,
       ManagerActions.revokeWhiteboard => Icons.block,
-      ManagerActions.setWhiteboardBackground => Icons.image,
-      ManagerActions.clearBoard => Icons.layers_clear,
     };
   }
 }
@@ -305,4 +292,15 @@ enum SocketEvents {
   bool get isGiveGroupPermission => this == giveGroupPermission;
 
   bool get isWhiteboardAction => this == whiteboardAction;
+}
+enum WhiteboardAction {
+  drawPoint,
+  finalizeStroke,
+  undoStroke,
+  requestState,
+  sendState,
+  grantWhiteboard,
+  revokeWhiteboard,
+  setWhiteboardBackground,
+  clearBoard,
 }

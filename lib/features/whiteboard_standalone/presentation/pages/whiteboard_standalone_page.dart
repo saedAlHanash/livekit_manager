@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:livekit_manager/features/whiteboard_standalone/logic/whiteboard_standalone_cubit.dart';
+import 'package:livekit_manager/features/whiteboard_standalone/bloc/whiteboard_standalone_cubit.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/presentation/widgets/whiteboard_standalone_widget.dart';
 
 class WhiteboardStandalonePage extends StatelessWidget {

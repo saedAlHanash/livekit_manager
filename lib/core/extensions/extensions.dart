@@ -100,7 +100,7 @@ extension SplitByLength on String {
 
   num get tryParseOrZero => num.tryParse(this) ?? 0;
 
-  int get tryParseOrZeroInt => int.tryParse(this) ?? 0;
+
 
   num? get tryParseOrNull => num.tryParse(this);
 
@@ -141,14 +141,7 @@ extension SplitByLength on String {
     return capitalized[0].toLowerCase() + capitalized.substring(1);
   }
 
-  Color get colorFromId {
-    final hash = hashCode;
-    final hue = (hash % 360).toDouble(); // 0 → 360
-    const saturation = 0.6; // تشبع متوسط
-    const lightness = 0.5; // سطوع متوسط
 
-    return HSLColor.fromAHSL(1.0, hue, saturation, lightness).toColor();
-  }
 
   Widget get copySymbol {
     return Row(
@@ -230,8 +223,6 @@ extension StringHelper on String? {
   }
 
   num get tryParseOrZero => num.tryParse(this ?? '0') ?? 0;
-
-  int get tryParseOrZeroInt => int.tryParse(this ?? '0') ?? 0;
 
   bool? get tryParseBoolOrFalse => this == null ? null : (toString() == '1' || toString() == 'true');
 

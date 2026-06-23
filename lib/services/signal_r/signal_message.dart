@@ -1,19 +1,35 @@
-import 'package:collection/collection.dart';
+import 'dart:typed_data';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 
 class SignalMessage {
   SignalMessage({
     required this.event,
     required this.data,
+    this.rawBytes,
   });
 
   final SocketEvents? event;
   final Data data;
+  final Uint8List? rawBytes;
 
   factory SignalMessage.fromJson(Map<String, dynamic> json) {
     return SignalMessage(
       event: json["event"] == null ? null : SocketEvents.values[json["event"]],
       data: Data.fromJson(json["data"] ?? {}),
+    );
+  }
+
+  factory SignalMessage.fromBytes(Uint8List bytes) {
+    return SignalMessage(
+      event: SocketEvents.whiteboardAction,
+      data: Data(
+        quizId: '',
+        groupId: '',
+        name: 'whiteboard',
+        image: '',
+        tokens: [],
+      ),
+      rawBytes: bytes,
     );
   }
 
