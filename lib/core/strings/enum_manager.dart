@@ -304,3 +304,4 @@ enum WhiteboardAction {
   setWhiteboardBackground,
   clearBoard,
 }
+enum MessageTypeEnum { string, bytes }

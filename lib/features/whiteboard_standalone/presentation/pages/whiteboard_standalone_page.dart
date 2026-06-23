@@ -16,7 +16,7 @@ class WhiteboardStandalonePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: WhiteboardStandaloneWidget(
-            sessionId: cubit.lessonId,
+            sessionId: cubit.sessionId,
             userId: cubit.userId,
           ),
         ),

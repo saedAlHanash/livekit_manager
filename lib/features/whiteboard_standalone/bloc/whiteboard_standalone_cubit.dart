@@ -17,7 +17,7 @@ part 'whiteboard_standalone_state.dart';
 
 class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   WhiteboardStandaloneCubit({
-    required this.lessonId,
+    required this.sessionId,
     required this.userId,
     required this.userName,
     required this.userType,
@@ -27,7 +27,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     _init();
   }
 
-  final String lessonId;
+  final String sessionId;
   final String userId;
   final String userName;
   final String userType;
@@ -72,7 +72,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   }
 
   Future<void> _loadCachedStrokes() async {
-    final cachedData = await CachingService.getFromBucket(key: lessonId) ?? '[]';
+    final cachedData = await CachingService.getFromBucket(key: sessionId) ?? '[]';
     final List list = jsonDecode(cachedData);
 
     final finalizedStrokes = Map.fromEntries(
@@ -87,7 +87,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
 
   Future<void> _saveToHive() async {
     CachingService.addInBucket(
-      key: lessonId,
+      key: sessionId,
       jsonEncode: jsonEncode(state.finalizedStrokes.values.map((s) => s.toJson()).toList()),
     );
   }

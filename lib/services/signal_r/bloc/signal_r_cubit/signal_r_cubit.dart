@@ -79,16 +79,16 @@ class SignalRCubit extends Cubit<SignalRInitial> {
         message is SignalMessage ? jsonEncode(message.toJson()) : message,
         joinedTopics.first,
         false,
-        '',
         messageType,
+        '',
       ],
     );
   }
 
   void _receiveMessage(List<dynamic>? arguments) {
-    print(arguments);
+    print('__ $arguments');
     try {
-      final lastArg = arguments?.last;
+      final lastArg = MessageTypeEnum.values[arguments?.last??0];
       if (lastArg == 1 || (lastArg is int && lastArg == 1)) {
         final firstArg = arguments?.first;
         Uint8List bytes;
@@ -104,6 +104,15 @@ class SignalRCubit extends Cubit<SignalRInitial> {
         final x = jsonDecode(arguments?.firstOrNull.toString() ?? "{}") as Map<String, dynamic>;
         loggerObject.f(x);
         _messageController.add(SignalMessage.fromJson(x));
+      }
+      switch(lastArg){
+
+        case MessageTypeEnum.string:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case MessageTypeEnum.bytes:
+          // TODO: Handle this case.
+          throw UnimplementedError();
       }
     } catch (e) {
       loggerObject.e('ReceiveMessage,error:$e');
