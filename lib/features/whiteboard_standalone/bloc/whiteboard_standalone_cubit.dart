@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:m_cubit/util.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/whiteboard_message.dart';
@@ -40,6 +41,14 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
 
     _loadCachedStrokes();
 
+    _listeners();
+
+    Timer(const Duration(milliseconds: 500), () {
+      _requestStateFromPeers();
+    });
+  }
+
+  void _listeners() {
     emit(state.copyWith(connectionState: _signalRCubit.state.connectionState));
 
     _statusSubscription = _signalRCubit.stream.listen((signalState) {
@@ -55,11 +64,6 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
         loggerObject.e('Failed to parse incoming SignalR binary message: $e');
       }
     });
-
-    // Request initial board state
-    Timer(const Duration(milliseconds: 500), () {
-      _requestStateFromPeers();
-    });
   }
 
   String _determineColor() {
@@ -68,22 +72,17 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   }
 
   Future<void> _loadCachedStrokes() async {
-    emit(state.copyWith(isLoading: true));
+    final cachedData = await CachingService.getFromBucket(key: lessonId) ?? '[]';
+    final List list = jsonDecode(cachedData);
 
-    try {
-      final cachedData = await CachingService.getFromBucket(key: lessonId) ?? '[]';
-      final List list = jsonDecode(cachedData);
+    final finalizedStrokes = Map.fromEntries(
+      list
+          .map((item) => StrokeModel.fromJson(Map<String, dynamic>.from(item)))
+          .where((stroke) => stroke.status == 'active')
+          .map((stroke) => MapEntry(stroke.strokeId, stroke)),
+    );
 
-      final finalizedStrokes = Map.fromEntries(
-        list.map((item) => StrokeModel.fromJson(Map<String, dynamic>.from(item)))
-            .where((stroke) => stroke.status == 'active')
-            .map((stroke) => MapEntry(stroke.strokeId, stroke)),
-      );
-
-      emit(state.copyWith(finalizedStrokes: finalizedStrokes));
-    } catch (e) {
-      emit(state.copyWith(error: 'Failed to load cached strokes: $e', isLoading: false));
-    }
+    emit(state.copyWith(finalizedStrokes: finalizedStrokes));
   }
 
   Future<void> _saveToHive() async {
@@ -126,9 +125,9 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   }
 
   Future<void> _sendWhiteboardMessage(WhiteboardMessage lkMsg) async {
-    if (state.connectionState != SignalRStatus.connected) return;
+    if (state.connectionState != .connected) return;
 
-    if (lkMsg.action == WhiteboardAction.drawPoint || lkMsg.action == WhiteboardAction.finalizeStroke) {
+    if (lkMsg.action == .drawPoint || lkMsg.action == .finalizeStroke) {
       final points = lkMsg.metadata['points'] as List? ?? [];
       final ptsList = points.map((e) => Map<String, dynamic>.from(e)).toList();
       if (ptsList.isEmpty && lkMsg.action == WhiteboardAction.drawPoint) {
@@ -159,23 +158,22 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
       } catch (e) {
         loggerObject.e('Failed to send SignalR whiteboard binary message: $e');
       }
-    } else {
-      final signalMsg = SignalMessage(
-        event: SocketEvents.whiteboardAction,
-        data: Data(
-          quizId: '',
-          groupId: '',
-          name: 'whiteboard',
-          image: jsonEncode(lkMsg.toJson()),
-          tokens: [],
-        ),
-      );
+      return;
+    }
+    final signalMsg = SignalMessage(
+      event: SocketEvents.whiteboardAction,
+      data: Data(
+        groupId: '',
+        name: 'whiteboard',
+        image: jsonEncode(lkMsg.toJson()),
+        tokens: [],
+      ),
+    );
 
-      try {
-        await _signalRCubit.sendMessageToTopic(signalMsg, messageType: 0);
-      } catch (e) {
-        loggerObject.e('Failed to send SignalR whiteboard JSON message: $e');
-      }
+    try {
+      await _signalRCubit.sendMessageToTopic(signalMsg, messageType: 0);
+    } catch (e) {
+      loggerObject.e('Failed to send SignalR whiteboard JSON message: $e');
     }
   }
 
@@ -354,13 +352,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
   }
 
   void _requestStateFromPeers() {
-    final whiteboardMsg = WhiteboardMessage(
-      action: WhiteboardAction.requestState,
-      metadata: {
-        'ownerId': userId,
-      },
-    );
-    _sendWhiteboardMessage(whiteboardMsg);
+    _sendWhiteboardMessage(WhiteboardMessage(action: .requestState, metadata: {'ownerId': userId}));
   }
 
   void addLocalPoint(
@@ -648,4 +640,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     _statusSubscription?.cancel();
     return super.close();
   }
+
+  @override
+  get mState => state;
 }

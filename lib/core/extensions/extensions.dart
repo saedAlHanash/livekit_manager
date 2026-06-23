@@ -31,169 +31,6 @@ import '../util/snack_bar_message.dart';
 import '../widgets/spinner_widget.dart';
 
 extension SplitByLength on String {
-  String get splitLongString {
-    if (length <= 800) return this;
-    return splitByLength(800).join('\n');
-  }
-
-  List<String> splitByLength(int chunkLength, {bool ignoreWhitespace = false}) {
-    assert(chunkLength > 0, 'Chunk length must be positive');
-
-    final chunks = <String>[];
-
-    for (var i = 0; i < length; i += chunkLength) {
-      final end = (i + chunkLength).clamp(0, length);
-      var chunk = substring(i, end);
-
-      if (ignoreWhitespace) {
-        chunk = chunk.replaceAll(RegExp(r'\s+'), '');
-      }
-      chunks.add(chunk);
-    }
-    return chunks;
-  }
-
-  bool get canSendToSearch {
-    if (isEmpty) false;
-
-    return split(' ').last.length > 2;
-  }
-
-  String fixPhone() {
-    if (startsWith('0')) return this;
-
-    return '0$this';
-  }
-
-  String get formatPrice => num.tryParse(this)?.formatPrice ?? this;
-
-  String get capitalizeFirst => isEmpty ? this : this[0].toUpperCase() + substring(1);
-
-  bool get isZero => (num.tryParse(this) ?? 0) == 0;
-
-  String? checkPhoneNumber(BuildContext context, String phone) {
-    if (phone.startsWith('00964') && phone.length > 11) return phone;
-    if (phone.length < 10) {
-      NoteMessage.showSnakeBar(context: context, message: S.of(context).wrongPhone);
-      return null;
-    } else if (phone.startsWith("0") && phone.length < 11) {
-      NoteMessage.showSnakeBar(context: context, message: S.of(context).wrongPhone);
-      return null;
-    }
-
-    if (phone.length > 10 && phone.startsWith("0")) phone = phone.substring(1);
-
-    phone = '00964$phone';
-
-    return phone;
-  }
-
-  String get removeSpace => replaceAll(' ', '');
-
-  String get removeDuplicates {
-    List<String> words = split(' ');
-    Set<String> uniqueWords = Set<String>.from(words);
-    List<String> uniqueList = uniqueWords.toList();
-    String output = uniqueList.join(' ');
-    return output;
-  }
-
-  num get tryParseOrZero => num.tryParse(this) ?? 0;
-
-
-
-  num? get tryParseOrNull => num.tryParse(this);
-
-  int? get tryParseOrNullInt => int.tryParse(this);
-
-  String? get validateEmpty {
-    if (isEmpty) {
-      return S().is_required;
-    } else {
-      return null;
-    }
-  }
-
-  String get decimalNumbersOnly {
-    final matches = RegExp(r'\d+([.,]\d+)?').allMatches(this);
-    return matches.map((m) => m.group(0)).join(' ');
-  }
-
-  String get toSnakeCase {
-    final regex = RegExp(r'(?<=[a-z])[A-Z]');
-    return replaceAllMapped(regex, (match) => '_${match.group(0)}').toLowerCase();
-  }
-
-  String get toSplitsSpaceCase {
-    final regex = RegExp(r'(?<=[a-z])[A-Z]');
-    return replaceAllMapped(regex, (match) => '_${match.group(0)}').toLowerCase().replaceAll('_', ' ');
-  }
-
-  String get toPascalCase {
-    final words = split('_');
-    return words.map((word) => word[0].toUpperCase() + word.substring(1)).join();
-  }
-
-  String get toCamelCase {
-    final words = split('_');
-    if (words.isEmpty) return '';
-    final capitalized = words.map((word) => word[0].toUpperCase() + word.substring(1)).join();
-    return capitalized[0].toLowerCase() + capitalized.substring(1);
-  }
-
-
-
-  Widget get copySymbol {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Clipboard.setData(ClipboardData(text: this));
-            ScaffoldMessenger.of(ctx!).showSnackBar(
-              SnackBar(content: Text(S().textCopiedToClipboard)),
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.white12,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0).r,
-            margin: EdgeInsets.symmetric(vertical: 3.0).r,
-            child: DrawableText(
-              text: this,
-              maxLength: 4,
-              drawablePadding: 5.0.w,
-              drawableEnd: ImageMultiType(
-                url: Icons.copy,
-                height: 15.0.r,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Color get gradeColor {
-    final upperCaseGrade = toUpperCase();
-    if (upperCaseGrade.contains('A')) {
-      return Colors.green;
-    } else if (upperCaseGrade.contains('B')) {
-      return Colors.blue;
-    } else if (upperCaseGrade.contains('C')) {
-      return Colors.yellow;
-    } else if (upperCaseGrade.contains('D')) {
-      return Colors.orange;
-    } else if (upperCaseGrade.contains('F')) {
-      return Colors.red;
-    } else {
-      // Return a default color or throw an error for unknown grades
-      return Colors.grey; // Or throw ArgumentError('Invalid grade: $this');
-    }
-  }
-
   String get firstCharacter {
     if (isEmpty) {
       return '';
@@ -404,7 +241,7 @@ extension FormatDuration on Duration {
 }
 
 extension ApiStatusCode on int {
-  bool get success => (this >= 200 && this <= 210);
+
 
   //
   // int get countDiv2 {
@@ -446,32 +283,6 @@ extension DateUtcHelper on DateTime {
     return year == date.year && month == date.month && day == date.day;
   }
 
-  String get formatDate => DateFormat('yyyy/MM/dd', 'en').format(this);
-
-  String get formatTime => DateFormat('h:mm a').format(this);
-
-  String get formatTimeShow => '${hour == 0 ? '00' : hour}:${minute == 0 ? '00' : minute}';
-
-  String get formatDateTime => '$formatDate $formatTime';
-
-  String get formatDateName => DateFormat('dd/$monthName/yyyy').format(this);
-
-  String get formatDateTime1 {
-    return DateFormat('h:mm a').format(this);
-  }
-
-  String get formatDateToRequest => DateFormat('yyyy-MM-dd', 'en').format(this);
-
-  DateTime addFromNow({int? year, int? month, int? day, int? hour, int? minute, int? second}) {
-    return DateTime(
-      this.year + (year ?? 0),
-      this.month + (month ?? 0),
-      this.day + (day ?? 0),
-      this.hour + (hour ?? 0),
-      this.minute + (minute ?? 0),
-      this.second + (second ?? 0),
-    );
-  }
 
   DateTime initialFromDateTime({required DateTime date, required TimeOfDay time}) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);

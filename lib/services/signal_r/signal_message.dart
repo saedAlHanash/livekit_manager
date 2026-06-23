@@ -23,7 +23,7 @@ class SignalMessage {
     return SignalMessage(
       event: SocketEvents.whiteboardAction,
       data: Data(
-        quizId: '',
+        // quizId: '',
         groupId: '',
         name: 'whiteboard',
         image: '',
@@ -41,14 +41,14 @@ class SignalMessage {
 
 class Data {
   Data({
-    required this.quizId,
+    // required this.quizId,
     required this.groupId,
     required this.tokens,
     required this.name,
     required this.image,
   });
 
-  final String quizId;
+  // final String quizId;
   final String groupId;
   final String name;
   final String image;
@@ -56,7 +56,7 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      quizId: json["quizId"] ?? "",
+      // quizId: json["quizId"] ?? "",
       groupId: json["groupId"] ?? "",
       name: json["name"] ?? "",
       image: json["image"] ?? "",
@@ -65,7 +65,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() => {
-    if (quizId.isNotEmpty) "quizId": quizId,
+    // if (quizId.isNotEmpty) "quizId": quizId,
     if (groupId.isNotEmpty) "groupId": groupId,
     if (name.isNotEmpty) "name": name,
     if (image.isNotEmpty) "image": image,

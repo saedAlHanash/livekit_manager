@@ -21,7 +21,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
 import 'package:logger/logger.dart';
 
 import '../../strings/enum_manager.dart';
@@ -90,7 +90,7 @@ void logRequest({
 void logResponse({required String url, required Response response, required ApiType type}) {
   var res = '';
   if (response.body.length > 800) {
-    res = response.body.splitLongString;
+    res = response.body.splitByLength1(800).join('\n');
   } else {
     res = response.body;
   }

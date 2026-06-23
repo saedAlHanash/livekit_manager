@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/whiteboard_standalone/data/models/whiteboard_message.dart';
