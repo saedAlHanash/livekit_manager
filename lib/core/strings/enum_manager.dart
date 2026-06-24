@@ -297,11 +297,9 @@ enum WhiteboardAction {
   drawPoint,
   finalizeStroke,
   undoStroke,
-  requestState,
-  sendState,
+  clearBoard,
+  setWhiteboardBackground,
   grantWhiteboard,
   revokeWhiteboard,
-  setWhiteboardBackground,
-  clearBoard,
 }
 enum MessageTypeEnum { string, bytes }

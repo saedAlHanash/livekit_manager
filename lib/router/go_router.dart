@@ -42,6 +42,7 @@ final goRouter = GoRouter(
         final userType = state.uri.queryParameters['userType'] ?? 'teacher';
         final token = state.uri.queryParameters['token'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
 
+          AppSharedPreference.setUserId(userId);
         if (token.isNotEmpty) {
           AppSharedPreference.cashToken(token);
         }
@@ -320,13 +321,13 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/whiteboard_standalone';
+  static const home = '/';
   static const homes = '/homes';
 
   static const splash = '/splash';
   static const mms = '/mms';
   static const group = '/group';
-  static const whiteboardStandalone = '/';
+  static const whiteboardStandalone = '/whiteboard_standalone';
 }
 
 //https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com

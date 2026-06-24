@@ -94,9 +94,10 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
   Offset _startOffset = Offset.zero;
   Offset _initialFocalPoint = Offset.zero;
 
-  // Configurable parameters for drawing smoothness and performance
-  static const int batchSize = 4; // Number of points to aggregate before broadcasting
+  static  int batchSize = 30; // Number of points to aggregate before broadcasting
   final List<Map<String, dynamic>> _pendingPoints = [];
+  double? _lastX;
+  double? _lastY;
 
   void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, WhiteboardStandaloneCubit cubit) {
     const double threshold = 0.03; // normalized distance threshold
@@ -186,6 +187,8 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                             final strokeId = _generateUuid();
                             _currentStrokeId = strokeId;
                             _pendingPoints.clear();
+                            _lastX = normX;
+                            _lastY = normY;
 
                             // Send first point immediately so it starts drawing instantly on students' screens
                             cubit.addLocalPoint(
@@ -211,6 +214,16 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
                           } else {
                             final strokeId = _currentStrokeId;
                             if (strokeId == null) return;
+
+                            if (_lastX != null && _lastY != null) {
+                              final dx = normX - _lastX!;
+                              final dy = normY - _lastY!;
+                              if (dx * dx + dy * dy < 0.000004) {
+                                return;
+                              }
+                            }
+                            _lastX = normX;
+                            _lastY = normY;
 
                             final timestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -497,15 +510,6 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
   }
 
   String _generateUuid() {
-    final random = Random();
-    final values = List<int>.generate(16, (i) => random.nextInt(256));
-    values[6] = (values[6] & 0x0f) | 0x40;
-    values[8] = (values[8] & 0x3f) | 0x80;
-    final buffer = StringBuffer();
-    for (var i = 0; i < 16; i++) {
-      if (i == 4 || i == 6 || i == 8 || i == 10) buffer.write('-');
-      buffer.write(values[i].toRadixString(16).padLeft(2, '0'));
-    }
-    return buffer.toString();
+    return Random().nextInt(2147483647).toString();
   }
 }

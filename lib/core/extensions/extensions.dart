@@ -37,8 +37,20 @@ extension SplitByLength on String {
     }
     return this[0];
   }
+Map<String, dynamic> get toJson {
+  try {
+    if (startsWith('[')) {
+      final convertString = '{"items": $this}';
+      final json = jsonDecode(convertString);
+      return json;
+    }
+    return jsonDecode(this);
+  } catch (e) {
+    loggerObject.e('Convert from String to json:/$this/ $e');
+    return jsonDecode('{}');
+  }
 }
-
+}
 extension StringHelper on String? {
   String get fixImageAvatar {
     if (isBlank || this == imagePath || this == Assets.imagesAvatar) {

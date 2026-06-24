@@ -18,6 +18,8 @@ import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
 import '../../../user/data/response/user_response.dart';
 import '../../data/request/setting_message.dart';
+import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
+import 'package:livekit_manager/features/room/data/request/student_metadata.dart';
 
 part 'room_state.dart';
 
@@ -170,16 +172,16 @@ class RoomCubit extends MCubit<RoomInitial> {
             _messageController.add(message);
 
             switch (message.action) {
-              case ManagerActions.achievement:
+              case .achievement:
                 SoundService.play(Assets.soundsNote);
                 return;
-              case ManagerActions.lowerHand:
+              case .lowerHand:
                 SoundService.play(Assets.soundsNote);
                 await deleteFromCache([e.participant?.identity ?? '']);
                 break;
-              case ManagerActions.raiseHand:
-              case ManagerActions.chosen:
-              case ManagerActions.message:
+              case .raiseHand:
+              case .chosen:
+              case .message:
                 SoundService.play(Assets.soundsNote);
                 await addOrUpdateToCache(message);
                 break;
@@ -400,7 +402,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     final message = utf8.encode(
       jsonEncode(
         LkMessage(
-          action: ManagerActions.chosen,
+          action: .chosen,
           metadata: {},
         ),
       ),
@@ -414,7 +416,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  Future<void> toggleWhiteboardPermission(String studentId, bool allowed) async {
+  Future<void> toggleWhiteboardPermission(String studentId, bool allowed, SignalRCubit signalRCubit) async {
     final updatedAllowed = Set<String>.from(state.whiteboardAllowedUsers);
     if (allowed) {
       updatedAllowed.add(studentId);
@@ -423,16 +425,8 @@ class RoomCubit extends MCubit<RoomInitial> {
     }
     emit(state.copyWith(whiteboardAllowedUsers: updatedAllowed, id: state.notifyIndex + 1));
 
-    final lkMsg = LkMessage(
-      action: allowed ? ManagerActions.grantWhiteboard : ManagerActions.revokeWhiteboard,
-      metadata: {
-        'studentId': studentId,
-      },
-    );
-    await state.result.localParticipant?.publishData(
-      lkMsg.toBytes,
-      reliable: true,
-    );
+    final meta = StudentMetadata(isWhiteboardAllowed: allowed);
+    await signalRCubit.updateMetadata(studentId, meta.toJsonString);
   }
 
   void changeLayoutMode(ParticipantsLayoutMode mode) {

@@ -10,6 +10,7 @@ class AppSharedPreference {
   static const _lang = '4';
   static const _screenType = '5';
   static const _user = 'user';
+  static const _userId = 'userId';
   static const _studentRecord = 'studentRecord';
   static const _resendTime = '8';
   static const String _keyUserType = 'userType';
@@ -31,6 +32,13 @@ class AppSharedPreference {
   }
 
   static String get getToken => prefs.getString(_token) ?? '';
+
+  static Future<void> setUserId(String? userId) async {
+    if (userId == null) return;
+    await prefs.setString(_userId, userId);
+  }
+
+  static String get getUserId => prefs.getString(_userId) ?? '';
 
   //endregion
 
