@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/bloc/whiteboard_standalone_cubit.dart';
+import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
+import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
 
 Color parseColor(String colorStr) {
   if (colorStr.isEmpty) return Colors.black;
@@ -71,21 +71,21 @@ class WhiteboardPainter extends CustomPainter {
   }
 }
 
-class WhiteboardStandaloneWidget extends StatefulWidget {
+class SharedWhiteboardWidget extends StatefulWidget {
   final String sessionId;
   final String userId;
 
-  const WhiteboardStandaloneWidget({
+  const SharedWhiteboardWidget({
     super.key,
     required this.sessionId,
     required this.userId,
   });
 
   @override
-  State<WhiteboardStandaloneWidget> createState() => _WhiteboardStandaloneWidgetState();
+  State<SharedWhiteboardWidget> createState() => _SharedWhiteboardWidgetState();
 }
 
-class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget> {
+class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
   String? _currentStrokeId;
   String _activeTool = 'pen'; // 'pen' or 'eraser', 'move'
   double _penWidth = 3.0; // 3.0, 6.0, 12.0
@@ -99,7 +99,7 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
   double? _lastX;
   double? _lastY;
 
-  void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, WhiteboardStandaloneCubit cubit) {
+  void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, SharedWhiteboardCubit cubit) {
     const double threshold = 0.03; // normalized distance threshold
     String? hitStrokeId;
 
@@ -121,8 +121,8 @@ class _WhiteboardStandaloneWidgetState extends State<WhiteboardStandaloneWidget>
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<WhiteboardStandaloneCubit>();
-    return BlocBuilder<WhiteboardStandaloneCubit, WhiteboardStandaloneState>(
+    final cubit = context.read<SharedWhiteboardCubit>();
+    return BlocBuilder<SharedWhiteboardCubit, SharedWhiteboardState>(
       builder: (context, state) {
         final allStrokes = <StrokeModel>[
           ...state.finalizedStrokes.values,

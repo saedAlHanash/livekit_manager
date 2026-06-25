@@ -4,22 +4,22 @@ import 'dart:typed_data';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/data/models/stroke_model.dart';
-import 'package:livekit_manager/features/whiteboard_standalone/data/models/whiteboard_message.dart';
+import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
+import 'package:livekit_manager/features/shared_whiteboard/data/models/whiteboard_message.dart';
 import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:m_cubit/m_cubit.dart';
 
-part 'whiteboard_standalone_state.dart';
+part 'shared_whiteboard_state.dart';
 
-class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
-  WhiteboardStandaloneCubit({
+class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
+  SharedWhiteboardCubit({
     required this.sessionId,
     required this.userId,
     required this.userName,
     required this.userType,
     required SignalRCubit signalRCubit,
   }) : _signalRCubit = signalRCubit,
-       super(WhiteboardStandaloneState.initial()) {
+       super(SharedWhiteboardState.initial()) {
     _init();
   }
 
@@ -85,36 +85,36 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
 
   void _processWhiteboardMessage(WhiteboardMessage msg) {
     switch (msg.action) {
-      case .drawPoint:
+      case WhiteboardAction.drawPoint:
         _handleIncomingLivePoint(msg);
         break;
-      case .finalizeStroke:
+      case WhiteboardAction.finalizeStroke:
         _handleIncomingFinalize(msg);
         break;
-      case .undoStroke:
+      case WhiteboardAction.undoStroke:
         _handleIncomingUndo(msg);
         break;
-      case .setWhiteboardBackground:
+      case WhiteboardAction.setWhiteboardBackground:
         _handleIncomingBackground(msg);
         break;
-      case .clearBoard:
+      case WhiteboardAction.clearBoard:
         _handleIncomingClearBoard(msg);
         break;
-      case .grantWhiteboard:
+      case WhiteboardAction.grantWhiteboard:
         _handleGrantWhiteboard(msg);
         break;
-      case .revokeWhiteboard:
+      case WhiteboardAction.revokeWhiteboard:
         _handleRevokeWhiteboard(msg);
         break;
     }
   }
 
   Future<void> _sendWhiteboardMessage(WhiteboardMessage lkMsg) async {
-    if (state.connectionState != .connected) return;
+    if (state.connectionState != SignalRStatus.connected) return;
 
     final points = lkMsg.metadata['points'] as List? ?? [];
     final ptsList = points.map((e) => Map<String, dynamic>.from(e)).toList();
-    if (ptsList.isEmpty && lkMsg.action == .drawPoint) {
+    if (ptsList.isEmpty && lkMsg.action == WhiteboardAction.drawPoint) {
       ptsList.add({
         'x': lkMsg.x,
         'y': lkMsg.y,
@@ -307,7 +307,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     emit(state.copyWith(liveStrokes: currentLive));
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .drawPoint,
+      action: WhiteboardAction.drawPoint,
       metadata: {
         'strokeId': strokeId,
         'ownerId': userId,
@@ -365,7 +365,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     String style = 'width:3.0',
   }) {
     final whiteboardMsg = WhiteboardMessage(
-      action: .drawPoint,
+      action: WhiteboardAction.drawPoint,
       metadata: {
         'strokeId': strokeId,
         'ownerId': userId,
@@ -391,7 +391,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     emit(state.copyWith(liveStrokes: currentLive, finalizedStrokes: currentFinalized));
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .finalizeStroke,
+      action: WhiteboardAction.finalizeStroke,
       metadata: {
         'strokeId': strokeId,
         'ownerId': userId,
@@ -417,7 +417,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     final latestStroke = ourActiveStrokes.first;
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .undoStroke,
+      action: WhiteboardAction.undoStroke,
       metadata: {
         'strokeId': latestStroke.strokeId,
       },
@@ -437,7 +437,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     emit(state.copyWith(liveStrokes: currentLive, finalizedStrokes: currentFinalized));
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .undoStroke,
+      action: WhiteboardAction.undoStroke,
       metadata: {
         'strokeId': strokeId,
       },
@@ -460,7 +460,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     );
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .clearBoard,
+      action: WhiteboardAction.clearBoard,
       metadata: {},
     );
     _sendWhiteboardMessage(whiteboardMsg);
@@ -495,7 +495,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
         );
 
         final whiteboardMsg = WhiteboardMessage(
-          action: .setWhiteboardBackground,
+          action: WhiteboardAction.setWhiteboardBackground,
           metadata: {
             'backgroundUrl': fileUrl,
             'backgroundScale': 1.0,
@@ -524,7 +524,7 @@ class WhiteboardStandaloneCubit extends MCubit<WhiteboardStandaloneState> {
     );
 
     final whiteboardMsg = WhiteboardMessage(
-      action: .setWhiteboardBackground,
+      action: WhiteboardAction.setWhiteboardBackground,
       metadata: {
         'backgroundUrl': state.backgroundUrl,
         'backgroundScale': scale,

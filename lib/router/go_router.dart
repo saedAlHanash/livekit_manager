@@ -24,17 +24,17 @@ import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
 import '../features/user/ui/pages/users_page.dart';
 
-import '../features/whiteboard_standalone/bloc/whiteboard_standalone_cubit.dart';
-import '../features/whiteboard_standalone/presentation/pages/whiteboard_standalone_page.dart';
+import '../features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
+import '../features/shared_whiteboard/ui/pages/shared_whiteboard_page.dart';
 import '../services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
   routes: [
-    //region whiteboard standalone
+    //region shared whiteboard
     GoRoute(
-      path: RouteName.whiteboardStandalone,
-      name: RouteName.whiteboardStandalone,
+      path: RouteName.sharedWhiteboard,
+      name: RouteName.sharedWhiteboard,
       builder: (context, state) {
         final lessonId = state.uri.queryParameters['lessonId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
         final userId = state.uri.queryParameters['userId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
@@ -54,7 +54,7 @@ final goRouter = GoRouter(
                 ..initialSignalR(lessonId, userId),
             ),
             BlocProvider(
-              create: (context) => WhiteboardStandaloneCubit(
+              create: (context) => SharedWhiteboardCubit(
                 sessionId: lessonId,
                 userId: userId,
                 userName: userName,
@@ -63,7 +63,7 @@ final goRouter = GoRouter(
               ),
             ),
           ],
-          child: const WhiteboardStandalonePage(),
+          child: const SharedWhiteboardPage(),
         );
       },
     ),
@@ -327,7 +327,7 @@ class RouteName {
   static const splash = '/splash';
   static const mms = '/mms';
   static const group = '/group';
-  static const whiteboardStandalone = '/whiteboard_standalone';
+  static const sharedWhiteboard = '/shared_whiteboard';
 }
 
 //https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com

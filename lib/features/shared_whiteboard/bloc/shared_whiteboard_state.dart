@@ -1,6 +1,6 @@
+part of 'shared_whiteboard_cubit.dart';
 
-part of 'whiteboard_standalone_cubit.dart';
-class WhiteboardStandaloneState {
+class SharedWhiteboardState {
   final Map<String, StrokeModel> finalizedStrokes;
   final Map<String, StrokeModel> liveStrokes;
   final String userColor;
@@ -13,7 +13,7 @@ class WhiteboardStandaloneState {
   final String error;
   final SignalRStatus connectionState;
 
-  WhiteboardStandaloneState({
+  SharedWhiteboardState({
     required this.finalizedStrokes,
     required this.liveStrokes,
     required this.userColor,
@@ -27,8 +27,8 @@ class WhiteboardStandaloneState {
     this.connectionState = SignalRStatus.notConnected,
   });
 
-  factory WhiteboardStandaloneState.initial({ bool isTeacher = true}) {
-    return WhiteboardStandaloneState(
+  factory SharedWhiteboardState.initial({bool isTeacher = true}) {
+    return SharedWhiteboardState(
       finalizedStrokes: {},
       liveStrokes: {},
       userColor: '#000000',
@@ -41,7 +41,7 @@ class WhiteboardStandaloneState {
     );
   }
 
-  WhiteboardStandaloneState copyWith({
+  SharedWhiteboardState copyWith({
     Map<String, StrokeModel>? finalizedStrokes,
     Map<String, StrokeModel>? liveStrokes,
     String? userColor,
@@ -54,7 +54,7 @@ class WhiteboardStandaloneState {
     String? error,
     SignalRStatus? connectionState,
   }) {
-    return WhiteboardStandaloneState(
+    return SharedWhiteboardState(
       finalizedStrokes: finalizedStrokes ?? this.finalizedStrokes,
       liveStrokes: liveStrokes ?? this.liveStrokes,
       userColor: userColor ?? this.userColor,
