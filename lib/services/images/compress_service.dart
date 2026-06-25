@@ -39,14 +39,14 @@ class CompressService {
         quality: quality,
         keepExif: true,
         autoCorrectionAngle: true,
-        format: CompressFormat.webp,
+        format: CompressFormat.jpeg,
       );
 
       if (compressedBytes.isEmpty) {
         return CompressedImage(bytes: bytes, extension: _normalizeExtension(originalExtension));
       }
 
-      return CompressedImage(bytes: compressedBytes, extension: 'webp');
+      return CompressedImage(bytes: compressedBytes, extension: 'jpg');
     } catch (_) {
       return CompressedImage(bytes: bytes, extension: _normalizeExtension(originalExtension));
     }
