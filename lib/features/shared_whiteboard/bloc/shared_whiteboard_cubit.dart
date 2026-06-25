@@ -6,6 +6,7 @@ import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/whiteboard_message.dart';
+import 'package:livekit_manager/services/images/compress_service.dart';
 import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:m_cubit/m_cubit.dart';
 
@@ -471,10 +472,21 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
   Future<void> uploadAndSetBackground(Uint8List fileBytes, String extension) async {
     emit(state.copyWith(isLoading: true));
     try {
+      final compressService = CompressService();
+      if (!compressService.isAllowedImage(extension, fileBytes)) {
+        emit(state.copyWith(error: 'Only image files are allowed'));
+        return;
+      }
+
+      final compressedImage = await compressService.compressImage(
+        fileBytes,
+        originalExtension: extension,
+      );
+
       final uploadFileObj = UploadFile(
-        fileBytes: fileBytes,
+        fileBytes: compressedImage.bytes,
         nameField: 'File',
-        type: extension,
+        type: compressedImage.extension,
       );
       final response = await APIService().uploadMultiPart(
         url: 'FileManager/Upload',

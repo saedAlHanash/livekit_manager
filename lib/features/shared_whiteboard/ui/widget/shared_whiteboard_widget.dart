@@ -446,7 +446,8 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                                 tooltip: 'إضافة خلفية',
                                 onPressed: () async {
                                   final result = await FilePicker.platform.pickFiles(
-                                    type: FileType.image,
+                                    type: FileType.custom,
+                                    allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
                                     allowMultiple: false,
                                   );
                                   if (result != null && result.files.first.bytes != null) {
