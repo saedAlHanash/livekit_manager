@@ -22,9 +22,9 @@ dependencies:
   image_multi_type: ^1.0.5
 
   m_cubit:
-    path: ../../../packages/m_cubit
-#    git:
-#      url: https://github.com/saedAlHanash/m_cubit
+#    path: ../../../packages/m_cubit
+    git:
+      url: https://github.com/saedAlHanash/m_cubit
 
   flutter_bloc: ^9.1.1
   logger: ^2.7.0
