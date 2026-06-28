@@ -128,7 +128,7 @@ enum LkUserType {
   bool get isUser => this == LkUserType.user;
 }
 
-enum PermissionType {
+enum ParticipantPermissionType {
   speak,
   listen,
   both
@@ -136,19 +136,19 @@ enum PermissionType {
 
   Map<String, dynamic> revokePermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
-      PermissionType.speak => {
+      ParticipantPermissionType.speak => {
         "canSubscribe": participant.permissions.canSubscribe,
         "canPublish": false,
         //----------
         "canPublishData": true,
       },
-      PermissionType.listen => {
+      ParticipantPermissionType.listen => {
         "canSubscribe": false,
         "canPublish": participant.permissions.canPublish,
         //----------
         "canPublishData": true,
       },
-      PermissionType.both => {
+      ParticipantPermissionType.both => {
         "canSubscribe": false,
         "canPublish": false,
         //----------
@@ -160,19 +160,19 @@ enum PermissionType {
 
   Map<String, dynamic> grantPermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
-      PermissionType.speak => {
+      ParticipantPermissionType.speak => {
         "canSubscribe": participant.permissions.canSubscribe,
         "canPublish": true,
         //----------
         "canPublishData": true,
       },
-      PermissionType.listen => {
+      ParticipantPermissionType.listen => {
         "canSubscribe": true,
         "canPublish": participant.permissions.canPublish,
         //----------
         "canPublishData": true,
       },
-      PermissionType.both => {
+      ParticipantPermissionType.both => {
         "canSubscribe": true,
         "canPublish": true,
         //----------
@@ -232,18 +232,6 @@ enum SignalRStatus {
 
 enum SignalStudentStatus { nun, add, remove }
 
-enum SignalMessageType {
-  notification,
-  closedExam,
-  startExam
-  ;
-
-  bool get isNotification => this == notification;
-
-  bool get isStartExam => this == startExam;
-
-  bool get isClosedExam => this == closedExam;
-}
 
 enum PageType {
   manager,
@@ -270,6 +258,8 @@ enum SocketEvents {
   studentLeftActivityGroup,
   giveGroupPermission,
   studentSubmittedQuiz,
+  openWhiteboard,
+  closeWhiteboard,
   whiteboardAction,
   ;
 

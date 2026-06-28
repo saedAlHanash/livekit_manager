@@ -425,8 +425,8 @@ class RoomCubit extends MCubit<RoomInitial> {
     }
     emit(state.copyWith(whiteboardAllowedUsers: updatedAllowed, id: state.notifyIndex + 1));
 
-    final meta = StudentMetadata(isWhiteboardAllowed: allowed);
-    await signalRCubit.updateMetadata(studentId, meta.toJsonString);
+    final metadataString = StudentMetadata.toMetadataString(studentId, allowed);
+    await signalRCubit.updateMetadata(studentId, metadataString);
   }
 
   void changeLayoutMode(ParticipantsLayoutMode mode) {

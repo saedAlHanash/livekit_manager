@@ -36,7 +36,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
   void _init() {
     emit(state.copyWith(userColor: _determineColor()));
 
-    _loadCachedStrokes();
+    _loadCachedData();
 
     _listeners();
   }
@@ -63,24 +63,56 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     return '#${(colorVal & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
   }
 
-  Future<void> _loadCachedStrokes() async {
-    final cachedData = await CachingService.getFromBucket(key: sessionId) ?? '[]';
-    final List list = jsonDecode(cachedData);
+  Future<void> _loadCachedData() async {
+    final cachedData = await CachingService.getFromBucket(key: sessionId);
+    if (cachedData == null) return;
 
-    final finalizedStrokes = Map.fromEntries(
-      list
-          .map((item) => StrokeModel.fromJson(Map<String, dynamic>.from(item)))
-          .where((stroke) => stroke.status == 'active')
-          .map((stroke) => MapEntry(stroke.strokeId, stroke)),
-    );
+    try {
+      final decoded = jsonDecode(cachedData);
+      if (decoded is Map) {
+        final List strokesList = decoded['strokes'] ?? [];
+        final finalizedStrokes = Map.fromEntries(
+          strokesList
+              .map((item) => StrokeModel.fromJson(Map<String, dynamic>.from(item)))
+              .where((stroke) => stroke.status == 'active')
+              .map((stroke) => MapEntry(stroke.strokeId, stroke)),
+        );
 
-    emit(state.copyWith(finalizedStrokes: finalizedStrokes));
+        final bg = decoded['background'] ?? {};
+        emit(state.copyWith(
+          finalizedStrokes: finalizedStrokes,
+          backgroundUrl: bg['url'] ?? '',
+          backgroundScale: (bg['scale'] as num?)?.toDouble() ?? 1.0,
+          backgroundX: (bg['x'] as num?)?.toDouble() ?? 0.0,
+          backgroundY: (bg['y'] as num?)?.toDouble() ?? 0.0,
+        ));
+      } else if (decoded is List) {
+        final finalizedStrokes = Map.fromEntries(
+          decoded
+              .map((item) => StrokeModel.fromJson(Map<String, dynamic>.from(item)))
+              .where((stroke) => stroke.status == 'active')
+              .map((stroke) => MapEntry(stroke.strokeId, stroke)),
+        );
+        emit(state.copyWith(finalizedStrokes: finalizedStrokes));
+      }
+    } catch (e) {
+      loggerObject.e('Error loading cached whiteboard data: $e');
+    }
   }
 
-  Future<void> _saveToHive() async {
+  Future<void> _saveToCache() async {
+    final data = {
+      'strokes': state.finalizedStrokes.values.map((s) => s.toJson()).toList(),
+      'background': {
+        'url': state.backgroundUrl,
+        'scale': state.backgroundScale,
+        'x': state.backgroundX,
+        'y': state.backgroundY,
+      },
+    };
     CachingService.addInBucket(
       key: sessionId,
-      jsonEncode: jsonEncode(state.finalizedStrokes.values.map((s) => s.toJson()).toList()),
+      jsonEncode: jsonEncode(data),
     );
   }
 
@@ -222,7 +254,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
       ),
     );
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   Future<void> _handleIncomingUndo(WhiteboardMessage msg) async {
@@ -237,7 +269,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
       ),
     );
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   void _handleIncomingBackground(WhiteboardMessage msg) {
@@ -253,6 +285,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
         backgroundY: bgY,
       ),
     );
+    _saveToCache();
   }
 
   void _handleIncomingClearBoard(WhiteboardMessage msg) {
@@ -266,7 +299,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
         backgroundY: 0.0,
       ),
     );
-    _saveToHive();
+    _saveToCache();
   }
 
 
@@ -404,7 +437,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     );
     _sendWhiteboardMessage(whiteboardMsg);
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   Future<void> undo() async {
@@ -429,7 +462,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     final currentFinalized = Map<String, StrokeModel>.from(state.finalizedStrokes)..remove(latestStroke.strokeId);
     emit(state.copyWith(liveStrokes: currentLive, finalizedStrokes: currentFinalized));
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   Future<void> deleteStroke(String strokeId) async {
@@ -445,7 +478,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     );
     _sendWhiteboardMessage(whiteboardMsg);
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   Future<void> clearAllBoard() async {
@@ -466,7 +499,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     );
     _sendWhiteboardMessage(whiteboardMsg);
 
-    await _saveToHive();
+    await _saveToCache();
   }
 
   Future<void> uploadAndSetBackground(Uint8List fileBytes, String extension) async {
@@ -516,6 +549,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
           },
         );
         _sendWhiteboardMessage(whiteboardMsg);
+        await _saveToCache();
       } else {
         emit(state.copyWith(error: 'Failed to upload image: ${response.reasonPhrase}'));
       }
@@ -545,6 +579,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
       },
     );
     _sendWhiteboardMessage(whiteboardMsg);
+    _saveToCache();
   }
 
   void _handleGrantWhiteboard(WhiteboardMessage msg) {

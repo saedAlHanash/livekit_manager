@@ -155,7 +155,7 @@ class MMSUserControlCubit extends MCubit<MMSUserControlInitial> {
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> revoke(Participant participant, PermissionType type) async {
+  Future<void> revoke(Participant participant, ParticipantPermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',
@@ -170,7 +170,7 @@ class MMSUserControlCubit extends MCubit<MMSUserControlInitial> {
     emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
   }
 
-  Future<void> grant(Participant participant, PermissionType type) async {
+  Future<void> grant(Participant participant, ParticipantPermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
     final result = await APIService().callApi(
       url: 'Index/UpdateParticipant',

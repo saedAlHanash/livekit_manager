@@ -1,30 +1,32 @@
 import 'dart:convert';
 
 class StudentMetadata {
-  final bool isWhiteboardAllowed;
+  final String userId;
+  final bool canDrawing;
 
   StudentMetadata({
-    required this.isWhiteboardAllowed,
+    required this.userId,
+    required this.canDrawing,
   });
 
   factory StudentMetadata.fromJson(Map<String, dynamic> json) {
     return StudentMetadata(
-      isWhiteboardAllowed: json['isWhiteboardAllowed'] ?? false,
+      userId: json['userId'] ?? '',
+      canDrawing: json['canDrawing'] ?? false,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'isWhiteboardAllowed': isWhiteboardAllowed,
+    'userId': userId,
+    'canDrawing': canDrawing,
   };
 
-  String get toJsonString => jsonEncode(toJson());
-
-  factory StudentMetadata.fromJsonString(String jsonStr) {
-    try {
-      final Map<String, dynamic> decoded = jsonDecode(jsonStr);
-      return StudentMetadata.fromJson(decoded);
-    } catch (_) {
-      return StudentMetadata(isWhiteboardAllowed: false);
-    }
+  static String toMetadataString(String userId, bool canDrawing) {
+    return jsonEncode([
+      {
+        'userId': userId,
+        'canDrawing': canDrawing,
+      }
+    ]);
   }
 }

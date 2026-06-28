@@ -94,19 +94,19 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
   Offset _startOffset = Offset.zero;
   Offset _initialFocalPoint = Offset.zero;
 
-  static  int batchSize = 30; // Number of points to aggregate before broadcasting
+  int _batchSize = 16; // Number of points to aggregate before broadcasting
+  double _threshold = 0.03; // normalized distance threshold
   final List<Map<String, dynamic>> _pendingPoints = [];
   double? _lastX;
   double? _lastY;
 
   void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, SharedWhiteboardCubit cubit) {
-    const double threshold = 0.03; // normalized distance threshold
     String? hitStrokeId;
 
     for (final stroke in strokes) {
       for (final pt in stroke.points) {
         final dist = sqrt(pow(pt.x - normX, 2) + pow(pt.y - normY, 2));
-        if (dist < threshold) {
+        if (dist < _threshold) {
           hitStrokeId = stroke.strokeId;
           break;
         }
@@ -245,7 +245,7 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                             });
 
                             // 3. Send if batch size is reached
-                            if (_pendingPoints.length >= batchSize) {
+                            if (_pendingPoints.length >= _batchSize) {
                               cubit.broadcastPointsBatch(
                                 strokeId,
                                 state.userColor,
@@ -463,6 +463,11 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                                 onPressed: () => cubit.clearAllBoard(),
                               ),
                               const SizedBox(width: 4),
+                              IconButton(
+                                icon: const Icon(Icons.settings, color: Colors.blueGrey),
+                                tooltip: 'إعدادات اللوحة',
+                                onPressed: () => _showSettingsDialog(context),
+                              ),
                             ],
                             IconButton(
                               icon: const Icon(Icons.undo, color: Colors.black87),
@@ -476,6 +481,45 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                   ),
                 ),
                 if (state.isLoading) const Center(child: CircularProgressIndicator()),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showSettingsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text('إعدادات لوح الرسم'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('حجم التخزين المؤقت لنقاط الخط (Buffer Size): $_batchSize'),
+                  Slider(
+                    value: _batchSize.toDouble(),
+                    min: 5,
+                    max: 50,
+                    divisions: 45,
+                    onChanged: (v) {
+                      setDialogState(() {
+                        _batchSize = v.round();
+                      });
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('موافق'),
+                ),
               ],
             );
           },

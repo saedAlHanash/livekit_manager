@@ -135,9 +135,9 @@ class _ControllersDynamicState extends State<ControllersDynamic> {
       ),
       onTap: () {
         if (participant.permissions.isSilence) {
-          context.read<UserControlCubit>().grant(participant, PermissionType.speak);
+          context.read<UserControlCubit>().grant(participant, ParticipantPermissionType.speak);
         } else {
-          context.read<UserControlCubit>().revoke(participant, PermissionType.speak);
+          context.read<UserControlCubit>().revoke(participant, ParticipantPermissionType.speak);
         }
       },
     );
