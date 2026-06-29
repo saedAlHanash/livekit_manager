@@ -321,13 +321,13 @@ class RouteName {
   static const user = '/user';
   static const users = '/users';
 
-  static const home = '/';
+  static const home = '/shared_whiteboard';
   static const homes = '/homes';
 
   static const splash = '/splash';
   static const mms = '/mms';
   static const group = '/group';
-  static const sharedWhiteboard = '/shared_whiteboard';
+  static const sharedWhiteboard = '/';
 }
 
 //https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com
