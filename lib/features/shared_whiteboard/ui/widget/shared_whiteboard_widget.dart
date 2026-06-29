@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_multi_type/image_multi_type.dart';
 
 import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
@@ -31,9 +32,7 @@ class WhiteboardPainter extends CustomPainter {
 
       double strokeWidth = 3.0;
       if (stroke.style.startsWith('width:')) {
-        strokeWidth = double.tryParse(stroke.style
-            .split(':')
-            .last) ?? 3.0;
+        strokeWidth = double.tryParse(stroke.style.split(':').last) ?? 3.0;
       } else if (stroke.style == 'eraser') {
         strokeWidth = 20.0;
       }
@@ -102,7 +101,6 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
   double? _lastX;
   double? _lastY;
 
-
   void _eraseNearbyStroke(double normX, double normY, List<StrokeModel> strokes, SharedWhiteboardCubit cubit) {
     String? hitStrokeId;
 
@@ -155,10 +153,10 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                     final canvasWidth = constraints.maxWidth;
                     final canvasHeight = constraints.maxHeight;
 
-                  return Stack(
-                    children: [
-                      // Whiteboard canvas container (completely borderless!)
-                      IgnorePointer(
+                    return Stack(
+                      children: [
+                        // Whiteboard canvas container (completely borderless!)
+                        IgnorePointer(
                           ignoring: !state.hasWritePermission && _activeTool != 'move',
                           child: Listener(
                             onPointerDown: (event) {
@@ -277,25 +275,19 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                               child: Stack(
                                 children: [
                                   Transform(
-                                    transform: Matrix4.translationValues(
-                                        state.backgroundX * canvasWidth,
-                                        state.backgroundY * canvasHeight,
-                                        0.0) *
-                                        Matrix4.diagonal3Values(
-                                            state.backgroundScale, state.backgroundScale, 1.0),
+                                    transform:
+                                        Matrix4.translationValues(
+                                          state.backgroundX * canvasWidth,
+                                          state.backgroundY * canvasHeight,
+                                          0.0,
+                                        ) *
+                                        Matrix4.diagonal3Values(state.backgroundScale, state.backgroundScale, 1.0),
                                     alignment: Alignment.topLeft,
                                     child: Stack(
                                       children: [
                                         if (state.backgroundUrl.isNotEmpty)
                                           Positioned.fill(
-                                            child: Image.network(
-                                              state.backgroundUrl,
-                                              fit: BoxFit.contain,
-                                              errorBuilder: (context, error, stackTrace) =>
-                                              const Center(
-                                                child: Icon(Icons.broken_image, color: Colors.grey),
-                                              ),
-                                            ),
+                                            child: ImageMultiType(url: state.backgroundUrl, fit: BoxFit.contain),
                                           ),
                                         Positioned.fill(
                                           child: CustomPaint(
@@ -311,191 +303,192 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                           ),
                         ),
 
-                      // 60px bottom spacer so the toolbar doesn't overlap the canvas
-                      const Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: SizedBox(height: 60),
-                      ),
-
-
-                      // Floating toolbar overlay
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(30),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.15),
-                                  blurRadius: 15,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
-                              border: Border.all(color: Colors.grey.shade200),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // Connection Indicator
-                                Container(
-                                  width: 10,
-                                  height: 10,
-                                  margin: const EdgeInsets.only(right: 8),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: state.connectionState.getColor,
-                                  ),
-                                ),
-                                if (state.hasWritePermission) ...[
-                                  IconButton(
-                                    icon: Icon(
-                                      _activeTool == 'pen' ? Icons.brush : Icons.brush_outlined,
-                                      color: _activeTool == 'pen' ? parseColor(state.userColor) : Colors.grey,
-                                    ),
-                                    tooltip: 'القلم',
-                                    onPressed: () {
-                                      setState(() {
-                                        _activeTool = 'pen';
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(width: 4),
-                                  IconButton(
-                                    icon: Icon(
-                                      _activeTool == 'eraser' ? Icons.cleaning_services : Icons.cleaning_services_outlined,
-                                      color: _activeTool == 'eraser' ? Colors.blue : Colors.grey,
-                                    ),
-                                    tooltip: 'الممحاة',
-                                    onPressed: () {
-                                      setState(() {
-                                        _activeTool = 'eraser';
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(width: 4),
-                                  IconButton(
-                                    icon: Icon(
-                                      _activeTool == 'move' ? Icons.open_with : Icons.open_with_outlined,
-                                      color: _activeTool == 'move' ? Colors.orange : Colors.grey,
-                                    ),
-                                    tooltip: 'التحريك والتكبير',
-                                    onPressed: () {
-                                      setState(() {
-                                        _activeTool = 'move';
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(width: 8),
-                                  if (_activeTool == 'move') ...[
-                                    IconButton(
-                                      icon: const Icon(Icons.zoom_in, color: Colors.indigo),
-                                      tooltip: 'تكبير',
-                                      onPressed: () {
-                                        final newScale = (state.backgroundScale + 0.25).clamp(0.5, 8.0);
-                                        cubit.updateBackgroundTransform(newScale, state.backgroundX, state.backgroundY);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.zoom_out, color: Colors.indigo),
-                                      tooltip: 'تصغير',
-                                      onPressed: () {
-                                        final newScale = (state.backgroundScale - 0.25).clamp(0.5, 8.0);
-                                        cubit.updateBackgroundTransform(newScale, state.backgroundX, state.backgroundY);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.restart_alt, color: Colors.red),
-                                      tooltip: 'إعادة ضبط العرض',
-                                      onPressed: () {
-                                        cubit.updateBackgroundTransform(1.0, 0.0, 0.0);
-                                      },
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      height: 24,
-                                      width: 1,
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    const SizedBox(width: 8),
-                                  ],
-                                  Container(
-                                    height: 24,
-                                    width: 1,
-                                    color: Colors.grey.shade300,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  if (_activeTool == 'pen') ...[
-                                    _buildThicknessButton(3.0, 'نحيف'),
-                                    _buildThicknessButton(6.0, 'متوسط'),
-                                    _buildThicknessButton(12.0, 'عريض'),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      height: 24,
-                                      width: 1,
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    const SizedBox(width: 8),
-                                  ],
-                                  // Only show background and clear actions for managers/teachers
-                                  if (cubit.userType.toLowerCase() == 'teacher' ||
-                                      cubit.userType.toLowerCase() == 'manager') ...[
-                                    IconButton(
-                                      icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
-                                      tooltip: 'إضافة خلفية',
-                                      onPressed: () async {
-                                        final result = await FilePicker.platform.pickFiles(
-                                          type: FileType.custom,
-                                          allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
-                                          allowMultiple: false,
-                                        );
-                                        if (result != null && result.files.first.bytes != null) {
-                                          final file = result.files.first;
-                                          cubit.uploadAndSetBackground(file.bytes!, file.extension ?? 'jpg');
-                                        }
-                                      },
-                                    ),
-                                    const SizedBox(width: 4),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete_sweep, color: Colors.redAccent),
-                                      tooltip: 'مسح اللوحة',
-                                      onPressed: () => cubit.clearAllBoard(),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    IconButton(
-                                      icon: const Icon(Icons.settings, color: Colors.blueGrey),
-                                      tooltip: 'إعدادات اللوحة',
-                                      onPressed: () => _showSettingsDialog(context),
-                                    ),
-                                  ],
-                                  IconButton(
-                                    icon: const Icon(Icons.undo, color: Colors.black87),
-                                    tooltip: 'تراجع',
-                                    onPressed: () => cubit.undo(),
+                        // Floating toolbar overlay
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.15),
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 5),
                                   ),
                                 ],
-                              ],
+                                border: Border.all(color: Colors.grey.shade200),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Connection Indicator
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    margin: const EdgeInsets.only(right: 8),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: state.connectionState.getColor,
+                                    ),
+                                  ),
+                                  if (state.hasWritePermission) ...[
+                                    IconButton(
+                                      icon: Icon(
+                                        _activeTool == 'pen' ? Icons.brush : Icons.brush_outlined,
+                                        color: _activeTool == 'pen' ? parseColor(state.userColor) : Colors.grey,
+                                      ),
+                                      tooltip: 'القلم',
+                                      onPressed: () {
+                                        setState(() {
+                                          _activeTool = 'pen';
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(width: 4),
+                                    IconButton(
+                                      icon: Icon(
+                                        _activeTool == 'eraser'
+                                            ? Icons.cleaning_services
+                                            : Icons.cleaning_services_outlined,
+                                        color: _activeTool == 'eraser' ? Colors.blue : Colors.grey,
+                                      ),
+                                      tooltip: 'الممحاة',
+                                      onPressed: () {
+                                        setState(() {
+                                          _activeTool = 'eraser';
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(width: 4),
+                                    IconButton(
+                                      icon: Icon(
+                                        _activeTool == 'move' ? Icons.open_with : Icons.open_with_outlined,
+                                        color: _activeTool == 'move' ? Colors.orange : Colors.grey,
+                                      ),
+                                      tooltip: 'التحريك والتكبير',
+                                      onPressed: () {
+                                        setState(() {
+                                          _activeTool = 'move';
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(width: 8),
+                                    if (_activeTool == 'move') ...[
+                                      IconButton(
+                                        icon: const Icon(Icons.zoom_in, color: Colors.indigo),
+                                        tooltip: 'تكبير',
+                                        onPressed: () {
+                                          final newScale = (state.backgroundScale + 0.25).clamp(0.5, 8.0);
+                                          cubit.updateBackgroundTransform(
+                                            newScale,
+                                            state.backgroundX,
+                                            state.backgroundY,
+                                          );
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.zoom_out, color: Colors.indigo),
+                                        tooltip: 'تصغير',
+                                        onPressed: () {
+                                          final newScale = (state.backgroundScale - 0.25).clamp(0.5, 8.0);
+                                          cubit.updateBackgroundTransform(
+                                            newScale,
+                                            state.backgroundX,
+                                            state.backgroundY,
+                                          );
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.restart_alt, color: Colors.red),
+                                        tooltip: 'إعادة ضبط العرض',
+                                        onPressed: () {
+                                          cubit.updateBackgroundTransform(1.0, 0.0, 0.0);
+                                        },
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        height: 24,
+                                        width: 1,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                    Container(
+                                      height: 24,
+                                      width: 1,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    if (_activeTool == 'pen') ...[
+                                      _buildThicknessButton(3.0, 'نحيف'),
+                                      _buildThicknessButton(6.0, 'متوسط'),
+                                      _buildThicknessButton(12.0, 'عريض'),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        height: 24,
+                                        width: 1,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ],
+                                    // Only show background and clear actions for managers/teachers
+                                    if (cubit.userType.toLowerCase() == 'teacher' ||
+                                        cubit.userType.toLowerCase() == 'manager') ...[
+                                      IconButton(
+                                        icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
+                                        tooltip: 'إضافة خلفية',
+                                        onPressed: () async {
+                                          final result = await FilePicker.platform.pickFiles(
+                                            type: FileType.custom,
+                                            allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
+                                            allowMultiple: false,
+                                          );
+                                          if (result != null && result.files.first.bytes != null) {
+                                            final file = result.files.first;
+                                            cubit.uploadAndSetBackground(file.bytes!, file.extension ?? 'jpg');
+                                          }
+                                        },
+                                      ),
+                                      const SizedBox(width: 4),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete_sweep, color: Colors.redAccent),
+                                        tooltip: 'مسح اللوحة',
+                                        onPressed: () => cubit.clearAllBoard(),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      IconButton(
+                                        icon: const Icon(Icons.settings, color: Colors.blueGrey),
+                                        tooltip: 'إعدادات اللوحة',
+                                        onPressed: () => _showSettingsDialog(context),
+                                      ),
+                                    ],
+                                    IconButton(
+                                      icon: const Icon(Icons.undo, color: Colors.black87),
+                                      tooltip: 'تراجع',
+                                      onPressed: () => cubit.undo(),
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      if (state.isLoading) const Center(child: CircularProgressIndicator()),
-                    ],
-                  );
-                },
+                        if (state.isLoading) const Center(child: CircularProgressIndicator()),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
   }
 
   void _showSettingsDialog(BuildContext context) {
