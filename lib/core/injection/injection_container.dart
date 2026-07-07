@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:livekit_manager/core/api_manager/livekit_token_service.dart';
+import 'package:livekit_manager/core/api_manager/livekit_twirp_client.dart';
 import 'package:livekit_manager/features/home/bloc/home_cubit/home_cubit.dart';
 import 'package:livekit_manager/features/home/bloc/homes_cubit/homes_cubit.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
@@ -9,8 +11,7 @@ import 'package:livekit_manager/features/user/bloc/user_cubit/user_cubit.dart';
 import 'package:livekit_manager/features/user/bloc/users_cubit/users_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../features/mms/bloc/room_cubit/room_cubit.dart';
-import '../../features/mms/bloc/user_control_cubit/user_control_cubit.dart';
+
 import '../../features/room/bloc/user_control_cubit/user_control_cubit.dart';
 
 final sl = GetIt.instance;
@@ -23,14 +24,13 @@ Future<void> init() async {
 
   //region room
   sl.registerFactory(() => RoomCubit());
-  sl.registerFactory(() => MMSRoomCubit());
+
   sl.registerFactory(() => UserControlCubit());
   //endregion
 
   //region user
   sl.registerFactory(() => UserCubit());
   sl.registerFactory(() => UsersCubit());
-  sl.registerFactory(() => MMSUserControlCubit());
   //endregion
 
   //region home
@@ -41,6 +41,8 @@ Future<void> init() async {
   //region Core
 
   sl.registerLazySingleton(() => GlobalKey<NavigatorState>());
+  sl.registerLazySingleton(() => LiveKitTwirpClient());
+  sl.registerLazySingleton(() => LiveKitTokenService());
 
   //endregion
 

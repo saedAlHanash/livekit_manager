@@ -45,9 +45,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionTimeOut": MessageLookupByLibrary.simpleMessage(
       "Connection timed out",
     ),
+    "copyCode": MessageLookupByLibrary.simpleMessage("Copy Code"),
     "courseRegistrationDetails": MessageLookupByLibrary.simpleMessage(
       "Course Registration Details",
     ),
+    "createSession": MessageLookupByLibrary.simpleMessage("Create Session"),
     "day": MessageLookupByLibrary.simpleMessage("day"),
     "deafblinding": MessageLookupByLibrary.simpleMessage("Deaf-blinding"),
     "december": MessageLookupByLibrary.simpleMessage("december"),
@@ -127,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sessionEndedThankYou": MessageLookupByLibrary.simpleMessage(
       "Session ended, thank you",
     ),
+    "shareCode": MessageLookupByLibrary.simpleMessage("Share Code"),
     "sharedContent": MessageLookupByLibrary.simpleMessage("Shared content"),
     "showCorrectionScale": MessageLookupByLibrary.simpleMessage(
       "Show correction scale",

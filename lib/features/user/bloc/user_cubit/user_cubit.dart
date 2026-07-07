@@ -21,6 +21,7 @@ class UserCubit extends MCubit<UserInitial> {
   String get filter => state.filter;
 
   Future<void> getData({bool newData = false, String? userId}) async {
+    return;
     emit(state.copyWith(request: userId));
 
     await getDataAbstract(

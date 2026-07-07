@@ -7,6 +7,7 @@ class GetUrl {
 }
 
 class PostUrl {
+  // ── IMS backend (ims-be.coretech-mena.com) ──
   static const settings = 'Room/GetAll';
   static const createSetting = 'Room/Add';
   static const rooms = 'Room/GetAll';
@@ -15,32 +16,7 @@ class PostUrl {
   static const createUser = 'user/Add';
   static const homes = 'home/GetAll';
   static const createHome = 'home/Add';
-
-  static const suspend = 'Index/Suspend';
-
-  static const resume = 'Index/Resume';
-
-  static const suspendAll = 'Index/SuspendAll';
-
-  static const resumeAll = 'Index/ResumeAll';
-
-  static const allowScreenShare = 'Index/AllowScreenShare';
-
-  static const stopScreenShare = 'Index/StopScreenShare';
-
-  static const allowCamera = 'Index/AllowCamera';
-
-  static const stopCamera = 'Index/StopCamera';
-
-  static const allowAudio = 'Index/AllowAudio';
-
-  static const stopAudio = 'Index/StopAudio';
-
-  static const kick = 'Index/Kick';
-
-  static const sendMessage = 'Index/SendData';
-
-  static const updateRoomMeta = 'Index/UpdateRoomMetaData';
+  // ── LiveKit Twirp (via LiveKitTwirpClient) — no URL constants needed ──
 }
 
 class PutUrl {
@@ -64,17 +40,16 @@ class PatchUrl {
 }
 
 const additionalConst = '/api/v1/';
-const lkAdditional = '/api/v1/';
 
+// ── LiveKit WebSocket URLs (used by livekit_client SDK) ──
+// These mirror LiveKitConfig.wssUrl — kept here for legacy SDK usage.
 const wsLocalUrl = 'ws://192.168.1.69:7880';
 const wsLiveTest = 'ws://87.106.161.145:7880';
 const wsLiveUrl = 'wss://coretik.coretech-mena.com';
-const lkUrl = 'coretik-be.coretech-mena.com';
 
+// ── IMS backend ──
 const localUrl = '192.168.1.69:5002';
 const liveUrl = 'ims-be.coretech-mena.com';
-var mmsLkManageUrl = 'coretik-be.coretech-mena.com';
-const imsLkManageUrl = 'coretik-be.coretech-mena.com';
 
 String get baseUrl {
   // return localUrl;

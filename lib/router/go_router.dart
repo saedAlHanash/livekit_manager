@@ -9,10 +9,10 @@ import '../core/app/app_widget.dart';
 import '../core/injection/injection_container.dart';
 import '../features/home/bloc/home_cubit/home_cubit.dart';
 import '../features/home/bloc/homes_cubit/homes_cubit.dart';
+import '../features/home/ui/pages/create_session_page.dart';
 import '../features/home/ui/pages/home_page.dart';
 import '../features/home/ui/pages/homes_page.dart';
-import '../features/mms/bloc/room_cubit/room_cubit.dart';
-import '../features/mms/ui/pages/home_page.dart';
+
 import '../features/room/bloc/room_cubit/room_cubit.dart';
 import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
@@ -68,6 +68,15 @@ final goRouter = GoRouter(
       },
     ),
     //endregion
+
+    //region create session
+    GoRoute(
+      path: RouteName.createSession,
+      name: RouteName.createSession,
+      builder: (_, __) => const CreateSessionPage(),
+    ),
+    //endregion
+
     //region setting
 
     ///setting
@@ -200,85 +209,6 @@ final goRouter = GoRouter(
       },
     ),
 
-    ///group
-    GoRoute(
-      path: RouteName.group,
-      name: RouteName.group,
-      builder: (context, state) {
-        final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
-        final token = state.uri.queryParameters['token'] ?? '';
-        final theme = state.uri.queryParameters['theme'] ?? '';
-
-        if (theme.isNotEmpty) {
-          if (theme == 'dark') {
-            MyApp.changeTheme(context, ThemeMode.dark);
-          } else if (theme == 'light') {
-            AppSharedPreference.setThemeMode(ThemeMode.light);
-            MyApp.changeTheme(context, ThemeMode.light);
-            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
-          }
-        } else {
-          AppSharedPreference.setThemeMode(ThemeMode.system);
-          // AppSharedPreference.setThemeMode(ThemeMode.system);
-          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
-        }
-
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => sl<HomeCubit>()),
-            BlocProvider(create: (context) => sl<UsersCubit>()),
-          ],
-          child: HomePage(
-            link: link,
-            token: token,
-            page: .group,
-          ),
-        );
-      },
-    ),
-
-    ///mms
-    GoRoute(
-      path: RouteName.mms,
-      name: RouteName.mms,
-      builder: (context, state) {
-        final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
-        mmsLkManageUrl = state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? '';
-        final token = state.uri.queryParameters['token'] ?? '';
-        final groupTermId = state.uri.queryParameters['groupTermId'];
-        final theme = state.uri.queryParameters['theme'] ?? '';
-
-        if (theme.isNotEmpty) {
-          if (theme == 'dark') {
-            MyApp.changeTheme(context, ThemeMode.dark);
-          } else if (theme == 'light') {
-            AppSharedPreference.setThemeMode(ThemeMode.light);
-            MyApp.changeTheme(context, ThemeMode.light);
-            // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
-          }
-        } else {
-          AppSharedPreference.setThemeMode(ThemeMode.system);
-          // AppSharedPreference.setThemeMode(ThemeMode.system);
-          // View.of(context).platformDispatcher.platformBrightness == Brightness.light;
-        }
-
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => sl<HomeCubit>()),
-            BlocProvider(
-              create: (context) => sl<MMSRoomCubit>()
-                ..setUrl(link)
-                ..initial(),
-            ),
-            BlocProvider(create: (context) => sl<UsersCubit>()),
-          ],
-          child: MMSPage(
-            link: link,
-            token: token,
-          ),
-        );
-      },
-    ),
 
     ///homes
     GoRoute(
@@ -326,11 +256,7 @@ class RouteName {
 
   static const splash = '/splash';
   static const mms = '/mms';
-  static const group = '/group';
-  static const sharedWhiteboard = '/shared_whiteboard';
-}
 
-//https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com
-var tempToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJqdGkiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJpc3MiOiJkZXZrZXkiLCJuYmYiOjE3NzY1ODgzMzAsImlhdCI6MTc3NjU4ODMzMCwiZXhwIjoxNzgxNzcyMzMwLCJ2aWRlbyI6eyJhZ2VudCI6ZmFsc2UsImNhblB1Ymxpc2giOmZhbHNlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6ImY5NmMyYTk1LTkyMmMtNDcxYy0zZjM0LTA4ZGU5NjQzZjAyMSIsInJvb21BZG1pbiI6dHJ1ZSwicm9vbUNyZWF0ZSI6dHJ1ZSwicm9vbUpvaW4iOnRydWUsInJvb21MaXN0IjpmYWxzZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJtYWlzc2FtIGJhbGF3bnkiLCJtZXRhZGF0YSI6IiIsInNoYTI1NiI6IiIsImtpbmQiOiIiLCJhdHRyaWJ1dGVzIjp7ImltYWdlVXJsIjpudWxsLCJsa1VzZXJUeXBlIjoiMCJ9LCJyb29tQ29uZmlnIjp7fX0.Ep0qCJgL0YJnHl7PZkATmt4gugjGUF5oU-vSM4iTgGo";
-var manager_url = "coretik-be.coretech-mena.com";
+  static const sharedWhiteboard = '/shared_whiteboard';
+  static const createSession = '/create_session';
+}

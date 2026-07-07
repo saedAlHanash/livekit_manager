@@ -43,9 +43,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "connectionTimeOut": MessageLookupByLibrary.simpleMessage(
       "انتهت مهلة الاتصال",
     ),
+    "copyCode": MessageLookupByLibrary.simpleMessage("نسخ الكود"),
     "courseRegistrationDetails": MessageLookupByLibrary.simpleMessage(
       "تفاصيل التسجيل في المقررات",
     ),
+    "createSession": MessageLookupByLibrary.simpleMessage("إنشاء جلسة"),
     "day": MessageLookupByLibrary.simpleMessage("يوم"),
     "deafblinding": MessageLookupByLibrary.simpleMessage("صم وعمى"),
     "december": MessageLookupByLibrary.simpleMessage("كانون الأول"),
@@ -119,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sessionEndedThankYou": MessageLookupByLibrary.simpleMessage(
       "انتهت الجلسة شكرا لكم",
     ),
+    "shareCode": MessageLookupByLibrary.simpleMessage("مشاركة الكود"),
     "sharedContent": MessageLookupByLibrary.simpleMessage(
       "المحتوى الذي تتم مشاركته",
     ),

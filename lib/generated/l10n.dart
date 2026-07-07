@@ -159,11 +159,26 @@ class S {
     );
   }
 
+  /// `Copy Code`
+  String get copyCode {
+    return Intl.message('Copy Code', name: 'copyCode', desc: '', args: []);
+  }
+
   /// `Course Registration Details`
   String get courseRegistrationDetails {
     return Intl.message(
       'Course Registration Details',
       name: 'courseRegistrationDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Session`
+  String get createSession {
+    return Intl.message(
+      'Create Session',
+      name: 'createSession',
       desc: '',
       args: [],
     );
@@ -507,6 +522,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Share Code`
+  String get shareCode {
+    return Intl.message('Share Code', name: 'shareCode', desc: '', args: []);
   }
 
   /// `Shared content`

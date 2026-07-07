@@ -137,49 +137,43 @@ enum ParticipantPermissionType {
   Map<String, dynamic> revokePermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
       ParticipantPermissionType.speak => {
-        "canSubscribe": participant.permissions.canSubscribe,
-        "canPublish": false,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': participant.permissions.canSubscribe,
+        'can_publish': false,
+        'can_publish_data': true,
       },
       ParticipantPermissionType.listen => {
-        "canSubscribe": false,
-        "canPublish": participant.permissions.canPublish,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': false,
+        'can_publish': participant.permissions.canPublish,
+        'can_publish_data': true,
       },
       ParticipantPermissionType.both => {
-        "canSubscribe": false,
-        "canPublish": false,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': false,
+        'can_publish': false,
+        'can_publish_data': true,
       },
     };
-    return map..addAll({'identity': participant.identity});
+    return map;
   }
 
   Map<String, dynamic> grantPermissions(Participant participant) {
     final Map<String, dynamic> map = switch (this) {
       ParticipantPermissionType.speak => {
-        "canSubscribe": participant.permissions.canSubscribe,
-        "canPublish": true,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': participant.permissions.canSubscribe,
+        'can_publish': true,
+        'can_publish_data': true,
       },
       ParticipantPermissionType.listen => {
-        "canSubscribe": true,
-        "canPublish": participant.permissions.canPublish,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': true,
+        'can_publish': participant.permissions.canPublish,
+        'can_publish_data': true,
       },
       ParticipantPermissionType.both => {
-        "canSubscribe": true,
-        "canPublish": true,
-        //----------
-        "canPublishData": true,
+        'can_subscribe': true,
+        'can_publish': true,
+        'can_publish_data': true,
       },
     };
-    return map..addAll({'identity': participant.identity});
+    return map;
   }
 }
 
@@ -234,10 +228,7 @@ enum SignalStudentStatus { nun, add, remove }
 
 
 enum PageType {
-  manager,
-  sharer,
   teacher,
-  group,
 }
 
 enum RoomType {

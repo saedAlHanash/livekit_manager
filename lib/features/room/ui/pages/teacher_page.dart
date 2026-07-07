@@ -1,6 +1,9 @@
+import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:livekit_manager/core/util/snack_bar_message.dart';
 import 'package:livekit_manager/features/room/ui/widget/controls.dart';
 import 'package:livekit_manager/generated/l10n.dart';
 
@@ -32,6 +35,23 @@ class _TeacherPageState extends State<TeacherPage> {
         context.read<RoomCubit>().setExpectedUsers(state.result);
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            final roomName = cubit.state.result.name ?? '';
+            Clipboard.setData(ClipboardData(text: roomName));
+            NoteMessage.showSuccessSnackBar(
+              message: '${S.of(context).textCopiedToClipboard}: $roomName',
+              context: context,
+            );
+          },
+          backgroundColor: const Color(0xFF1DB954),
+          icon: const Icon(Icons.share, color: Colors.white),
+          label: DrawableText(
+            text: S.of(context).shareCode,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

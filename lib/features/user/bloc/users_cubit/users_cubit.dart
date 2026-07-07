@@ -36,6 +36,7 @@ class UsersCubit extends MCubit<UsersInitial> {
   );
 
   Future<void> getData({bool newData = false, String? groupTermId}) async {
+    return;
     emit(state.copyWith(id: groupTermId, statuses: .loading));
     await getDataAbstract(
       fromJson: User.fromJson,

@@ -457,7 +457,7 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                                   icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
                                   tooltip: 'إضافة خلفية',
                                   onPressed: () async {
-                                    final result = await FilePicker.platform.pickFiles(
+                                    final result = await FilePicker.pickFiles(
                                       type: FileType.custom,
                                       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
                                       allowMultiple: false,

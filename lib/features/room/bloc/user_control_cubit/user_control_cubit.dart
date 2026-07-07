@@ -2,218 +2,283 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/api_manager/api_service.dart';
-import 'package:livekit_manager/core/api_manager/api_url.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/api_manager/livekit_twirp_client.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:m_cubit/abstraction.dart';
 
+import '../../../../core/api_manager/api_service.dart';
 import '../../../../core/app/app_widget.dart';
 import '../../../../core/util/exts.dart';
+import '../../../../core/util/snack_bar_message.dart';
 import '../../data/request/message_request.dart';
 import '../../data/request/update_participant_request.dart';
+import '../room_cubit/room_cubit.dart';
 
 part 'user_control_state.dart';
 
 class UserControlCubit extends MCubit<UserControlInitial> {
   UserControlCubit() : super(UserControlInitial.initial());
 
+  final _lk = LiveKitTwirpClient();
+
   @override
   UserControlInitial get mState => state;
 
+  // ---------------------------------------------------------------------------
+  // Helper — resolves current room name from RoomCubit
+  // ---------------------------------------------------------------------------
+  String get _roomName => ctx?.read<RoomCubit>().state.result.name ?? '';
+
+  // ---------------------------------------------------------------------------
+  // Helper — emit result and optionally show error snackbar
+  // ---------------------------------------------------------------------------
+  void _handleResult(String? error, String id) {
+    if (error != null) {
+      emit(state.copyWith(statuses: CubitStatuses.error, id: id));
+      if (ctx != null) {
+        NoteMessage.showErrorSnackBar(message: error, context: ctx!);
+      }
+    } else {
+      emit(state.copyWith(statuses: CubitStatuses.done, id: id));
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Suspend / Resume single participant
+  // ---------------------------------------------------------------------------
+
+  /// Suspend: revoke publish + subscribe (participant goes fully silent/blind).
   Future<void> suspend(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.suspend,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant,
+      canPublish: false,
+      canSubscribe: false,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  /// Resume: keep publish off, restore subscribe (can see/hear again).
   Future<void> resume(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.resume,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant,
+      canPublish: false,
+      canSubscribe: true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  // ---------------------------------------------------------------------------
+  // Suspend / Resume ALL remote participants
+  // ---------------------------------------------------------------------------
+
+  /// Suspend all — iterates every remote participant and calls UpdateParticipant.
   Future<void> suspendAll() async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: ''));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.suspendAll,
-      type: ApiType.post,
-      body: state.updateRequest.toJson(),
-    );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    final participants =
+        ctx?.read<RoomCubit>().state.result.remoteParticipants.values.toList() ?? [];
+
+    String? lastError;
+    for (final p in participants) {
+      final result = await _lk.updateParticipant(
+        roomName: _roomName,
+        identity: p.identity,
+        canPublish: false,
+        canSubscribe: false,
+      );
+      if (result.second != null) lastError = result.second;
+    }
+    _handleResult(lastError, '');
   }
 
+  /// Resume all — restores subscribe for every remote participant.
   Future<void> resumeAll() async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: ''));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.resumeAll,
-      type: ApiType.post,
-      body: state.updateRequest.toJson(),
-    );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    final participants =
+        ctx?.read<RoomCubit>().state.result.remoteParticipants.values.toList() ?? [];
+
+    String? lastError;
+    for (final p in participants) {
+      final result = await _lk.updateParticipant(
+        roomName: _roomName,
+        identity: p.identity,
+        canPublish: false,
+        canSubscribe: true,
+      );
+      if (result.second != null) lastError = result.second;
+    }
+    _handleResult(lastError, '');
   }
 
+  // ---------------------------------------------------------------------------
+  // Screen Share
+  // ---------------------------------------------------------------------------
+
+  /// Grant screen share: set canPublish=true (while keeping current subscribe)
   Future<void> allowScreenShare(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.allowScreenShare,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final p = ctx?.read<RoomCubit>().state.result.remoteParticipants[participant];
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant,
+      canPublish: true,
+      canSubscribe: p?.permissions.canSubscribe ?? true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  /// Revoke screen share: set canPublish=false
   Future<void> stopScreenShare(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.stopScreenShare,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final p = ctx?.read<RoomCubit>().state.result.remoteParticipants[participant];
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant,
+      canPublish: false,
+      canSubscribe: p?.permissions.canSubscribe ?? true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  // ---------------------------------------------------------------------------
+  // Camera (Video track muting via MutePublishedTrack)
+  // ---------------------------------------------------------------------------
+
+  /// Allow camera — unmute the VIDEO track server-side.
   Future<void> allowCamera(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.allowCamera,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.muteTrackByType(
+      roomName: _roomName,
+      identity: participant,
+      trackType: 'VIDEO',
+      muted: false,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  /// Stop camera — mute the VIDEO track server-side.
   Future<void> stopCamera(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.stopCamera,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.muteTrackByType(
+      roomName: _roomName,
+      identity: participant,
+      trackType: 'VIDEO',
+      muted: true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  // ---------------------------------------------------------------------------
+  // Audio (Microphone track muting via MutePublishedTrack)
+  // ---------------------------------------------------------------------------
+
+  /// Allow to speak — unmute the AUDIO track server-side.
   Future<void> allowToSpeak(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.allowAudio,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.muteTrackByType(
+      roomName: _roomName,
+      identity: participant,
+      trackType: 'AUDIO',
+      muted: false,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
 
+  /// Mute — mute the AUDIO track server-side.
   Future<void> mute(String participant) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.stopAudio,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()..addAll({'identity': participant}),
+    final result = await _lk.muteTrackByType(
+      roomName: _roomName,
+      identity: participant,
+      trackType: 'AUDIO',
+      muted: true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant);
   }
+
+  // ---------------------------------------------------------------------------
+  // Room Metadata
+  // ---------------------------------------------------------------------------
 
   Future<void> updateRoomMetaData(Map<String, dynamic> metaData, String roomId) async {
     emit(state.copyWith(statuses: CubitStatuses.loading));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.updateRoomMeta,
-      type: ApiType.post,
-      body: {"name": roomId, "metadata": jsonEncode(metaData)},
+    final result = await _lk.updateRoomMetadata(
+      roomName: roomId,
+      metadata: jsonEncode(metaData),
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, '');
   }
+
+  // ---------------------------------------------------------------------------
+  // Revoke / Grant permissions (fine-grained via ParticipantPermissionType)
+  // ---------------------------------------------------------------------------
 
   Future<void> revoke(Participant participant, ParticipantPermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: 'Index/UpdateParticipant',
-      type: ApiType.post,
-      body: state.updateRequest.toJson()
-        ..addAll(
-          type.revokePermissions(participant),
-        ),
+    final perms = type.revokePermissions(participant);
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant.identity,
+      canPublish: perms['can_publish'] as bool? ?? false,
+      canSubscribe: perms['can_subscribe'] as bool? ?? false,
+      canPublishData: perms['can_publish_data'] as bool? ?? true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant.identity);
   }
 
   Future<void> grant(Participant participant, ParticipantPermissionType type) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: 'Index/UpdateParticipant',
-      type: ApiType.post,
-      body: state.updateRequest.toJson()
-        ..addAll(
-          type.grantPermissions(participant),
-        ),
+    final perms = type.grantPermissions(participant);
+    final result = await _lk.updateParticipant(
+      roomName: _roomName,
+      identity: participant.identity,
+      canPublish: perms['can_publish'] as bool? ?? true,
+      canSubscribe: perms['can_subscribe'] as bool? ?? true,
+      canPublishData: perms['can_publish_data'] as bool? ?? true,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    _handleResult(result.second, participant.identity);
   }
+
+  // ---------------------------------------------------------------------------
+  // Kick
+  // ---------------------------------------------------------------------------
 
   Future<void> kick(String participant, {bool block = false}) async {
     emit(state.copyWith(statuses: CubitStatuses.loading, id: participant));
-    final result = await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.kick,
-      type: ApiType.post,
-      body: state.updateRequest.toJson()
-        ..addAll(
-          {
-            'identity': participant,
-            if (block) 'isBlock': true,
-          },
-        ),
+    final result = await _lk.removeParticipant(
+      roomName: _roomName,
+      identity: participant,
     );
-    emit(state.copyWith(statuses: result.statusCode.success ? CubitStatuses.done : CubitStatuses.error));
+    // `block` flag — not supported natively by LiveKit Twirp.
+    // Implement at app level if needed (e.g. maintain a blocklist in room metadata).
+    _handleResult(result.second, participant);
   }
+
+  // ---------------------------------------------------------------------------
+  // Send Message / Data Signal
+  // ---------------------------------------------------------------------------
 
   Future<void> sendMessage(MessageRequest request) async {
-    await APIService().callApi(
-      hostName: lkUrl,
-      additional: lkAdditional,
-      url: PostUrl.sendMessage,
-      type: ApiType.post,
-      body: request.toJson(),
+    final result = await _lk.sendData(
+      roomName: request.roomName,
+      data: request.data,
+      destinationIdentities: request.identities,
     );
+    if (result.second != null) {
+      loggerObject.e('sendMessage error: ${result.second}');
+    }
   }
 
-  //---------------------Local----------------------
+  // ---------------------------------------------------------------------------
+  // Local participant controls (unchanged — all SDK-side)
+  // ---------------------------------------------------------------------------
 
   void setLocalParticipant(LocalParticipant? localParticipant) {
     emit(state.copyWith(request: localParticipant));
