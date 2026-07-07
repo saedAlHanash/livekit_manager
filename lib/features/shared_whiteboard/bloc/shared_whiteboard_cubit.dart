@@ -7,7 +7,7 @@ import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/whiteboard_message.dart';
 import 'package:livekit_manager/services/images/compress_service.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
+import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:m_cubit/m_cubit.dart';
 
 part 'shared_whiteboard_state.dart';
@@ -18,8 +18,8 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     required this.userId,
     required this.userName,
     required this.userType,
-    required SignalRCubit signalRCubit,
-  }) : _signalRCubit = signalRCubit,
+    required RoomCubit roomCubit,
+  }) : _roomCubit = roomCubit,
        super(SharedWhiteboardState.initial()) {
     _init();
   }
@@ -28,7 +28,7 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
   final String userId;
   final String userName;
   final String userType;
-  final SignalRCubit _signalRCubit;
+  final RoomCubit _roomCubit;
 
   StreamSubscription? _signalSubscription;
   StreamSubscription? _statusSubscription;
@@ -42,18 +42,18 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
   }
 
   void _listeners() {
-    emit(state.copyWith(connectionState: _signalRCubit.state.connectionState));
+    emit(state.copyWith(connectionState: _roomCubit.state.statuses == CubitStatuses.done ? SignalRStatus.connected : SignalRStatus.notConnected));
 
-    _statusSubscription = _signalRCubit.stream.listen((signalState) {
-      emit(state.copyWith(connectionState: signalState.connectionState));
+    _statusSubscription = _roomCubit.stream.listen((roomState) {
+      emit(state.copyWith(connectionState: roomState.statuses == CubitStatuses.done ? SignalRStatus.connected : SignalRStatus.notConnected));
     });
 
-    _signalSubscription = _signalRCubit.whiteboardStream.listen((bytes) {
+    _signalSubscription = _roomCubit.whiteboardStream.listen((bytes) {
       try {
         final msg = WhiteboardMessage.fromBytes(bytes);
         _processWhiteboardMessage(msg);
       } catch (e) {
-        loggerObject.e('Failed to parse incoming SignalR whiteboard message: $e');
+        loggerObject.e('Failed to parse incoming LiveKit whiteboard message: $e');
       }
     });
   }
@@ -171,9 +171,9 @@ class SharedWhiteboardCubit extends MCubit<SharedWhiteboardState> {
     );
 
     try {
-      await _signalRCubit.sendMessageToTopic(binaryBytes, messageType: MessageTypeEnum.bytes.index);
+      await _roomCubit.state.result.localParticipant?.publishData(binaryBytes, reliable: true, topic: 'whiteboard');
     } catch (e) {
-      loggerObject.e('Failed to send SignalR whiteboard binary message: $e');
+      loggerObject.e('Failed to send LiveKit whiteboard binary message: $e');
     }
   }
 

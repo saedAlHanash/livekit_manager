@@ -18,7 +18,6 @@ import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
 import '../../../user/data/response/user_response.dart';
 import '../../data/request/setting_message.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:livekit_manager/features/room/data/request/student_metadata.dart';
 
 part 'room_state.dart';
@@ -28,6 +27,9 @@ class RoomCubit extends MCubit<RoomInitial> {
 
   final _messageController = StreamController<LkMessage>.broadcast();
   Stream<LkMessage> get messageStream => _messageController.stream;
+
+  final _whiteboardController = StreamController<Uint8List>.broadcast();
+  Stream<Uint8List> get whiteboardStream => _whiteboardController.stream;
 
   Timer? _sortDebounceTimer;
 
@@ -161,6 +163,16 @@ class RoomCubit extends MCubit<RoomInitial> {
       ..on<DataReceivedEvent>(
         (e) async {
           try {
+            if (e.topic == 'whiteboard') {
+              _whiteboardController.add(Uint8List.fromList(e.data));
+              return;
+            }
+
+            if (e.data.isNotEmpty && e.data[0] != 123) {
+              _whiteboardController.add(Uint8List.fromList(e.data));
+              return;
+            }
+
             final message = LkMessage.fromJson(jsonDecode(utf8.decode(e.data)));
             message.id = e.participant?.identity ?? '';
             message.metadata.addAll({
@@ -178,7 +190,7 @@ class RoomCubit extends MCubit<RoomInitial> {
               case .lowerHand:
                 SoundService.play(Assets.soundsNote);
                 await deleteFromCache([e.participant?.identity ?? '']);
-                break;
+                 break;
               case .raiseHand:
               case .chosen:
               case .message:
@@ -190,6 +202,7 @@ class RoomCubit extends MCubit<RoomInitial> {
             }
           } catch (err) {
             loggerObject.e('Failed to decode: $err');
+            _whiteboardController.add(Uint8List.fromList(e.data));
           }
         },
       );
@@ -416,7 +429,7 @@ class RoomCubit extends MCubit<RoomInitial> {
     await Future.delayed(Duration(seconds: 1));
   }
 
-  Future<void> toggleWhiteboardPermission(String studentId, bool allowed, SignalRCubit signalRCubit) async {
+  Future<void> toggleWhiteboardPermission(String studentId, bool allowed) async {
     final updatedAllowed = Set<String>.from(state.whiteboardAllowedUsers);
     if (allowed) {
       updatedAllowed.add(studentId);
@@ -425,8 +438,22 @@ class RoomCubit extends MCubit<RoomInitial> {
     }
     emit(state.copyWith(whiteboardAllowedUsers: updatedAllowed, id: state.notifyIndex + 1));
 
-    final metadataString = StudentMetadata.toMetadataString(studentId, allowed);
-    await signalRCubit.updateMetadata(studentId, metadataString);
+    final action = allowed ? ManagerActions.grantWhiteboard : ManagerActions.revokeWhiteboard;
+    final message = utf8.encode(
+      jsonEncode(
+        LkMessage(
+          action: action,
+          metadata: {
+            'studentId': studentId,
+          },
+        ),
+      ),
+    );
+    await state.result.localParticipant?.publishData(
+      message,
+      destinationIdentities: [studentId],
+      reliable: true,
+    );
   }
 
   void changeLayoutMode(ParticipantsLayoutMode mode) {
@@ -459,6 +486,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       await state.listener.dispose();
       await state.result.dispose();
       await _messageController.close();
+      await _whiteboardController.close();
     })();
     return super.close();
   }

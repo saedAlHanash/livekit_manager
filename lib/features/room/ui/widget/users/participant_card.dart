@@ -15,7 +15,7 @@ import 'package:m_cubit/m_cubit.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
 import '../../../data/request/setting_message.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
+
 import 'no_video.dart';
 
 class ParticipantCard extends StatefulWidget {
@@ -230,7 +230,6 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
                               context.read<RoomCubit>().toggleWhiteboardPermission(
                                     participant.identity,
                                     !allowed,
-                                    context.read<SignalRCubit>(),
                                   );
                             },
                           );

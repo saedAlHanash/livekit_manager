@@ -26,7 +26,6 @@ import '../features/user/ui/pages/users_page.dart';
 
 import '../features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
 import '../features/shared_whiteboard/ui/pages/shared_whiteboard_page.dart';
-import '../services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
@@ -41,8 +40,9 @@ final goRouter = GoRouter(
         final userName = state.uri.queryParameters['userName'] ?? 'راكان';
         final userType = state.uri.queryParameters['userType'] ?? 'teacher';
         final token = state.uri.queryParameters['token'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
+        final url = state.uri.queryParameters['url'] ?? 'wss://coretik.coretech-mena.com';
 
-          AppSharedPreference.setUserId(userId);
+        AppSharedPreference.setUserId(userId);
         if (token.isNotEmpty) {
           AppSharedPreference.cashToken(token);
         }
@@ -50,8 +50,10 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => SignalRCubit()
-                ..initialSignalR(lessonId, userId),
+              create: (context) => sl<RoomCubit>()
+                ..setUrl(url)
+                ..setToken(token)
+                ..connect(enableCamera: false, enableMic: false),
             ),
             BlocProvider(
               create: (context) => SharedWhiteboardCubit(
@@ -59,7 +61,7 @@ final goRouter = GoRouter(
                 userId: userId,
                 userName: userName,
                 userType: userType,
-                signalRCubit: context.read<SignalRCubit>(),
+                roomCubit: context.read<RoomCubit>(),
               ),
             ),
           ],
