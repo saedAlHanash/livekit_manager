@@ -13,7 +13,6 @@ import '../../generated/l10n.dart';
 import '../../router/go_router.dart';
 import '../app_theme.dart';
 import '../injection/injection_container.dart';
-import '../strings/app_color_manager.dart';
 import '../util/shared_preferences.dart';
 import 'app_provider.dart';
 
@@ -88,7 +87,7 @@ class MyAppState extends State<MyApp> {
           onTap: () => AppProvider.unFocus(context: context),
           child: MaterialApp.router(
             darkTheme: darkTheme,
-            theme: darkTheme,
+            theme: lightTheme,
             themeMode: AppSharedPreference.getThemeMode,
             routerConfig: goRouter,
             debugShowCheckedModeBanner: false,
@@ -115,7 +114,7 @@ class MyAppState extends State<MyApp> {
                     top: false,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: true ? AppColorManager.mainColor : Colors.white,
+                        color: Theme.of(ctx).colorScheme.surface,
                         image: DecorationImage(
                           image: AssetImage(Assets.imagesIslamicBack),
                           repeat: ImageRepeat.repeat,

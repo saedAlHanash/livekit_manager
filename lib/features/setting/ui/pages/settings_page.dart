@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/widgets/app_empty_state.dart';
+import '../../../../core/widgets/app_page_scaffold.dart';
 import '../../../../core/widgets/app_bar/app_bar_widget.dart';
 import '../../../../core/widgets/refresh_widget/refresh_widget.dart';
 import '../../bloc/settings_cubit/settings_cubit.dart';
@@ -13,20 +15,25 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(),
+      appBar: const AppBarWidget(titleText: 'الإعدادات'),
       body: BlocBuilder<SettingsCubit, SettingsInitial>(
         builder: (context, state) {
           return RefreshWidget(
             isLoading: state.loading,
             onRefresh: () => context.read<SettingsCubit>().getData(newData: true),
-            child: ListView.separated(
-              itemCount: state.result.length,
-              separatorBuilder: (_, i) => 10.0.verticalSpace,
-              itemBuilder: (_, i) {
-                final item = state.result[i];
-                return ItemSetting(setting: item);
-              },
-            ),
+            child: state.result.isEmpty && !state.loading
+                ? const AppEmptyState(
+                    icon: Icons.tune_outlined,
+                    title: 'لا توجد إعدادات',
+                    message: 'ستظهر إعدادات الجلسة هنا عندما تكون متاحة.',
+                  )
+                : AppPageScaffold(
+                    child: ListView.separated(
+                      itemCount: state.result.length,
+                      separatorBuilder: (_, i) => 12.0.verticalSpace,
+                      itemBuilder: (_, i) => ItemSetting(setting: state.result[i]),
+                    ),
+                  ),
           );
         },
       ),

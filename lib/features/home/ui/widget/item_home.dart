@@ -1,9 +1,7 @@
 
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/image_multi_type.dart';
 
+import '../../../../core/widgets/app_list_card.dart';
 import '../../data/response/home_response.dart';
 
 class ItemHome extends StatelessWidget {
@@ -13,22 +11,11 @@ class ItemHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0.r),
-        border: Border.all(),
-        color: Colors.white,
-      ),
-      margin: const EdgeInsets.all(20.0).r,
-      child: ListTile(
-        onTap: () {},
-        title: DrawableText(text: ''),
-        subtitle: DrawableText(text: ''),
-        leading: ImageMultiType(url: ''),
-        trailing: ImageMultiType(url: Icons.arrow_forward_ios, height: 20.0.r, color: Colors.grey),
-      ),
+    return AppListCard(
+      title: home.id.isEmpty ? 'جلسة بدون معرف' : 'جلسة ${home.id}',
+      subtitle: 'اضغط لعرض تفاصيل الجلسة',
+      icon: Icons.video_camera_front_outlined,
     );
   }
 }
-
 

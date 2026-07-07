@@ -61,7 +61,7 @@ class _TeacherPageState extends State<TeacherPage> {
                   children: [
                     Expanded(
                       flex: 5,
-                      child: ParticipantsLayout(),
+                      child: MyCardWidget(child: ParticipantsLayout()),
                     ),
                     10.0.horizontalSpace,
                     Expanded(
@@ -94,13 +94,13 @@ class _TeacherPageState extends State<TeacherPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(width: 48),
-                  Expanded(
-                    child: Center(
-                      child: ControlsWidget(),
-                    ),
+                  const Spacer(),
+                  MyCardWidget(
+                    radios: 200.0,
+                    padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+                    child: ControlsWidget(),
                   ),
-                  const SizedBox(width: 48),
+                  const Spacer(),
                 ],
               ),
             ],

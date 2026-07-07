@@ -1,17 +1,16 @@
 import 'dart:math';
 
-import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:livekit_manager/core/api_manager/livekit_config.dart';
 import 'package:livekit_manager/core/api_manager/livekit_token_service.dart';
-import 'package:livekit_manager/core/strings/app_color_manager.dart';
+import 'package:livekit_manager/core/theme/app_colors.dart';
+import 'package:livekit_manager/core/theme/app_spacing.dart';
+import 'package:livekit_manager/core/widgets/app_page_scaffold.dart';
 import 'package:livekit_manager/router/go_router.dart';
 
-/// صفحة إنشاء جلسة جديدة
-/// تولّد كود جلسة عشوائي (حرفان + 6 أرقام) يُستخدم كـ room name في LiveKit
 class CreateSessionPage extends StatefulWidget {
   const CreateSessionPage({super.key});
 
@@ -19,8 +18,7 @@ class CreateSessionPage extends StatefulWidget {
   State<CreateSessionPage> createState() => _CreateSessionPageState();
 }
 
-class _CreateSessionPageState extends State<CreateSessionPage>
-    with SingleTickerProviderStateMixin {
+class _CreateSessionPageState extends State<CreateSessionPage> with SingleTickerProviderStateMixin {
   late String _sessionCode;
   late AnimationController _pulseCtrl;
   late Animation<double> _pulseAnim;
@@ -31,14 +29,12 @@ class _CreateSessionPageState extends State<CreateSessionPage>
   void initState() {
     super.initState();
     _sessionCode = _generateCode();
-
     _pulseCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1600),
     )..repeat(reverse: true);
-
-    _pulseAnim = Tween<double>(begin: 0.95, end: 1.05).animate(
-      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut),
+    _pulseAnim = Tween<double>(begin: 0.98, end: 1.03).animate(
+      CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOutCubic),
     );
   }
 
@@ -48,12 +44,10 @@ class _CreateSessionPageState extends State<CreateSessionPage>
     super.dispose();
   }
 
-  // ─── توليد كود الجلسة: حرفان كبيران + 6 أرقام ───────────────────────────
   String _generateCode() {
-    const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // removed I,O to avoid confusion
+    const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
     const digits = '0123456789';
     final rng = Random.secure();
-
     final l1 = letters[rng.nextInt(letters.length)];
     final l2 = letters[rng.nextInt(letters.length)];
     final nums = List.generate(6, (_) => digits[rng.nextInt(digits.length)]).join();
@@ -75,7 +69,6 @@ class _CreateSessionPageState extends State<CreateSessionPage>
   }
 
   void _startSession() {
-    // توليد توكن الانضمام محلياً — المضيف يملك صلاحيات كاملة
     final token = LiveKitTokenService().generateJoinToken(
       roomName: _sessionCode,
       identity: 'host_${DateTime.now().millisecondsSinceEpoch}',
@@ -100,133 +93,93 @@ class _CreateSessionPageState extends State<CreateSessionPage>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0F0E),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // ── AppBar row ──
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => context.pop(),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                        color: Colors.white70),
-                  ),
-                  Expanded(
-                    child: DrawableText(
-                      text: 'جلسة جديدة',
-                      textAlign: TextAlign.center,
-                      size: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
+        title: const Text('جلسة جديدة'),
+      ),
+      body: AppPageScaffold(
+        maxWidth: 760,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ScaleTransition(
+                  scale: _pulseAnim,
+                  child: Container(
+                    width: 112.r,
+                    height: 112.r,
+                    margin: const EdgeInsetsDirectional.only(bottom: AppSpacing.lg),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: theme.colorScheme.primaryContainer,
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.colorScheme.primary.withValues(alpha: 0.24),
+                          blurRadius: 32,
+                          offset: const Offset(0, 16),
+                        ),
+                      ],
                     ),
+                    child: Icon(Icons.video_camera_front_rounded, size: 52.sp, color: theme.colorScheme.primary),
                   ),
-                  // placeholder to center title
-                  SizedBox(width: 48.w),
-                ],
-              ),
-
-              40.verticalSpace,
-
-              // ── Hero illustration ──
-              ScaleTransition(
-                scale: _pulseAnim,
-                child: Container(
-                  width: 120.r,
-                  height: 120.r,
+                ),
+                Text('كود الجلسة', style: theme.textTheme.headlineSmall, textAlign: TextAlign.center),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  'شارك هذا الكود مع المشاركين للانضمام إلى الجلسة.',
+                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                _SessionCodeCard(
+                  code: _sessionCode,
+                  copied: _copied,
+                  onCopy: _copyCode,
+                  onRefresh: _regenerate,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Container(
+                  padding: AppSpacing.card,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const RadialGradient(
-                      colors: [Color(0xFF1DB954), Color(0xFF054239)],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF1DB954).withValues(alpha: 0.35),
-                        blurRadius: 40,
-                        spreadRadius: 4,
+                    color: semantic.info.withValues(alpha: 0.08),
+                    borderRadius: AppRadius.medium,
+                    border: Border.all(color: semantic.info.withValues(alpha: 0.18)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info_outline_rounded, color: semantic.info),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          'يمكنك توليد كود جديد قبل بدء الجلسة. بعد البدء سيتم فتح غرفة LiveKit مباشرة.',
+                          style: theme.textTheme.bodyMedium,
+                        ),
                       ),
                     ],
                   ),
-                  child: Icon(
-                    Icons.videocam_rounded,
-                    color: Colors.white,
-                    size: 54.sp,
-                  ),
                 ),
-              ),
-
-              32.verticalSpace,
-
-              Text(
-                'كود الجلسة',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.white54,
-                  letterSpacing: 1.5,
+                const SizedBox(height: AppSpacing.xl),
+                FilledButton.icon(
+                  onPressed: _startSession,
+                  icon: const Icon(Icons.play_arrow_rounded),
+                  label: const Text('ابدأ الجلسة'),
+                  style: FilledButton.styleFrom(minimumSize: Size.fromHeight(56.h)),
                 ),
-              ),
-
-              12.verticalSpace,
-
-              // ── Session Code Card ──
-              _SessionCodeCard(
-                code: _sessionCode,
-                copied: _copied,
-                onCopy: _copyCode,
-                onRefresh: _regenerate,
-              ),
-
-              20.verticalSpace,
-
-              // ── Info hint ──
-              Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF054239).withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: const Color(0xFF1DB954).withValues(alpha: 0.2),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline_rounded,
-                        color: const Color(0xFF1DB954), size: 18.sp),
-                    10.horizontalSpace,
-                    Expanded(
-                      child: DrawableText(
-                        text:
-                            'شارك هذا الكود مع المشاركين ليتمكنوا من الانضمام إلى الجلسة',
-                        size: 12.sp,
-                        color: Colors.white70,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              40.verticalSpace,
-
-              // ── Start button ──
-              _StartButton(onTap: _startSession),
-
-              20.verticalSpace,
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Session Code Card
-// ─────────────────────────────────────────────────────────────────────────────
 
 class _SessionCodeCard extends StatelessWidget {
   const _SessionCodeCard({
@@ -243,203 +196,56 @@ class _SessionCodeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final semantic = theme.extension<AppSemanticColors>()!;
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      transitionBuilder: (child, anim) =>
-          FadeTransition(opacity: anim, child: child),
+      duration: const Duration(milliseconds: 240),
       child: Container(
         key: ValueKey(code),
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0D2821), Color(0xFF031810)],
-          ),
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: const Color(0xFF1DB954).withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.4),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
+          color: theme.cardColor,
+          borderRadius: AppRadius.large,
+          border: Border.all(color: theme.colorScheme.outlineVariant),
+          boxShadow: AppShadows.lifted,
         ),
         child: Column(
           children: [
-            // Code display — spaced for readability: "AB" + " " + "123456"
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _CodeChunk(text: code.substring(0, 2), isLetters: true),
-                SizedBox(width: 8.w),
-                DrawableText(
-                  text: '·',
-                  size: 28.sp,
-                  color: Colors.white30,
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: FittedBox(
+                child: Text(
+                  '${code.substring(0, 2)} · ${code.substring(2)}',
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    fontFamily: 'monospace',
+                    color: theme.colorScheme.primary,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 4,
+                  ),
                 ),
-                SizedBox(width: 8.w),
-                _CodeChunk(text: code.substring(2), isLetters: false),
-              ],
+              ),
             ),
-
-            20.verticalSpace,
-
-            // Action row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            const SizedBox(height: AppSpacing.lg),
+            Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
+              alignment: WrapAlignment.center,
               children: [
-                // Copy button
-                _ActionChip(
-                  icon: copied
-                      ? Icons.check_circle_rounded
-                      : Icons.copy_rounded,
-                  label: copied ? 'تم النسخ!' : 'نسخ الكود',
-                  color: copied
-                      ? AppColorManager.green
-                      : const Color(0xFF1DB954),
-                  onTap: onCopy,
+                FilledButton.tonalIcon(
+                  onPressed: onCopy,
+                  icon: Icon(copied ? Icons.check_circle_rounded : Icons.copy_rounded),
+                  label: Text(copied ? 'تم النسخ' : 'نسخ الكود'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: copied ? semantic.success.withValues(alpha: 0.14) : null,
+                    foregroundColor: copied ? semantic.success : null,
+                  ),
                 ),
-
-                16.horizontalSpace,
-
-                // Regenerate button
-                _ActionChip(
-                  icon: Icons.refresh_rounded,
-                  label: 'كود جديد',
-                  color: AppColorManager.secondColor,
-                  onTap: onRefresh,
+                OutlinedButton.icon(
+                  onPressed: onRefresh,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('كود جديد'),
                 ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CodeChunk extends StatelessWidget {
-  const _CodeChunk({required this.text, required this.isLetters});
-
-  final String text;
-  final bool isLetters;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: isLetters ? 40.sp : 36.sp,
-        fontWeight: FontWeight.w900,
-        letterSpacing: isLetters ? 6.0 : 8.0,
-        color: isLetters
-            ? const Color(0xFF1DB954)
-            : Colors.white,
-        fontFamily: 'monospace',
-        shadows: isLetters
-            ? [
-                Shadow(
-                  color: const Color(0xFF1DB954).withValues(alpha: 0.6),
-                  blurRadius: 12,
-                ),
-              ]
-            : null,
-      ),
-    );
-  }
-}
-
-class _ActionChip extends StatelessWidget {
-  const _ActionChip({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10.r),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(10.r),
-          border: Border.all(color: color.withValues(alpha: 0.35)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: color, size: 16.sp),
-            8.horizontalSpace,
-            DrawableText(
-              text: label,
-              size: 13.sp,
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Start Session Button
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _StartButton extends StatelessWidget {
-  const _StartButton({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 56.h,
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF1DB954), Color(0xFF0E8C3A)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF1DB954).withValues(alpha: 0.4),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.play_arrow_rounded, color: Colors.white, size: 26.sp),
-            10.horizontalSpace,
-            DrawableText(
-              text: 'ابدأ الجلسة',
-              size: 17.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
             ),
           ],
         ),
