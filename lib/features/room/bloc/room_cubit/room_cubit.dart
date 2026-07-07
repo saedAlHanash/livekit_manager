@@ -456,6 +456,24 @@ class RoomCubit extends MCubit<RoomInitial> {
     );
   }
 
+  Future<void> sendWhiteboardSignal(SocketEvents event) async {
+    final payload = {
+      'event': event.index,
+      'data': {
+        'quizId': '',
+        'groupId': '',
+        'name': '',
+        'image': '',
+        'tokens': [],
+      }
+    };
+    final binary = utf8.encode(jsonEncode(payload));
+    await state.result.localParticipant?.publishData(
+      binary,
+      reliable: true,
+    );
+  }
+
   void changeLayoutMode(ParticipantsLayoutMode mode) {
     emit(state.copyWith(layoutMode: mode));
   }

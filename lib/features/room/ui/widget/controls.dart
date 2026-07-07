@@ -1,17 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:m_cubit/util.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/room/bloc/user_control_cubit/user_control_cubit.dart';
 import 'package:livekit_manager/features/room/data/request/room_meta.dart';
 import 'package:livekit_manager/generated/l10n.dart';
+import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
+import 'package:livekit_manager/features/shared_whiteboard/ui/widget/teacher_whiteboard_dialog.dart';
 
 import '../../bloc/room_cubit/room_cubit.dart';
 
 class ControlsWidget extends StatelessWidget {
   const ControlsWidget({super.key});
+
+  void _openWhiteboardDialog(BuildContext context) {
+    final roomCubit = context.read<RoomCubit>();
+    final roomName = roomCubit.state.result.name ?? 'default_session';
+    final localParticipant = roomCubit.state.result.localParticipant;
+    final userId = localParticipant?.identity ?? 'teacher_id';
+    final userName = localParticipant?.name ?? 'Teacher';
+
+    // Broadcast open whiteboard event to students
+    roomCubit.sendWhiteboardSignal(SocketEvents.openWhiteboard);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: false,
+      builder: (ctx) {
+        return PopScope(
+          canPop: false,
+          child: Dialog.fullscreen(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: roomCubit),
+                BlocProvider(
+                  create: (_) => SharedWhiteboardCubit(
+                    sessionId: roomName,
+                    userId: userId,
+                    userName: userName,
+                    userType: 'teacher',
+                    roomCubit: roomCubit,
+                  ),
+                ),
+              ],
+              child: TeacherWhiteboardDialogContent(
+                roomName: roomName,
+                userId: userId,
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      // Broadcast close whiteboard event to students
+      roomCubit.sendWhiteboardSignal(SocketEvents.closeWhiteboard);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +142,13 @@ class ControlsWidget extends StatelessWidget {
                     ),
                     child: const Icon(Icons.layers_outlined, size: 26),
                   ),
+                ),
+                12.w.horizontalSpace,
+                _Item(
+                  onTap: () => _openWhiteboardDialog(context),
+                  title: S.of(context).showWhiteboard,
+                  color: AppColorManager.appBarColor,
+                  icon: Icons.gesture,
                 ),
                 12.w.horizontalSpace,
                 _Item(
