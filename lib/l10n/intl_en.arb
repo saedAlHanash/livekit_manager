@@ -12,6 +12,8 @@
   "choral": "Choral",
   "classMembers": "Class members",
   "confirm": "Confirm",
+  "grantSpeak": "Grant Speak Permission",
+  "revokeSpeak": "Revoke Speak Permission",
   "connectingJustAMoment": "Connecting now, just a moment",
   "connectionTimeOut": "Connection timed out",
   "copyCode": "Copy Code",

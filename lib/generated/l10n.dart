@@ -139,6 +139,26 @@ class S {
     return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
   }
 
+  /// `Grant Speak Permission`
+  String get grantSpeak {
+    return Intl.message(
+      'Grant Speak Permission',
+      name: 'grantSpeak',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Revoke Speak Permission`
+  String get revokeSpeak {
+    return Intl.message(
+      'Revoke Speak Permission',
+      name: 'revokeSpeak',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Connecting now, just a moment`
   String get connectingJustAMoment {
     return Intl.message(

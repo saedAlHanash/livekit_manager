@@ -61,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterMarks": MessageLookupByLibrary.simpleMessage("إدخال العلامات"),
     "february": MessageLookupByLibrary.simpleMessage("شباط"),
     "grantPermissions": MessageLookupByLibrary.simpleMessage("إعطاء صلاحيات"),
+    "grantSpeak": MessageLookupByLibrary.simpleMessage("منح صلاحية التحدث"),
     "grantWhiteboard": MessageLookupByLibrary.simpleMessage(
       "منح صلاحية السبورة",
     ),
@@ -104,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resumeUser": MessageLookupByLibrary.simpleMessage("استئناف"),
     "revokePermissions": MessageLookupByLibrary.simpleMessage("سحب صلاحيات"),
+    "revokeSpeak": MessageLookupByLibrary.simpleMessage("سحب صلاحية التحدث"),
     "revokeWhiteboard": MessageLookupByLibrary.simpleMessage(
       "سحب صلاحية السبورة",
     ),

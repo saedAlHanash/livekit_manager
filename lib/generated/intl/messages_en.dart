@@ -65,6 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "grantPermissions": MessageLookupByLibrary.simpleMessage(
       "Grant permissions",
     ),
+    "grantSpeak": MessageLookupByLibrary.simpleMessage(
+      "Grant Speak Permission",
+    ),
     "grantWhiteboard": MessageLookupByLibrary.simpleMessage(
       "Grant Whiteboard Permission",
     ),
@@ -111,6 +114,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "resumeUser": MessageLookupByLibrary.simpleMessage("Resume User"),
     "revokePermissions": MessageLookupByLibrary.simpleMessage(
       "Revoke permissions",
+    ),
+    "revokeSpeak": MessageLookupByLibrary.simpleMessage(
+      "Revoke Speak Permission",
     ),
     "revokeWhiteboard": MessageLookupByLibrary.simpleMessage(
       "Revoke Whiteboard Permission",
