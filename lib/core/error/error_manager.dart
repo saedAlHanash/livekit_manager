@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:http/http.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:m_cubit/abstraction.dart';
 
 import '../../generated/l10n.dart';

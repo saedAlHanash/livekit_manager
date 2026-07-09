@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';
+
 import 'package:livekit_manager/core/api_manager/api_service.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
+import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/whiteboard_message.dart';
 import 'package:livekit_manager/services/images/compress_service.dart';

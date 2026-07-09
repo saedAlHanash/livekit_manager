@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:logger/logger.dart';
 import 'package:m_cubit/util.dart';
 

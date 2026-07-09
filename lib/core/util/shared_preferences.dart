@@ -9,11 +9,8 @@ class AppSharedPreference {
   static const _token = 'token';
   static const _lang = '4';
   static const _screenType = '5';
-  static const _user = 'user';
   static const _userId = 'userId';
-  static const _studentRecord = 'studentRecord';
   static const _resendTime = '8';
-  static const String _keyUserType = 'userType';
   static const String _keyThemeMode = 'themeMode'; // مفتاح جديد لوضع الثيم
 
   //region Init & Reload

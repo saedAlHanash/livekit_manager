@@ -14,7 +14,7 @@ class ParticipantTrackSource {
 
   String get displayName {
     if (videoPublication?.source == TrackSource.screenShareVideo) {
-      return (participant.name.isNotEmpty ? participant.name : participant.identity) + '\'s screen';
+      return '${participant.name.isNotEmpty ? participant.name : participant.identity}\'s screen';
     }
     return participant.name.isNotEmpty ? participant.name : participant.identity;
   }

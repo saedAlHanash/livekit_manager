@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_multi_type/image_multi_type.dart';
-import 'package:livekit_manager/generated/l10n.dart';
-
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/core/util/my_style.dart';
 import 'package:livekit_manager/features/room/bloc/room_cubit/room_cubit.dart';
 import 'package:livekit_manager/features/user/data/response/user_response.dart';
+import 'package:livekit_manager/generated/l10n.dart';
+import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:m_cubit/m_cubit.dart';
+import 'package:m_cubit/util.dart';
 
 import '../../../../../core/strings/enum_manager.dart';
 import '../../../data/request/setting_message.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'no_video.dart';
 
 class ParticipantCard extends StatefulWidget {
@@ -106,12 +106,12 @@ class _ParticipantCardState extends State<ParticipantCard> with SingleTickerProv
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
-                          color: color!.withOpacity(0.3 * (1 - _animation.value)),
+                          color: color!.withValues(alpha:0.3 * (1 - _animation.value)),
                           spreadRadius: 25.r * _animation.value,
                           blurRadius: 30.r * _animation.value,
                         ),
                         BoxShadow(
-                          color: color.withOpacity(0.5 * (1 - _animation.value)),
+                          color: color.withValues(alpha:0.5 * (1 - _animation.value)),
                           spreadRadius: 10.r * _animation.value,
                           blurRadius: 15.r * _animation.value,
                         ),

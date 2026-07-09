@@ -1,10 +1,9 @@
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_multi_type/circle_image_widget.dart';
 import 'package:image_multi_type/image_multi_type.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/app_color_manager.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/remote_user.dart';
 
@@ -74,7 +73,7 @@ class UserImageOrName extends StatelessWidget {
             ],
           ),
         ),
-        title: DrawableText(text: participant.name ?? '-'),
+        title: DrawableText(text: participant.name),
         subtitle: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
 import 'package:livekit_manager/features/shared_whiteboard/ui/widget/shared_whiteboard_widget.dart';
 

@@ -178,7 +178,7 @@ class _ParticipantTrackCardState extends State<ParticipantTrackCard> {
           height: 4.r,
           margin: EdgeInsets.only(left: 2.r),
           decoration: BoxDecoration(
-            color: (quality == ConnectionQuality.poor && index > 0) ? color.withOpacity(0.3) : color,
+            color: (quality == ConnectionQuality.poor && index > 0) ? color.withValues(alpha: 0.3) : color,
             shape: BoxShape.circle,
           ),
         ),

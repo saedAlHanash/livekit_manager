@@ -117,7 +117,7 @@ class MyAppState extends State<MyApp> {
                     top: false,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: true ? AppColorManager.mainColor : Colors.white,
+                        color: AppColorManager.mainColor,
                         image: DecorationImage(
                           image: AssetImage(Assets.imagesIslamicBack),
                           repeat: ImageRepeat.repeat,

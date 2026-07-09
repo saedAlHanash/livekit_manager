@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 
 class SignalMessage {

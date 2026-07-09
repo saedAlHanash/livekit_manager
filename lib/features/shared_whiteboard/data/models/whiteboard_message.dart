@@ -90,13 +90,13 @@ String bytesToUuid(Uint8List bytes, int offset) {
 int colorToInt(String hexColor) {
   var clean = hexColor.replaceAll('#', '');
   if (clean.length == 6) {
-    clean = 'FF' + clean;
+    clean = 'FF$clean';
   }
   return int.tryParse(clean, radix: 16) ?? 0xFF000000;
 }
 
 String intToColor(int colorVal) {
-  return '#' + (colorVal & 0xFFFFFFFF).toRadixString(16).padLeft(8, '0').toUpperCase();
+  return '#${(colorVal & 0xFFFFFFFF).toRadixString(16).padLeft(8, '0').toUpperCase()}';
 }
 
 double parseStyleWidth(String style) {

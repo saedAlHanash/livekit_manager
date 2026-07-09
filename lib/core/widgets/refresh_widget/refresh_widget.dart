@@ -36,7 +36,7 @@ class _RefreshWidgetState extends State<RefreshWidget> {
     } else {
       Future(() => _refreshController.requestRefresh(needCallback: false));
     }
-    var d = bool.hasEnvironment('');
+
     return Padding(
       padding: widget.padding ?? const EdgeInsets.all(0),
       child: SmartRefresher(

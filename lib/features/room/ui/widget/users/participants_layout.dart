@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/focus_participants_layout.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/grid_participants_layout.dart';
 import 'package:livekit_manager/features/room/ui/widget/users/scrollable_participants_layout.dart';

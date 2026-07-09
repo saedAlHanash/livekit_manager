@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:livekit_manager/features/room/ui/widget/controls.dart';
-import 'package:livekit_manager/generated/l10n.dart';
 
 import '../../../../core/strings/app_color_manager.dart';
 import '../../../../core/widgets/my_card_widget.dart';
-import '../../ui/widget/notes_widget.dart';
 import '../../../user/bloc/users_cubit/users_cubit.dart';
 import '../../bloc/room_cubit/room_cubit.dart';
+import '../../ui/widget/notes_widget.dart';
 import '../widget/local_media.dart';
 import '../widget/users/participants_layout.dart';
 

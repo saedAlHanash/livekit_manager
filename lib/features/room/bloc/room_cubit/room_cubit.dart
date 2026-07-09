@@ -4,12 +4,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:livekit_client/livekit_client.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:livekit_manager/core/error/error_manager.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/util/exts.dart';
+import 'package:livekit_manager/features/room/data/request/student_metadata.dart';
 import 'package:livekit_manager/features/room/room_config.dart';
+import 'package:livekit_manager/router/go_router.dart';
+import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
 import 'package:m_cubit/abstraction.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/api_manager/api_service.dart';
 import '../../../../core/app/app_widget.dart';
@@ -18,8 +21,6 @@ import '../../../../generated/assets.dart';
 import '../../../../services/sounds_service.dart';
 import '../../../user/data/response/user_response.dart';
 import '../../data/request/setting_message.dart';
-import 'package:livekit_manager/services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
-import 'package:livekit_manager/features/room/data/request/student_metadata.dart';
 
 part 'room_state.dart';
 
@@ -27,6 +28,7 @@ class RoomCubit extends MCubit<RoomInitial> {
   RoomCubit() : super(RoomInitial.initial());
 
   final _messageController = StreamController<LkMessage>.broadcast();
+
   Stream<LkMessage> get messageStream => _messageController.stream;
 
   Timer? _sortDebounceTimer;
@@ -243,7 +245,9 @@ class RoomCubit extends MCubit<RoomInitial> {
         if (!hasCamera) {
           realEnableCamera = false;
         }
-        final hasMic = devices.any((d) => d.kind.toLowerCase().contains('audio') && d.kind.toLowerCase().contains('input'));
+        final hasMic = devices.any(
+          (d) => d.kind.toLowerCase().contains('audio') && d.kind.toLowerCase().contains('input'),
+        );
         if (!hasMic) {
           realEnableMic = false;
         }
@@ -295,14 +299,14 @@ class RoomCubit extends MCubit<RoomInitial> {
         );
       } catch (connectError) {
         loggerObject.e('Initial connect failed: $connectError. Retrying with fallback...');
-        
+
         Future<Room> recreateRoomAndListener() async {
           try {
             state.result.removeListener(_sortParticipants);
             await state.listener.dispose();
             await state.result.dispose();
           } catch (_) {}
-          
+
           final newRoom = Room(roomOptions: RoomConfig.instance.roomOptions);
           final newListener = newRoom.createListener();
           emit(state.copyWith(result: newRoom, listener: newListener));
@@ -446,7 +450,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       url: '/api/v1/Lesson/StartLessonRecording',
       type: ApiType.post,
       additional: '',
-      hostName: 'ims.moed.gov.sy',
+      hostName: serverUrl,
       body: {"roomId": state.result.name},
     );
   }

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:drawable_text/drawable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -24,10 +23,8 @@ import '../../generated/assets.dart';
 import '../../generated/l10n.dart';
 import '../api_manager/api_service.dart';
 import '../api_manager/api_url.dart';
-import '../app/app_widget.dart';
 import '../error/error_manager.dart';
 import '../util/pair_class.dart';
-import '../util/snack_bar_message.dart';
 import '../widgets/spinner_widget.dart';
 
 extension SplitByLength on String {

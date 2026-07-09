@@ -120,7 +120,7 @@ ThemeData get lightTheme => ThemeData(
   ),
   drawerTheme: DrawerThemeData(
     backgroundColor: AppColorManager.white,
-    scrimColor: AppColorManager.mainColor.withOpacity(0.3),
+    scrimColor: AppColorManager.mainColor.withValues(alpha: 0.3),
     elevation: 2,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -323,7 +323,7 @@ ThemeData get darkTheme => ThemeData(
   dataTableTheme: DataTableThemeData(
     dataRowColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
-        return AppColorManager.secondColor.withOpacity(0.2);
+        return AppColorManager.secondColor.withValues(alpha: 0.2);
       }
       return null;
     }),
@@ -357,7 +357,6 @@ ThemeData get currentTheme {
       return lightTheme;
   }
 
-  return AppSharedPreference.getThemeMode == ThemeMode.dark ? darkTheme : lightTheme;
 }
 
 bool get isSystemDarkMode {

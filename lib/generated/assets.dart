@@ -106,4 +106,5 @@ class Assets {
   static const String soundsNewJoin = 'assets/sounds/new_join.mp3';
   static const String soundsNote = 'assets/sounds/note.mp3';
   static const String soundsShareScreen = 'assets/sounds/share_screen.mp3';
+
 }

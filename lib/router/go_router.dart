@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:livekit_manager/core/util/shared_preferences.dart';
 import 'package:livekit_manager/features/room/ui/pages/teacher_page.dart';
+import 'package:m_cubit/m_cubit.dart';
 
 import '../core/api_manager/api_url.dart';
 import '../core/app/app_widget.dart';
@@ -18,15 +19,16 @@ import '../features/setting/bloc/setting_cubit/setting_cubit.dart';
 import '../features/setting/bloc/settings_cubit/settings_cubit.dart';
 import '../features/setting/ui/pages/setting_page.dart';
 import '../features/setting/ui/pages/settings_page.dart';
+import '../features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
+import '../features/shared_whiteboard/ui/pages/shared_whiteboard_page.dart';
 import '../features/splash/ui/spalsh_page.dart';
 import '../features/user/bloc/user_cubit/user_cubit.dart';
 import '../features/user/bloc/users_cubit/users_cubit.dart';
 import '../features/user/ui/pages/user_page.dart';
 import '../features/user/ui/pages/users_page.dart';
-
-import '../features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
-import '../features/shared_whiteboard/ui/pages/shared_whiteboard_page.dart';
 import '../services/signal_r/bloc/signal_r_cubit/signal_r_cubit.dart';
+
+var serverUrl = 'ims-be.coretech-mena.com';
 
 final goRouter = GoRouter(
   navigatorKey: sl<GlobalKey<NavigatorState>>(),
@@ -40,9 +42,11 @@ final goRouter = GoRouter(
         final userId = state.uri.queryParameters['userId'] ?? 'ed783d91-a4fd-4610-2092-08de58154480';
         final userName = state.uri.queryParameters['userName'] ?? 'راكان';
         final userType = state.uri.queryParameters['userType'] ?? 'teacher';
-        final token = state.uri.queryParameters['token'] ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
+        final token =
+            state.uri.queryParameters['token'] ??
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImU2ZTVlM2NmLTQ1OGQtNGRjOC1iMzNjLTMzZDMyNTdiN2E2OCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkhhbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwOS8wOS9pZGVudGl0eS9jbGFpbXMvYWN0b3IiOiJDbGllbnQiLCJTZXNzaW9uSWQiOiIzYWYyM2NlYS05MzI3LTQyMWUtYmYzZC1iOGM1ODMyMmNiNTUiLCJuYmYiOjE3ODIwNDU5OTksImV4cCI6MTc4MjI2MTk5OSwiaXNzIjoibG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0.Ybjg70ruOV6VPCZdDsOAT5T6mSKqRU5cp-b1cnXkVPA';
 
-          AppSharedPreference.setUserId(userId);
+        AppSharedPreference.setUserId(userId);
         if (token.isNotEmpty) {
           AppSharedPreference.cashToken(token);
         }
@@ -50,8 +54,7 @@ final goRouter = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => SignalRCubit()
-                ..initialSignalR(lessonId, userId),
+              create: (context) => SignalRCubit()..initialSignalR(lessonId, userId),
             ),
             BlocProvider(
               create: (context) => SharedWhiteboardCubit(
@@ -68,6 +71,7 @@ final goRouter = GoRouter(
       },
     ),
     //endregion
+
     //region setting
 
     ///setting
@@ -171,6 +175,9 @@ final goRouter = GoRouter(
         final token = state.uri.queryParameters['token'] ?? '';
         final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
+        final s = state.uri.queryParameters['serverUrl'];
+
+        if (s.isNotBlank) serverUrl = s!;
 
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
@@ -245,7 +252,7 @@ final goRouter = GoRouter(
         final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
         mmsLkManageUrl = state.uri.queryParameters['manager_url'] ?? state.uri.queryParameters['manager_link'] ?? '';
         final token = state.uri.queryParameters['token'] ?? '';
-        final groupTermId = state.uri.queryParameters['groupTermId'];
+        // final groupTermId = state.uri.queryParameters['groupTermId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
 
         if (theme.isNotEmpty) {
@@ -333,4 +340,4 @@ class RouteName {
 //https://lk-m.codemagic.app/mms?link=wss://coretik.coretech-mena.com
 var tempToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJqdGkiOiIzYmEyMmU3Zi01YWYxLTRlZTAtOGJlYy0wOGRlOGUzZWNjODYiLCJpc3MiOiJkZXZrZXkiLCJuYmYiOjE3NzY1ODgzMzAsImlhdCI6MTc3NjU4ODMzMCwiZXhwIjoxNzgxNzcyMzMwLCJ2aWRlbyI6eyJhZ2VudCI6ZmFsc2UsImNhblB1Ymxpc2giOmZhbHNlLCJjYW5QdWJsaXNoRGF0YSI6dHJ1ZSwiY2FuUHVibGlzaFNvdXJjZXMiOltdLCJjYW5TdWJzY3JpYmUiOnRydWUsImNhblN1YnNjcmliZU1ldHJpY3MiOmZhbHNlLCJjYW5VcGRhdGVPd25NZXRhZGF0YSI6ZmFsc2UsImRlc3RpbmF0aW9uUm9vbSI6IiIsImhpZGRlbiI6ZmFsc2UsImluZ3Jlc3NBZG1pbiI6ZmFsc2UsInJlY29yZGVyIjpmYWxzZSwicm9vbSI6ImY5NmMyYTk1LTkyMmMtNDcxYy0zZjM0LTA4ZGU5NjQzZjAyMSIsInJvb21BZG1pbiI6dHJ1ZSwicm9vbUNyZWF0ZSI6dHJ1ZSwicm9vbUpvaW4iOnRydWUsInJvb21MaXN0IjpmYWxzZSwicm9vbVJlY29yZCI6ZmFsc2V9LCJzaXAiOnsiYWRtaW4iOmZhbHNlLCJjYWxsIjpmYWxzZX0sIm5hbWUiOiJtYWlzc2FtIGJhbGF3bnkiLCJtZXRhZGF0YSI6IiIsInNoYTI1NiI6IiIsImtpbmQiOiIiLCJhdHRyaWJ1dGVzIjp7ImltYWdlVXJsIjpudWxsLCJsa1VzZXJUeXBlIjoiMCJ9LCJyb29tQ29uZmlnIjp7fX0.Ep0qCJgL0YJnHl7PZkATmt4gugjGUF5oU-vSM4iTgGo";
-var manager_url = "coretik-be.coretech-mena.com";
+var managerMrl = "coretik-be.coretech-mena.com";

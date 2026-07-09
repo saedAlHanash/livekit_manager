@@ -1,11 +1,11 @@
 import 'dart:math';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:image_multi_type/image_multi_type.dart';
-
-import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
+import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 
 import '../../../../core/util/my_style.dart';
 
@@ -98,7 +98,7 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
   Offset _initialFocalPoint = Offset.zero;
 
   int _batchSize = 16; // Number of points to aggregate before broadcasting
-  double _threshold = 0.03; // normalized distance threshold
+  final double _threshold = 0.03; // normalized distance threshold
   final List<Map<String, dynamic>> _pendingPoints = [];
   double? _lastX;
   double? _lastY;
@@ -457,7 +457,7 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                                   icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
                                   tooltip: 'إضافة خلفية',
                                   onPressed: () async {
-                                    final result = await FilePicker.platform.pickFiles(
+                                    final result = await FilePicker.pickFiles(
                                       type: FileType.custom,
                                       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
                                       allowMultiple: false,
