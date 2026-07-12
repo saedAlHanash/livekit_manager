@@ -58,9 +58,26 @@ class WhiteboardPainter extends CustomPainter {
         final firstPoint = stroke.points.first;
         path.moveTo(firstPoint.x * size.width, firstPoint.y * size.height);
 
-        for (var i = 1; i < stroke.points.length; i++) {
-          final pt = stroke.points[i];
-          path.lineTo(pt.x * size.width, pt.y * size.height);
+        if (stroke.points.length == 2) {
+          final secondPoint = stroke.points[1];
+          path.lineTo(secondPoint.x * size.width, secondPoint.y * size.height);
+        } else {
+          for (var i = 1; i < stroke.points.length - 1; i++) {
+            final p0 = stroke.points[i];
+            final p1 = stroke.points[i + 1];
+
+            final xc = ((p0.x + p1.x) / 2) * size.width;
+            final yc = ((p0.y + p1.y) / 2) * size.height;
+
+            path.quadraticBezierTo(
+              p0.x * size.width,
+              p0.y * size.height,
+              xc,
+              yc,
+            );
+          }
+          final lastPoint = stroke.points.last;
+          path.lineTo(lastPoint.x * size.width, lastPoint.y * size.height);
         }
 
         canvas.drawPath(path, paint);
