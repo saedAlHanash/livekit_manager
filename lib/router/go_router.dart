@@ -181,9 +181,14 @@ final goRouter = GoRouter(
       name: RouteName.home,
       builder: (context, state) {
         final link = state.uri.queryParameters['url'] ?? state.uri.queryParameters['link'] ?? wsLink;
-        final token = state.uri.queryParameters['token'] ?? '';
+        final tokenLiveKit = state.uri.queryParameters['tokenLiveKit'] ?? state.uri.queryParameters['liveKitToken'] ?? state.uri.queryParameters['token'] ?? '';
+        final systemToken = state.uri.queryParameters['systemToken'] ?? state.uri.queryParameters['system_token'] ?? state.uri.queryParameters['token'] ?? '';
         final classRoomId = state.uri.queryParameters['classRoomId'];
         final theme = state.uri.queryParameters['theme'] ?? '';
+
+        if (systemToken.isNotEmpty) {
+          AppSharedPreference.cashToken(systemToken);
+        }
 
         if (theme.isNotEmpty) {
           if (theme == 'dark') {
@@ -206,7 +211,7 @@ final goRouter = GoRouter(
           ],
           child: HomePage(
             link: link,
-            token: token,
+            token: tokenLiveKit,
             page: .teacher,
           ),
         );

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/core/api_manager/api_url.dart';
-import 'package:livekit_manager/core/extensions/extensions.dart';import 'package:m_cubit/util.dart';
+import 'package:livekit_manager/core/extensions/extensions.dart';
 import 'package:livekit_manager/core/strings/enum_manager.dart';
 import 'package:livekit_manager/core/util/pair_class.dart';
 import 'package:livekit_manager/features/user/data/request/create_user_request.dart';
@@ -36,8 +36,8 @@ class UsersCubit extends MCubit<UsersInitial> {
   );
 
   Future<void> getData({bool newData = false, String? classRoomId}) async {
-    return;
-    emit(state.copyWith(id: classRoomId, statuses: .loading));
+    final targetId = classRoomId ?? state.id;
+    emit(state.copyWith(id: targetId, statuses: CubitStatuses.loading));
     await getDataAbstract(
       fromJson: User.fromJson,
       state: state,
@@ -47,10 +47,14 @@ class UsersCubit extends MCubit<UsersInitial> {
   }
 
   Future<Pair<List<User>?, String?>> _getData() async {
+    final classRoomId = state.id ?? state.mId;
+    if (classRoomId == null || classRoomId.toString().isEmpty) {
+      return Pair([], null);
+    }
+
     final response = await APIService().callApi(
       type: ApiType.get,
-      url: PostUrl.users,
-      query: {'classRoomId': state.mId},
+      url: 'teacher/virtual-classroom/$classRoomId/students',
     );
 
     if (response.statusCode.success) {

@@ -11,9 +11,9 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["id"] ?? "",
+      id: (json["id"] ?? "").toString(),
       name: json["name"] ?? "",
-      image: json["image"] ?? "",
+      image: json["profile_image_url"] ?? json["image"] ?? "",
     );
   }
 
@@ -31,9 +31,15 @@ class Users {
     required this.items,
   });
 
-  factory Users.fromJson(Map<String, dynamic> json) {
+  factory Users.fromJson(dynamic json) {
+    List list = [];
+    if (json is Map<String, dynamic>) {
+      list = json["data"] ?? json["items"] ?? [];
+    } else if (json is List) {
+      list = json;
+    }
     return Users(
-      items: json["items"] == null ? [] : List<User>.from(json["items"]!.map((x) => User.fromJson(x))),
+      items: list.map((x) => User.fromJson(x as Map<String, dynamic>)).toList(),
     );
   }
 

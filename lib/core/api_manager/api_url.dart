@@ -39,18 +39,17 @@ class PatchUrl {
   //
 }
 
-const additionalConst = '/api/v1/';
+const additionalConst = '/api/';
 
 // ── LiveKit WebSocket URLs (used by livekit_client SDK) ──
 // These mirror LiveKitConfig.wssUrl — kept here for legacy SDK usage.
 const wsLocalUrl = 'ws://192.168.1.69:7880';
 const wsLiveTest = 'ws://87.106.161.145:7880';
-const wsLiveUrl = 'wss://coretik.coretech-mena.com';
+const wsLiveUrl = 'wss://coretest-4xi5uo5z.livekit.cloud';
 
 // ── IMS backend ──
 const localUrl = '192.168.1.69:5002';
-const liveUrl = 'ims-be.coretech-mena.com';
-
+const liveUrl = 'test-api.basma-academy.com';
 String get baseUrl {
   // return localUrl;
   return liveUrl;
