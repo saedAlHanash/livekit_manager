@@ -11,5 +11,5 @@ class RoomMember {
   final Participant? participant;
   final User? user;
 
-  String get identity => participant?.identity ?? user?.studentRecordId ?? '';
+  String get identity => participant?.identity ?? user?.id ?? '';
 }

@@ -1,30 +1,26 @@
 class User {
   User({
     required this.id,
-    required this.studentName,
-    required this.studentImage,
-    required this.studentRecordId,
+    required this.name,
+    required this.image,
   });
 
   final String id;
-  final String studentName;
-  final String studentImage;
-  final String studentRecordId;
+  final String name;
+  final String image;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["studentRecordId"] ?? "",
-      studentName: json["studentName"] ?? "",
-      studentImage: json["studentImage"] ?? "",
-      studentRecordId: json["studentRecordId"] ?? "",
+      id: json["id"] ?? "",
+      name: json["name"] ?? "",
+      image: json["image"] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "studentName": studentName,
-    "studentImage": studentImage,
-    "studentRecordId": studentRecordId,
+    "name": name,
+    "image": image,
   };
 }
 

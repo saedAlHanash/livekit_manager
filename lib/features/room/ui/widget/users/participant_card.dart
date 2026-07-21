@@ -334,7 +334,7 @@ class UserWider extends StatelessWidget {
             Positioned.fill(
               child: Center(
                 child: RoundImageWidget(
-                  url: (user?.studentImage).isBlank ? Icons.person : user?.studentImage.fixImageAvatar,
+                  url: (user?.image).isBlank ? Icons.person : user?.image.fixImageAvatar,
                   width: 0.6.sw,
                   height: 0.6.sw,
                 ),
@@ -347,7 +347,7 @@ class UserWider extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                 decoration: BoxDecoration(color: Colors.black45),
                 child: DrawableText(
-                  text: user?.studentName ?? '-',
+                  text: user?.name ?? '-',
                   color: Colors.white70,
                   textAlign: .center,
                   size: 10.0.sp,

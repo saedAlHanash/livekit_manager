@@ -704,12 +704,12 @@ extension RoomInitialH on RoomInitial {
     final connectedIdentities = <String>{};
     for (final p in participantTracksWithoutMe) {
       connectedIdentities.add(p.identity);
-      final user = expectedUsers.firstWhereOrNull((u) => u.studentRecordId == p.identity);
+      final user = expectedUsers.firstWhereOrNull((u) => u.id == p.identity);
       members.add(RoomMember(participant: p, user: user));
     }
 
     for (final u in expectedUsers) {
-      if (!connectedIdentities.contains(u.studentRecordId)) {
+      if (!connectedIdentities.contains(u.id)) {
         members.add(RoomMember(user: u));
       }
     }

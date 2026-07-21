@@ -12,8 +12,8 @@ class ItemUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppListCard(
-      title: user.studentName.isEmpty ? 'مستخدم بدون اسم' : user.studentName,
-      subtitle: user.studentRecordId.isEmpty ? 'لا يوجد رقم سجل' : 'رقم السجل: ${user.studentRecordId}',
+      title: user.name.isEmpty ? 'مستخدم بدون اسم' : user.name,
+      subtitle: user.id.isEmpty ? 'لا يوجد رقم سجل' : 'رقم السجل: ${user.id}',
       icon: Icons.person_outline,
     );
   }
