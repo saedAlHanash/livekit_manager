@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_multi_type/image_multi_type.dart';
+import 'package:livekit_manager/core/api_manager/api_service.dart';
 import 'package:livekit_manager/features/shared_whiteboard/bloc/shared_whiteboard_cubit.dart';
 import 'package:livekit_manager/features/shared_whiteboard/data/models/stroke_model.dart';
 
@@ -474,14 +475,18 @@ class _SharedWhiteboardWidgetState extends State<SharedWhiteboardWidget> {
                                   icon: const Icon(Icons.add_photo_alternate, color: Colors.blue),
                                   tooltip: 'إضافة خلفية',
                                   onPressed: () async {
-                                    final result = await FilePicker.pickFiles(
+                                    final result = await FilePicker.platform.pickFiles(
                                       type: FileType.custom,
                                       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp'],
                                       allowMultiple: false,
+                                      withData: true,
                                     );
-                                    if (result != null && result.files.first.bytes != null) {
+
+                                    if (result != null && result.files.isNotEmpty) {
                                       final file = result.files.first;
-                                      cubit.uploadAndSetBackground(file.bytes!, file.extension ?? 'jpg');
+                                      if (file.bytes != null) {
+                                        cubit.uploadAndSetBackground(file.bytes!, file.extension ?? 'jpg');
+                                      }
                                     }
                                   },
                                 ),

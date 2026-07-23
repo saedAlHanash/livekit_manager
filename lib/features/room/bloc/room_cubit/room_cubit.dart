@@ -450,7 +450,7 @@ class RoomCubit extends MCubit<RoomInitial> {
       url: '/api/v1/Lesson/StartLessonRecording',
       type: ApiType.post,
       additional: '',
-      hostName: serverUrl,
+      // hostName: serverUrl,
       body: {"roomId": state.result.name},
     );
   }

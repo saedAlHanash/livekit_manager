@@ -1,3 +1,5 @@
+import 'package:m_cubit/m_cubit.dart';
+
 class GetUrl {
   static const setting = 'Room/Get';
   static const room = 'Room/Get';
@@ -76,7 +78,9 @@ const liveUrl = 'ims-be.coretech-mena.com';
 var mmsLkManageUrl = 'coretik-be.coretech-mena.com';
 const imsLkManageUrl = 'coretik-be.coretech-mena.com';
 
+String wevFreamServerUrl = '';
 String get baseUrl {
+    if (wevFreamServerUrl.isNotBlank) return wevFreamServerUrl;
   // return localUrl;
   return liveUrl;
 }

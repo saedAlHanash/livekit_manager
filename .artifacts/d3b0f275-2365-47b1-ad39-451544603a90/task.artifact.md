@@ -1,0 +1,2 @@
+- [x] Modify `shared_whiteboard_widget.dart` to fix `FilePicker` usage
+- [x] Verify code changes
